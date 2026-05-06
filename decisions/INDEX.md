@@ -37,6 +37,7 @@
 | 011 | [Payment authority: CEO+Yaprak full, local offices form-only](ADR-011-payment-authority.md) | DECIDED | 2026-04-10 | Business Rule |
 | 012 | [Historical migration: full 2014-2027, all data](ADR-012-historical-migration-scope.md) | DECIDED | 2026-04-10 | Migration |
 | 013 | [SaaS: long-term option, not priority, keep door open](ADR-013-saas-priority.md) | DECIDED | 2026-04-10 | Strategy |
+| 016 | [Campaign recipient completion tracking](ADR-016-campaign-recipient-completion-tracking.md) | DECIDED | 2026-05-05 | LEENA Operations |
 
 ---
 
