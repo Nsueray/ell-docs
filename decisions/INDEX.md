@@ -41,6 +41,7 @@
 | 017 | [Email queue logging — worker-only writes](ADR-017-email-queue-logging-strategy.md) | DECIDED | 2026-05-07 | LEENA Architecture |
 | 018 | [Read-only DB access for AI agents](ADR-018-read-only-db-access-for-ai.md) | DECIDED | 2026-05-07 | Security |
 | 019 | [Bulk email send architecture](ADR-019-bulk-email-send-architecture.md) | DECIDED | 2026-05-07 | LEENA Architecture |
+| 020 | [Shared frontend component pattern](ADR-020-shared-frontend-component-pattern.md) | DECIDED | 2026-05-07 | LEENA Architecture |
 
 ---
 
