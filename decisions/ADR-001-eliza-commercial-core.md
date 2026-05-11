@@ -1,5 +1,21 @@
 # ADR-001: ELIZA is the Commercial System of Record
 
+> 🔄 **PARTIALLY SUPERSEDED — 2026-05-11**
+>
+> ELIZA artık "commercial system of record" değil — branding
+> / login / üst navigation katmanı (LEENA submodule).
+> Commercial core, finance, intelligence hepsi LEENA'da.
+> "Three systems" anlatısı da değişti: artık iki uygulama
+> (LEENA + LIFFY) + bir çatı (ELIZA).
+>
+> Bu ADR Aşama 2 paralelinde revize edilecek.
+>
+> **Master karar:**
+> [/architecture/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
+> (A1, A2, A3, A17)
+>
+> ---
+
 **Status:** DECIDED
 **Date:** 2026-04-10
 **Decided by:** Suer Ay

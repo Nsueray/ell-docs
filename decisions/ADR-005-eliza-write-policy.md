@@ -1,5 +1,19 @@
 # ADR-005: ELIZA Writes Authority Data, Not Field Data
 
+> ⚠️ **SUPERSEDED — Aşama 2 paralelinde yeniden yazılacak**
+>
+> Bu ADR "ELIZA writes authority data" prensibini koyuyordu.
+> Yeni mimaride ELIZA servis değil, LEENA submodule (sadece
+> login + üst navigation). Write authority artık LEENA'nın.
+>
+> Yeni "LEENA write policy" Aşama 2'de yazılacak.
+>
+> **Master karar:**
+> [/architecture/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
+> (A3, A17)
+>
+> ---
+
 **Status:** DECIDED
 **Date:** 2026-04-10
 **Decided by:** Suer Ay

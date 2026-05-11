@@ -1,5 +1,16 @@
 # ADR-002: LİFFY and LEENA Remain SaaS-Ready
 
+> ℹ️ **CONTEXT UPDATE — 2026-05-11**
+>
+> Bu ADR, ELL Aşama 1 mimarisi yazılmadan önce karara
+> bağlandı. Büyük ölçüde hâlâ geçerli olabilir, ama Aşama 2
+> sırasında yeni mimari ışığında gözden geçirilecek.
+>
+> **Master karar referansı:**
+> [/architecture/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
+>
+> ---
+
 **Status:** DECIDED
 **Date:** 2026-04-10
 **Decided by:** Suer Ay

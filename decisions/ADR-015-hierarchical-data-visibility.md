@@ -1,5 +1,21 @@
 # ADR-015: Hierarchical Data Visibility and Granular Permissions
 
+> 🔄 **NEEDS REVISION — 2026-05-11**
+>
+> Hierarchy + reports_to + permissions prensibi korunuyor.
+> Ama yeni mimaride permission matrix LEENA'da merkezi
+> (LIFFY de oradan okur). Sales agent ≠ user ayrımı (D41/A28)
+> netleşti: sales agent system user değil, sales_agents
+> tablosunda kayıtlı entity.
+>
+> Aşama 2 paralelinde revize edilecek.
+>
+> **Master karar:**
+> [/architecture/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
+> (A10, A28)
+>
+> ---
+
 **Status:** DECIDED
 **Date:** 2026-04-16
 **Decided by:** Suer Ay

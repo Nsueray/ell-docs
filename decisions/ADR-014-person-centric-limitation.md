@@ -1,5 +1,27 @@
 # ADR-014: LİFFY Person-Centric Model — Known Limitation
 
+> 🔄 **NEEDS REVISION — 2026-05-11**
+>
+> Bu ADR persons + lifecycle_stage modelini koyuyordu. Yeni
+> mimaride veri modeli iki dünyaya ayrıldı (A21):
+>
+> - LIFFY companies/persons (prospect dünyası) — bugünkü
+>   model burada devam
+> - LEENA customer_companies/customer_contacts (müşteri
+>   dünyası) — yeni first-class entity
+>
+> Aynı gerçek-dünya şirketi iki yerde olabilir; convert
+> anında eşleşir veya yeni yaratılır. Akış B'de proaktif
+> fuzzy match arama (A29) data bifurcation'ı önler.
+>
+> Aşama 2/3 paralelinde revize edilecek.
+>
+> **Master karar:**
+> [/architecture/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
+> (A21, A29)
+>
+> ---
+
 **Status:** DECIDED
 **Date:** 2026-04-15
 **Decided by:** Suer Ay

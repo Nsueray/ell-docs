@@ -1,5 +1,32 @@
 # ELL_RULES.md — Cross-System Rules
 
+> ⚠️ **SUPERSEDED — 2026-05-11**
+>
+> Bu dosya (v5.1, 2026-05-01) requirements gathering
+> yapılmadan önce yazıldı. Yeni mimariyle büyük ölçüde
+> uyumsuz:
+>
+> - "Three separate PostgreSQL databases" → A5: iki DB
+>   (LEENA tek + LIFFY ayrı)
+> - "ELIZA writes authority data" → A17: ELIZA branding
+>   katmanı, write authority LEENA'da
+> - Reference data sync detayları → Aşama 2'de yeniden
+>   tasarlanacak
+> - ADR-017/ADR-018 referansları → bu numaralar gerçekte
+>   farklı konulara ait, ELL_RULES içindeki "three-database"
+>   ve "future consolidation" ADR'ları hiç yazılmamış
+>   (sadece plan olarak burada geçmiş)
+> - Module ownership map → büyük ölçüde değişti
+> - "Forbidden Terms" kısmı hâlâ büyük ölçüde geçerli
+>
+> **Bu dosya Aşama 2 paralelinde tamamen yeniden yazılacak.**
+> O zamana kadar **tarihsel referans** olarak görün.
+>
+> **Master karar:**
+> [/architecture/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
+>
+> ---
+
 > This file exists in all three ELL repos (eliza, liffyv1, Leena_v401_monorepo).
 > It is the SAME file everywhere. If you update it, update all three copies.
 > Last updated: 2026-05-01 (v5.1 — sync worker timing corrected to Phase 1 end)

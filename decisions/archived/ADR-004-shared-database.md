@@ -1,5 +1,19 @@
 # ADR-004: Shared Database with Schema-Level Ownership
 
+> ⚠️ **SUPERSEDED — 2026-05-11**
+>
+> Bu ADR, ELL_ARCHITECTURE_STAGE_1_TOPOLOGY v1.1 (kararlar
+> A5 ve A18) tarafından geçersiz kılınmıştır.
+>
+> **Yeni karar:** Tek shared database değil — LEENA tek DB +
+> LIFFY ayrı DB. Schema-level ownership LEENA içinde geçerli;
+> LIFFY ayrı bir DB. Cross-DB join yok; köprüler API ile.
+>
+> **Master karar:**
+> [/architecture/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
+>
+> ---
+
 **Status:** DECIDED
 **Date:** 2026-04-10
 **Decided by:** Suer Ay

@@ -1,5 +1,27 @@
 # ADR-003: Sales Agents Never Create Contracts
 
+> 🔄 **NEEDS REVISION — 2026-05-11**
+>
+> Bu ADR'nin temel prensibi (sales agent contract yaratmaz)
+> korunuyor. Ama Quote→Contract akışı v1.1'de iki birinci
+> sınıf akışa genişledi:
+>
+> - **Akış A:** LIFFY signed quote → Köprü 1 → LEENA pending
+>   convert → Project convert (eski ADR-003 akışının yeni
+>   adı)
+> - **Akış B:** Yaprak LEENA'da signed quote olmadan da
+>   doğrudan contract yaratabilir (Project department veya
+>   sales agent attribution ile). "Her sözleşmenin quote'u
+>   olmaz" prensibi.
+>
+> Aşama 2 paralelinde revize edilecek.
+>
+> **Master karar:**
+> [/architecture/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
+> (Bölüm 6.5, Köprü 1, Köprü 2, A24, A28)
+>
+> ---
+
 **Status:** DECIDED
 **Date:** 2026-04-10
 **Decided by:** Suer Ay

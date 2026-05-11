@@ -1,6 +1,28 @@
 # ELL Platform Roadmap
 ## ELIZA + LİFFY + LEENA — Zoho'dan Bağımsızlaşma Stratejisi
 
+> ⚠️ **SUPERSEDED — 2026-05-11**
+>
+> Bu roadmap (v1.1, 2026-03-30) eski varsayımlarla yazıldı:
+>
+> - "Üç sistem tek bir veritabanı etrafında birleşir" → A5:
+>   iki DB kalır
+> - "LİFFY sözleşme zincirinin sahibi" → A3: contract,
+>   payment, commission LEENA'da
+> - "ELIZA okur, asla yazmaz" → A17: ELIZA branding katmanı
+> - Faz sıralaması (LİFFY önce, LEENA sonra) → yeniden
+>   düşünülecek (A22: phase kompozisyonu yeni roadmap'in işi)
+> - CDC webhook çift yazma stratejisi → A13: çift master
+>   dönemi yok, cutover-based
+>
+> **Yeni roadmap Aşama 2 tamamlandıktan sonra yazılacak.**
+> O zamana kadar **tarihsel referans**.
+>
+> **Master karar:**
+> [/architecture/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
+>
+> ---
+
 **Versiyon:** v1.1  
 **Tarih:** 2026-03-30  
 **Sahibi:** Elan Expo / Suer Ay  

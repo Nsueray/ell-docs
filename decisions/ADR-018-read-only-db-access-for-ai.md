@@ -1,5 +1,16 @@
 # ADR-018: Read-Only DB Access for AI Agents
 
+> ℹ️ **CONTEXT NOTE — 2026-05-11**
+>
+> Bu ADR Aşama 1 mimarisi yazılmadan önce karara bağlandı,
+> ama içeriği LEENA implementasyonuna özgü ve yeni mimariyle
+> uyumlu. Geçerlidir.
+>
+> **Master karar referansı:**
+> [/architecture/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
+>
+> ---
+
 ## Status
 DECIDED (7 May 2026)
 

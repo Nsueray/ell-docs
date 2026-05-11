@@ -1,5 +1,19 @@
 # ELL Feature Inspiration
 
+> ℹ️ **CONTEXT UPDATE — 2026-05-11**
+>
+> Bu dosya Aşama 1 mimarisi yazılmadan önce (2026-04-29)
+> hazırlandı. Fikir havuzu olarak hâlâ geçerli, ama "ELL
+> System" sütunundaki atamalar (ELIZA / LİFFY / LEENA) yeni
+> mimariye göre yeniden değerlendirilmeli. Roadmap yazılırken
+> referans olarak kullan, ama atamaları sorgulamadan kabul
+> etme.
+>
+> **Master karar:**
+> [/architecture/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
+>
+> ---
+
 > Ideas collected from competitor analysis, internal discussions, and user feedback.
 > Not committed to roadmap — this is a "someday maybe" pool.
 > Items move to active roadmap only when prioritized in an ELL architecture session.

@@ -1,5 +1,26 @@
 # ADR-010: Floorplan Integration Depth
 
+> 🔄 **NEEDS REVISION — 2026-05-11**
+>
+> "Floorplan is a sales weapon" ve dual-layer prensibi
+> korunuyor. Ama Köprü 3 ile çok genişledi:
+>
+> - Çoklu görünür reservation, max 3 hafta deadline
+> - 6-state machine (active / expired / converted / cancelled
+>   / superseded / not_selected_by_project)
+> - Project tek karar mercii — otomatik kazanan kuralı yok
+> - stand_reservations LEENA içinde ayrı tablo (floor plan'dan
+>   farklı entity)
+> - LIFFY floor plan yazmaz, sadece stand_reservations'a yazar
+>
+> Aşama 2 paralelinde revize edilecek.
+>
+> **Master karar:**
+> [/architecture/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
+> (Köprü 3, A11, A23)
+>
+> ---
+
 **Status:** DECIDED
 **Date:** 2026-04-10
 **Decided by:** Suer Ay

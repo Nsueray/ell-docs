@@ -1,5 +1,29 @@
 # ELL Glossary & Entity Model
 
+> 🔄 **NEEDS UPDATE — 2026-05-11**
+>
+> Bu glossary (v1.1, 2026-04-10) büyük ölçüde hâlâ geçerli,
+> ama yeni mimariyle çakışan birkaç entity tanımı var:
+>
+> - "Company — Exists once in the system" → A21: LIFFY
+>   companies/persons (prospect) ≠ LEENA customer_companies/
+>   customer_contacts (müşteri). İki dünya ayrımı veri
+>   modeline kadar iner.
+> - "Sales Agent" tanımı doğru ama A28'de detaylandı: sales
+>   agent system user değil, ayrı tabloda kayıtlı entity.
+> - "Data Ownership Summary" tablosu — büyük ölçüde değişti,
+>   Aşama 3'te yeniden yazılacak.
+> - "Forbidden Terms" kısmı hâlâ geçerli.
+> - Quote → Contract akışı v1.1'de iki akışa genişledi
+>   (Akış A + Akış B).
+>
+> Aşama 2 paralelinde revize edilecek.
+>
+> **Master karar:**
+> [/architecture/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
+>
+> ---
+
 > The official language of the ELL Platform.
 > Every system (ELIZA, LİFFY, LEENA) uses these terms exactly as defined here.
 > No module may rename, redefine, or create alternative terms.
