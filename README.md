@@ -11,6 +11,21 @@ ELL'in en yüksek seviyeli yapısal kararları. İki uygulama
 (LEENA + LIFFY) + bir çatı (ELIZA), iki DB, beş köprü, üç
 finansal invariant, 29 mimari karar.
 
+**[Aşama 2 Bölüm 1: Identity Model v1.0](architecture/ELL_ARCHITECTURE_STAGE_2_SECTION_1_IDENTITY_v1_0.md)**
+(KİLİTLİ, 2026-05-12)
+
+users / sales_agents / data_entry_contractors üçlemesinin schema
+modeli, lifecycle kuralları, organization aidiyeti, LEENA legacy
+login migration'ı, integration credentials izolasyonu. B1-B20.
+
+**[Aşama 2 Bölüm 2: Permission Matrix + Hierarchy + Scope v1.0](architecture/ELL_ARCHITECTURE_STAGE_2_SECTION_2_PERMISSIONS_v1_0.md)**
+(KİLİTLİ, 2026-05-12)
+
+permission_templates, user_permissions matrix, permission registry
+(sentinel namespace), protected system operations, scope resolver
+pattern, authorization order, scope composition, hierarchy
+enforcement. B21-B44.
+
 ## Klasör yapısı
 
 - `/architecture/` — **Master mimari kararlar (kanonik)** — bu
@@ -24,7 +39,7 @@ finansal invariant, 29 mimari karar.
 ## Süreç durumu
 
 - ✅ Aşama 1 — Sistem Topolojisi (v1.1, kilitli)
-- ⏳ Aşama 2 — Cross-Cutting Infrastructure (planlama)
+- ⏳ Aşama 2 — Cross-Cutting Infrastructure (devam ediyor: Bölüm 1 v1.0 ✅, Bölüm 2 v1.0 ✅, Bölüm 3-8 bekliyor)
 - ⏸️ Aşama 3 — Data Ownership & API Contracts
 - ⏸️ Roadmap — Aşama 2 sonrası
 
