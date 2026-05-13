@@ -67,6 +67,7 @@ edilmesi veya geçersiz kılınması gereken** durumda:
 | 019 | [Bulk email send architecture](ADR-019-bulk-email-send-architecture.md) | DECIDED | 2026-05-07 | LEENA Architecture |
 | 020 | [Shared frontend component pattern](ADR-020-shared-frontend-component-pattern.md) | DECIDED | 2026-05-07 | LEENA Architecture |
 | 021 | [Conference topic cleanup tool — temporary pattern](ADR-021-conference-topic-cleanup-tool.md) | DECIDED | 2026-05-10 | LEENA Architecture |
+| 022 | [Async job pattern for large bulk imports](ADR-022-async-job-pattern.md) | DECIDED | 2026-05-13 | LEENA Architecture |
 
 ---
 

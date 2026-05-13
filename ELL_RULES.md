@@ -267,6 +267,21 @@ Same JWT_SECRET across services.
 ### R9: Reference Data is the Foundation
 All country, sector, currency, language fields MUST FK to core_* tables. No free-text fields for these. UI dropdowns populated from local DB's core_* tables only. Reference data is replicated across all three databases (manual during Phase 1, automated sync worker end of Phase 1). ELIZA is authoritative source.
 
+### R10: Mass Test Emails Must Use Suppression-Safe Patterns
+Email sending systems (SendGrid, Amazon SES, etc.) attempt delivery to ALL recipients regardless of domain validity. Fake or non-existent test domains (e.g. `test@example.com`, `*@leena-test.local`, `*@test.invalid`) result in deferred status → 72-hour retry window → hard bounce → sender reputation damage. Reputation damage is **cross-cutting**: it affects every system in ELL that uses the same SendGrid account (currently LEENA + LİFFY, future ELIZA notifications).
+
+**Forbidden patterns:**
+- Mass testing (>10 messages) with fake DNS domains
+- Bulk inserts with synthesized non-existent email addresses for load/stress testing
+- "Test mode" code paths that still hit the real email provider endpoint
+
+**Required patterns:**
+- Plus-addressing on a real owned mailbox: `you+test001@yourdomain.com`, `you+test002@yourdomain.com`. Gmail/iCloud route all to single inbox; SendGrid treats each as a unique recipient. Validates real delivery path without reputation risk.
+- Pre-suppress test domains in SendGrid global suppression list **before** mass sending. Use SendGrid API `/v3/asm/suppressions/global` to bulk-add fake domain addresses; SendGrid will accept the API call but skip actual delivery.
+- For non-delivery-validating tests (UI, queue mechanics, template rendering), use SendGrid sandbox mode (`mail_settings.sandbox_mode.enable=true`) which simulates send without dispatch.
+
+**Reference:** Leena 13 May 2026 sprint — async-pattern stress test inserted 85,000 tokens with `test-NNNNN@leena-test.local` recipients. 42,924 messages had already been submitted to SendGrid before detection; 42,077 still queued. Reputation (~98%) was preserved only by emergency POST of all 85,000 unique addresses to SendGrid global suppression API (85 batches × 1000). Sender reputation, once damaged, takes 30-90 days to recover and impacts every ELL system on the same SendGrid account.
+
 ---
 
 ## FORBIDDEN TERMS (ELL Glossary)
@@ -310,6 +325,7 @@ Correct terms:
 | 016 | Reference data tables (countries, sectors, currencies, languages) owned by ELIZA | DECIDED 2026-04-29 |
 | 017 | Per-system separate databases with reference data sync (manual during Phase 1, automated end of Phase 1) | DECIDED 2026-05-01 |
 | 018 | Future database consolidation to single instance — Phase 3 (after fair season) | PLANNED 2026-05-01 |
+| 022 | Async job pattern for large imports (import_jobs + setImmediate + polling) | DECIDED 2026-05-13 |
 
 Full ADR files: `eliza/docs/decisions/`
 
