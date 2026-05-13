@@ -26,6 +26,11 @@ permission_templates, user_permissions matrix, permission registry
 pattern, authorization order, scope composition, hierarchy
 enforcement. B21-B44.
 
+> **Bölüm 3 (Auth + Session + Cache Invalidation)** yazımı sürüyor —
+> 3.1 Auth Boundary v1.0 kilit (C1-C12, 2026-05-13), 3.2-3.13
+> sıradaki turlarda. Tüm Bölüm 3 bittiğinde tek dosya olarak
+> commit edilecek. Güncel durum için bkz. [HANDOVER_BRIEF.md](HANDOVER_BRIEF.md).
+
 ## Klasör yapısı
 
 - `/architecture/` — **Master mimari kararlar (kanonik)** — bu
@@ -39,7 +44,7 @@ enforcement. B21-B44.
 ## Süreç durumu
 
 - ✅ Aşama 1 — Sistem Topolojisi (v1.1, kilitli)
-- ⏳ Aşama 2 — Cross-Cutting Infrastructure (devam ediyor: Bölüm 1 v1.0 ✅, Bölüm 2 v1.0 ✅, Bölüm 3-8 bekliyor)
+- ⏳ Aşama 2 — Cross-Cutting Infrastructure (devam ediyor: Bölüm 1 v1.0 ✅, Bölüm 2 v1.0 ✅, Bölüm 3 başladı [3.1 ✅, 3.2-3.13 sıradaki turlarda], Bölüm 4-8 bekliyor)
 - ⏸️ Aşama 3 — Data Ownership & API Contracts
 - ⏸️ Roadmap — Aşama 2 sonrası
 
