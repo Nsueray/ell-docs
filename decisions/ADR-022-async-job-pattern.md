@@ -87,6 +87,7 @@ Each system implementing this pattern should:
 ## Implementation Notes
 
 - 2026-05-13: Pattern adopted in Leena reactivation module. Commit 094ef99 (backend), migration `005_import_jobs.sql`, frontend polling in `public/reactivation-campaign.html`. Validated on 32k smoke run and 41k production run (Yaprak's Mega Clima Nigeria campaign).
+- 2026-05-13 (afternoon): UI monitoring layer added on top of the async pattern — commits `1b9c87e`..`4e61c35`. Adds an auto-refreshing View Campaigns surface with per-status badges (🟢 Active, 🔵 Awaiting Activation, 🟡 Stalled, ⚪ Completed, 🔒 Closed, 🔴 Test), a SendGrid-side delivery breakdown endpoint (`GET /api/reactivation/campaign/:expoId/stats`), a lightweight worker-state endpoint (`GET .../is-active`), a manual close lifecycle (migration `006_reactivation_closed_at.sql` + `POST .../close` + `POST .../reopen`), and a Past Campaigns compact section. Pattern unchanged at the job-runner level; this layer is purely operational visibility on top of it. Confirms the original "operators need progress + cancel surface" intent from this ADR.
 
 ## Related
 - `migrations/005_import_jobs.sql` — schema
