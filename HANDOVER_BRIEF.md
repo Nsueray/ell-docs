@@ -113,6 +113,10 @@ Aşama 2 bitince başlar. Prerequisite'ler:
 **Self-review checklist (mimari Claude her draft öncesi uygular):**
 - Bölüm 1+2 cross-reference kontrolü (özellikle B5, B10, B19, B21, B22,
   B25, B32 ve C1-C12)
+- Bölüm 1 LEENA legacy migration uyumluluğu — kopyalanmış password_hash
+  + must_change=true state'i her state model değişikliğinde teyit edilir
+- Schema'da invalid kategoriye eklenen state'ler, kanonik dokümanlarda
+  geçerli olarak işaretli mi double-check
 - Schema'larda actor pattern (`*_by + *_by_actor_type` + CHECK) tutarlı mı
 - Pseudocode senaryo simülasyonu (Owner senaryosu, system actor
   senaryosu, edge case)
