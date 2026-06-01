@@ -13,7 +13,9 @@
 ## ⚠️ Önemli Notice — 2026-05-11
 
 Bu repo'da yeni bir **master mimari katmanı** var:
-[/architecture/](../architecture/)
+[archive/](../archive/) (eski `/architecture/` klasörü 2026-06-01'de
+buraya taşındı; konsolide doküman:
+[ELL_MIMARI_v1.0_KONSOLIDE.md](../ELL_MIMARI_v1.0_KONSOLIDE.md))
 
 Aşağıdaki ADR'lar bu yeni master karar ışığında **revize
 edilmesi veya geçersiz kılınması gereken** durumda:
@@ -28,7 +30,7 @@ edilmesi veya geçersiz kılınması gereken** durumda:
   çakışma yok)
 
 Çakışma durumunda **master karar** her zaman geçerlidir:
-[/architecture/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
+[../archive/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
 
 ---
 

@@ -10,7 +10,7 @@
 > LIFFY ayrı bir DB. Cross-DB join yok; köprüler API ile.
 >
 > **Master karar:**
-> [/architecture/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
+> [../archive/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
 >
 > ---
 

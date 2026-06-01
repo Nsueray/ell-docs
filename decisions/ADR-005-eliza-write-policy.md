@@ -9,7 +9,7 @@
 > Yeni "LEENA write policy" Aşama 2'de yazılacak.
 >
 > **Master karar:**
-> [/architecture/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
+> [../archive/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
 > (A3, A17)
 >
 > ---

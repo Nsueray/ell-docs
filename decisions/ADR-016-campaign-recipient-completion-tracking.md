@@ -7,7 +7,7 @@
 > uyumlu. Geçerlidir.
 >
 > **Master karar referansı:**
-> [/architecture/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
+> [../archive/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
 >
 > ---
 

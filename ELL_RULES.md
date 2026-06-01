@@ -23,7 +23,7 @@
 > O zamana kadar **tarihsel referans** olarak görün.
 >
 > **Master karar:**
-> [/architecture/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
+> [archive/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
 >
 > ---
 

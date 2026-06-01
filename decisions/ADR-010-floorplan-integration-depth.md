@@ -16,7 +16,7 @@
 > Aşama 2 paralelinde revize edilecek.
 >
 > **Master karar:**
-> [/architecture/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
+> [../archive/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
 > (Köprü 3, A11, A23)
 >
 > ---
