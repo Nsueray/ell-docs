@@ -1,5 +1,11 @@
 # ELL_RULES.md — Cross-System Rules
 
+> 🔴 **SUPERSEDED (2026-07-20):** Bu belge geçerliliğini yitirdi. Çelişkide
+> `ELL_DURUM_DEFTERI_v2` + `ELL_YOL_HARITASI_v5` + `decisions/ELL_TEK_KAYNAK_KILIT.md`
+> kazanır. Tarihsel referans olarak saklanıyor.
+
+---
+
 > ⚠️ **SUPERSEDED — 2026-05-11**
 >
 > Bu dosya (v5.1, 2026-05-01) requirements gathering

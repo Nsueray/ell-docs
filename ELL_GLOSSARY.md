@@ -1,3 +1,16 @@
+## ★ KAÇ SERVİS / ELIZA NEDİR — (HER ŞEYDEN ÖNCE OKU) ★
+
+> Kanonik tanım. Tekrarlayan karışıklık için en başa kondu. Çelişki hissedersen önce burayı oku. (Kaynak: 2026-06-19 ELIZA-terk kararı + `decisions/ELL_TEK_KAYNAK_KILIT.md`. Bu blok 2026-06-18 tarihli "3 ayrı DB" sürümünün yerine geçer.)
+
+- **2 fiziksel DB:** **LIFFY** (dış halka / satış — lead, quote, pre-sale contact) + **LEENA** (iç halka / operasyon + finans — expo, visitor, floor, contract, payment, commission, agent). Üçüncü bir DB YOK.
+- **ELIZA ayrı bir sistem/DB DEĞİL.** 2026-06-19 kararıyla ayrı sistem olarak terk edildi. ELIZA = **marka adı + LEENA içindeki Finance sekmesi**. "ELIZA DB'si", "ELIZA repo'su" gibi ifadeler tarihsel referanstır, bugünkü mimariyi anlatmaz.
+- **Kullanıcı için TEK ürün:** marka **ELIZA**, tek login, sekmeler Sales/Operations/Finance. Sales LIFFY'ye, Operations + Finance LEENA'ya dayanır.
+- **Contract/payment/commission owner'ı = LEENA Finance.** Eski `eliza_73du` DB'si ve ona bağlı convert çalışması **retired** — canlı mimaride yeri yok.
+- **Tek cross-DB sınır: LIFFY↔LEENA.** Başka cross-DB sınırı yoktur. Geçiş tek yönlüdür: convert = LIFFY→LEENA (quote→contract, pre-sale→customer), LEENA doğrular; ters yönde LEENA→LIFFY güvenli **read-only referans sync** vardır.
+- **Birleşme sorusu kapandı:** "ELIZA ileride LEENA'ya katılır mı" artık açık konu değil — ELIZA ayrı sistem olarak terk edildiği için birleşecek ayrı bir DB kalmadı.
+
+---
+
 # ELL Glossary & Entity Model
 
 > 🔄 **NEEDS UPDATE — 2026-05-11**

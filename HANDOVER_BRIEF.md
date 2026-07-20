@@ -1,13 +1,34 @@
 # ELL Implementation Phase Handover
 
 **Tarih:** 2026-06-01
+**Son güncelleme:** 2026-07-20
 **Statü:** Mimari fazı tamamlandı, implementation fazına geçiş
+
+## 2026-06-19 sonrası kararlar (mimari dokümanların üstünde)
+
+- **ELIZA-terk kararı (2026-06-19):** ELIZA artık ayrı bir sistem/DB
+  değil; **marka + LEENA içindeki Finance sekmesi**. Tek cross-DB
+  sınır **LIFFY↔LEENA**. Eski `eliza_73du` convert çalışması
+  **retired**.
+- **Tek-kaynak ilkesi kilitlendi (2026-06-20):** Her ana veri tipinin
+  tek authoritative owner'ı var; diğer sistem owner'dan otomatik
+  read-only kopya kullanır. Satış öncesi (lead/quote/pre-sale
+  contact) → **LIFFY**; operasyon + finans + tüm referans veri
+  (expo/country/sector/**currency**/exchange-rate/**office**/agent)
+  + ticari kurallar → **LEENA** master. Kanonik detay:
+  `decisions/ELL_TEK_KAYNAK_KILIT.md`.
 
 ## Ana referans dokümanı
 
 **`ELL_MIMARI_v1.0_KONSOLIDE.md`** — Implementation'ın tek source
 of truth'u. Tüm mimari kararlar (sistem topolojisi, identity,
 permissions, auth + session, audit) burada konsolide.
+
+**Çakışma kuralı:** Yaşayan durum için **`ELL_DURUM_DEFTERI_v2`** +
+**`ELL_YOL_HARITASI_v5`** kanoniktir; konsolide mimari dokümanla
+çeliştiklerinde onlar kazanır. Tek-kaynak/ownership sorularında
+`decisions/ELL_TEK_KAYNAK_KILIT.md` kazanır. `ELL_RULES.md`
+superseded'dır.
 
 ## Arşiv
 

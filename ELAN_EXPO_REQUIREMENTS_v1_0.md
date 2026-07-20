@@ -1,6 +1,11 @@
 # Elan Expo — System Requirements
 ## What ELL Must Do (and Do Better Than Zoho)
 
+> **Amendment 2026-07-20:** ELIZA is retired as a separate system/database
+> (2026-06-19 decision); ELIZA survives as brand/Finance-tab label within LEENA.
+> Single-source-of-truth principle locked: see `decisions/ELL_TEK_KAYNAK_KILIT.md`.
+> Where this document references ELIZA as a standalone system, read LEENA Finance.
+
 **Version:** 1.0 (Document complete — all parts filled)
 **Date:** 2026-05-06
 **Status:** In progress — being filled section by section
