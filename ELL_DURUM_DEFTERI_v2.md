@@ -80,7 +80,21 @@
 > (b) convert anında UUID→integer eşleme (köprü kurulur). Ölçüm bunu KANITLAYACAK. Sonraki dilimler:
 > sales_agent doldurma (Faz 3b), audit (Faz 4), transport (LIFFY aktivasyonu). **Test contract id:1
 > canlıda duruyor — demo/temizlikte silinecek** (silinirse SERIAL 2'den devam eder).
+
+> ## ✅ 2026-07-21 — MUTABAKAT PARANTEZİ KAPANDI
 >
+> Ölçüm raporu: `ELL_MUTABAKAT_2026-07-21.md`.
+>
+> **Sonuçlar:** S1 kapandı (012 dosyalandı, 013 schema_migrations + 014 invariants canlıda),
+> S2 kapandı (IP), S6 düzeltildi (4-status), S7 KAPANDI (integer kalır, B3 v1.1 amend),
+> S9 kapandı (takip tablosu canlıda).
+>
+> **Kuyruğa taşınan:** S3 (LIFFY sayı artışı kaynağı belirsiz), S4 (LIFFY yazma endpoint'leri
+> → Convert-1 önkoşulu), S8 (gerçek ATR-100000 E2E testi → Convert-1 kabul kriteri),
+> güvenlik rotasyonu (birleşme paketi).
+>
+> **SIRADAKİ:** Faz 3a — contracts operasyonel kolonlar + payment-create + Finance liste UI.
+
 > ---
 >
 > **Bu nedir:** ELL projesinde yapılan her şeyin, karşılaşılan sorunların ve açık
