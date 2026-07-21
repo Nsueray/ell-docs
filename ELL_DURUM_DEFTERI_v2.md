@@ -98,6 +98,37 @@
 >
 > **SIRADAKİ:** Faz 3a — contracts operasyonel kolonlar + payment-create + Finance liste UI.
 
+> ## ✅ 2026-07-21 — FAZ 3a-1 TAMAM (contracts görünür)
+>
+> **Migration 016 canlıda:** 9 operasyonel kolon (`scan_link`, `stand_design_link`,
+> `catalogue_page`, `stand_type`, `sqm`, `free_sqm`, `sales_group`, `transportation`,
+> `transferred_from_contract_id`) + `contracts_transportation_check` +
+> `contracts_no_self_transfer_check` + self-FK `contracts(id)`. `schema_migrations` **18 kayıt**.
+>
+> **Endpoint'ler canlı:** `GET /api/contracts` (liste, organizer scope, `?expo_id=`/`?status=`),
+> `GET /api/contracts/:id` (detay, 31 alan), `PUT /api/contracts/:id/status` (4 durum arası
+> serbest, geçiş matrisi yok). Commit'ler: `cfeeced`, `8e9baf6`, `040f10e`.
+>
+> **UI canlı:** `public/contract-list.html` + `main-panel-v2.html`'e "Finance" nav bölümü.
+> **Görsel kontrol Suer tarafından GEÇTİ** (liste + nav ekran görüntülü).
+>
+> **Notlar:**
+> 1. `no_self_transfer` yalnız A→A engeller; **A→B→A döngüsü Transfer aksiyonu diliminde
+>    uygulama katmanında** çözülecek.
+> 2. **Route sırası:** ileride `GET /contracts/convert` eklenirse `/:id`'den **ÖNCE**
+>    tanımlanmalı (yoksa `:id='convert'` olarak yakalanır).
+> 3. `CONTRACT_STATUSES` artık kullanılıyor — **S6 "ölü kod" kaydı düştü.**
+> 4. `schema_migrations` 000/001/002 `applied_at` NULL — tarihsel, dokunulmadı.
+> 5. **Komisyon dilimi ölçüm maddesi:** tekil `sales_agent_id` ↔ requirements üçlü modeli
+>    (agent/sr/sd) reconcile edilecek + **LEENA'da `users` tablosu YOK** (kimlik Faz 4).
+> 6. `contracts` id=1 (Acme, sentetik) **S8'e kadar kalır.**
+> 7. Finance nav'ı **Yaprak'a da görünür**, sayfa **rol-kapısız** (Faz 4) — bilinçli kabul;
+>    Suer Yaprak'ı sözlü bilgilendirecek.
+> 8. `contracts` **`updated_at` trigger'sız** — UPDATE'lerde elle `NOW()` (expos deseni).
+>
+> **SIRADAKİ ADAYLAR (3a-2, karar Suer'de):** payment-create + computed paid/balance ·
+> contract detay sayfası · Transfer aksiyonu.
+
 > ---
 >
 > **Bu nedir:** ELL projesinde yapılan her şeyin, karşılaşılan sorunların ve açık
