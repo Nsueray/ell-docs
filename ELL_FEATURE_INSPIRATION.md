@@ -87,6 +87,21 @@
 
 ---
 
+## Source: QEMENT (qement.com, 2026-07-21 incelendi)
+
+**Rakip değil** — organizatörlere SaaS satan yerli ürün. **ELL çekirdeğiyle (iç finans /
+komisyon / quote zinciri) örtüşmüyor; şimdilik aksiyon yok.** Aşağıdakiler yalnız not.
+
+| Fikir | Not |
+|-------|-----|
+| Katılım raporu | Exhibitor performansı = **yenileme satış kozu**. Katılımcıya "geçen yıl şu kadar ziyaretçi/temas aldın" gösterip yenilemeyi kolaylaştırma. |
+| Kayıt → giriş dönüşümü + revisit metriği | Kaç kayıt gerçekten giriş yaptı, kaçı tekrar geldi. LEENA'da visitor + checkin verisi zaten var. |
+| Kayıt linki sahipliği | Kayıt linkine **kanal/satışçı attribution** — hangi link/kanal kaç kayıt getirdi. |
+| İçerik dili ↔ UI dili ayrımı | Arayüz dili ile içerik (fuar/form/e-posta metni) dili ayrı kavramlar; tek "dil" ayarına bağlanmamalı. |
+| İnteraktif harita / wayfinding | Requirements'taki **floor plan işi için** — vakti gelince demo kıyası yapılacak. |
+
+---
+
 ## How to Use This File
 
 1. When planning a new sprint, scan this list for relevant items
