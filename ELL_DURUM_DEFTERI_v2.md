@@ -24,7 +24,7 @@
 > (ROLLBACK) → COMMIT, `\d contracts` doğrulandı. İki yeni tablo, tamamen additive — canlı
 > LEENA operasyonu (visitor/badge/check-in/floor plan) ETKİLENMEDİ. Son migration **011 → 012**.
 > - **`contracts`**: integer SERIAL PK; `expo_id` integer **nullable FK → expos(id)** (aynı-DB
->   GERÇEK FK — 2026-06-19 kararının ödülü somut, ELIZA UUID↔integer çıkmazı YOK); 5-status CHECK
+>   GERÇEK FK — 2026-06-19 kararının ödülü somut, ELIZA UUID↔integer çıkmazı YOK); 4-status (Draft yok) CHECK
 >   (`Active`/`On Hold`/`Transferred`/`Cancelled`, default `Active` — **'Draft' bilinçli DIŞARIDA**:
 >   contract signed quote'tan doğar, doğduğu an Active); para 4 alan (`revenue`/`currency`/
 >   `exchange_rate`/`revenue_eur` — frozen-EUR, bilgi kaybını önler); LIFFY soft-ref'ler UUID
@@ -58,6 +58,19 @@
 > aktivasyonuna ertelendi** — sıradaki iş değil, bekleyen iş. Altındaki açık karar (UUID↔integer
 > eşleme) ve LIFFY ölçümü ihtiyacı geçerliliğini koruyor, sadece zamanlaması LIFFY aktivasyonuna
 > bağlandı. (012 + convert endpoint durumu değişmedi: canlıda.)
+>
+> **2026-07-21 mutabakat ölçümü sonrası eklenen notlar** (kanıt:
+> `ELL_MUTABAKAT_2026-07-21.md`):
+>
+> - **S7 AÇIK KARAR:** `sales_agents` canlıda integer SERIAL (LEENA konvansiyonu), locked B3
+>   UUID+organization_id diyor (ELIZA Slice 1 kökenli). Faz 3b öncesi çözülecek. `user_id`
+>   UNIQUE her durumda eklenecek. → Mimari Claude'a danışılacak; bu karar verilene kadar
+>   `sales_agents` şemasına dokunulmayacak.
+> - **Convert-1 kabul kriteri:** gerçek ATR-100000 payload'ıyla uçtan uca convert (bugüne
+>   kadarki tek test sentetik veriydi — LEENA contract id=1'in `source_quote_id`'si
+>   `1111...1111`, gerçek LIFFY quote'u değil).
+> - **Convert-1 önkoşulu:** LIFFY'nin expo/office/exchange-rate yazma endpoint'leri
+>   kapatılacak/read-only'ye çevrilecek (tek-kaynak kilidi gereği; kod henüz uyarlanmadı).
 >
 > **SIRADAKİ (2026-06-20 — bkz. üstteki amendment):** Convert-1 (expo bağlama) — açık karar: LIFFY quote expo'yu nasıl seçiyor (UUID),
 > LEENA canonical expo (integer) ile nasıl eşleşecek? **LIFFY ölçümü gerekiyor** (2026-06-20 başladı).
