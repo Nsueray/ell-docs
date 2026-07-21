@@ -13,6 +13,53 @@
 
 ---
 
+## 📌 AMENDMENT — B3 v1.1 (2026-07-21)
+
+**Statü:** ✅ Kilitli — **Mimari hüküm + Sentez onayı**
+**Tarih:** 2026-07-21
+**Kapsam:** Yalnız **B3** (`sales_agents.user_id` ve fiziksel tip). Diğer kararlar (B1-B2,
+B4-B20) v1.0'daki haliyle değişmeden geçerlidir.
+**Tetikleyen:** `ELL_MUTABAKAT_2026-07-21.md` S7 — canlı LEENA `sales_agents` tablosunun
+integer SERIAL PK ile kurulmuş olduğu, v1.0'ın varsaydığı UUID hedefiyle çeliştiği ölçümle
+tespit edildi.
+
+### Hüküm
+
+**`sales_agents` integer KALIR. UUID'ye yükseltme YOK.**
+
+Gerekçe: v1.0'daki UUID varsayımı, tablonun ELIZA'da (ayrı DB, UUID konvansiyonu) yaşayacağı
+döneme aitti. 2026-06-19 ELIZA-terk kararıyla tablo LEENA'ya taşındı; LEENA'nın native tipi
+integer SERIAL'dır ve aynı-DB gerçek FK (`contracts.sales_agent_id → sales_agents.id`) bu tiple
+kurulmuştur. Tip zorlaması, kazanılmış olan FK bütünlüğünü bozar ve karşılığında bugün hiçbir
+şey getirmez.
+
+### Kilitli kalan invariant'lar (tipten bağımsız)
+
+Aşağıdakiler v1.0'dan **değişmeden** devralınır ve fiziksel tip ne olursa olsun geçerlidir:
+
+1. **`agent_type` üçlüsü:** `internal` / `external_agency` / `external_freelance`.
+2. **`user_id` nullable + UNIQUE** — bir user en fazla bir agent olabilir.
+3. **CHECK — `agent_type` ↔ `user_id` tutarlılığı:** `internal` → `user_id` NOT NULL;
+   `external_agency` / `external_freelance` → `user_id` NULL.
+
+### Fiziksel tip kuralı
+
+> **Fiziksel tip, tabloyu barındıran sistemin native tipini izler (LEENA döneminde integer
+> SERIAL); nihai tip Faz 4 kimlik birleşmesine tabidir.**
+
+Bu, kararın ertelenmesi değil **kapatılmasıdır**: bugünkü tip integer'dır ve öyle kalır.
+Faz 4'te kimlik tabloları birleştiğinde tip sorusu o birleşmenin kendi kararı olarak ele
+alınacak, ayrı bir açık madde olarak taşınmayacaktır.
+
+### Uygulama
+
+Invariant'lar `backend/leena-v401-backend/migrations/014_sales_agents_invariants.sql` ile
+dosyalanmıştır (`user_id` UNIQUE + `agent_type`↔`user_id` CHECK). v1.0 metnindeki B3 satırı
+(§1.10) semantik olarak geçerlidir; yalnızca fiziksel tip beklentisi bu amendment ile
+netleştirilmiştir.
+
+---
+
 ## 1.0 Bu bölümün amacı
 
 Aşama 1 A28'de sales attribution üç kategori olarak çözüldü: sales rep (system user), sales agent (system user değil), Project department/Elan Expo (komisyonsuz). Aşama 1 ayrıca data entry contractor'ları "system user değil, attribution için var" olarak belirledi (D41 + requirements 3.2).

@@ -62,10 +62,12 @@
 > **2026-07-21 mutabakat ölçümü sonrası eklenen notlar** (kanıt:
 > `ELL_MUTABAKAT_2026-07-21.md`):
 >
-> - **S7 AÇIK KARAR:** `sales_agents` canlıda integer SERIAL (LEENA konvansiyonu), locked B3
->   UUID+organization_id diyor (ELIZA Slice 1 kökenli). Faz 3b öncesi çözülecek. `user_id`
->   UNIQUE her durumda eklenecek. → Mimari Claude'a danışılacak; bu karar verilene kadar
->   `sales_agents` şemasına dokunulmayacak.
+> - **S7 KAPANDI (2026-07-21):** integer kalır, B3 v1.1 amend edildi, invariant'lar 014 ile
+>   dosyalandı. Faz 4 geldiğinde tip kararı kuyruktan düşecek.
+>   *(Hüküm: Mimari + Sentez onaylı, kilitli. Fiziksel tip barındıran sistemin native tipini
+>   izler — LEENA döneminde integer SERIAL. Kilitli semantik invariant'lar: agent_type üçlüsü;
+>   `user_id` nullable + UNIQUE; CHECK internal→`user_id` NOT NULL, external→NULL; bir user en
+>   fazla bir agent. Migration: `014_sales_agents_invariants.sql`.)*
 > - **Convert-1 kabul kriteri:** gerçek ATR-100000 payload'ıyla uçtan uca convert (bugüne
 >   kadarki tek test sentetik veriydi — LEENA contract id=1'in `source_quote_id`'si
 >   `1111...1111`, gerçek LIFFY quote'u değil).
