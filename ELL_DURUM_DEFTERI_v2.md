@@ -93,6 +93,9 @@
 > → Convert-1 önkoşulu), S8 (gerçek ATR-100000 E2E testi → Convert-1 kabul kriteri),
 > güvenlik rotasyonu (birleşme paketi).
 >
+> **015 normalize canlıda; takip tablosu tam dosya adlarıyla, 000a dahil, 17 kayıt.
+> Faz 3a migration'ları 016'dan başlar.**
+>
 > **SIRADAKİ:** Faz 3a — contracts operasyonel kolonlar + payment-create + Finance liste UI.
 
 > ---
