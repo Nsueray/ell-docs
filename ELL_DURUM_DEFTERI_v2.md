@@ -225,6 +225,20 @@ oturumda toplanacak. (Detaylı gerekçeler ilgili faz bölümlerinde.)
 
 ---
 
+## ★ UI/TASARIM STRATEJİSİ (2026-07-21, Suer kararı)
+
+Mevcut LEENA/ELIZA arayüzleri **GEÇİCİ İSKELEDİR** — nihai ürün bu görünüm ve kullanımla
+**YAYINLANMAYACAK.** Teknik/backend inşa bittikten sonra ayrı ve ciddi bir UI/UX + tasarım
+fazı yapılacak (Claude Design'da ilk denemeler mevcut). Sonuçlar:
+
+1. **İnşa dilimlerinde UI minimum iskelettir** — liste/form çalışsın yeter, cila ve görsel
+   iyileştirme **YAPILMAZ**, buna harcanan efor israftır.
+2. **UI eleştirisi inşa dilimi konusu değildir.**
+3. **Backend/API'ler UI-bağımsız tasarlanır** ki tasarım fazında arayüz komple değişebilsin.
+4. **Tasarım fazı roadmap'e ayrı faz olarak girecek** (yeri birleşme sonrası netleşir).
+
+---
+
 ## ★ EXPO OPERATIONS MODÜLÜ — TAMAMLANDI + CANLIDA ✅ (2026-06-18, smoke test geçti)
 
 > **İNŞA İLERLEME:**
