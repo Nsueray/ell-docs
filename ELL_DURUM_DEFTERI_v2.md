@@ -53,7 +53,13 @@
 > EDİLMEYECEK**. Sadece DERSLERİ referans alındı (alan eşleme, idempotency, atomik tx, audit/028,
 > 8 test senaryosu) — ve bu derslerle LEENA-native sıfırdan yazıldı (yukarıda). 3-DB yönünün ürünü.
 >
-> **SIRADAKİ:** Convert-1 (expo bağlama) — açık karar: LIFFY quote expo'yu nasıl seçiyor (UUID),
+> **2026-07-21 amendment — SIRADAKİ değişti:** Aşağıdaki "SIRADAKİ" maddesi artık geçerli
+> değil. **Convert-1 (expo bağlama + transport + review-queue UI) bilinçli olarak LIFFY
+> aktivasyonuna ertelendi** — sıradaki iş değil, bekleyen iş. Altındaki açık karar (UUID↔integer
+> eşleme) ve LIFFY ölçümü ihtiyacı geçerliliğini koruyor, sadece zamanlaması LIFFY aktivasyonuna
+> bağlandı. (012 + convert endpoint durumu değişmedi: canlıda.)
+>
+> **SIRADAKİ (2026-06-20 — bkz. üstteki amendment):** Convert-1 (expo bağlama) — açık karar: LIFFY quote expo'yu nasıl seçiyor (UUID),
 > LEENA canonical expo (integer) ile nasıl eşleşecek? **LIFFY ölçümü gerekiyor** (2026-06-20 başladı).
 > İki yol: (a) quote oluşturulurken LEENA expo_id zaten seçili → payload doğrudan taşır (köprü yok);
 > (b) convert anında UUID→integer eşleme (köprü kurulur). Ölçüm bunu KANITLAYACAK. Sonraki dilimler:
