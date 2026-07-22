@@ -129,6 +129,62 @@
 > **SIRADAKİ ADAYLAR (3a-2, karar Suer'de):** payment-create + computed paid/balance ·
 > contract detay sayfası · Transfer aksiyonu.
 
+> ## ✅ 2026-07-22 — FAZ 3a-2 TAMAM (ödeme girişi + hesaplanan paid/balance)
+>
+> **Migration 017 canlıda:** `payments` tablosu, **12 kolon**. Dry-run → ROLLBACK → COMMIT
+> ritüeliyle uygulandı. `schema_migrations` kaydı **UZANTISIZ** (`017_payments`) — 015
+> normalizasyonuna uyum. *(Ölçüm 2026-07-22: 12 kolon, kayıt `017_payments`
+> `2026-07-22 08:17:19+00`, tabloda toplam 19 kayıt.)*
+>
+> **Endpoint'ler canlı:** `POST /api/contracts/:id/payments` + `GET /api/contracts/:id/payments`.
+> `GET /api/contracts` (liste) ve `GET /api/contracts/:id` (detay) artık `paid_eur` +
+> `balance_eur` döndürüyor (LEFT JOIN LATERAL, D2 — hiçbir yere yazılmaz). **37/37 test geçti.**
+> Commit'ler: `270f3e8`, `c1c3543`, `d3d1989`.
+>
+> **UI canlı:** `contract-list.html` — Paid/Balance kolonları + satır altına açılan inline
+> add-payment formu + currency select (EUR/USD/TRY/MAD/NGN/KES, default EUR + rate kilidi).
+> Commit'ler: `f97c893`, `462de94`. Submit-sonrası reset hatası ("EUR ama kilit açık" hâli)
+> yakalanıp düzeltildi.
+>
+> **GÖRSEL ONAY ALINDI (2026-07-22):** canlıda ilk ödeme girildi — contract id=1'e
+> **100 USD × 0.9 → 90.00 EUR**; ekranda Paid `90.00 EUR` / Balance `13,710.00 EUR`
+> doğrulandı. Server hata metni toast'ta aynen görünüyor (client-side doğrulama bilinçli yok).
+>
+> **Hesaplama:** `amount_eur = round2(amount × exchange_rate)` — **server hesaplar**,
+> client'tan geleni yok sayar. `currency = EUR` ise `exchange_rate` 1.0 zorunlu (aksi hâlde 400).
+>
+> **KİLİTLİ KARARLAR (3a-2):**
+> 1. `payment_method` CHECK listesi: `bank_transfer` / `cash` / `cheque` / `credit_card` / `other`.
+> 2. `account_id` + `payer` bu dilimde **YOK** → **ledger fazında additive** eklenecek.
+> 3. **`payments` immutable event:** `updated_at` yok, UPDATE/DELETE endpoint yok — düzeltme
+>    akışı ledger fazının konusu.
+> 4. **Contract status'u ödeme girişini KISITLAMAZ** — `Cancelled`'a da ödeme girilebilir
+>    (bilinçli: geçmiş tahsilat her hâlükârda kaydedilebilmeli).
+> 5. **Currency whitelist yalnız UI'da** (select: EUR/USD/TRY/MAD/NGN/KES — İstanbul merkez +
+>    Fas/Nijerya/Kenya ofis birimleri). Server 3-harf format kontrolüyle kalır; ledger fazında
+>    referans tabloya bağlanabilir.
+> 6. **EUR dışına geçişte `exchange_rate` alanı BOŞALTILIR** (1 bırakılmaz): kuru güncellemeyi
+>    unutmanın sessizce yanlış `amount_eur` üretmesi yerine görünür 400 hatası — bilinçli UX kararı.
+> 7. **MODEL NOTU:** `payments` = Revenue record'un (req `:1002`) contract'a demirli minimal
+>    öncüsü; ledger fazında evrim/bağlanma **iki yol da açık**.
+>
+> **FAZ 4 / İLERİYE NOTLAR:**
+> 1. `payments.created_by` **NULL** yazılıyor (LEENA JWT'sinde user id yok) — `converted_by`
+>    ile birlikte **Faz 4 identity işi**.
+> 2. **Currency normalizasyon tutarsızlığı:** `payments` normalize ediyor (uppercase),
+>    `convert` **etmiyor** → Faz 4'te convert'e de eklenecek (`contracts.js:337-339` yorumu).
+> 3. `payment_date` **TZ davranışı** `contract_date` ile aynı (DATE → yerel TZ'li JS Date):
+>    farklı TZ'de gün kayması olası — bilinen davranış, mevcut desen.
+> 4. `schema_migrations`: `012_finance_foundation` kaydının `applied_at`'i **boş** (013 öncesi
+>    geriye dönük kayıt) — tarihsel not.
+>
+> **CANLI VERİ NOTU:** `contracts` id=1 (Acme, sentetik) üzerinde **canlı test ödemesi var**
+> (id=1: 100 USD × 0.9 = 90.00 EUR, `bank_transfer`, 2026-07-22). **S8 E2E'ye kadar contract'la
+> birlikte kalır — SİLME.** *(2026-07-22 ölçümünde tabloda tek ödeme kaydı görüldü.)*
+>
+> **SIRADAKİ ADAYLAR (3a-3, karar Suer'de):** contract detay sayfası · Transfer aksiyonu ·
+> payment schedule.
+
 > ---
 >
 > **Bu nedir:** ELL projesinde yapılan her şeyin, karşılaşılan sorunların ve açık
@@ -151,12 +207,14 @@ notu SUPERSEDED — aşağıdaki CONVERT GATE bölümü yeni karara göre düzel
 
 ## NEREDE KALDIK — TEK CÜMLE
 
-**LEENA finans çekirdeği CANLIDA (2026-06-20):** Migration 012 (contracts + sales_agents) +
-convert endpoint (Slice 2) uçtan uca çalışıyor, 4 senaryo test geçti, expo_id gerçek FK olarak
-hazır (şimdilik NULL). **Sıradaki tek odak: Convert-1 (expo bağlama)** — LIFFY ölçümü başladı
-(quote expo'yu nasıl seçiyor → UUID↔integer eşleme yolu kanıtlanacak). Sonraki dilimler sırada:
-sales_agent doldurma (Faz 3b), audit/kimlik (Faz 4), transport (LIFFY aktivasyonu). Birleşme
-bitene kadar sistemleri kimse kullanmıyor (tek kullanıcı Suer).
+**Ticari çekirdek zinciri canlıda (2026-07-22):** quote → convert → contract → payment →
+hesaplanan paid/balance. **Faz 3a-1 + 3a-2 tamam.** **Sıradaki: 3a-3 seçimi** (detay sayfası /
+Transfer / payment schedule). **Convert-1 LIFFY aktivasyonuna ertelendi.** Sonraki dilimler
+sırada: sales_agent doldurma (Faz 3b), audit/kimlik (Faz 4), transport (LIFFY aktivasyonu).
+Birleşme bitene kadar sistemleri kimse kullanmıyor (tek kullanıcı Suer).
+
+*(Önceki hâli — 2026-06-20, "Sıradaki tek odak: Convert-1" — 3a-1/3a-2 tamamlandığı ve
+Convert-1 ertelendiği için geçersiz; blok kayıtları yukarıda duruyor.)*
 
 *(Aşağıdaki tarihsel notlar — "Convert gate tasarımı kilitlendi", eski Faz 2 ölçümü — bu oturumda
 İNŞAYA döküldü ve canlılaştı; tasarım kayıtları referans olarak korunuyor.)*
