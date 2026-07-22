@@ -185,6 +185,76 @@
 > **SIRADAKİ ADAYLAR (3a-3, karar Suer'de):** contract detay sayfası · Transfer aksiyonu ·
 > payment schedule.
 
+> ## ✅ 2026-07-22 — FAZ 3a-3 TAMAM (contract detay sayfası)
+>
+> **Migration GEREKMEDİ** — sıradaki numara **018** olarak duruyor (son kayıt `017_payments`).
+> **Backend'e dokunulmadı:** ölçüm, `GET /api/contracts/:id`'nin zaten `c.*` (016'nın 9 kolonu
+> dahil **33 alan**) + `expo_name` + `sales_agent_name` + `paid_eur`/`balance_eur` döndürdüğünü
+> gösterdi — yeni endpoint'e gerek kalmadı.
+>
+> **`public/contract-detail.html` (YENİ) canlıda:** künye (status **PUT ile değiştirilebilir**) ·
+> para özeti · 016 operasyonel alanları (link alanları **yalnız `http(s)` ise tıklanabilir** —
+> `javascript:` koruması) · ödeme listesi · liste sayfasıyla **aynı** inline add-payment formu.
+> İki fetch: `GET /:id` + `GET /:id/payments`.
+>
+> **`contract-list.html`:** satır tıklaması + **AF No linki** ile detaya geçiş
+> (`contract-detail.html?id=N`, `expo-list.html:276` `openExpo` deseni). **Tıklama muafiyeti tek
+> yerde hedef kontrolüyle** — buton/select/form/link satır navigasyonunu tetiklemez.
+>
+> **GÖRSEL ONAY ALINDI (2026-07-22):** satır→detay geçişi, tıklama muafiyeti, detaydan status
+> değişiminin listeye yansıması, detaydan ödeme girişinin tablo + para özetini güncellemesi —
+> hepsi ekranda doğrulandı.
+>
+> **Commit:** `ef0ff6f` (detay sayfası + navigasyon).
+>
+> **FAZ 4 / İLERİYE NOTLAR (3a-3 eki):**
+> 1. `paid_eur`/`balance_eur` **iki endpoint'te iki farklı yolla** üretiliyor: detayda SQL
+>    LATERAL (`contracts.js:196-206`), payments'ta JS aritmetiği (`:418-428`). Değer aynı;
+>    **Faz 4 temizliğinde tek yönteme indirgenebilir.**
+> 2. `transferred_from_contract_id` detayda **ham id** gösteriliyor (`af_number` join'i yok) —
+>    Transfer dilimi geldiğinde join'lenecek.
+>
+> **SIRADAKİ ADAYLAR (3a-4, karar Suer'de):** ödeme düzeltme/reversal (**#1, ihtiyaç
+> doğrulandı**) · Transfer aksiyonu · payment schedule.
+
+> ## ⚠️ CANLI TEST VERİSİ — contract id=1 (Acme, sentetik)
+>
+> *(2026-07-22 ölçümü, `claude_readonly`. Bu blok 3a-2'deki "tek ödeme kaydı" notunun yerine geçer.)*
+>
+> `contracts` id=1 üzerinde **2 ödeme kaydı** var:
+>
+> | id | tutar | kur | EUR | yöntem | tarih | notes |
+> |---|---|---|---|---|---|---|
+> | 1 | 100.00 USD | 0.90000000 | 90.00 | `bank_transfer` | 2026-07-22 | `test` |
+> | 2 | 500.00 TRY | 51.00000000 | **25.500,00** | `bank_transfer` | 2026-07-22 | — |
+>
+> **paid_eur = 25.590,00 · balance_eur = −11.790,00** (revenue_eur 13.800,00).
+>
+> **id=2 BİLEREK BIRAKILAN HATALI KAYIT:** kur **ters yönde** girildi (TRY→EUR için 51 yerine
+> ~0,02 olmalıydı). Balance eksiye düştü ve **hesap zinciri negatifi doğru gösterdi** — yani
+> hata veri girişinde, hesaplamada değil. Düzeltme akışı gelince (3a-4 adayı) **test verisi
+> olarak kullanılacak**. **S8 E2E'ye kadar SİLİNMEZ; S8 öncesi temizlenir.**
+>
+> ⚠️ **Kayıt notu:** oturumda "3 ödeme" olarak aktarılmıştı; canlı ölçümde **2 kayıt** çıktı
+> (3a-2 onayındaki ödeme ile 3a-3 onayındaki ödeme aynı kayıt — id=1, `notes='test'`).
+> Yukarıdaki tablo ölçülen gerçektir.
+
+> ## ★ 3a-4 ADAY LİSTESİ (2026-07-22, güncellendi)
+>
+> **#1 — ÖDEME DÜZELTME AKIŞI.** İhtiyaç **ilk gerçek kullanımda doğrulandı** (hatalı kur
+> girişi, yukarıdaki id=2). Kilitli **"payments immutable event"** kararı **KORUNUR**: çözüm
+> sessiz UPDATE/DELETE **değil**, **REVERSAL deseni** — ters kayıt + yeniden giriş
+> (req `:1525` "açık edit + audit" ilkesiyle uyumlu). Gerektirecekleri:
+> - `amount > 0` CHECK revizyonu (**migration 018 adayı** — ters kayıt negatif tutar taşıyacaksa)
+> - POST'ta **reversal referansı** (hangi ödemeyi tersliyor)
+> - UI'da **Reverse aksiyonu**
+>
+> **Diğer adaylar:** Transfer aksiyonu · payment schedule.
+>
+> **Ucuz iyileştirme adayı:** add-payment formunda `exchange_rate` alanına **yön ipucu**
+> (örn. *"rate to EUR — 1 TRY = 0.02 EUR gibi"*) — ters kur girişini azaltır; bir sonraki UI
+> dokunuşunda yapılır.
+
 > ---
 >
 > **Bu nedir:** ELL projesinde yapılan her şeyin, karşılaşılan sorunların ve açık
@@ -208,8 +278,9 @@ notu SUPERSEDED — aşağıdaki CONVERT GATE bölümü yeni karara göre düzel
 ## NEREDE KALDIK — TEK CÜMLE
 
 **Ticari çekirdek zinciri canlıda (2026-07-22):** quote → convert → contract → payment →
-hesaplanan paid/balance. **Faz 3a-1 + 3a-2 tamam.** **Sıradaki: 3a-3 seçimi** (detay sayfası /
-Transfer / payment schedule). **Convert-1 LIFFY aktivasyonuna ertelendi.** Sonraki dilimler
+hesaplanan paid/balance. **Faz 3a-1 + 3a-2 + 3a-3 tamam** (liste + detay sayfası canlıda).
+**Sıradaki: 3a-4 seçimi** (ödeme düzeltme/reversal — ihtiyaç doğrulandı / Transfer /
+payment schedule). **Convert-1 LIFFY aktivasyonuna ertelendi.** Sonraki dilimler
 sırada: sales_agent doldurma (Faz 3b), audit/kimlik (Faz 4), transport (LIFFY aktivasyonu).
 Birleşme bitene kadar sistemleri kimse kullanmıyor (tek kullanıcı Suer).
 
