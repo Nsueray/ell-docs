@@ -217,43 +217,90 @@
 > **SIRADAKİ ADAYLAR (3a-4, karar Suer'de):** ödeme düzeltme/reversal (**#1, ihtiyaç
 > doğrulandı**) · Transfer aksiyonu · payment schedule.
 
+> ## ✅ 2026-07-22 — FAZ 3a-4 TAMAM (ödeme düzeltme / reversal)
+>
+> **Migration 018 canlıda** (`018_payment_reversal`, dry-run → ROLLBACK → COMMIT ritüeliyle;
+> kayıt **uzantısız**, `2026-07-22 10:52:45+00`):
+> - `reverses_payment_id` integer **self-FK** `payments(id)`
+> - `uq_payments_reverses_payment_id` **partial UNIQUE** (027 deseni — çifte-reversal engeli
+>   DB seviyesinde, race-proof)
+> - `payments_amount_check` **revizyonu**: normal kayıt `reverses NULL + amount > 0`;
+>   reversal `reverses NOT NULL + amount < 0`. **Normal kayıt kuralı değişmedi** → mevcut POST
+>   davranışı bozulmadı.
+>
+> **`POST /api/contracts/:id/payments/:paymentId/reverse` canlıda.** **32/32 backend + 10/10 UI
+> testi** geçti. Hata yolları: **404** (contract / ödeme yok, başka contract'ın ödemesi) ·
+> **400** (reversal-of-reversal) · **409** (çifte reversal — garanti partial UNIQUE'ten,
+> constraint-map üzerinden).
+>
+> **`contract-detail.html`:** Reverse aksiyonu (native `confirm`) + **Reversed** /
+> **Reversal of #N** rozetleri. `contract-list.html`'e **dokunulmadı** (Reverse yalnız detayda).
+>
+> **E2E KABUL GEÇTİ (2026-07-22)** — Suer senaryodan geniş test etti:
+> - Her iki orijinal ödeme de terslendi (**doğru girilmiş USD dahil** → reversal genel çalışıyor,
+>   yalnız hatalı kayda özgü değil).
+> - **Tam-sıfır ara durum ekranda doğrulandı:** Paid `0.00` / Balance `13.800,00`.
+> - Sonra doğru kurla `500 TRY × 0.0196` girildi → final **Paid 9.80 / Balance 13.790,20**,
+>   detay **ve** listede doğrulandı.
+> - İşaret çevrimi **kuruşu kuruşuna** (−90.00 / −25.500,00); rozet ve buton görünürlükleri doğru.
+>
+> **Commit'ler:** `41d45d7` (migration 018) + `c180295` (endpoint + UI).
+>
+> **KİLİTLİ KARARLAR (3a-4):**
+> 1. **Reversal = storno.** Orijinal satır **immutable**; ters kayıt `currency` / `exchange_rate` /
+>    `payment_method` / `amount_eur`'u **AYNEN kopyalar**, işaret çevrimi **SQL'de**
+>    (`INSERT..SELECT`, `-amount` / `-amount_eur`). **`round2` çağrılmaz** — negatif yuvarlama
+>    asimetrisi (`round2(-x) ≠ -round2(x)`) riski böylece hiç doğmaz.
+> 2. `payment_date` = **reversal günü** (orijinalin tarihi değil) — "açık düzeltme + audit"
+>    (req `:1525`).
+> 3. `notes`'u **server yazar**: `Reversal of payment #N (X.XX CUR)`; client body'si yok sayılır.
+> 4. **Reversal'ın reversal'ı yasak** → uygulama katmanında **400**. (DB CHECK başka satıra
+>    bakamaz; trigger over-engineering olurdu.)
+> 5. **Çifte-reversal garantisi DB'de** (partial UNIQUE → 409), uygulama katmanında değil.
+> 6. **paid/balance koduna dokunulmadı** — SUM negatifi kendiliğinden netler (D2). Tam-sıfır
+>    durumda `paid_eur` **`0.00`** döner (COALESCE), `—` değil.
+> 7. **Edit/Delete endpoint'i HÂLÂ YOK** — immutability korundu.
+> 8. **Reverse aksiyonu yalnız detay sayfasında** (listede yok).
+>
+> **SIRADAKİ ADAYLAR (3a-5, karar Suer'de):** Transfer aksiyonu · payment schedule.
+
 > ## ⚠️ CANLI TEST VERİSİ — contract id=1 (Acme, sentetik)
 >
-> *(2026-07-22 ölçümü, `claude_readonly`. Bu blok 3a-2'deki "tek ödeme kaydı" notunun yerine geçer.)*
+> *(3a-4 E2E sonrası, 2026-07-22 ölçümü, `claude_readonly`. Bu blok önceki "2 ödeme kaydı"
+> envanterinin yerine geçer.)*
 >
-> `contracts` id=1 üzerinde **2 ödeme kaydı** var:
+> `contracts` id=1 üzerinde **5 ödeme kaydı** var:
 >
-> | id | tutar | kur | EUR | yöntem | tarih | notes |
-> |---|---|---|---|---|---|---|
-> | 1 | 100.00 USD | 0.90000000 | 90.00 | `bank_transfer` | 2026-07-22 | `test` |
-> | 2 | 500.00 TRY | 51.00000000 | **25.500,00** | `bank_transfer` | 2026-07-22 | — |
+> | id | tutar | kur | EUR | tarih | reverses | notes | durum |
+> |---|---|---|---|---|---|---|---|
+> | 1 | 100.00 USD | 0.90000000 | 90.00 | 2026-07-22 | — | `test` | **TERSLENDİ** (#3 ile) |
+> | 2 | 500.00 TRY | 51.00000000 | 25.500,00 | 2026-07-22 | — | — | **TERSLENDİ** (#4 ile), hatalı kur |
+> | 3 | −100.00 USD | 0.90000000 | −90.00 | 2026-07-22 | **1** | `Reversal of payment #1 (100.00 USD)` | reversal |
+> | 4 | −500.00 TRY | 51.00000000 | −25.500,00 | 2026-07-22 | **2** | `Reversal of payment #2 (500.00 TRY)` | reversal |
+> | 5 | 500.00 TRY | **0.01960000** | 9.80 | 2026-07-22 | — | — | geçerli (doğru kur) |
 >
-> **paid_eur = 25.590,00 · balance_eur = −11.790,00** (revenue_eur 13.800,00).
+> **paid_eur = 9,80 · balance_eur = 13.790,20** (revenue_eur 13.800,00). Tüm yöntemler
+> `bank_transfer`. *(id sıralaması ölçümle doğrulandı — varsayım değil.)*
 >
-> **id=2 BİLEREK BIRAKILAN HATALI KAYIT:** kur **ters yönde** girildi (TRY→EUR için 51 yerine
-> ~0,02 olmalıydı). Balance eksiye düştü ve **hesap zinciri negatifi doğru gösterdi** — yani
-> hata veri girişinde, hesaplamada değil. Düzeltme akışı gelince (3a-4 adayı) **test verisi
-> olarak kullanılacak**. **S8 E2E'ye kadar SİLİNMEZ; S8 öncesi temizlenir.**
+> **id=2 + id=4 = TERSLENMİŞ ÇİFT — reversal deseninin canlı örneği.** id=2'de kur ters yönde
+> girilmişti (TRY→EUR için 51 yerine ~0,0196); hata **veri girişinde, hesaplamada değil** —
+> balance eksiye düştü ve hesap zinciri negatifi doğru gösterdi. 3a-4'te storno ile kapatıldı,
+> doğru kayıt id=5 olarak girildi. **id=1 + id=3** de aynı desenin doğru-kayıt üzerinde
+> çalıştığının kanıtı.
 >
-> ⚠️ **Kayıt notu:** oturumda "3 ödeme" olarak aktarılmıştı; canlı ölçümde **2 kayıt** çıktı
-> (3a-2 onayındaki ödeme ile 3a-3 onayındaki ödeme aynı kayıt — id=1, `notes='test'`).
-> Yukarıdaki tablo ölçülen gerçektir.
+> **S8 E2E'ye kadar SİLİNMEZ; S8 öncesi temizlenir.**
 
-> ## ★ 3a-4 ADAY LİSTESİ (2026-07-22, güncellendi)
+> ## ★ 3a-5 ADAY LİSTESİ (2026-07-22, güncellendi)
 >
-> **#1 — ÖDEME DÜZELTME AKIŞI.** İhtiyaç **ilk gerçek kullanımda doğrulandı** (hatalı kur
-> girişi, yukarıdaki id=2). Kilitli **"payments immutable event"** kararı **KORUNUR**: çözüm
-> sessiz UPDATE/DELETE **değil**, **REVERSAL deseni** — ters kayıt + yeniden giriş
-> (req `:1525` "açık edit + audit" ilkesiyle uyumlu). Gerektirecekleri:
-> - `amount > 0` CHECK revizyonu (**migration 018 adayı** — ters kayıt negatif tutar taşıyacaksa)
-> - POST'ta **reversal referansı** (hangi ödemeyi tersliyor)
-> - UI'da **Reverse aksiyonu**
+> ~~**#1 — ÖDEME DÜZELTME AKIŞI**~~ → **TAMAMLANDI (3a-4).** Migration 018 + reverse endpoint
+> + detay UI canlıda; E2E kabul geçti. Listeden düştü.
 >
-> **Diğer adaylar:** Transfer aksiyonu · payment schedule.
+> **Kalan adaylar:** Transfer aksiyonu · payment schedule.
 >
-> **Ucuz iyileştirme adayı:** add-payment formunda `exchange_rate` alanına **yön ipucu**
-> (örn. *"rate to EUR — 1 TRY = 0.02 EUR gibi"*) — ters kur girişini azaltır; bir sonraki UI
-> dokunuşunda yapılır.
+> **Ucuz iyileştirme kuyruğu — kur-yönü ipucu (DURUYOR, ihtiyaç 2. kez görüldü):**
+> add-payment formunda `exchange_rate` alanına **yön ipucu** (örn. *"rate to EUR — 1 TRY =
+> 0.0196 EUR gibi"*). 3a-4 E2E'sinde Suer doğru kuru (`0.0196`) **yeniden elle** girmek zorunda
+> kaldı — ipucu olsa ilk seferde de doğru girilebilirdi. Bir sonraki UI dokunuşunda yapılır.
 
 > ---
 >
@@ -278,9 +325,9 @@ notu SUPERSEDED — aşağıdaki CONVERT GATE bölümü yeni karara göre düzel
 ## NEREDE KALDIK — TEK CÜMLE
 
 **Ticari çekirdek zinciri canlıda (2026-07-22):** quote → convert → contract → payment →
-hesaplanan paid/balance. **Faz 3a-1 + 3a-2 + 3a-3 tamam** (liste + detay sayfası canlıda).
-**Sıradaki: 3a-4 seçimi** (ödeme düzeltme/reversal — ihtiyaç doğrulandı / Transfer /
-payment schedule). **Convert-1 LIFFY aktivasyonuna ertelendi.** Sonraki dilimler
+hesaplanan paid/balance. **Faz 3a-1 → 3a-4 tamam** (liste + detay sayfası + ödeme girişi +
+reversal/storno canlıda; düzeltme akışı E2E kabul aldı). **Sıradaki: 3a-5 seçimi**
+(Transfer aksiyonu / payment schedule). **Convert-1 LIFFY aktivasyonuna ertelendi.** Sonraki dilimler
 sırada: sales_agent doldurma (Faz 3b), audit/kimlik (Faz 4), transport (LIFFY aktivasyonu).
 Birleşme bitene kadar sistemleri kimse kullanmıyor (tek kullanıcı Suer).
 
