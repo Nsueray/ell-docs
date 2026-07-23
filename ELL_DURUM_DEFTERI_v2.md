@@ -504,6 +504,13 @@ fazı yapılacak (Claude Design'da ilk denemeler mevcut). Sonuçlar:
 3. **Backend/API'ler UI-bağımsız tasarlanır** ki tasarım fazında arayüz komple değişebilsin.
 4. **Tasarım fazı roadmap'e ayrı faz olarak girecek** (yeri birleşme sonrası netleşir).
 
+**NAVİGASYON BORCU (2026-07-23, Suer):** LEENA'nın "login → önce expo seç" akışı yaka-kartı
+geçmişinin kalıntısı — ELL'in nihai akışı **DEĞİL**. Nihai akış: login → **organizer-level ana
+panel** (finans, contracts, agents, raporlar — expo'suz) → expo-level işlere oradan dalınır.
+Veri modeli ve API'ler **zaten organizer-level** (contracts/payments/agents expo'suz çalışıyor,
+ölçülü) — değişecek olan yalnız **kabuk/navigasyon**. Tasarım fazının **İLK maddesi**. İnşa
+dilimlerinde bu akışa uygun API tasarımına devam (**expo_id opsiyonel kalır, zorunlulaştırılmaz**).
+
 ---
 
 ## ★ EXPO OPERATIONS MODÜLÜ — TAMAMLANDI + CANLIDA ✅ (2026-06-18, smoke test geçti)
