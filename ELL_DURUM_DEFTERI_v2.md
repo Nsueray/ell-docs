@@ -358,6 +358,14 @@
 > farklı tarihle (2026-07-10) doğrulandı; canlı veri onu çürütmüyor ama kanıtlamıyor da.
 >
 > **S8 E2E'ye kadar SİLİNMEZ; S8 öncesi temizlenir.**
+>
+> **sales_agents (3b-1 sonrası, 2026-07-23 ölçümü):** **151 kayıt** = 150 Zoho-import
+> (`zoho_record_id` dolu) **+ 1 LEENA-doğumlu** (elle create; `zoho_record_id` NULL, UI testinden).
+> Kırılım: `internal` **127** (126 import + 1 elle) / `external_freelance` 19 / `external_agency` 5;
+> aktif **27** (26 import + 1 elle) / pasif 124. *(Import 150'sinin kendi kırılımı: internal 126 /
+> freelance 19 / agency 5; aktif 26 / pasif 124 — probe'la birebir.)*
+> `contracts` 2 / `payments` 7 **değişmedi**. **Atanmış agent'ı olan contract YOK** (E2E ataması
+> temizlendi).
 
 > ## ★★ FAZ 3A KAPANDI (2026-07-22) — TİCARİ ÇEKİRDEK LEENA-NATIVE CANLIDA
 >
@@ -380,17 +388,109 @@
 > **frozen-EUR** · teklik/idempotency garantileri **DB'de** (partial UNIQUE, 027 deseni) ·
 > `round2` yalnız ilk girişte, kopya/işaret çevriminde asla.
 
-> ## ★ SIRADAKİ ADAYLAR (Faz 3a sonrası — karar Suer'de, seçim yapılmadı)
+> ## ✅ FAZ 3B-1 TAMAM (2026-07-23) — KOMİSYON RECONCILE + AGENT ALTYAPISI + ZOHO IMPORT
 >
+> **Ölçüm + reconcile:** "tekil `sales_agent_id` ↔ req üçlü modeli" çelişkisi **GERÇEKti**;
+> **requirements kazandı** — Zoho'da üçlü model (Agent/SR/SD) fiilen yaşıyor (ELIZA ölçümü:
+> alanlar Zoho'da VAR, `syncSalesOrders` map etmiyordu — yalnız tek `Sales_Agent.name` lookup).
+>
+> **Migration'lar (016-022 serisine 020-022 eklendi; hepsi `\i` ritüeliyle):**
+> - **020 `commission_agents`:** `sales_agents.default_commission_pct` + contracts'a **agent/sr/sd
+>   FK + 3 override pct** (K1a, req `:461-469` şeması) + **dışlayıcılık CHECK'leri** (K3a: Agent XOR
+>   SR; SD yalnız SR varken) + pct-requires-fk + 0-100 range (B18). **EXPAND** adımı.
+> - **021 `import_prep`:** **S7 v1.2 amendment** (aşağıda) + 6 kolon (`email` / `sales_group` /
+>   `agent_company` / `commission_currency` / `is_active` / `zoho_record_id` + partial UNIQUE).
+> - **022 `import_prep2`:** probe sonrası delta — `default_director_pct` (+0-100 CHECK) /
+>   `sales_team` / `country`. **021'e DOKUNULMADI** (uygulanmış migration değişmez — delta ayrı dosya).
+>
+> **ZOHO IMPORT MÜHÜRLÜ (2026-07-23):** probe → seal → dry-run → import akışı; `MAPPING_SEALED`
+> guard'ı (alan-adı **tahminiyle import imkânsız**). **150 kayıt import edildi:** internal **126**
+> / external_freelance **19** / external_agency **5**; aktif **26** / pasif **124** (canlı kırılım
+> probe'la birebir). İdempotent (**D4:** `ON CONFLICT (zoho_record_id) DO NOTHING` — asla UPDATE
+> etmez). Script: `scripts/import-zoho-agents.js` (**tek seferlik, sync DEĞİL**; Render Shell notu:
+> `export DATABASE_URL="$DATABASE_INTERNAL_URL"`).
+>
+> **Agent atama canlıda:** `PUT /api/contracts/:id/assignment` (TAM SET semantiği; dışlayıcılık
+> 400'leri **CHECK'e düşmeden**) + `contract-detail` **Commission kartı** (dropdown + pct
+> **placeholder = default**, OTOMATİK YAZILMAZ — override bilinçli). Kod eski `sales_agent_id`'den
+> **TAMAMEN çıktı** (word-boundary grep 0) → **DROP artık güvenli**.
+>
+> **Agent UI canlıda:** `sales-agents.html` (liste + "Show inactive" + create/edit + Active toggle)
+> + `GET` default **yalnız aktifler** (B6 davranışı) + POST/PUT. Nav 3 sayfaya + yeni sayfaya eklendi.
+>
+> **Commit'ler:** `70e5654` (020) · `0ee0ea1` (atama+geçiş) · `443fdea` (021) · `f159067` (script)
+> · `f77d4aa` (022+mühür) · `79047c7` (UI).
+>
+> **E2E / GÖRSEL ONAY (2026-07-23, Suer):** agent liste (aktif-default + Show inactive soluk
+> satırlar) + New agent / Edit / deactivate + assignment dropdown gerçek veriyle **GEÇTİ** (ekran
+> kanıtlı). ⚠️ *(Ölçüm notu: E2E'de yapılan agent ataması **kalıcı bırakılmadı** — 2026-07-23
+> ölçümünde `contracts`'ta agent/sr/sd atfı olan satır YOK; atama akışı test edildi, sonra
+> temizlendi.)*
+>
+> **S7 v1.2 AMENDMENT (kilitli, BELGELİ BORÇ):** `"internal → user_id NOT NULL"` **ASKIYA ALINDI**
+> — dayandığı `users` tablosu LEENA'da yok, uygulanabilir değildi (internal agent hiç girilemiyordu).
+> Korunan yön: `external_* → user_id NULL` (`sales_agents_external_user_null_check`). Faz 4'te
+> `users` doğunca internal'lara `user_id` backfill + eski sıkılık geri gelir. **NOT:** `archive` B3
+> v1.0/v1.1 metni hâlâ eski hâli anlatıyor — **belge güncelleme borcu** (ayrı belge dilimi).
+>
+> **KİLİTLİ KARARLAR (3b-1):**
+> - **K1a:** atama düz 3 FK + 3 pct override contracts üzerinde (req `:461-469`).
+> - **K2a:** tekil `sales_agent_id` DROP edilecek — sıralı (expand→contract), **023'te**.
+> - **K3a:** dışlayıcılık DB CHECK'te.
+> - **K4:** `default_commission_pct` agent kaydında.
+> - **K5 GÜNCELLENDİ:** elle seed **İPTAL** → Zoho import (gerçek kaynak) + kalıcı create/edit UI
+>   (Yaprak'ın yüzeyi).
+> - **K6:** `sales_owner_user_id` komisyon atıf kaynağı **DEĞİL** — LIFFY provenance metadata'sı,
+>   Faz 4 identity'de çözülür.
+> - **D1:** `is_active` sales_agents'ın **kendi kolonu** (B6 taşıyıcısı); Faz 4'te internal'lar
+>   user-deaktivasyonuyla senkron. Deactivate reason-log Faz 4 audit'e ertelendi.
+> - **D2:** `commission_currency` taşındı, **motor dilimine kadar KULLANILMAZ**.
+> - **D3 — ZOHO-CANONICAL KURALININ İLK BELGELİ İSTİSNASI:** agent modülü bugünden
+>   **LEENA-canonical**; Zoho agent modülü DONUK. Genel kural (expo/sector/country vb.) DEĞİŞMEDİ.
+> - **D4:** import idempotent DO NOTHING; sync değil.
+> - **Currency:** create/edit **normalize** eder (`eur→EUR`; `euro→400`) — payments deseniyle tutarlı.
+> - **SUER İLKESİ (genel, kilitli):** veri sistemde varsa elle girilmez — kaynağından otomatik
+>   alınır; kaçınılmaz elle giriş **serbest metin değil SEÇMELİ** (select/datalist).
+>
+> ---
+>
+> **★ K7 — KOMİSYON MOTOR KURALLARI (Suer, kilitli — motor dilimi bunlarla açılır):**
+> - **(a)** Hak ediş **TAHSİLATA bağlı ve ORANSAL** — kısmi ödeme = kısmi komisyon.
+> - **(b) MATRAH = `contract_line_items`'tan FORMÜLLE türetilir, SAKLANMAZ (D2):**
+>   `Σ (quantity × unit_price × (1 − discount_percent/100))` — **`is_registration_fee = false`**
+>   satırlar; **vergi yapısal olarak dışarıda** (tax ayrı katman), **RF bayrakla dışarıda**. Satır
+>   yoksa komisyon **HESAPLANMAZ** + "kalem dökümü eksik" raporlanır.
+>   **SAHA KANITI (Zoho canlı contract, 2026-07-23):** 18.600 MAD − 1.500 RF = 17.100 × SR %5 =
+>   **855** — formül Zoho pratiğiyle **birebir**.
+> - **(c) ÖDEME TAKVİMİ:** ayda **İKİ kesim** — ayın **15'i** ve **ay sonu**; ödeme, girildiği
+>   tarihten **SONRAKİ İLK kesimde** ödenir. Cycle SAKLANMAZ — `payment_date`'ten türetilir (D2).
+> - **(d)** Reversal/transfer edilen ödemeler matrahtan **otomatik düşer** (SUM netler — özel kod
+>   yok, doğrulama testi yeter).
+> - **(e) SD mekanizması:** `default_director_pct` (Zoho `Director_Comm_Rate`) — canlı örnek SR %5
+>   + SD %2. "Contract amount"ın vergi-dahilliği belirsizliği **L kararlarıyla KAPANDI** (matrah
+>   artık satırlardan türer); `contracts.revenue`'nun vergi-dahilliği transport'a kadar **kanıtsız**
+>   (dürüst not).
+>
+> **L KARARLARI (satır kalemleri — inşa sonraki dilimde):**
+> - **L1** `contract_line_items` (quote satırlarının **convert anında donmuş kopyası**; satır
+>   toplamı saklanmaz).
+> - **L2a** `product_code` donmuş + **`is_registration_fee` bayrak**.
+> - **L3** convert payload **ŞİMDİ genişler** (opsiyonel `line_items[]`); elle-giriş UI YOK.
+>   ⚠️ **LIFFY AKTİVASYON ÖNKOŞUL LİSTESİNE EKLE:** "convert payload'ında `line_items` **ZORUNLU**
+>   olur".
+> - **L4** satırlar geldiyse `grand_total(hesap) ↔ revenue ±0.01` değilse **400**; satırlar
+>   **immutable**.
+> - **L5** sıra.
+
+> ## ★ SIRADAKİ ADAYLAR (Faz 3b-1 sonrası — karar Suer'de, seçim yapılmadı)
+>
+> - **023 — `sales_agent_id` DROP** (tekil eski kolon; kod hazır, grep 0, tek satırlık migration).
+> - **024 — `contract_line_items`** (L kararları; komisyon motorunun matrah önkoşulu).
+> - **Komisyon motoru** (K7 kurallarıyla açılır — matrah satırlardan, tahsilata oransal, iki kesim).
 > - **payment schedule** — 3a kuyruğundan kalan (plan ≠ gerçekleşen; req `:509-511`, `:564`).
-> - **Faz 3b — `sales_agent_id` doldurma.** Önkoşul: S7 hükmü uygulandı (integer kalır),
->   tablo hâlâ 0 satır.
-> - **Komisyon dilimi** — ilk iş **ölçüm** (tekil `sales_agent_id` ↔ requirements üçlü modeli
->   agent/sr/sd reconcile + LEENA'da `users` tablosu yok, kimlik Faz 4).
+> - **Belge güncelleme borcu:** `archive` B3 v1.0/v1.1 → S7 v1.2 (belge dilimi).
 > - **Ucuz iyileştirme kuyruğu — kur-yönü ipucu (DURUYOR, ihtiyaç 2 kez doğrulandı):**
->   add-payment formunda `exchange_rate` alanına yön ipucu (örn. *"rate to EUR — 1 TRY =
->   0.0196 EUR gibi"*). Hem 3a-2'de hatalı kur girişine yol açtı, hem 3a-4 E2E'sinde doğru kur
->   yeniden elle girildi. Bir sonraki UI dokunuşunda yapılır.
+>   add-payment formunda `exchange_rate` alanına yön ipucu. Bir sonraki UI dokunuşunda yapılır.
 
 > ---
 >
@@ -414,12 +514,13 @@ notu SUPERSEDED — aşağıdaki CONVERT GATE bölümü yeni karara göre düzel
 
 ## NEREDE KALDIK — TEK CÜMLE
 
-**Ticari çekirdek zinciri canlıda (2026-07-22):** quote → convert → contract → payment →
-hesaplanan paid/balance. **FAZ 3A TAMAM** (3a-1 → 3a-5: liste, detay sayfası, ödeme girişi,
-reversal, transfer — hepsi canlıda ve E2E kabul aldı; migration 016-019).
-**Sıradaki dilim Suer'in seçimiyle** (payment schedule / Faz 3b sales_agent doldurma /
-komisyon ölçümü). **Convert-1 LIFFY aktivasyonuna ertelendi.** Sonraki dilimler
-sırada: sales_agent doldurma (Faz 3b), audit/kimlik (Faz 4), transport (LIFFY aktivasyonu).
+**Ticari çekirdek + komisyon altyapısı canlıda (2026-07-23):** quote → convert → contract →
+payment → reversal → transfer → hesaplanan paid/balance; **+ FAZ 3B-1** (agent/sr/sd atama +
+150 Zoho agent import + agent yönetim UI). **FAZ 3A + 3B-1 TAMAM** (migration 016-022, hepsi
+E2E kabul aldı). **Sıradaki dilim Suer'in seçimiyle** (023 `sales_agent_id` DROP / 024
+`contract_line_items` / komisyon motoru — K7+L kurallarıyla). **Convert-1 + LIFFY aktivasyonu
+ertelendi** (L3 ile artık `line_items` de LIFFY önkoşulu). Sonraki: audit/kimlik (Faz 4),
+transport (LIFFY aktivasyonu).
 Birleşme bitene kadar sistemleri kimse kullanmıyor (tek kullanıcı Suer).
 
 *(Önceki hâli — 2026-06-20, "Sıradaki tek odak: Convert-1" — 3a-1/3a-2 tamamlandığı ve
@@ -1689,6 +1790,11 @@ o eşiğe kadar branch'te bekler (DB hazır, endpoint hazır, sadece beslenecek 
 - **ŞEMA KURALI (1f'den, ihlal yaşandı):** Claude Code şema değişikliği gerektiğinde
   DUR ve SOR; kendi kararıyla migration yazamaz, ÇALIŞTIRAMAZ. Migration'ları Suer
   kendi terminalinden uygular. Her Claude Code promptuna eklenir.
+- **MIGRATION RİTÜELİ (2026-07-22'den kalıcı, yapıştırma bozulması yaşandı):** migration
+  çalıştırma **`\i` ile dosyadan** yapılır — `BEGIN; \i migrations/NNN.sql; ROLLBACK;`
+  (dry-run) → `BEGIN; \i ...; COMMIT;` (gerçek). Migration dosyalarında `BEGIN/COMMIT`
+  YOKTUR — transaction **dıştan** sarılır. Uygulanmış migration DEĞİŞMEZ; düzeltme/ek
+  daima **yeni delta dosya** (örn. 021→022).
 - **TEST KURALI (1f'den):** testler canlı DB'ye karşı koşulmaz; koşulmak zorunda
   kalındıysa oluşturulan test verisi açıkça raporlanır ve temizlenir/işaretlenir.
 - **DEPLOY TEYİDİ KURALI (1f'den):** frontend deploy teyidi "sayfa 200" ile DEĞİL,
