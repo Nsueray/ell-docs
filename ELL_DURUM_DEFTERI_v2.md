@@ -264,43 +264,133 @@
 >
 > **SIRADAKİ ADAYLAR (3a-5, karar Suer'de):** Transfer aksiyonu · payment schedule.
 
+> ## ✅ 2026-07-22 — FAZ 3a-5 TAMAM (contract transfer / devir)
+>
+> **Migration 019 canlıda** (`019_transfer_guards`, dry-run → ROLLBACK → COMMIT ritüeliyle;
+> kayıt **uzantısız**, `2026-07-22 18:17:21+00`). **Yeni kolon YOK**, iki partial UNIQUE:
+> - `uq_contracts_transferred_from` — **one-child**: bir contract'ın en fazla bir devamı olur.
+>   Race-proof, DB seviyesinde (027 deseni).
+> - `uq_contracts_af_number` — server-üretimi af emniyeti (012'de af_number kısıtsızdı).
+>
+> **`POST /api/contracts/:id/transfer` canlıda.** **49/49 backend + 11/11 UI testi** geçti.
+> Klon `INSERT..SELECT` + storno-taşıma + kaynak `status='Transferred'` — **TEK ATOMİK TX**
+> *(canlı kanıt: id=1 ve id=3'ün `updated_at`'i aynı — `18:43:59.017131`)*.
+> Hata yolları: **400** (`expo_id` eksik/geçersiz, kaynak status uygun değil) · **404** ·
+> **409** (çifte transfer + af çakışması, **DB garantili**).
+>
+> **`PUT /:id/status`:** elle `'Transferred'` → **400**. `:229`'daki "geçiş matrisi yok" yorumu
+> güncellendi. **Transferred'DAN çıkış serbest.**
+>
+> **`GET /:id`:** `transferred_from_af` + `transferred_to_id`/`transferred_to_af` join'leri
+> → **3a-3 defter borcu KAPANDI** (ham id gösterimi kalktı).
+>
+> **`contract-detail.html`:** Transfer butonu (yalnız Active/On Hold **ve** `transferred_to`
+> yokken) + inline expo-select formu + from/to **af linkleri**. `contract-list.html`'e
+> dokunulmadı. **Commit'ler:** `11c397b` (019) + `63631de` (endpoint + UI).
+>
+> **E2E KABUL GEÇTİ (2026-07-22):** Acme → **[TEST] Reactivation Smoke Test Expo**.
+> - Yeni contract **id=3** (`A-2026-001-T`): Active, bugünün tarihi, expo dolu, kopyalar birebir,
+>   **Paid 9.80 / Balance 13.790,20**, taşınan ödeme orijinal tarihiyle.
+> - Kaynak **id=1**: Transferred, **Paid 0.00 / Balance 13.800,00**, kapama satırı + terslenmiş
+>   çiftler yerinde.
+> - Liste 2 contract, rakamlar doğru.
+>
+> **KİLİTLİ KARARLAR (3a-5):**
+> 1. **Transfer = YENİ contract yaratır** (klon; req 2.3 first-class action) — var olan iki kaydı
+>    **bağlamaz**.
+> 2. **Klon:** organizer / company / agent / frozen-para / `company_id` **kopya**; `expo_id`
+>    seçilen hedef; `status` Active; `contract_date` transfer günü; operasyonel + convert alanları
+>    **boş**. 4-status modelinde **"Transferred In" = `transferred_from` NOT NULL** (S6 ile uyumlu
+>    — beşinci bir status eklenmedi).
+> 3. **AF sonek kuralı:** `X → X-T → X-T2 → X-T3` (server üretir); `af` NULL ise NULL.
+> 4. **Ödeme taşıma = STORNO-TAŞIMA.** Terslenmemiş ödeme başına: kaynakta **kapama**
+>    (`reverses` set, bugün, `Transferred to <af> (payment #N)`) + yenide **pozitif kopya**
+>    (**ORİJİNAL tarih**, `Transferred from <af> (payment #N)`). Terslenmiş çiftler ve reversal
+>    satırları **yerinde kalır**. Sistem toplamı değişmez; paid/balance koduna dokunulmadı (D2).
+>    *Semantik not:* kapama satırları **yapısal olarak reversal**'dır — UI rozeti "Reversal of #N"
+>    gösterir, ayrımı `notes` yapar.
+> 5. **A→B→A DÖNGÜ BORCU TASARIMLA KAPANDI:** yaratım-temelli transferde zincir **append-only**,
+>    döngü yapısal olarak imkânsız. Kalan tek risk (çifte transfer) DB'de partial UNIQUE ile
+>    çözüldü — trigger/CHECK gerekmedi.
+> 6. **Elle `PUT → Transferred` kapalı; Transferred'dan çıkış serbest.**
+>    **TEORİK NOT (yaşanmış vaka DEĞİL):** kaçış kapısı **tek yönlü** — Transferred'dan çıkılırsa
+>    elle geri dönüş yok, psql gerekir; ikinci transfer her durumda DB'den **409** alır.
+>    Kalıcı çözüm adayı: **Faz 4 permission** (Owner'a elle geçiş yetkisi).
+
 > ## ⚠️ CANLI TEST VERİSİ — contract id=1 (Acme, sentetik)
 >
 > *(3a-4 E2E sonrası, 2026-07-22 ölçümü, `claude_readonly`. Bu blok önceki "2 ödeme kaydı"
 > envanterinin yerine geçer.)*
 >
-> `contracts` id=1 üzerinde **5 ödeme kaydı** var:
+> **İKİ contract var** (transfer sonrası):
 >
-> | id | tutar | kur | EUR | tarih | reverses | notes | durum |
+> | id | af_number | status | expo | contract_date | paid_eur | balance_eur |
+> |---|---|---|---|---|---|---|
+> | 1 | `A-2026-001` | **Transferred** | — | 2026-06-20 | **0,00** | 13.800,00 |
+> | 3 | `A-2026-001-T` | Active | **[TEST] Reactivation Smoke Test Expo** (id 11) | 2026-07-22 | **9,80** | 13.790,20 |
+>
+> **`id=2` YOK** — SERIAL sequence test akışında tüketildi. **Bilinen davranış, boşluk normaldir**
+> (sequence rollback'te numara yakar).
+>
+> **7 ödeme kaydı** — id=1'de **6 satır**, id=3'te **1 satır**:
+>
+> | id | contract | tutar | kur | EUR | reverses | notes | durum |
 > |---|---|---|---|---|---|---|---|
-> | 1 | 100.00 USD | 0.90000000 | 90.00 | 2026-07-22 | — | `test` | **TERSLENDİ** (#3 ile) |
-> | 2 | 500.00 TRY | 51.00000000 | 25.500,00 | 2026-07-22 | — | — | **TERSLENDİ** (#4 ile), hatalı kur |
-> | 3 | −100.00 USD | 0.90000000 | −90.00 | 2026-07-22 | **1** | `Reversal of payment #1 (100.00 USD)` | reversal |
-> | 4 | −500.00 TRY | 51.00000000 | −25.500,00 | 2026-07-22 | **2** | `Reversal of payment #2 (500.00 TRY)` | reversal |
-> | 5 | 500.00 TRY | **0.01960000** | 9.80 | 2026-07-22 | — | — | geçerli (doğru kur) |
+> | 1 | 1 | 100.00 USD | 0.90000000 | 90.00 | — | `test` | **TERSLENDİ** (#3) |
+> | 2 | 1 | 500.00 TRY | 51.00000000 | 25.500,00 | — | — | **TERSLENDİ** (#4), hatalı kur |
+> | 3 | 1 | −100.00 USD | 0.90000000 | −90.00 | **1** | `Reversal of payment #1 (100.00 USD)` | reversal |
+> | 4 | 1 | −500.00 TRY | 51.00000000 | −25.500,00 | **2** | `Reversal of payment #2 (500.00 TRY)` | reversal |
+> | 5 | 1 | 500.00 TRY | **0.01960000** | 9.80 | — | — | **TAŞINDI** (#6 ile kapandı) |
+> | 6 | 1 | −500.00 TRY | 0.01960000 | −9.80 | **5** | `Transferred to A-2026-001-T (payment #5)` | transfer kapaması |
+> | 7 | **3** | 500.00 TRY | 0.01960000 | 9.80 | — | `Transferred from A-2026-001 (payment #5)` | taşınan kopya |
 >
-> **paid_eur = 9,80 · balance_eur = 13.790,20** (revenue_eur 13.800,00). Tüm yöntemler
-> `bank_transfer`. *(id sıralaması ölçümle doğrulandı — varsayım değil.)*
+> Tüm yöntemler `bank_transfer`, tüm tarihler 2026-07-22. *(Envanter ölçümle doğrulandı —
+> varsayım değil.)*
 >
-> **id=2 + id=4 = TERSLENMİŞ ÇİFT — reversal deseninin canlı örneği.** id=2'de kur ters yönde
-> girilmişti (TRY→EUR için 51 yerine ~0,0196); hata **veri girişinde, hesaplamada değil** —
-> balance eksiye düştü ve hesap zinciri negatifi doğru gösterdi. 3a-4'te storno ile kapatıldı,
-> doğru kayıt id=5 olarak girildi. **id=1 + id=3** de aynı desenin doğru-kayıt üzerinde
-> çalıştığının kanıtı.
+> **Üç desenin canlı örneği bir arada:**
+> - **id=2 + id=4** — reversal (hatalı kur düzeltmesi; hata veri girişinde, hesaplamada değil:
+>   balance eksiye düşmüş ve hesap zinciri negatifi doğru göstermişti).
+> - **id=1 + id=3** — reversal'ın doğru-kayıt üzerinde de çalıştığının kanıtı.
+> - **id=5 + id=6 + id=7** — storno-taşıma: kaynakta kapama, hedefte pozitif kopya.
+>
+> ⚠️ **Ölçüm notu:** "taşınan kopya orijinal tarihini korur" kuralı bu canlı veriyle
+> **ayırt edilemiyor** — orijinal (id=5) de kopya (id=7) da 2026-07-22. Kural yerel testte
+> farklı tarihle (2026-07-10) doğrulandı; canlı veri onu çürütmüyor ama kanıtlamıyor da.
 >
 > **S8 E2E'ye kadar SİLİNMEZ; S8 öncesi temizlenir.**
 
-> ## ★ 3a-5 ADAY LİSTESİ (2026-07-22, güncellendi)
+> ## ★★ FAZ 3A KAPANDI (2026-07-22) — TİCARİ ÇEKİRDEK LEENA-NATIVE CANLIDA
 >
-> ~~**#1 — ÖDEME DÜZELTME AKIŞI**~~ → **TAMAMLANDI (3a-4).** Migration 018 + reverse endpoint
-> + detay UI canlıda; E2E kabul geçti. Listeden düştü.
+> **Uçtan uca zincir çalışıyor:**
+> `quote → convert → contract → payment → reversal → transfer → hesaplanan paid/balance`
 >
-> **Kalan adaylar:** Transfer aksiyonu · payment schedule.
+> | Dilim | Ne geldi | Migration |
+> |---|---|---|
+> | **3a-1** | contracts görünür (liste + operasyonel kolonlar + status geçişi) | 016 |
+> | **3a-2** | payment girişi + **hesaplanan** paid/balance (D2) | 017 |
+> | **3a-3** | contract detay sayfası | — (gerekmedi) |
+> | **3a-4** | ödeme düzeltme / **reversal** (storno) | 018 |
+> | **3a-5** | contract **transfer** (klon + storno-taşıma) | 019 |
 >
-> **Ucuz iyileştirme kuyruğu — kur-yönü ipucu (DURUYOR, ihtiyaç 2. kez görüldü):**
-> add-payment formunda `exchange_rate` alanına **yön ipucu** (örn. *"rate to EUR — 1 TRY =
-> 0.0196 EUR gibi"*). 3a-4 E2E'sinde Suer doğru kuru (`0.0196`) **yeniden elle** girmek zorunda
-> kaldı — ipucu olsa ilk seferde de doğru girilebilirdi. Bir sonraki UI dokunuşunda yapılır.
+> Migration'lar **016–019**, hepsi **dry-run → ROLLBACK → COMMIT ritüeliyle** uygulandı ve
+> `schema_migrations`'a uzantısız kayıtla işlendi. **Tüm dilimler görsel onay / E2E kabul ile
+> kapandı** — hiçbiri "test geçti" ile bırakılmadı.
+>
+> Taşınan mimari ilkeler: **payments immutable event** · **D2 (hesaplanır, saklanmaz)** ·
+> **frozen-EUR** · teklik/idempotency garantileri **DB'de** (partial UNIQUE, 027 deseni) ·
+> `round2` yalnız ilk girişte, kopya/işaret çevriminde asla.
+
+> ## ★ SIRADAKİ ADAYLAR (Faz 3a sonrası — karar Suer'de, seçim yapılmadı)
+>
+> - **payment schedule** — 3a kuyruğundan kalan (plan ≠ gerçekleşen; req `:509-511`, `:564`).
+> - **Faz 3b — `sales_agent_id` doldurma.** Önkoşul: S7 hükmü uygulandı (integer kalır),
+>   tablo hâlâ 0 satır.
+> - **Komisyon dilimi** — ilk iş **ölçüm** (tekil `sales_agent_id` ↔ requirements üçlü modeli
+>   agent/sr/sd reconcile + LEENA'da `users` tablosu yok, kimlik Faz 4).
+> - **Ucuz iyileştirme kuyruğu — kur-yönü ipucu (DURUYOR, ihtiyaç 2 kez doğrulandı):**
+>   add-payment formunda `exchange_rate` alanına yön ipucu (örn. *"rate to EUR — 1 TRY =
+>   0.0196 EUR gibi"*). Hem 3a-2'de hatalı kur girişine yol açtı, hem 3a-4 E2E'sinde doğru kur
+>   yeniden elle girildi. Bir sonraki UI dokunuşunda yapılır.
 
 > ---
 >
@@ -325,9 +415,10 @@ notu SUPERSEDED — aşağıdaki CONVERT GATE bölümü yeni karara göre düzel
 ## NEREDE KALDIK — TEK CÜMLE
 
 **Ticari çekirdek zinciri canlıda (2026-07-22):** quote → convert → contract → payment →
-hesaplanan paid/balance. **Faz 3a-1 → 3a-4 tamam** (liste + detay sayfası + ödeme girişi +
-reversal/storno canlıda; düzeltme akışı E2E kabul aldı). **Sıradaki: 3a-5 seçimi**
-(Transfer aksiyonu / payment schedule). **Convert-1 LIFFY aktivasyonuna ertelendi.** Sonraki dilimler
+hesaplanan paid/balance. **FAZ 3A TAMAM** (3a-1 → 3a-5: liste, detay sayfası, ödeme girişi,
+reversal, transfer — hepsi canlıda ve E2E kabul aldı; migration 016-019).
+**Sıradaki dilim Suer'in seçimiyle** (payment schedule / Faz 3b sales_agent doldurma /
+komisyon ölçümü). **Convert-1 LIFFY aktivasyonuna ertelendi.** Sonraki dilimler
 sırada: sales_agent doldurma (Faz 3b), audit/kimlik (Faz 4), transport (LIFFY aktivasyonu).
 Birleşme bitene kadar sistemleri kimse kullanmıyor (tek kullanıcı Suer).
 
