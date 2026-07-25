@@ -482,13 +482,140 @@
 >   **immutable**.
 > - **L5** sıra.
 
-> ## ★ SIRADAKİ ADAYLAR (Faz 3b-1 sonrası — karar Suer'de, seçim yapılmadı)
+> ## ✅ 2026-07-24 — FAZ 3b-2 TAMAM (023 DROP + 024 line items + convert L3/L4 + commissionable_base K7b + UI)
 >
-> - **023 — `sales_agent_id` DROP** (tekil eski kolon; kod hazır, grep 0, tek satırlık migration).
-> - **024 — `contract_line_items`** (L kararları; komisyon motorunun matrah önkoşulu).
-> - **Komisyon motoru** (K7 kurallarıyla açılır — matrah satırlardan, tahsilata oransal, iki kesim).
+> **Migration 023 (`023_drop_contracts_sales_agent_id`) canlıda** *(Suer teyidi 2026-07-24:
+> `information_schema`'da `sales_agent_id` 0 satır; kayıt `@ 10:07:33+00`)*. **K2a'nın CONTRACT
+> adımı kapandı** — 020'de açılan expand→contract döngüsü tamam. Kolonla birlikte
+> `contracts_sales_agent_id_fkey` FK'si de düştü; **üçlü agent/sr/sd FK + pct + CHECK'ler eksiksiz
+> duruyor** (`\d` ile doğrulandı).
+>
+> **Migration 024 (`024_contract_line_items`) canlıda** *(Suer teyidi: 11 kolon, 6 kısıt —
+> 3 check + fk + pk + unique, `pg_get_constraintdef` ile doğrulandı; kayıt `@ 10:13:14+00`)*.
+> **Şema kararları:**
+> - `quantity numeric(10,2)` — **⚠️ İŞARETLİ SAPMA (kabul):** taslak `(12,2)` diyordu; `sqm`
+>   emsali ölçümü (016) taslağı yendi, m² hassasiyeti sqm ile birebir.
+> - `unit_price numeric(14,2)` (`revenue` emsali) · `discount_percent` CHECK **iki sınırlı** 0-100.
+> - `UNIQUE(contract_id, line_no)` FK araması için index görevini de görür → **ayrı index bilinçli YOK**.
+> - `currency` CHECK **bilinçli YOK** (contracts.currency'de de yok — koşullu dal) · `product_code`
+>   nullable · `created_at` var / **`updated_at` bilinçli YOK** (tablo immutable) · **satır toplamı
+>   kolonu YOK** (D2).
+> - **017 payments'ın isimsiz-kısıt emsalinden BİLİNÇLİ ayrılık:** tüm kısıtlar **açık adlı**
+>   (017 dersi).
+>
+> **Backend (commit `bd47d99`):** convert **L3** opsiyonel `line_items[]` — yoksa/boş dizide eski
+> davranış **birebir** (4 senaryo değişmedi). `line_no`'yu **SERVER** atar (dizi sırası, 1'den);
+> `currency`'yi **SERVER** contract'tan kopyalar (payload satır currency'si yok sayılır).
+> **SPESİFİKASYON-DIŞI GUARD (onaylı):** satır varsa contract `currency` zorunlu → 400. **L4:**
+> `grand_total` (RF **DAHİL**) ↔ `revenue` `±0.01` → 400 (mesajda iki değer). Atomik **tek tx**
+> contract + satırlar; `23514 → 400` mapWriteError'da.
+>
+> **GET `/:id`:** `line_items[]` (ORDER BY line_no) + `commissionable_base =
+> SUM(ROUND(q×p×(1−d/100),2)) FILTER (RF=false)` — **D2, saklanmaz**. **⚠️ İŞARETLİ SAPMA (kabul):**
+> "üçüncü lateral" yerine **AYRI SQL** — `CONTRACT_DETAIL_SQL` PUT assignment ile paylaşımlı, lateral
+> onu kırardı; hesap yine SQL'de. Satır yokken `base null` + `reason "line items missing"`;
+> **YALNIZ-RF edge:** base `"0.00"` (kalem var, komisyona konu tutar 0 — reason yok).
+>
+> **Testler:** backend **27/27** (regresyon 4 senaryo + satırsız/boş + Zoho saha kanıtı fixture'ı
+> `18.600→17.100→855` + L4 sınır tam/`+0.01`→201, `+0.02`→400 + şekil + atomiklik/idempotency-temiz
+> + satırsız reason) · UI DOM stub **11/11**.
+>
+> **UI (commit `94ff3e5`):** `contract-detail` **Line Items kartı** (Payments öncesi, aynı iskelet;
+> `money`/`dash`/`escapeHtml` yeniden kullanıldı; RF rozeti `.tag`; Line Total **UI-hesap, D2**; sıra
+> server'dan).
+>
+> **CANLI CURL + GÖRSEL ONAY (Suer teyidi 2026-07-24, ekran kanıtlı):** curl → **201, contract id=4**,
+> `AF-TEST-LINES-001`, `quote_id e72b38fd-…-078df138868c`, EUR / rate 1.0 / revenue 18.600,00, 2 satır
+> (Stand 100×171,00; Registration Fee 1×1.500,00 RF). Ekranda **id=4** → 2 satır, RF rozeti, Line
+> Total 17.100,00 / 1.500,00, **Commissionable Base 17.100,00 EUR**; **id=3** → "No line items" +
+> "— (line items missing)"; diğer kartlar bozulmadı. Canlı sayım: **3 contract / 2 line_item / 8+ ödeme**.
+>
+> **Commit'ler:** `5a6e355` (023+024 dosyaları) · `bd47d99` (convert+GET+testler) · `94ff3e5` (UI).
+>
+> **Test verisi zinciri:** `id=4` (`AF-TEST-LINES-001`) **SENTETİK** — `id=1`/`id=3` gibi
+> **S8 E2E'ye kadar SİLİNMEZ**.
+>
+> **⚠️ LIFFY AKTİVASYON ÖNKOŞULU (L3 somutlaştı):** convert payload'ı **`line_items[]` göndermeli**;
+> **satır varken `currency` zorunlu** (server 400). Göndermezse contract **satırsız doğar** →
+> `commissionable_base` **hesaplanamaz** (komisyon motoru çalışmaz). Bu, LIFFY aktivasyon
+> önkoşullarına eklenen kalıcı maddedir.
+
+> ## ✅ 2026-07-25 — FAZ 3b-3 TAMAM (komisyon motoru: M1 çekirdek + FIX + M2 kesim raporu — MIGRATION'SIZ, tamamen türetilmiş/D2)
+>
+> **Komisyon motoru üç commit'te canlı, SIFIR migration** — tüm hesap `contract_line_items` +
+> `payments` üstünde SQL'de türetilir, hiçbir komisyon değeri saklanmaz (D2). Commit zinciri
+> (`git log` ile doğrulandı): **M1 `5c7ccfd` · M1-FIX `320f00f` · M2 `f28e6a6`**.
+>
+> **KİLİTLİ HÜKÜMLER (bu dilimde verildi — artık defter kaydı):**
+> - **SD HÜKMÜ (a):** SD **bağımsız**, SR ile **AYNI matraha** — `sd_pot = sd_pct/100 × base`.
+>   Kademeli "SR'ın içinden" modeli **REDDEDİLDİ**. Saha kanıtı: SD %2 = **342,00 MAD** =
+>   17.100 × %2. Mühür: M1-T7/T8.
+> - **CANCELLED HÜKMÜ (a):** tahsil edilmiş ödemeler komisyon doğurmaya **devam eder** (K7a);
+>   motor/rapor **status filtresi YOK**; iade yalnız **reversal**'la, `SUM` netler. Mühür
+>   testleri: **M1-T12 + M2-T-G**.
+> - **Sentez M-a..M-e:** iki katman (potansiyel/hak ediş) · oran = `paid_eur/revenue_eur` ·
+>   ödeme-başına dilim, kesim ödemenin `payment_date`'inden · tavan `LEAST(...,1)` · yuvarlama
+>   **yalnız gösterilen toplamlarda** (ara yuvarlama YOK).
+> - **U1a** tavan **kümülatif-marjinal** dilimlere yansır ("(cap)" notu) · **U2a** kesim
+>   **takvim günü** (`payment_date` DATE, TZ yok) · **U3a** rapor **yalnız hak edilmişi** gösterir,
+>   potansiyel detayda kalır.
+> - **Sınır günü:** gün ≤15 → ayın **15'i** kesimi; ≥16 → **ay sonu**; kesim günü **DAHİL**.
+> - **Penny-tavan:** overpayment notu **yalnız** `paid_eur − revenue_eur > 0.01` ise (L4 toleransı).
+> - **Reversal'ın kesim dönemi** = reverse edildiği gün (`payment_date = CURRENT_DATE`) — M-c ile
+>   tutarlı, **M2 T-C** ile mühürlü.
+>
+> **M1 — komisyon çekirdeği (`5c7ccfd`):** `routes/contracts.js`'e `computeCommission()` (`:318`) +
+> `GET /:id`'de `contract.commission` (`:465`). Nesne: `base, ratio,
+> roles[{pct_used, pct_source, full/full_eur, earned/earned_eur, reason?}]`. Oran çözümü
+> **override > default**. Ölçülen default kolonlar: `default_commission_pct`
+> (**agent + SR ORTAK — ⚠️ İŞARETLİ SAPMA**, mevcut şema gerçeği) + `default_director_pct` (SD).
+> **Tüm aritmetik SQL**; JS `round2` komisyonda **hiç yok**. Koruma durumları: `line items missing`
+> / `roles []` / `revenue missing` / `rate missing`. **Testler 29/29** (bu oturumda yeniden
+> ölçüldü) + UI stub 15/15 — sayı zinciri 855 / 342 / 641.25 / tavan / SD 342-136.80 / T12.
+>
+> **M1-FIX (`320f00f`):** assignment-save sonrası **Commission + Line Items kartlarının kaybolması**.
+> Kök neden: `submitAssignment`'ın `render(data.contract)` kullanması — PUT paylaşımlı
+> `CONTRACT_DETAIL_SQL`'den döner, `line_items`/`commission` **taşımaz** (onlar yalnız `GET /:id`'de
+> ayrı sorgularla eklenir). **Tek satır → `loadContract()`** (add-payment deseni). Stub **7/7**.
+> *(Suer teyidi 2026-07-24/25, ekran kanıtlı: fix sonrası tekrarda kartlar KALDI, "Assignment saved"
+> toast'ıyla.)* **Görsel tur bug'ı yakaladı → görsel-onay-şart kuralının değeri kanıtlandı.**
+>
+> **M2 — kesim raporu (`f28e6a6`):** `routes/commissions.js` (YENİ) + `GET /api/commissions`
+> (`index.js` mount) + `public/commissions.html` (YENİ) + nav linki (`main-panel-v2.html`).
+> `from/to` **cut_date** filtresi; **⚠️ İŞARETLİ SAPMA (kabul):** default `to` = **içinde bulunulan
+> dönemin cut_date'i** ("bugün" literal'i mevcut dönemi dışlardı → G5a çelişkisi). Kümülatif-marjinal
+> dilim SQL'i: `cum_after = SUM(amount_eur) OVER(PARTITION BY contract ORDER BY payment_date,id)` →
+> `effective_pay = LEAST(cum_after,rev) − LEAST(cum_before,rev)` → `slice_raw = pot_eur ×
+> effective_pay / rev` + `capped` işareti; **tek final ROUND** (M-e). **Tek-kaynak fiilen
+> `COMMISSIONABLE_BASE_EXPR`** (contracts.js'ten export) + **İNVARYANT testi** (Σ ham dilim ≡ M1
+> `earned`; telescoping, ham + ROUND sonrası). **⚠️ İŞARETLİ SAPMA (kabul):** `SLICE_EUR_EXPR`
+> literal `amount_eur` taşıdığından M2 pencereli `effective_pay` için **referans/belge** olarak
+> export edildi, birebir kullanılmadı. **Testler 30/30 + stub 16/16** — 30.78 / 26.93 /
+> 61.56-15.39-0.00+cap / T-C negatif dönem toplamı olduğu gibi kalır.
+>
+> **GÖRSEL ONAY (Suer teyidi 2026-07-25, ekran kanıtlı):** `commissions.html` default aralıkta
+> **"Jul 16–31, 2026 (cut Jul 31)"** → **BENGU DOGRUER** · Slice **342.00** · Period Total
+> **342.00 EUR** · dipnot görünür; **01-31 Ocak** aralığında **"No commission slices in this
+> period."**; nav linki çalışıyor; `contract-list` (3 kayıt) bozulmadı. M1 kartı ayrıca: id=4
+> atamasızken "No commission roles assigned"; SR %5 override sonrası **sr · BENGU DOGRUER ·
+> 5.00% (override) · Full 855.00 EUR · Earned 342.00 EUR · Collection 40%** (7.440 ödeme sonrası);
+> id=3 "— (line items missing)".
+>
+> **Kozmetik not (bilinçli, aksiyon YOK):** EUR kontratta çift gösterim "855.00 EUR (855.00 EUR)".
+>
+> **Test verisi zinciri GENİŞLEDİ:** `id=4` + **BENGU DOGRUER** SR %5 override + **7.440,00 EUR**
+> ödeme (2026-07-24) — **S8 E2E'ye kadar SİLİNMEZ**.
+
+> ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
+>
+> - **★ PAYOUT dilimi** (ayrı, gelecek): fiilî agent ödemesi bir **OLAYDIR** — kaydı/ledger'ı bu
+>   dilimin işi; **`commissions` tablosu ancak o zaman doğar** (Sentez-1). Clawback/adjustment
+>   semantiği de payout masasında. *(Komisyon motoru M1/M2 tamam — `5c7ccfd`/`320f00f`/`f28e6a6`;
+>   hesap türetiliyor, ödeme henüz kaydedilmiyor.)*
 > - **payment schedule** — 3a kuyruğundan kalan (plan ≠ gerçekleşen; req `:509-511`, `:564`).
 > - **Belge güncelleme borcu:** `archive` B3 v1.0/v1.1 → S7 v1.2 (belge dilimi).
+> - **⚠️ DURAN BORÇ (KORUNUYOR):** `ELL_YOL_HARITASI_v5` + `ELL_BILGI_MIMARISI` hâlâ LEENA-native
+>   karara (finans/komisyon LEENA'da; ELIZA marka/Finance-tab) göre **güncellenmedi**.
 > - **Ucuz iyileştirme kuyruğu — kur-yönü ipucu (DURUYOR, ihtiyaç 2 kez doğrulandı):**
 >   add-payment formunda `exchange_rate` alanına yön ipucu. Bir sonraki UI dokunuşunda yapılır.
 
@@ -514,17 +641,19 @@ notu SUPERSEDED — aşağıdaki CONVERT GATE bölümü yeni karara göre düzel
 
 ## NEREDE KALDIK — TEK CÜMLE
 
-**Ticari çekirdek + komisyon altyapısı canlıda (2026-07-23):** quote → convert → contract →
-payment → reversal → transfer → hesaplanan paid/balance; **+ FAZ 3B-1** (agent/sr/sd atama +
-150 Zoho agent import + agent yönetim UI). **FAZ 3A + 3B-1 TAMAM** (migration 016-022, hepsi
-E2E kabul aldı). **Sıradaki dilim Suer'in seçimiyle** (023 `sales_agent_id` DROP / 024
-`contract_line_items` / komisyon motoru — K7+L kurallarıyla). **Convert-1 + LIFFY aktivasyonu
-ertelendi** (L3 ile artık `line_items` de LIFFY önkoşulu). Sonraki: audit/kimlik (Faz 4),
-transport (LIFFY aktivasyonu).
-Birleşme bitene kadar sistemleri kimse kullanmıyor (tek kullanıcı Suer).
+**Ticari çekirdek + KOMİSYON MOTORU canlıda (2026-07-25):** quote → convert (+`line_items`) →
+contract → payment → reversal → transfer → hesaplanan paid/balance + `commissionable_base`
+**+ komisyon motoru** (M1 contract görünümü `earned/full` + M2 kesim-dönemi raporu
+`/api/commissions` — tavan + reversal + cancelled mühürlü). **FAZ 3A + 3B TAMAM** (migration
+**016-024** + komisyon motoru **M1/M2 canlı, migration'sız** — tamamen türetilmiş/D2; hepsi E2E
+kabul aldı). **Sıradaki: PAYOUT dilimi** (fiilî agent ödemesi = olay; `commissions` tablosu ancak
+o zaman doğar — Sentez-1) **+ governing doc borcu** (`ELL_YOL_HARITASI_v5` + `ELL_BILGI_MIMARISI`
+hâlâ LEENA-native karara göre güncellenmedi). **Convert-1 + LIFFY aktivasyonu ertelendi** (L3:
+`line_items` + satır-varken-currency LIFFY önkoşulu). Sonraki: audit/kimlik (Faz 4), transport
+(LIFFY aktivasyonu). Birleşme bitene kadar sistemleri kimse kullanmıyor (tek kullanıcı Suer).
 
-*(Önceki hâli — 2026-06-20, "Sıradaki tek odak: Convert-1" — 3a-1/3a-2 tamamlandığı ve
-Convert-1 ertelendiği için geçersiz; blok kayıtları yukarıda duruyor.)*
+*(Önceki hâli — 2026-07-24, "Sıradaki: KOMİSYON MOTORU" — motor M1/M2 canlılaştığı için geçersiz;
+blok kayıtları yukarıda duruyor. Ondan önceki 2026-06-20 "Convert-1" hâli de superseded.)*
 
 *(Aşağıdaki tarihsel notlar — "Convert gate tasarımı kilitlendi", eski Faz 2 ölçümü — bu oturumda
 İNŞAYA döküldü ve canlılaştı; tasarım kayıtları referans olarak korunuyor.)*
@@ -1561,6 +1690,13 @@ locked/requirements ile düzeltildi:
 **Sonuç prensip: belgeyi OKUMADAN tasarlama AMA hangi belgenin GÜNCEL olduğunu da teyit et —
 eski belge de canlı ölçüm kadar yanıltır.**
 
+**⚠️ 2026-07-25 EKLENEN DERS — "hazır/canlı/deploy'lu" iddiaları ölçümle doğrula (üstteki dersin
+operasyonel ikizi).** Faz 3b-3'te iki kez "backend hazır/deploy'lu (`f4530a1`)" bilgisi geldi;
+**ölçüm ikisinde de çürüttü** — hash repoda **hiç yok**, `origin/main` `94ff3e5`, canlı
+endpoint'ler **404**. Ön-koşul GATE'leri **DUR** verdi, sıfır zararla düzeldi, M1 gerçekten
+yazıldı. **Kalıcı prensip:** "hazır/canlı/deploy'lu" iddiaları prompt-içi ölçümle (`git log` +
+`grep` + canlı HTTP) doğrulanmadan **hiçbir dilim o varsayıma inşa edilmez.**
+
 ### KİLİTLİ MİMARİ GERÇEK — ⛔ SUPERSEDED (2026-06-19) → YENİDEN YAZILDI
 > Aşağıdaki eski blok **"3 DB ayrı kalır / contract ELIZA DB'sine / contract→expo cross-DB B17 /
 > cross-DB sınırlar LIFFY↔ELIZA + ELIZA↔LEENA"** diyordu. **Bu YANLIŞ — 2026-06-19 mimari
@@ -1795,6 +1931,11 @@ o eşiğe kadar branch'te bekler (DB hazır, endpoint hazır, sadece beslenecek 
   (dry-run) → `BEGIN; \i ...; COMMIT;` (gerçek). Migration dosyalarında `BEGIN/COMMIT`
   YOKTUR — transaction **dıştan** sarılır. Uygulanmış migration DEĞİŞMEZ; düzeltme/ek
   daima **yeni delta dosya** (örn. 021→022).
+  **GENİŞLEDİ (2026-07-24):** `psql`'de yalnız `\d` değil, **`\i` DAHİL TÜM backslash
+  komutları yapıştırılan bloklara KONMAZ** — `BEGIN` / `\i ...` / `COMMIT` **üç AYRI Enter**.
+  *Yaşanan olay:* 023 gerçek turunda blok yapıştırmada `COMMIT;` `\i`'nin fazladan argümanı
+  sayılıp YOK SAYILDI ("extra argument ignored"), transaction açık kaldı (prompt `=*>`); ayrı
+  `COMMIT` ile kapatıldı — **veri etkisi olmadı**, kayıt `applied_at`'i insert anını korudu.
 - **TEST KURALI (1f'den):** testler canlı DB'ye karşı koşulmaz; koşulmak zorunda
   kalındıysa oluşturulan test verisi açıkça raporlanır ve temizlenir/işaretlenir.
 - **DEPLOY TEYİDİ KURALI (1f'den):** frontend deploy teyidi "sayfa 200" ile DEĞİL,
