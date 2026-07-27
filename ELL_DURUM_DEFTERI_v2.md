@@ -634,12 +634,58 @@
 >   2026-07-27 ölçümü: dosya **temiz**, commit'siz değişiklik yok (son dokunuş `a416fa9`).
 >   Madde kapandı, aksiyon gerekmiyor.
 
+> ## ✅ 2026-07-27 — PAYOUT P1 CANLIDA (migration 025 + agent cari hesap)
+>
+> - **Migration `025_commission_payouts` CANLI** (leena_v401_db). Dry-run (ROLLBACK) →
+>   COMMIT, `\d` doğrulandı. Son migration **024 → 025**. Tamamen additive; canlı LEENA
+>   operasyonu etkilenmedi. Kod commit: **`3ab2dac`** (leena-v401).
+> - **MODEL = CARİ HESAP (S-1 kilitli).** Payout kaydında **dönem/kesim kolonu YOKTUR** —
+>   bilinçli. Bakiye = Σ earned (türetilmiş) − Σ payout `amount_eur`, **her okumada hesaplanır**.
+>   İleride "eksik" sanılıp dönem kolonu EKLENMEYECEK.
+> - **D2 KORUNDU.** Tablo komisyonu değil **ÖDEMEYİ** saklar. `earned_eur` / `balance` /
+>   `cut_date` gibi hiçbir türetilmiş değer saklanmaz. ("Payout olayında dondurulur"
+>   önerisi ölçüm turunda REDDEDİLDİ.)
+> - **Tablo şekli** (payments deseni birebir): `id serial PK` · `organizer_id int NOT NULL`
+>   (FK yok) · `sales_agent_id → sales_agents(id)` · frozen-EUR dörtlüsü
+>   (`amount`/`currency` DEFAULT 'EUR'/`exchange_rate`/`amount_eur`) · `payout_date DATE` ·
+>   `notes` · `reverses_payout_id` self-FK · `created_by` · `created_at`.
+>   **`updated_at` YOK** (immutable olay). **`payment_method` YOK** (spekülatif açılmadı).
+> - **Kısıtlar:** `commission_payouts_amount_check` (reversal yoksa amount>0, varsa amount<0) ·
+>   `commission_payouts_exchange_rate_check` (>0) · `uq_commission_payouts_reverses`
+>   (partial UNIQUE — bir payout yalnız bir kez ters alınır) · `ix_commission_payouts_agent`.
+> - **S-3: CLAWBACK AYRI MEKANİZMA DEĞİL.** Fazla ödeme → bakiye negatif → sonraki ödemede
+>   mahsuplaşır. Ayrı clawback tablosu/alanı/akışı KURULMAYACAK. Negatif bakiye engellenmez.
+> - **S-4: IMMUTABLE.** UPDATE/DELETE yok; düzeltme = negatif tutarlı yeni satır +
+>   `reverses_payout_id`.
+> - **S-8: TEK KAYNAK.** M2'nin dilim CTE'leri (`pay`/`eff`/`sliced`) `commissions.js`'ten
+>   **`utils/commissionSlices.js` → `SLICE_CTES`**'e çıkarıldı (salt extract). Hem M2 hem
+>   agent statement AYNI ifadeyi kullanır; ikinci komisyon formülü YOK.
+>   **M2 regresyonu 30/30 birebir geçti** — çıktı değişmedi.
+> - **Endpoint'ler** (`routes/payouts.js`, mount `/api/agents`):
+>   `POST /:id/payouts` (amount_eur sunucuda hesaplanır; 23505→409, 23514→400) ·
+>   `GET /:id/statement` (earned/paid/balance + payout listesi, hepsi türetilmiş;
+>   status filtresi YOK — K7a).
+> - **CANLI E2E DOĞRULANDI (agent 47 BENGU DOGRUER, earned 342.00):**
+>   K-1 paid 0.00 / balance 342.00 → K-2 (id=1, 100 EUR) → K-3 (id=2, 300 EUR)
+>   paid 400.00 / **balance −58.00** → K-4 (id=3, −100, reverses id=1) paid 300.00 /
+>   balance 42.00 → K-6 (id=4, 1000 MAD @0.09 → **amount_eur 90.00**) paid 390.00 /
+>   **balance −48.00**, 4 satır. Görsel onay alındı.
+> - **KALICI TEST VERİSİ:** `commission_payouts` id=1,2,3,4 (agent 47) — immutable,
+>   **SİLİNMEZ**; sentetik zincirin parçası (id=4 contract zinciriyle birlikte S8 E2E'ye kadar).
+> - **Bilinen küçük (aksiyonsuz):** `payout_date` JSON'da ISO timestamp olarak dönüyor
+>   (`...T00:00:00.000Z`) — kolon DATE, kozmetik; P2 UI'da formatlanacak.
+>   `created_by` NULL — Faz 4 kimlik/yetkiye ertelendi (`// TODO Faz 4` yer işareti kodda).
+> - **Ölçüm kaydı:** 2026-07-27 itibarıyla çift-rollü agent sayısı = **0** →
+>   `sales_agents.default_commission_pct` agent+SR ORTAK kolon sapması bugün zararsız.
+>   **TETİK: ilk çift-rollü agent doğduğunda kolon ayrılır.**
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
-> - **★ PAYOUT dilimi** (ayrı, gelecek): fiilî agent ödemesi bir **OLAYDIR** — kaydı/ledger'ı bu
+> - ~~**★ PAYOUT dilimi** (ayrı, gelecek): fiilî agent ödemesi bir **OLAYDIR** — kaydı/ledger'ı bu
 >   dilimin işi; **`commissions` tablosu ancak o zaman doğar** (Sentez-1). Clawback/adjustment
 >   semantiği de payout masasında. *(Komisyon motoru M1/M2 tamam — `5c7ccfd`/`320f00f`/`f28e6a6`;
->   hesap türetiliyor, ödeme henüz kaydedilmiyor.)*
+>   hesap türetiliyor, ödeme henüz kaydedilmiyor.)*~~ → ✅ **P1 KAPANDI (2026-07-27, 025 +
+>   `3ab2dac`).** KALAN: **P2 — payout UI iskeleti** (agent statement ekranı, İngilizce, cila yok).
 > - **payment schedule** — 3a kuyruğundan kalan (plan ≠ gerçekleşen; req `:509-511`, `:564`).
 > - **Belge güncelleme borcu:** `archive` B3 v1.0/v1.1 → S7 v1.2 (belge dilimi).
 > - ~~**⚠️ DURAN BORÇ (KORUNUYOR):** `ELL_YOL_HARITASI_v5` + `ELL_BILGI_MIMARISI` hâlâ LEENA-native
