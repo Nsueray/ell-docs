@@ -679,6 +679,41 @@
 >   `sales_agents.default_commission_pct` agent+SR ORTAK kolon sapması bugün zararsız.
 >   **TETİK: ilk çift-rollü agent doğduğunda kolon ayrılır.**
 
+> ## ✅ 2026-07-27 — PAYOUT P2 CANLIDA (agent statement UI iskeleti)
+>
+> - **`public/agent-statement.html` CANLI.** Kod commit: **`ab8a6d9`** (leena-v401).
+>   MIGRATION YOK, yeni backend endpoint YOK — P1'in iki endpoint'i kullanıldı.
+>   `commissions.html` iskeleti/auth deseni birebir izlendi (leenaFetch, 401/403 auto-logout).
+> - **D2'nin UI karşılığı korundu:** `earned_eur`/`paid_eur`/`balance_eur` sunucudan
+>   geldiği gibi basılır; istemcide toplama/çıkarma/yuvarlama YOK. `amount_eur` istemcide
+>   hesaplanmaz, gönderilmez — sunucu hesaplar.
+> - **Ekran:** üç kutu (Earned/Paid/Balance, negatif kırmızı) · payouts tablosu
+>   (sunucu sırası korunur; `payout_date` ISO→`YYYY-MM-DD` kırpılır; negatif satır kırmızı;
+>   REVERSES kolonu) · Record payout formu (EUR→rate 1 disabled) · hata satırı.
+> - **Reverse akışı:** buton YALNIZCA `amount > 0` VE satır henüz ters alınmamışsa görünür;
+>   aksi halde "reversed". Tıklanınca `confirm()` → negatif satır + `reverses_payout_id`.
+>   Çift-reverse UI'dan yapısal olarak imkânsız (buton gizlenir); DB tarafı ayrıca
+>   partial UNIQUE ile korunuyor (P1 T-4).
+> - **Erişim:** yeni sayfa kendi Finance nav'ını taşır (ortak partial YOK — nav her sayfada
+>   inline). `public/sales-agents.html` satır başına TEK additive "Statement" butonu eklendi
+>   (kolon sayısı değişmedi). **Canlı ops sayfalarına (visitor/badge/floorplan/check-in/
+>   terminal) DOKUNULMADI.** `commissions.html`/`contract-list.html` nav'ları değişmedi.
+> - **`agent_id` yoksa:** `/api/sales-agents` listesinden basit `<select>` (yeni endpoint
+>   yazılmadı; `/api/agents` liste endpoint'i YOK — bilinen durum).
+> - **Regresyon:** M1 29/29 · M2 30/30 · payout 26/26 — P1'le birebir, sapma yok.
+> - **GÖRSEL TUR 5/5 GEÇTİ (agent 47, canlı):**
+>   T1 Earned 342.00 / Paid 390.00 / Balance −48.00 kırmızı, 4 satır ·
+>   T2 id=1 "reversed", buton gizli · T3 +10 EUR → Paid 400.00 / Balance −58.00, 5 satır ·
+>   T4 storno → Paid 390.00 / Balance −48.00, 6 satır (net sıfır, "Reversal of #5", REVERSES #5) ·
+>   T5 `-5` denemesi → ekranda "amount must be greater than 0 for a payout.", satır
+>   eklenmedi, rakamlar değişmedi (sessiz yutma yok).
+> - **KALICI TEST VERİSİ (eklendi):** `commission_payouts` id=5 ("P2 UI test", 10 EUR) ve
+>   id=6 ("Reversal of #5", −10 EUR) — immutable, **SİLİNMEZ**. Toplam 6 satır, net etki 0.
+> - **Faz 4 borcu (kabul edilmiş):** Finance ekranları rol-gate'siz görünüyor;
+>   `<!-- TODO Faz 4: role gate (B21-B42) -->` yer işareti sayfada duruyor.
+> - **KALAN (P3 adayı, bu dilimde bilinçle yapılmadı):** toplu ödeme ekranı · PDF/makbuz ·
+>   banka entegrasyonu · agent'a bildirim · nav birleştirme (ortak partial) · tasarım cilası.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - ~~**★ PAYOUT dilimi** (ayrı, gelecek): fiilî agent ödemesi bir **OLAYDIR** — kaydı/ledger'ı bu
@@ -686,6 +721,7 @@
 >   semantiği de payout masasında. *(Komisyon motoru M1/M2 tamam — `5c7ccfd`/`320f00f`/`f28e6a6`;
 >   hesap türetiliyor, ödeme henüz kaydedilmiyor.)*~~ → ✅ **P1 KAPANDI (2026-07-27, 025 +
 >   `3ab2dac`).** KALAN: **P2 — payout UI iskeleti** (agent statement ekranı, İngilizce, cila yok).
+>   → ✅ **P2 de KAPANDI (2026-07-27, `ab8a6d9`).**
 > - **payment schedule** — 3a kuyruğundan kalan (plan ≠ gerçekleşen; req `:509-511`, `:564`).
 > - **Belge güncelleme borcu:** `archive` B3 v1.0/v1.1 → S7 v1.2 (belge dilimi).
 > - ~~**⚠️ DURAN BORÇ (KORUNUYOR):** `ELL_YOL_HARITASI_v5` + `ELL_BILGI_MIMARISI` hâlâ LEENA-native
@@ -722,7 +758,7 @@ contract → payment → reversal → transfer → hesaplanan paid/balance + `co
 **+ komisyon motoru** (M1 contract görünümü `earned/full` + M2 kesim-dönemi raporu
 `/api/commissions` — tavan + reversal + cancelled mühürlü). **FAZ 3A + 3B TAMAM** (migration
 **016-024** + komisyon motoru **M1/M2 canlı, migration'sız** — tamamen türetilmiş/D2; hepsi E2E
-kabul aldı). **Sıradaki: PAYOUT dilimi** (fiilî agent ödemesi = olay; `commissions` tablosu ancak
+kabul aldı). **Sıradaki: ~~PAYOUT dilimi~~ → ✅ P1+P2 KAPANDI (2026-07-27); kuyrukta değildir.** (fiilî agent ödemesi = olay; `commissions` tablosu ancak
 o zaman doğar — Sentez-1) ~~**+ governing doc borcu** (`ELL_YOL_HARITASI_v5` + `ELL_BILGI_MIMARISI`
 hâlâ LEENA-native karara göre güncellenmedi)~~ → ✅ governing-doc borcu **KAPANDI (2026-07-27,
 `55c07ff`)**; kuyrukta değildir (bkz. 2026-07-27 kaydı). **Convert-1 + LIFFY aktivasyonu ertelendi** (L3:
