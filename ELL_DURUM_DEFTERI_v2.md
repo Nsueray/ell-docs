@@ -606,6 +606,34 @@
 > **Test verisi zinciri GENİŞLEDİ:** `id=4` + **BENGU DOGRUER** SR %5 override + **7.440,00 EUR**
 > ödeme (2026-07-24) — **S8 E2E'ye kadar SİLİNMEZ**.
 
+> ## ✅ 2026-07-27 — GOVERNING-DOC ROL DARALTMASI (ell-docs `55c07ff`)
+>
+> - **Belge rolleri kilitlendi.** `ELL_YOL_HARITASI_v5` = yalnız **PUSULA** (faz sırası +
+>   her fazda geçerli ilkeler). `ELL_BILGI_MIMARISI_v3` = yalnız **BİLGİ MİMARİSİ** (hangi
+>   varlık hangi sistemde/DB'de, sahiplik kimde). **Durum/ilerleme/sıradaki adım = yalnız
+>   bu defter.** Her iki belgeye deftere işaretçi kondu (YOL 6 yer, BILGI 1 yer).
+> - **11 cerrahi düzenleme, içerik SİLİNMEDİ** — eski metinler üstü çizili + ⛔ SUPERSEDED
+>   olarak duruyor (defter deseninin aynısı). Diff: +35 / −10, 2 dosya.
+> - **ÖLÇÜM BULGUSU (borç yanlış tanımlanmıştı):** "DURAN BORÇ" iki belgenin 2026-06-19
+>   LEENA-native kararına göre güncellenmediğini varsayıyordu. Ölçüm bunu ÇÜRÜTTÜ: mimari
+>   düzeltme her iki belgede ZATEN uygulanmıştı (SINIF C = boş; kanıt `YOL:58,59,65` ·
+>   `BILGI:36,38`). Gerçek borç yalnız **durum/ilerleme cümlelerinin ayıklanması**ydı.
+> - **Öz-çelişki giderildi** (`YOL:30`): belge hem "defter kazanır" hem "bu belge kazanır"
+>   diyordu. Yeni hüküm: **faz/ilke çelişkisinde yol haritası, durum çelişkisinde defter kazanır.**
+> - **UUID gün-1 kuralı S7 v1.2 ile uyumlandı** (`YOL:133` + `YOL:359`): PK tipi
+>   **barındıran sistemin native tipini** izler — **LEENA = integer SERIAL, LIFFY = UUID**.
+>   Cross-system soft-ref **kaynak sistemin tipinde** tutulur (`source_quote_id`,
+>   `sales_owner_user_id` UUID kalır). **`organizer_id` + audit gün-1 kuralı DEĞİŞMEDEN
+>   geçerli.** Tip Faz 4 kimlik birleşmesinde yeniden ele alınır.
+> - **KALAN (ikinci pas adayı, bu dilimde bilinçle yapılmadı):** YOL faz gövdelerindeki
+>   dağınık "bugün YOK / şu an" ifadeleri ve BILGI tablolarındaki 🟢/🟡/🔴 olgunluk
+>   sütunları tek tek temizlenmedi; bölüm-seviyesi ⛔ işaretçisiyle nötralize edildi
+>   (YOL BÖLÜM 3 başı, BILGI rol sınırı bloğu). Gerekirse ayrı dilim.
+> - Commit: **`55c07ff`** (ell-docs). LEENA koduna/DB'ye dokunulmadı.
+> - **Devir brief'indeki "ELL_GLOSSARY.md commit'siz M duruyor" notu YANLIŞTI** —
+>   2026-07-27 ölçümü: dosya **temiz**, commit'siz değişiklik yok (son dokunuş `a416fa9`).
+>   Madde kapandı, aksiyon gerekmiyor.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ PAYOUT dilimi** (ayrı, gelecek): fiilî agent ödemesi bir **OLAYDIR** — kaydı/ledger'ı bu
@@ -614,8 +642,10 @@
 >   hesap türetiliyor, ödeme henüz kaydedilmiyor.)*
 > - **payment schedule** — 3a kuyruğundan kalan (plan ≠ gerçekleşen; req `:509-511`, `:564`).
 > - **Belge güncelleme borcu:** `archive` B3 v1.0/v1.1 → S7 v1.2 (belge dilimi).
-> - **⚠️ DURAN BORÇ (KORUNUYOR):** `ELL_YOL_HARITASI_v5` + `ELL_BILGI_MIMARISI` hâlâ LEENA-native
->   karara (finans/komisyon LEENA'da; ELIZA marka/Finance-tab) göre **güncellenmedi**.
+> - ~~**⚠️ DURAN BORÇ (KORUNUYOR):** `ELL_YOL_HARITASI_v5` + `ELL_BILGI_MIMARISI` hâlâ LEENA-native
+>   karara (finans/komisyon LEENA'da; ELIZA marka/Finance-tab) göre **güncellenmedi**.~~ → ✅
+>   **KAPANDI (2026-07-27, `55c07ff`):** rol daraltması yapıldı; borcun "mimari dil güncellenmedi"
+>   varsayımı ölçümle çürütüldü (zaten güncelmiş). Bkz. 2026-07-27 kaydı.
 > - **Ucuz iyileştirme kuyruğu — kur-yönü ipucu (DURUYOR, ihtiyaç 2 kez doğrulandı):**
 >   add-payment formunda `exchange_rate` alanına yön ipucu. Bir sonraki UI dokunuşunda yapılır.
 
@@ -647,8 +677,9 @@ contract → payment → reversal → transfer → hesaplanan paid/balance + `co
 `/api/commissions` — tavan + reversal + cancelled mühürlü). **FAZ 3A + 3B TAMAM** (migration
 **016-024** + komisyon motoru **M1/M2 canlı, migration'sız** — tamamen türetilmiş/D2; hepsi E2E
 kabul aldı). **Sıradaki: PAYOUT dilimi** (fiilî agent ödemesi = olay; `commissions` tablosu ancak
-o zaman doğar — Sentez-1) **+ governing doc borcu** (`ELL_YOL_HARITASI_v5` + `ELL_BILGI_MIMARISI`
-hâlâ LEENA-native karara göre güncellenmedi). **Convert-1 + LIFFY aktivasyonu ertelendi** (L3:
+o zaman doğar — Sentez-1) ~~**+ governing doc borcu** (`ELL_YOL_HARITASI_v5` + `ELL_BILGI_MIMARISI`
+hâlâ LEENA-native karara göre güncellenmedi)~~ → ✅ governing-doc borcu **KAPANDI (2026-07-27,
+`55c07ff`)**; kuyrukta değildir (bkz. 2026-07-27 kaydı). **Convert-1 + LIFFY aktivasyonu ertelendi** (L3:
 `line_items` + satır-varken-currency LIFFY önkoşulu). Sonraki: audit/kimlik (Faz 4), transport
 (LIFFY aktivasyonu). Birleşme bitene kadar sistemleri kimse kullanmıyor (tek kullanıcı Suer).
 
