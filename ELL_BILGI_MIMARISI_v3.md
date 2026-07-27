@@ -13,6 +13,11 @@
 > *(Aşağıdaki "üç app" / "ELIZA'ya yaz" dili bu karara göre düzeltildi. Belgenin doğru çekirdeği
 > zaten §0'daki nottaydı; kalan eski dil temizlendi.)*
 
+**Rol sınırı (2026-07-25):** Bu belge yalnız **BİLGİ MİMARİSİ**dir — hangi varlık hangi
+sistemde/DB'de yaşar, sahiplik kimde. **Durum/ilerleme TUTMAZ.** Aşağıdaki 🟢/🟡/🔴
+olgunluk işaretleri ve "bugün/şu an" ifadeleri **2026-06-19 tarihli donmuş fotoğraftır**;
+güncel durum **ELL_DURUM_DEFTERI_v2.md**'dedir. Çelişkide defter kazanır.
+
 **Amaç:** "Hangi iş hangi kullanıcı domain'inde/sekmede görünür ve fiziksel olarak hangi sistemde yaşar" ve "her domain içinde sayfalar nasıl gruplanır" sorularını cevaplamak. Renk/component değil; **sunum + kullanış kolaylığı** katmanı. Kaynak: ELAN_EXPO_REQUIREMENTS v1.0 + iki aktif sistemin (LIFFY + LEENA) mevcut durumu (eski ELIZA yalnız tarihsel referans) + kilitli mimari (Aşama 1, Bölüm 1–2) + 2026-06-19 mimari karar bloğu.
 
 **v2 değişiklikleri (Sentez review):** Convert iki-dönüşüm netleşti (#2); AF number prefix-flip notu (#1); scope reports_to zinciri (#3); Cluster eklendi (#4, #8); pipeline 7-aşama kaynaklandı + 6/7 convert sınırı (#5); **olgunluk katmanı eklendi (#6)**; **iki-halka domain erişim matrisi eklendi (#7)**; global search **eski 3-DB notundan 2-DB modeline düzeltildi** (#9).
@@ -21,7 +26,7 @@
 
 ---
 
-## Olgunluk lejantı (bu harita NİHAİ HEDEF — bugünkü durum değil)
+## ⛔ Olgunluk lejantı — DONMUŞ FOTOĞRAF (2026-06-19), DURUM KAYDI DEĞİL
 
 Bu belge kullanıcı-açısından hedef IA'yı tarif eder. Ama her ekran bugün mevcut değil — çoğu **greenfield**. Tasarımcı buna göre varsayım yapmalı:
 

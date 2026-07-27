@@ -2,7 +2,11 @@
 
 **Tarih:** 2026-06-19 (v5 — mimari karar değişikliği)
 **Sahip:** Suer Ay
-**Statü:** 🟢 **CANONICAL** — ELL için tek doğru kaynak. **v4'ün yerini alır.**
+**Statü:** 🧭 **PUSULA** — faz sırası + her fazda geçerli ilkeler. **v4'ün yerini alır.**
+**Rol sınırı (2026-07-25):** Bu belge DURUM TUTMAZ. "Şu an nerede / ne canlı / hangi
+commit / sıradaki somut adım" sorularının TEK kaynağı **ELL_DURUM_DEFTERI_v2.md**'dir.
+Bu belgedeki tüm "bugün / şu an / canlı / YOK" ifadeleri **2026-06-19 tarihli donmuş
+fotoğraftır**, güncel durum değildir. Çelişkide defter kazanır.
 
 > ## 🔴 2026-06-19 — MİMARİ KARAR DEĞİŞİKLİĞİ (HER ŞEYDEN ÖNCE OKU)
 >
@@ -23,9 +27,9 @@
 
 > ### ⚠️ Belge statüsü ve isimlendirme (ÖNEMLİ — karışıklığı önler)
 >
-> **Bu belge CANONICAL'dır.** Bir çelişki olduğunda bu belge kazanır. ELL'i tarif eden
+> **Bu belge PUSULA olarak canonical'dır** (faz sırası + her fazda geçerli ilkeler). **Durum/ilerleme/sıradaki adım için DEĞİL** — o konularda ELL_DURUM_DEFTERI_v2.md kazanır. Faz sırası veya ilke çelişkisinde bu belge kazanır. ELL'i tarif eden
 > tek pusula budur. Bir Claude'a, ChatGPT'ye veya Claude Code'a ELL hakkında soru
-> sorulurken referans bu belgedir.
+> sorulurken referans bu belgedir — faz/ilke soruları için. Durum soruları için referans ELL_DURUM_DEFTERI_v2.md.
 >
 > **`ELL_ARCHITECTURE_v1_0_CONSOLIDATED.md` artık canonical DEĞİLDİR — tarihsel taslaktır.**
 > O dokümandaki mekanizma önerileri (RS256/JWKS asimetrik imzalama, key-rotation state
@@ -79,8 +83,9 @@ DIŞ HALKA — LIFFY                       İÇ HALKA — Ana uygulama
 
 ### 1.4 Geçiş güvenlik ağı (senin verdiğin bilgi)
 - **Zoho 1 yıl daha açık kalacak** → hata olursa gerçek Zoho'da, kayıp yok.
-- **ELIZA ve LIFFY şu an KULLANILMIYOR; sadece LEENA canlı** → ELIZA/LIFFY'de özgür
-  hareket; sadece LEENA'nın canlı visitor/badge akışına dikkat.
+- ~~**ELIZA ve LIFFY şu an KULLANILMIYOR; sadece LEENA canlı**~~ → ⛔ SUPERSEDED
+  (durum kaydı, 2026-07-25): hangi sistemin canlı/kullanımda olduğu **ELL_DURUM_DEFTERI_v2.md**'de
+  tutulur. Kalıcı İLKE değişmedi: **canlı LEENA visitor/badge akışına dikkat.**
 
 ### 1.5 Korunan adalar (2026-06-19: ELIZA artık "korunan ada" DEĞİL)
 - **LEENA ops çekirdeği korunur (canlı):** floor plan builder (18 endpoint, DB-invariant),
@@ -92,7 +97,7 @@ DIŞ HALKA — LIFFY                       İÇ HALKA — Ana uygulama
   foundation'ı yapılmaz. (Fonksiyonlar değerli olabilir; ELIZA *sistemi* korunacak mimari
   ada değil.)
 
-### 1.6 Sistem durumları (2026-06-19: ELIZA aktif sistem DEĞİL)
+### 1.6 Sistem rolleri — ⛔ DURUM KAYDI DEĞİL (donmuş 2026-06-19 fotoğrafı; güncel durum: ELL_DURUM_DEFTERI_v2.md)
 | Sistem | Durum | Bundan sonra ne yapılır |
 |---|---|---|
 | **LIFFY** | Aktif dış halka | Güvenlik izolasyonu, quote, convert bridge |
@@ -125,7 +130,7 @@ bir şey olur. (v1'in hatası: önce tüm zemini kurmak → boğulma.)
 2. Dual contract tablosu → Faz 3'te "tek source of truth: LEENA Finance; **eski ELIZA mirror yalnız tarihsel/prototip referans — migration kaynağı DEĞİL** (gerçek migration Zoho → LEENA)"
 3. Aşama'yı böl → ticari çekirdek 3 ayrı dilime bölündü (quote / contract+convert / payment+commission+ledger)
 4. Audit baştan → her yazılabilir tabloya gün-1'den created/updated/by + değişiklik tablosu
-5. UUID + users → gün-1 kuralı: tüm yeni PK'lar UUID, ID çakışması engellenir
+5. ~~UUID + users → gün-1 kuralı: tüm yeni PK'lar UUID, ID çakışması engellenir~~ → ⛔ SUPERSEDED (2026-07-21, S7 v1.2): PK tipi **barındıran sistemin native tipini** izler — LEENA = integer SERIAL, LIFFY = UUID. Users/kimlik birleşmesi Faz 4'e ait. Bkz. Bölüm 4, ilke 6.
 6. Lead→quote köprüsü → LIFFY içi (cross-app değil), senin kararınla basitleşti
 7. Test → her dilime gömülü smoke test + happy-path checklist + finans için unit test
 8. Multi-tenant → gün-1 kuralı: tüm yeni tablolar organizer_id ile
@@ -133,6 +138,11 @@ bir şey olur. (v1'in hatası: önce tüm zemini kurmak → boğulma.)
 ---
 
 ## BÖLÜM 3 — FAZLAR
+
+> ⛔ **Bu bölüm KAPSAM tarifidir, ilerleme kaydı DEĞİLDİR.** Hangi fazın/dilimin
+> bittiği, neyin canlı olduğu, hangi migration'ın uygulandığı: **ELL_DURUM_DEFTERI_v2.md**.
+> Faz gövdelerindeki "bugün YOK / şu an / bugün şemada YOK" ifadeleri 2026-06-19
+> tarihli fotoğraftır; güncel değildir ve güncellenmez.
 
 ### FAZ 0 — Temel hijyen (şema kurtarma + secret) ⏱️ ~1 hafta · DÜŞÜK risk
 > İnşaata başlamadan binanın planını çıkar. Ucuz, risksiz (çoğu salt-okuma), ama
@@ -346,14 +356,24 @@ halkasını tek kullanıcı deneyimine bağlama** fazı. Tek giriş, tek yetki.
    **Eski ELIZA AI/dashboard/bot kodunu yalnız REFERANS kabul et** — yeni finance foundation
    için onu koruma zorunluluğu yok.
 5. **Güvenlik = gömülü önkoşul**, ayrı kriz değil. İlgili dilimden hemen önce.
-6. **UUID + organizer_id + audit = gün-1 kuralı.** Her yeni tabloda. Sonradan eklemek pahalı.
+6. **~~UUID~~ + organizer_id + audit = gün-1 kuralı.** Her yeni tabloda. Sonradan eklemek pahalı.
+   > ⛔ **PK tipi kuralı SUPERSEDED (2026-07-21, S7 v1.2):** "tüm yeni PK'lar UUID" kalktı.
+   > **PK tipi barındıran sistemin native tipini izler: LEENA = integer SERIAL, LIFFY = UUID.**
+   > Cross-system soft-ref **kaynak sistemin tipinde** tutulur (`source_quote_id`,
+   > `sales_owner_user_id` → LIFFY kaynaklı, UUID kalır).
+   > **`organizer_id` + audit gün-1 kuralı DEĞİŞMEDEN geçerlidir.**
+   > Tip, Faz 4 kimlik birleşmesinde yeniden ele alınır; bugün integer.
+   > Kaynak: S7 v1.2 — ELL_DURUM_DEFTERI_v2.md.
 7. **Zoho ayakta — risk düşük.** Hata gerçek Zoho'da; acele etme, paralel doğrula.
 8. **Canlıyı (LEENA) bozma:** QR'ı yeniden üretme; email_worker SKIP LOCKED'a dokunma;
    yeni visitor endpoint organizer_id ile filtrele; migration'ı dry-run test et.
 
 ---
 
-## BÖLÜM 5 — SIRADAKİ SOMUT ADIM
+## BÖLÜM 5 — ⛔ SUPERSEDED (2026-07-25) — SIRADAKİ ADIM ARTIK BU BELGEDE TUTULMAZ
+
+> Sıradaki somut adım **ELL_DURUM_DEFTERI_v2.md**'de tutulur (tek durum kaydı).
+> Aşağıdaki liste 2026-06-19 tarihli TARİHSEL kayıttır; SİLİNMEDİ, referans için duruyor.
 
 **2026-06-19 — yeni sıradaki somut adımlar:**
 1. **Belgeleri kanonik hale getir** — roadmap v5 + bilgi mimarisi v3 + durum defteri amendment/superseded (bu iş).
