@@ -784,6 +784,85 @@
 >   hiçbir tabloda CHECK'siz, sözlük yalnız UI'da. Yönetim UI'ı olmayan referans tablolar:
 >   `core_countries`, `core_sectors`, `offices` (PS2 "Reference Data" adayı).
 
+> ## ✅ 2026-07-28 — PS2 CANLIDA (ofis boyutu + tek ödeme formu; 027 + 028)
+>
+> - **Migration'lar CANLI:** `027_payout_office_method` (commission_payouts +
+>   `paid_office_id` FK offices, + `payout_method` ADLI CHECK beş değer) ·
+>   `028_agent_office` (sales_agents + `office_id` FK offices + 3 kademeli backfill).
+>   Son migration **026 → 028**. Kod commit'leri: **`dc00354`** (PS2-A) · **`e2db297`** (B1) ·
+>   **`e289c7d`** (B2) · **`fd516e4`** (C).
+> - **NAKİT YÖNÜ ARTIK ÇİFT TARAFLI.** `payments.received_office_id` = para NEREYE GELDİ
+>   (giriş, 026) · `commission_payouts.paid_office_id` = para NEREDEN ÇIKTI (çıkış, 027).
+>   Tek yönlü kayıt ofis bakiyesini yanlış gösteriyordu; PS3 nakit öngörüsünün ön koşulu.
+>   ⚠️ AD FARKI KASITLI: `received_office_id` (payments) ≠ `paid_office_id` (payouts).
+> - **TEK SÖZLÜK (H7).** `payout_method` CHECK'i `payments.payment_method` ile AYNI beş
+>   değer (`bank_transfer`,`cash`,`cheque`,`credit_card`,`other`). Kısa 'bank'/'cash'
+>   sözlüğü AÇILMADI. `payments.payment_method`'a DOKUNULMADI.
+> - **REVERSAL OFİSİ SUNUCUDA DEVRALIR (W-8).** İstemciden gelen ofis/method reversal
+>   satırında **YOK SAYILIR** — para geldiği yere döner, kullanıcıya sorulmaz. ÜÇ nokta:
+>   payment reverse (`contracts.js:737`, INSERT...SELECT) · payout reverse
+>   (`payouts.js:114/132`, istemci-gönderme modelinden **sunucu-kopyalama**ya çevrildi) ·
+>   transfer'in İKİ INSERT'i (negatif kapama + pozitif kopya, `contracts.js:932/947`).
+>   Üçüncüsü ölçümde çıktı: transfer klonunda ofis kopyalanmasaydı sessizce kaybolurdu.
+> - **ZORUNLULUK KATMANI AYRIŞTIRILDI (W-6).**
+>   DB: `received_office_id` / `paid_office_id` / `office_id` **NULLABLE KALIR** —
+>   NOT NULL constraint YOK (canlı ofissiz satırlar var, eski kayıtlar hatasız görünür).
+>   FORM + API: **yeni** payment/payout kaydında ofis ZORUNLU (400 "office required").
+>   **MUAF:** reversal ve transfer dalları — ofisi orijinalden devralıyorlar, istemciden
+>   ofis beklemezler. Ayrışma yapısal (ayrı endpoint / `!isReversal` guard).
+> - **⛔ SÜPERSE EDİLEN İKİ KABUL KRİTERİ (Suer onaylı, 2026-07-28):**
+>   `PS2-A test (i)` ve `PS1 K-10r` "ofissiz ödeme KABUL (201)" diyordu → artık
+>   **"ofissiz → 400 office required"**. Testler SİLİNMEDİ, çevrildi. Gerekçe: "para
+>   geldiğini onaylıyorsak nereye geldiğini de biliyoruzdur" (Suer). Muafiyet testleri
+>   (reversal/transfer) ofis göndermeden bırakıldı — asıl invaryant onlar.
+> - **AGENT → OFİS BACKFILL (Suer kuralı).** 3 kademeli, SIRAYLA: (1) `sales_team`
+>   ofis adı içeriyorsa → o ofis · (2) yoksa `sales_group` · (3) yoksa `country` beş ofis
+>   ülkesinden biriyse → o ofis · (4) hiçbiri → **Turkey**. Takım etiketi country'den
+>   önce gelir (Nigeria Office 12 vs country Nigeria 7). UPDATE **idempotent**
+>   (`WHERE office_id IS NULL`), ofis id'leri alt sorguyla (sayısal id gömülmedi).
+>   **SONUÇ (canlı, dry-run ile birebir): Turkey 122 · Nigeria 12 · Morocco 10 ·
+>   Kenya 5 · China 2 = 151, NULL 0.**
+>   Kaynak alanlar Zoho'dan **serbest metin** (021:56, 022:28-29) — FK/CHECK yok, ILIKE ile eşlendi.
+> - **AÇIK MADDE — IRAQ VE OFİSSİZ ÜLKELER:** veride `Iraq Office` etiketi var (sales_team 3,
+>   country 3) ama `offices` tohumunda YOK. Iraq + Italy/India/Ghana/Spain/Algeria/Malaysia/
+>   Lebanon/Egypt/Germany/Iran (~18 agent) kural (4) ile **Turkey**'e bağlandı.
+>   Iraq ofis olarak açılacak mı — **KARAR VERİLMEDİ**, Suer'e ait. Açılırsa tek INSERT +
+>   ilgili agent'ların office_id güncellemesi yeter (kod değişikliği YOK, S-16r sayesinde).
+> - **ÖN-DOLDURMA (W-7, kilit değil — kullanıcı ezebilir):** payment formu → kontratın
+>   `agent` rolündeki agent'ın ofisi, yoksa `sr`'ninki, yoksa boş. Payout formu → agent'ın
+>   ofisi (statement yanıtına `agent_office_id` eklendi; ek endpoint AÇILMADI).
+>   `sales_agents` `SELECT_COLS` sabitine (salesAgents.js:17) `office_id` eklendi — tek yer,
+>   GET/POST/PUT üçünü kapsar. Agent formunda ofis DÜZENLEME kapsam dışı (okuma amaçlı).
+> - **TARİH DEFAULT'U (W-9):** add-payment tarihi artık BUGÜN ön-dolu. Record-payout zaten
+>   bugünle geliyordu, dokunulmadı. Sunucuda tarih zorlaması YOK.
+> - **TEK ÖDEME FORMU (W-10).** `contract-list.html` satır içi hızlı ödeme formu KALDIRILDI
+>   (payForm/togglePayForm/lockRateIfEur/submitPayment). "+ Payment" artık
+>   `contract-detail.html?id=` adresine götürür. Gerekçe: aynı form iki yerde = her alan
+>   iki kez bakım. **Yan kazanç: `CURRENCIES` kopyası 3 → 2 düştü** (H-4 borcu küçüldü;
+>   kalan: contract-detail.html, sales-agents.html).
+> - **OFİS LİSTESİ KODA GÖMÜLMEZ (S-16r) — korundu.** Dropdown'lar `GET /api/offices`'ten;
+>   frontend'de ofis sabiti/dizisi/enum YOK. Yeni ofis tek INSERT ile deploy'suz görünür.
+> - **Testler:** PS2-A 5/5 · PS2-B1 10/10 · PS2-C 18/18. Regresyon **M1 29/29 · M2 30/30 ·
+>   payout 26/26 · PS1 29/29** — sapmasız. Komisyon motoruna (commissions.js,
+>   utils/commissionSlices.js) DOKUNULMADI.
+> - **GÖRSEL TUR — EKRANDA DOĞRULANANLAR (G1-G6):**
+>   G1/G2 contract 4'teki iki test ödemesi reverse edildi → **reversal of #10 = Kenya
+>   (devraldı), reversal of #9 = "—"**; PAID 7.440,00 EUR, COLLECTION 40%, **earned 342.00'a
+>   döndü** (taban restore) · G3 payment formu: tarih bugün + Office **Turkey** ön-dolu
+>   (SR→agent 47) · G4 contract 3'te ofissiz Save → kırmızı **"Office is required"**, satır
+>   yazılmadı · G5 Morocco ile 5,00 EUR kaydedildi, listede Morocco · G6 agent 47:
+>   Earned 342.00 / Paid 390.00 / Balance −48.00, payout formunda Office **Turkey** ön-dolu.
+> - **⚠️ GÖRSEL ONAY EKSİĞİ (bilinçli, Suer kararı):** G7 (ofissiz payout → uyarı) ·
+>   G8 (Kenya+cash payout) · G9 (payout reversal devralma) **ekranda koşulmadı**.
+>   Testlerle kapsanıyor (U4, U6, PS2-B1 T5) ama **görsel onay alınmadı**. PS3 turunda
+>   ilk fırsatta bakılacak.
+> - **KALICI TEST VERİSİ (eklendi, SİLİNMEZ):** contract 4'te 2 reversal satırı (net 0) ·
+>   contract 3'te "PS2-C office required" 5,00 EUR / Morocco ödemesi.
+> - **Bilinen küçükler (aksiyonsuz):** `contract-list.html`'de `.pay-row`/`.pay-form` CSS
+>   kuralları artık ölü (zararsız) · `CURRENCIES` hâlâ 2 dosyada kopya · scratch test
+>   ortamındaki `expos` stub'ına `organizer_id` eklendi (yalnız test kurulumu; prod
+>   `expos`'ta kolon zaten vardı, ürün kodu etkilenmedi).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - ~~**★ PAYOUT dilimi** (ayrı, gelecek): fiilî agent ödemesi bir **OLAYDIR** — kaydı/ledger'ı bu
@@ -796,6 +875,11 @@
 >   → ✅ **PS1 KAPANDI (2026-07-28, 026 + `fa7f288`).** KALAN: **PS2** — schedule UI kartı
 >   (contract-detail) · ofis yönetim ekranı · "Reference Data" sayfası · nakit öngörü raporu
 >   (ofis × para birimi × vade) · ödeme↔kalem eşleştirme.
+>   → ✅ **PS2 KAPANDI (2026-07-28, 027+028; `dc00354`/`e2db297`/`e289c7d`/`fd516e4`).**
+>   KALAN: **PS3 — nakit öngörü raporu (ofis × para birimi × vade kırılımı — ASIL ÖDÜL)** ·
+>   ofis yönetim ekranı (ekle/kapat, Iraq kararı) · Reference Data admin sayfası ·
+>   ödeme↔kalem eşleştirme (S-6) · schedule UI kartı (contract-detail) · agent formunda
+>   ofis düzenleme.
 > - **Belge güncelleme borcu:** `archive` B3 v1.0/v1.1 → S7 v1.2 (belge dilimi).
 > - ~~**⚠️ DURAN BORÇ (KORUNUYOR):** `ELL_YOL_HARITASI_v5` + `ELL_BILGI_MIMARISI` hâlâ LEENA-native
 >   karara (finans/komisyon LEENA'da; ELIZA marka/Finance-tab) göre **güncellenmedi**.~~ → ✅
