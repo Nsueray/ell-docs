@@ -863,6 +863,72 @@
 >   ortamındaki `expos` stub'ına `organizer_id` eklendi (yalnız test kurulumu; prod
 >   `expos`'ta kolon zaten vardı, ürün kodu etkilenmedi).
 
+> ## ✅ 2026-07-28 — PS3-A CANLIDA (schedule UI kartı + default ofis ön-doldurma)
+>
+> - **Commit `87d162d`** (2 dosya: routes/contracts.js · public/contract-detail.html).
+>   Migration YOK — şemaya dokunulmadı. PS1'in görünür karşılığı bu dilimde doğdu.
+> - **KART YERİ:** contract-detail.html'de LINE ITEMS ile PAYMENTS **arasında** (:158).
+>   Aktif tablo + totals + `<details>` history + [Generate default] / [Add manually].
+> - **D-1 — DEFAULT ÜRETİCİ ARTIK OFİS ÖN-DOLDURUYOR** (contracts.js:1318-1329,
+>   1346-1354): LEFT JOIN sales_agents ag/sr + COALESCE(ag.office_id, sr.office_id).
+>   Çözülemezse NULL, hata dönmez.
+>   **⚠️ AYNI KURAL İKİ KATMANDA:** PS2'nin W-7 çözücüsü FRONTEND'dedir
+>   (contract-detail.html:284-290, payment formu için); default üretici SUNUCUDA
+>   çalıştığı için aynı kuralı SQL ile AYRICA uygular. **Ortak kod YOKTUR** — kural
+>   (agent → sr → NULL) değişirse **İKİ YER de** güncellenmelidir.
+>   **Gerekçe kayda geçsin:** bu alan boş kalsaydı PS3-B nakit öngörüsü geçmişi
+>   gösterir, GELECEĞİ göstermezdi — dilimin varlık sebebi ölürdü.
+>   `applyScheduleRevision` ve manuel POST /schedule DOKUNULMADI (ofis istemciden gelir).
+> - **PLAN OFİSİ ZORUNLU DEĞİL (U-10) — payments'tan KASITLI FARK.** Ödemede ofis
+>   zorunlu ("para geldiyse nereye geldiğini biliriz" — Suer); plan bir TAHMİNDİR,
+>   ön-doldurulur, ezilebilir, boş bırakılabilir. Bu tutarsızlık DEĞİL, ayrımdır.
+> - **⚠️ KASITLI ASİMETRİ — İLERİDE "HATA" SANILMASIN:** default üretici İNAKTİF ofisi
+>   kabul eder, manuel POST REDDEDER (400). Aynı alan, iki kural. Gerekçe: plan bir
+>   tahmindir; agent gerçekten o ofise bağlıdır. Bugün oluşamaz (beş ofis de aktif,
+>   kapatma UI'ı yok). Düzeltilecek bir şey YOK.
+> - **Payout'ta ofis ZORUNLU, method OPSİYONEL** — ölçüldü ve doğrulandı (G8: method
+>   boş bırakılarak kayıt geçti). Kasıtlı.
+> - **Testler:** PS3-A 8/8 (S1 agent ofisi · S1b SR fallback · S2 NULL ofis 201 ·
+>   S3 inaktif ofis plan tahmini · S4 manuel istemci ofisi agent'ı ezmez · S5 revizyon).
+>   Regresyon **M1 29/29 · M2 30/30 · payout 26/26 · PS1 29/29 · PS2-A 5/5 ·
+>   PS2-B1 10/10 · PS2-C 18/18** — sapmasız. Komisyon motoruna (commissions.js,
+>   utils/commissionSlices.js) DOKUNULMADI.
+> - **GÖRSEL TUR — EKRANDA DOĞRULANDI (9/9):**
+>   V-1 contract 3 kartı: rev 2, Jul 29 6.000,00 (%40) + Dec 2 9.000,00 (%60), USD,
+>   15.000,00/15.000,00 matches revenue, Expected office "—" ·
+>   V-2 history: rev 1'in satırları superseded, tutarlar DEĞİŞMEMİŞ ·
+>   V-3 contract 4 [Generate default] → **"expo required"** (ayırt edici mesaj), satır
+>   yazılmadı ·
+>   V-4 onay uyarısı ekranda: "This will replace the active plan (revision 2 → 3).
+>   The previous plan is kept in history." ·
+>   V-5 manuel %30/%30/%40 → 4.500,00 / 4.500,00 / 6.000,00, Σ ≡ 15.000,00 TAM ·
+>   V-6+V-7 tek kalem 1.000,00 + ofis boş → KAYIT GEÇTİ, kırmızı **"does not match
+>   revenue"** göründü, ofissiz kalem kabul edildi ·
+>   V-8 satırlarda edit/delete/"paid" işareti YOK ·
+>   G7 ofissiz payout → **"Office is required"**, Paid 390,00 SABİT (kayıt yok) ·
+>   G8 Kenya payout → Paid 405,00 / Balance −63,00, satırda Kenya ·
+>   G9 Reverse → reversal satırı da **Kenya** (sorulmadan), Paid 390,00 / Balance −48,00
+>   → **agent 47 net SIFIRA döndü, earned 342,00 tabanı temiz**.
+>   PS2'den devreden G7-G9 görsel borcu **KAPANDI**.
+> - **Tur sapmaları (defect DEĞİL):** revision 3 yerine 4 çıktı — [Generate default] iki
+>   kez basıldı; her çağrı yeni revizyon üretir, immutable modelde NORMAL ·
+>   G8'de 10 yerine 15 EUR + method boş; aritmetik doğru (390+15=405, 342−405=−63).
+> - **⚠️ AÇIK GÖRSEL BORÇ — DARALTILDI:** D-1'in **schedule-default** ofis
+>   ön-doldurması ekranda görülemedi: contract 3'te agent/SR rolü YOK (ofis NULL),
+>   contract 4'te expo YOK (400). **AMA W-7 payment-form ön-doldurması GÖRÜLDÜ** —
+>   contract 4'ün ADD PAYMENT formunda OFFICE = **Turkey** ön-dolu geldi (SR BENGU
+>   DOGRUER → agent 47 → Turkey). Yani borç yalnız schedule-default dalı.
+>   Testlerle kapsanıyor (S1/S1b/S2). Kapanma koşulu: **agent rolü VE expo'su olan**
+>   gerçek bir kontrat doğduğunda. En ucuz yol contract 4'e expo bağlamak olurdu —
+>   expo_id komisyon formülüne girmez, 342,00 tabanını bozmaz — ama Suer (b) dedi,
+>   canlı komisyon verisine dokunulmadı. KARAR VERİLMEDİ, kuyrukta.
+> - **KALICI TEST VERİSİ (SİLİNMEZ):** contract 3 schedule **revision 6** — tek kalem
+>   1.000,00 USD @ Sep 10, ofissiz, "does not match revenue" (V-6/V-7'nin canlı kanıtı),
+>   history 11 satır · agent 47'de 15 EUR Kenya payout + reversal'ı (net 0).
+> - **Revizyon birikimi normal:** her [Generate default] ve her manuel kayıt yeni revizyon
+>   üretir; satırlar UPDATE/DELETE edilmez (H3/S-5). Rev 6'ya çıkmış olması sağlıklı
+>   davranıştır.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - ~~**★ PAYOUT dilimi** (ayrı, gelecek): fiilî agent ödemesi bir **OLAYDIR** — kaydı/ledger'ı bu
@@ -880,6 +946,12 @@
 >   ofis yönetim ekranı (ekle/kapat, Iraq kararı) · Reference Data admin sayfası ·
 >   ödeme↔kalem eşleştirme (S-6) · schedule UI kartı (contract-detail) · agent formunda
 >   ofis düzenleme.
+>   → ✅ **PS3-A KAPANDI (2026-07-28, `87d162d`).** KALAN: **PS3-B — nakit öngörü raporu
+>   (ofis × para birimi × vade kırılımı — ASIL ÖDÜL; iki yön de artık kayıtlı, önkoşul
+>   tamam)** · ofis yönetim ekranı (ekle/kapat, Iraq kararı) · Reference Data admin sayfası ·
+>   **kural kütüğü (ELL_LOCKED_KARARLAR_OZET'e iş kuralları bölümü — S/H/W/U/D hükümleri
+>   indekssiz birikiyor)** · ödeme↔kalem eşleştirme (S-6) · agent formunda ofis düzenleme ·
+>   **D-1 schedule-default ön-doldurma görsel borcu**.
 > - **Belge güncelleme borcu:** `archive` B3 v1.0/v1.1 → S7 v1.2 (belge dilimi).
 > - ~~**⚠️ DURAN BORÇ (KORUNUYOR):** `ELL_YOL_HARITASI_v5` + `ELL_BILGI_MIMARISI` hâlâ LEENA-native
 >   karara (finans/komisyon LEENA'da; ELIZA marka/Finance-tab) göre **güncellenmedi**.~~ → ✅
