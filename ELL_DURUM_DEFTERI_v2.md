@@ -714,6 +714,76 @@
 > - **KALAN (P3 adayı, bu dilimde bilinçle yapılmadı):** toplu ödeme ekranı · PDF/makbuz ·
 >   banka entegrasyonu · agent'a bildirim · nav birleştirme (ortak partial) · tasarım cilası.
 
+> ## ✅ 2026-07-28 — PAYMENT SCHEDULE PS1 CANLIDA (migration 026 + vade planı)
+>
+> - **Migration `026_payment_schedule` CANLI** (leena_v401_db). Dry-run (ROLLBACK) → COMMIT,
+>   `\d` doğrulandı. Son migration **025 → 026**. Additive; canlı ops etkilenmedi.
+>   Kod commit: **`fa7f288`** (leena-v401).
+> - **PLAN ≠ GERÇEK (kilitli).** `payment_schedule_items` PLANDIR, `payments` OLAYDIR.
+>   Eşleştirme ZORLANMAZ, uyarı üretilmez. Müşteri "Kenya'ya ödeyeceğim" deyip Türkiye'ye
+>   öderse: plan satırı olduğu gibi kalır, ödeme kendi ofisiyle kaydedilir (S-13r).
+> - **KUR DONDURULMAZ (S-4).** Plan para hareketi değildir → `exchange_rate`/`amount_eur`
+>   kolonu YOK. Tutar kontrat para biriminde tutulur, `currency` kontrattan kopyalanır.
+> - **REVİZYON DESENİ (S-5) — repoda ilk.** Tutar/tarih ASLA UPDATE edilmez; revizyonda eski
+>   satırlar `superseded_at` damgalanır, yeni satırlar `revision = max+1` ile eklenir.
+>   Aktif plan = `superseded_at IS NULL`. "Müşteri 3 kez vade erteledi" bilgisi kaybolmaz.
+> - **DURUM SAKLANMAZ (S-7).** Zoho'nun `Payment Done ✓` / `Validity 05/26` deseni
+>   KOPYALANMADI. "Ödenmemiş" = Σ schedule > Σ payments, TÜRETİLİR, kontrat seviyesinde.
+>   `matches_revenue` yanıtta hesaplanır, saklanmaz.
+> - **Yeni tablo `offices`** — sade referans: `id serial` · `name` · `country_code char(2)`
+>   → **FK `core_countries(code)`** (⚠️ `core_countries` PK'sı CHAR(2) koddur, integer id
+>   YOKTUR — `country_id` varsayımı ölçümle çürütüldü) · `is_active` · UNIQUE(name).
+>   **TAM 5 satır tohum:** Turkey/TR · Morocco/MA · Nigeria/NG · Kenya/KE · China/CN.
+>   Ofis × para birimi × tahsilat şekli **çarpım tablosu KURULMADI** — kombinasyon seçilir,
+>   saklanmaz (S-11r).
+> - **OFİS LİSTESİ KODA GÖMÜLMEZ (S-16r).** Enum yok, CHECK yok, frontend sabiti yok;
+>   tüketici `GET /api/offices`'ten okur. K-12r testi ispatladı: yeni ofis TEK INSERT ile
+>   eklenir, deploysuz görünür. `payment_method` bu kuralın DIŞINDA (kapalı küme, CHECK kalır).
+> - **TEK SÖZLÜK (H7).** `expected_method` CHECK'i `payments.payment_method` ile AYNI beş
+>   değeri kullanır (`bank_transfer`,`cash`,`cheque`,`credit_card`,`other`). 'bank'/'cash'
+>   kısa sözlüğü AÇILMADI (iki sözlük = eşleme borcu). **`payments.payment_method`'a
+>   DOKUNULMADI** (NOT NULL, canlıda 8/8 `bank_transfer`).
+> - **`payments`'a iki nullable kolon** (tek ALTER — 027/028 dersi): `schedule_item_id`
+>   (FK; **mantık bilinçli olarak YOK**, eşleştirme PS2+ işi — S-6) · `received_office_id` (FK).
+> - **`payment_schedule_items` kısıtları:** partial UNIQUE `(contract_id, item_no) WHERE
+>   superseded_at IS NULL` (027-deseni) · `ix_payment_schedule_items_contract` ·
+>   4 ADLI CHECK (amount>0 · percent 0-100 · source 3-değer · expected_method 5-değer).
+> - **DEFAULT ÜRETİCİ (Suer kuralı):** `d1 = contract_date + 7`, `d2 = expo.start_date − 30`.
+>   `d2 <= d1` → **TEK kalem %100 @ d1** (S-2 çekme+birleştirme tek ifadede).
+>   Değilse → %40 @ d1 + kalan @ d2. Yuvarlama: item1 ROUND(revenue×0.40,2), item2 = kalan
+>   (Σ ≡ revenue TAM — S-3).
+> - **YARIM PLAN YASAK (S-1).** `contract_date` / `expo_id` / `expo.start_date` / `revenue`
+>   birinden biri NULL → **400 + 0 satır**, ayırt edici İngilizce mesaj. Canlıda doğrulandı.
+> - **İMZA TARİHİ = `contracts.contract_date` (Suer kararı 2026-07-28).** Ayrı `signed_date`
+>   AÇILMADI — convert zaten LIFFY `signed_at`'i buraya yazıyor; ikinci kolon iki kaynak
+>   doğururdu. Ölçüm: canlı 3 kontratın 3'ünde de dolu, backfill gerekmedi.
+> - **Σ ≠ revenue ENGELLENMEZ (S-9).** Elle tutar girişinde uyuşmazlık kabul edilir,
+>   yanıtta `warning` döner. Gerçek plana zorlanmaz.
+> - **KOMİSYONA DOKUNULMADI (S-8).** Komisyon tahsilat-oranlıdır (`paid_eur/revenue_eur`),
+>   plana DEĞİL. Regresyon: **M1 29/29 · M2 30/30 · payout 26/26** sapmasız.
+> - **Endpoint'ler:** `GET /api/offices` (routes/offices.js) · `GET /api/contracts/:id/schedule`
+>   (active + history + türetilmiş totals) · `POST /api/contracts/:id/schedule` (elle,
+>   yüzde XOR tutar) · `POST /api/contracts/:id/schedule/default`. Ofis yönetim endpoint'i
+>   (POST/PUT) **bilinçle yazılmadı** — PS2.
+> - **Testler: PS1 29/29** (yerel scratch DB). Kritik: **K-4 birleşme dalı** (fuara 32 gün)
+>   canlıda test EDİLEMEZ, yalnız burada doğrulandı. K-7 revizyon invaryantı: eski satırların
+>   `amount`/`due_date` değerleri değişmemiş.
+> - **CANLI GÖRSEL TUR 5/5 (contract id=3, 15.000,00 USD, imza 2026-07-22, fuar 2027-01-01):**
+>   V1 5 ofis · V2 default 201 · V3 **6.000,00 @ 2026-07-29 (%40) + 9.000,00 @ 2026-12-02
+>   (%60)**, Σ 15.000,00 ≡ revenue, `matches_revenue true` · V4 revizyon → aktif **rev 2**,
+>   history 2 satır superseded, tutarlar değişmemiş · V5 contract 4 (expo_id NULL) →
+>   **400 "expo required", 0 satır**.
+> - **KALICI TEST VERİSİ:** contract id=3'te schedule revision 1 (superseded) + revision 2
+>   (aktif), toplam 4 satır — S8 E2E'ye kadar **SİLİNMEZ**.
+> - **Bilinen küçük (aksiyonsuz):** `GET /schedule` `due_date`'i ham Date döndürüyor →
+>   JSON'da TZ-kaymış ISO (`payout_date` ile aynı sınıf, DB değeri doğru). PS2 UI'da
+>   formatlanacak.
+> - **Ölçüm notları (kayda geçsin):** `expos` initial.sql'de (migration'larda değil);
+>   16 expo'nun 1'inde `start_date` NULL → S-1 guard'ı teorik değil. Para birimi referans
+>   tablosu ve merkezi FX tablosu **YOK** (kur her satırda inline/frozen); `currency`
+>   hiçbir tabloda CHECK'siz, sözlük yalnız UI'da. Yönetim UI'ı olmayan referans tablolar:
+>   `core_countries`, `core_sectors`, `offices` (PS2 "Reference Data" adayı).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - ~~**★ PAYOUT dilimi** (ayrı, gelecek): fiilî agent ödemesi bir **OLAYDIR** — kaydı/ledger'ı bu
@@ -722,7 +792,10 @@
 >   hesap türetiliyor, ödeme henüz kaydedilmiyor.)*~~ → ✅ **P1 KAPANDI (2026-07-27, 025 +
 >   `3ab2dac`).** KALAN: **P2 — payout UI iskeleti** (agent statement ekranı, İngilizce, cila yok).
 >   → ✅ **P2 de KAPANDI (2026-07-27, `ab8a6d9`).**
-> - **payment schedule** — 3a kuyruğundan kalan (plan ≠ gerçekleşen; req `:509-511`, `:564`).
+> - ~~**payment schedule** — 3a kuyruğundan kalan (plan ≠ gerçekleşen; req `:509-511`, `:564`).~~
+>   → ✅ **PS1 KAPANDI (2026-07-28, 026 + `fa7f288`).** KALAN: **PS2** — schedule UI kartı
+>   (contract-detail) · ofis yönetim ekranı · "Reference Data" sayfası · nakit öngörü raporu
+>   (ofis × para birimi × vade) · ödeme↔kalem eşleştirme.
 > - **Belge güncelleme borcu:** `archive` B3 v1.0/v1.1 → S7 v1.2 (belge dilimi).
 > - ~~**⚠️ DURAN BORÇ (KORUNUYOR):** `ELL_YOL_HARITASI_v5` + `ELL_BILGI_MIMARISI` hâlâ LEENA-native
 >   karara (finans/komisyon LEENA'da; ELIZA marka/Finance-tab) göre **güncellenmedi**.~~ → ✅
