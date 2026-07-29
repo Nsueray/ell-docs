@@ -929,6 +929,50 @@
 >   üretir; satırlar UPDATE/DELETE edilmez (H3/S-5). Rev 6'ya çıkmış olması sağlıklı
 >   davranıştır.
 
+> ## ✅ 2026-07-28 — BELGE KONSOLİDASYONU (tek ev = repo; BE1+BE2+BE3)
+>
+> - **Commit'ler: `4278bc8` (BE2) · `1f53fb6` (BE3).** Kod/DB'ye dokunulmadı.
+> - **KİLİTLİ İLKE — TEK EV = REPO.** Her ELL belgesi `~/Projects/ell-docs`'ta yaşar;
+>   Claude KB'si bunun bir ALT KÜMESİNİN kopyasıdır. **Repo'da olmayan belge YOKTUR.**
+>   Bu ilkeden önce belgeler üç yere dağılmıştı (repo · KB · Desktop/Downloads).
+> - **BE1 ÖLÇÜMÜ (12 kök belge sınıflandırıldı):** CANLI **4** (durum defteri = tek durum
+>   kaydı · yol haritası = pusula/faz-ilke · bilgi mimarisi = IA/sahiplik · glossary =
+>   kanonik terim) · REFERANS 5 · ARŞİV 3 · **⛔ÖLÜ 0**. **ROL ÇAKIŞMASI YOK** —
+>   2026-07-27 rol daraltması tutmuş. Suer'in "6 canlı" tahmini ölçümle çürütüldü.
+> - **ARŞİVE TAŞINANLAR (git mv, R099 — SİLME YOK):** `ELL_RULES.md` ·
+>   `ELL_ROADMAP.md` · `ELL_MUTABAKAT_2026-07-21.md` → `archive/`. Her birinin başına
+>   ⛔ ARŞİV banner'ı kondu (güncel durum → defter, faz/ilke → yol haritası).
+> - **⚠️ ELL_RULES.md — SINIRDA DOSYA, KARAR VERİLMEDİ:** 365 satırın **13'ü** 2026-06-19
+>   kararına aykırı (":44 three systems" · ":46 ELIZA commercial system of record" ·
+>   ":69/:78 all three databases" · ":80 eliza-db source of truth" · ":134/:138/:217
+>   ELIZA authority writes"). Dosya kendini zaten superseded ilan ediyor (:2), o yüzden
+>   ⛔ÖLÜ değil ARŞİV. **13 satır TEK TEK işaretlenmedi — Sentez kararı: dosya arşivde,
+>   banner yeter, emeğe değmez.** Banner'ı atlayıp ortadan okuyan yanılır; ⛔ÖLÜ'ye
+>   çekilsin mi, açık soru.
+> - **REPO'YA ALINAN İKİ YETİM (kök dizin):** `ELL_LOCKED_KARARLAR_OZET.md` (75 satır,
+>   kilitli mimari kararlar B1-B20+, "uyum kontrol listesi" — defter buna **3 yerde**
+>   referans veriyordu ama dosya repoda YOKTU, ~/Downloads'ta duruyordu) ·
+>   `ELL_TEK_KAYNAK_KILIT.md` (147 satır, tek-kaynak ilkesi, kilitli 2026-06-20).
+>   Kaynak kopyalar yerinde bırakıldı.
+> - **MİMARİ FAZ KANIT BELGELERİ ARŞİVE ALINDI (8 dosya, 📌 banner):** üç derin analiz
+>   (LEENA/LIFFY/ELIZA) · gap analizi · cross-DB ölçümü · gerçek durum analizi · oturum
+>   özeti · FAZ0 durum. Kaynaklar (`~/Projects`, `~/Downloads`, `~/ELL_schema_dumps`)
+>   SİLİNMEDİ. **Bunlar ARŞİV ama ÖLÜ DEĞİL:** yol haritası `:50` kanıt olarak bunlara
+>   dayanıyor ("gap analizi (35 ihtiyaç), üç derin analiz") — ama **isim vermeden**.
+>   Artık repoda oldukları için zincir kapatılabilir; yol haritasına dosya adı ekleme
+>   işi YAPILMADI, açık.
+> - **archive/ = 15 dosya** (4 legacy mimari + 3 ⛔ARŞİV + 8 📌kanıt). Kök = **11 .md**.
+> - **⚠️ KAYIP BELGE — AKSİYON GEREKTİRİR:** `FAZ1a_DURUM.md` (LIFFY güvenlik izolasyonu,
+>   ~120 satır) diskte **hiçbir yerde bulunamadı**; yalnız Claude KB'sinde var. KB
+>   yenilenirse kaybolur. Suer KB'den indirip `archive/`'a koymalı.
+> - **⚠️ KB BAYAT — ÖLÇÜLDÜ:** Claude KB'si **c44ffeb**'de donmuş. Satır matematiği
+>   kanıtladı (defter 1996 = 1965+35−4 ✓ · yol haritası 391 = 371+29−9 ✓ · bilgi
+>   mimarisi 248 = 243+6−1 ✓). Yani **PS1 · PS2 · PS3-A kayıtlarının hiçbiri KB'de
+>   YOK**. KB okuyan her oturum eksik bilgiyle başlar. **KB yeniden yüklenmeli.**
+> - **README yeniden kuruldu:** CANLI 4 belge + rolleri · referans belgeler · archive/
+>   açıklaması · tek satırlık öncelik kuralı (durum/ilerleme → defter, faz/ilke → yol
+>   haritası). Repoya ilk bakan hangisini okuyacağını görür.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - ~~**★ PAYOUT dilimi** (ayrı, gelecek): fiilî agent ödemesi bir **OLAYDIR** — kaydı/ledger'ı bu
@@ -952,6 +996,10 @@
 >   **kural kütüğü (ELL_LOCKED_KARARLAR_OZET'e iş kuralları bölümü — S/H/W/U/D hükümleri
 >   indekssiz birikiyor)** · ödeme↔kalem eşleştirme (S-6) · agent formunda ofis düzenleme ·
 >   **D-1 schedule-default ön-doldurma görsel borcu**.
+>   → ✅ **BELGE KONSOLİDASYONU KAPANDI (2026-07-28, `4278bc8` + `1f53fb6`).**
+>   AÇIK: **KB yeniden yükleme (c44ffeb'de donmuş)** · **FAZ1a_DURUM.md KB'den indirilecek** ·
+>   ELL_RULES ⛔ÖLÜ'ye çekilsin mi · yol haritası :50 kanıt zincirine dosya adları eklensin mi ·
+>   **KK1 kural kütüğü (evi artık belli: ELL_LOCKED_KARARLAR_OZET.md repoda)**.
 > - **Belge güncelleme borcu:** `archive` B3 v1.0/v1.1 → S7 v1.2 (belge dilimi).
 > - ~~**⚠️ DURAN BORÇ (KORUNUYOR):** `ELL_YOL_HARITASI_v5` + `ELL_BILGI_MIMARISI` hâlâ LEENA-native
 >   karara (finans/komisyon LEENA'da; ELIZA marka/Finance-tab) göre **güncellenmedi**.~~ → ✅
