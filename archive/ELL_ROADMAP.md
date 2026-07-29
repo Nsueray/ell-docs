@@ -1,3 +1,6 @@
+> ⛔ ARŞİV (2026-07-28) — yürürlükte DEĞİL. Güncel durum: ELL_DURUM_DEFTERI_v2.md ·
+> faz/ilke: ELL_YOL_HARITASI_v5.md
+
 # ELL Platform Roadmap
 ## ELIZA + LİFFY + LEENA — Zoho'dan Bağımsızlaşma Stratejisi
 

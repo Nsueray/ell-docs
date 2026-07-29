@@ -1,37 +1,31 @@
 # ELL Documentation
 
-ELL Platformu'nun source-of-truth dokümantasyon repo'su.
+ELL Platformu'nun tek-ev (source-of-truth) dokümantasyon repo'su.
 
-Mimari fazı tamamlandı (2026-06-01). Ana referans:
-[ELL_MIMARI_v1.0_KONSOLIDE.md](./ELL_MIMARI_v1.0_KONSOLIDE.md).
-Detaylı mimari dokümanlar `archive/` altında referans olarak
-korunuyor.
+## Canlı belgeler (4)
 
-Implementation fazına geçiş notları için: [HANDOVER_BRIEF.md](./HANDOVER_BRIEF.md).
+| dosya | rol |
+|---|---|
+| [ELL_DURUM_DEFTERI_v2.md](./ELL_DURUM_DEFTERI_v2.md) | Tek durum kaydı — ne canlı, hangi commit, sıradaki adım |
+| [ELL_YOL_HARITASI_v5.md](./ELL_YOL_HARITASI_v5.md) | Pusula — faz sırası + her fazda geçerli ilkeler |
+| [ELL_BILGI_MIMARISI_v3.md](./ELL_BILGI_MIMARISI_v3.md) | Bilgi mimarisi — hangi varlık hangi sistemde/DB'de, sahiplik |
+| [ELL_GLOSSARY.md](./ELL_GLOSSARY.md) | Kanonik terimler (ELIZA/LIFFY/LEENA, 2 DB) |
 
-## Klasör yapısı
+## Referans belgeler
 
-- `ELL_MIMARI_v1.0_KONSOLIDE.md` — **Konsolide mimari (kanonik)** — implementation'ın tek source of truth'u
-- `archive/` — Detaylı mimari dokümanlar (Aşama 1 + Bölüm 1 + Bölüm 2 + legacy README)
-- `/decisions/` — ADR'lar; bazıları banner'larla revize edilmesi
-  gerektiği işaretli (bkz. INDEX.md)
-- `/decisions/archived/` — Geçersiz kılınmış ADR'lar
-- `/eliza/`, `/liffy/`, `/leena/` — Sistem-spesifik
-  dokümantasyon
+| dosya | ne |
+|---|---|
+| [ELAN_EXPO_REQUIREMENTS_v1_0.md](./ELAN_EXPO_REQUIREMENTS_v1_0.md) | Kanonik ihtiyaç dokümanı (ne lazım) |
+| [ELL_LOCKED_KARARLAR_OZET.md](./ELL_LOCKED_KARARLAR_OZET.md) | Kilitli mimari kararlar — uyum kontrol listesi |
+| [ELL_TEK_KAYNAK_KILIT.md](./ELL_TEK_KAYNAK_KILIT.md) | Tek-kaynak ilkesi (kilitli, 2026-06-20) |
+| [ELL_MIMARI_v1.0_KONSOLIDE.md](./ELL_MIMARI_v1.0_KONSOLIDE.md) | Konsolide mimari (mimari fazı çıktısı) |
+| [ELL_FEATURE_INSPIRATION.md](./ELL_FEATURE_INSPIRATION.md) | Özellik fikir/ilham |
+| [HANDOVER_BRIEF.md](./HANDOVER_BRIEF.md) | Implementation fazı devir brifingi |
 
-## Eski planlama dosyaları
+## archive/
 
-`ELL_RULES.md`, `ELL_ROADMAP.md`, `ELL_GLOSSARY.md`, ve
-`ELL_FEATURE_INSPIRATION.md` requirements gathering yapılmadan
-önce yazıldı. Üst kısımlarındaki SUPERSEDED / NEEDS UPDATE /
-CONTEXT UPDATE banner'larına dikkat. **Tarihsel referans** olarak görün.
+Yürürlükte olmayan tarihsel belgeler. Okunmaz, silinmez — referans için korunur.
 
 ## Çakışma kuralı
 
-Eğer bir dokümanın söylediği başka bir dokümanla çakışıyorsa:
-
-1. `ELL_MIMARI_v1.0_KONSOLIDE.md` her zaman geçerlidir
-2. Sonra: `archive/` altındaki detay mimari dokümanları
-3. Sonra: `ELAN_EXPO_REQUIREMENTS_v1_0.md` (kanonik ihtiyaç dokümanı)
-4. Sonra: Aktif (banner'sız veya CONTEXT UPDATE'li) ADR'lar
-5. SUPERSEDED işaretli dokümanlar artık geçerli değildir
+Çelişkide **ELL_DURUM_DEFTERI_v2.md** kazanır (durum/ilerleme); faz sırası ve ilkelerde **ELL_YOL_HARITASI_v5.md** kazanır.
