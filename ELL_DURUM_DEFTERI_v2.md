@@ -962,16 +962,59 @@
 >   Artık repoda oldukları için zincir kapatılabilir; yol haritasına dosya adı ekleme
 >   işi YAPILMADI, açık.
 > - **archive/ = 15 dosya** (4 legacy mimari + 3 ⛔ARŞİV + 8 📌kanıt). Kök = **11 .md**.
-> - **⚠️ KAYIP BELGE — AKSİYON GEREKTİRİR:** `FAZ1a_DURUM.md` (LIFFY güvenlik izolasyonu,
+> - ~~**⚠️ KAYIP BELGE — AKSİYON GEREKTİRİR:** `FAZ1a_DURUM.md` (LIFFY güvenlik izolasyonu,
 >   ~120 satır) diskte **hiçbir yerde bulunamadı**; yalnız Claude KB'sinde var. KB
->   yenilenirse kaybolur. Suer KB'den indirip `archive/`'a koymalı.
-> - **⚠️ KB BAYAT — ÖLÇÜLDÜ:** Claude KB'si **c44ffeb**'de donmuş. Satır matematiği
+>   yenilenirse kaybolur. Suer KB'den indirip `archive/`'a koymalı.~~
+>   → ⛔ **SUPERSEDED — KURTARILDI** (`efbc500`, `archive/`'a alındı). Bkz. 2026-07-29 kaydı.
+> - ~~**⚠️ KB BAYAT — ÖLÇÜLDÜ:** Claude KB'si **c44ffeb**'de donmuş. Satır matematiği
 >   kanıtladı (defter 1996 = 1965+35−4 ✓ · yol haritası 391 = 371+29−9 ✓ · bilgi
 >   mimarisi 248 = 243+6−1 ✓). Yani **PS1 · PS2 · PS3-A kayıtlarının hiçbiri KB'de
->   YOK**. KB okuyan her oturum eksik bilgiyle başlar. **KB yeniden yüklenmeli.**
+>   YOK**. KB okuyan her oturum eksik bilgiyle başlar. **KB yeniden yüklenmeli.**~~
+>   → ⛔ **SUPERSEDED — KB TAZELENDİ** (ölçüm 2026-07-29: KB defteri 2355 satır,
+>   PS1 + PS2 + PS3-A kayıtlarını İÇERİYOR).
 > - **README yeniden kuruldu:** CANLI 4 belge + rolleri · referans belgeler · archive/
 >   açıklaması · tek satırlık öncelik kuralı (durum/ilerleme → defter, faz/ilke → yol
 >   haritası). Repoya ilk bakan hangisini okuyacağını görür.
+
+> ## ✅ 2026-07-29 — KURAL KÜTÜĞÜ (KK1) + DOC-TAIL BORCU KAPANDI
+>
+> - **Kod/DB'ye DOKUNULMADI.** Migration yok, endpoint yok. Yalnız belge.
+> - **`ELL_LOCKED_KARARLAR_OZET.md` 75 → 146 satır:** sonuna **"İŞ KURALLARI (build fazı)"**
+>   bölümü eklendi. Defterdeki **27 iş kuralı** `GRUP-NN` formatında indekslendi —
+>   MOT 5 · TAH 4 · ODE 3 · PLN 8 · OFS 5 · SEM 2 · YON 0. Kütük İNDEKSTİR: gerekçe defterde
+>   kalır, **çelişkide defter kazanır**. ID tahsisi YALNIZ kütükte, numara asla yeniden kullanılmaz.
+> - **ESKİ S- ADLARI BENZERSİZ DEĞİLMİŞ (ölçümle bulundu, varsayım değil):** PS1 (payout) ve
+>   PS3 (plan) dilimleri S- numaralarını sıfırdan başlatmış. `S-1` · `S-3` · `S-4` · `S-8`
+>   iki AYRI hükümde kullanılıyor → her biri İKİ yeni ID aldı:
+>   S-1 → ODE-01 (:642) + PLN-01 (:755) · S-3 → ODE-02 (:656) + PLN-03 (:754) ·
+>   S-4 → ODE-03 (:658) + PLN-04 (:725) · S-8 → MOT-01 (:660) + MOT-02 (:762).
+>   Tek ID verilseydi kütük iki hükmü birleştirir, indeks olarak doğduğu gün bozulurdu.
+> - **AYNA DA ÖLÇÜLDÜ (aynı hüküm, iki ad):** `H3` ≡ `S-5` — defter zaten "(H3/S-5)" diye
+>   çift yazıyor (:929) → **PLN-05** tek ID. `W-7` ≡ `D-1` — defter :875'te "AYNI KURAL İKİ
+>   KATMANDA" diyor, fark katman (frontend/SQL), hüküm değil → **OFS-05** tek ID, iki-katman
+>   bakım uyarısı satıra taşındı. Diğer adaylar ölçüldü, **AYRI çıktı**, birleştirilmedi:
+>   W-6 (zorunluluk katmanı) ↔ U-10 (planda ofis opsiyonel) ↔ S-13r (plan/ödeme ofisi farklı
+>   olabilir) · H7 (ikinci sözlük açılmaz, kural) ↔ H-4 (CURRENCIES kopyası, borç).
+> - **TİRESİZ HÜKÜMLER HASADA ALINDI (elle sayılarak, desen genişletilmeden):** `H7` · `H3` ·
+>   `U1a` · `U2a` · `U3a`. İlk tarama `S-[0-9]` deseniyle yapıldığı için tire olmayanlar kaçmıştı.
+> - **KÜTÜK DIŞI — KAYDA GEÇSİN, YENİDEN TARTIŞILMASIN:** `K`/`V`/`T` = test ve görsel-tur
+>   ID'leri. Tiresiz `S1..S9` (:88-93 açık soru takibi) · `D1..D4` (:445-450 import kararı) ·
+>   `D2` (mimari ilke, ~30 geçiş) AYRI namespace'lerdir. **Arama deseni tire'yi zorunlu tutmalı**
+>   — gevşetilirse bu üç namespace çöp olarak girer.
+> - **B1 + B19 ETİKETLENDİ, METNİ DEĞİŞTİRİLMEDİ:** `[HEDEF — birleşme sonrası]`. Bugün geçerli
+>   LEENA gerçeği `organizer_id` + integer PK (S7 v1.2); `organization_id` + UUID birleşme
+>   hedefidir. Zaman ekseni farkı, çelişki değil. Kalan B maddelerine etiket KONMADI.
+> - **DOC-TAIL BORCU KAPANDI (ölçüldü — üçü de defterde yoktu):** `cd1b2fd` (belge
+>   konsolidasyonu defter kapanışı) · `efbc500` (FAZ1a_DURUM.md kurtarıldı, archive'a alındı) ·
+>   `95a324a` (ZOHO_USAGE + SECTION_3_2 arşive). **Güncel sayım: kök 11 .md · archive/ 18.**
+>   (2026-07-28 kaydındaki "archive/ = 15" yazıldığı gün DOĞRUYDU — dokunulmadı.)
+> - **KÖK NEDEN DÜZELTİLDİ:** belgenin kendi tarifi "en üstte en güncel" diyordu; defter
+>   ASLINDA kronolojik-artan. Bu bayat cümle KK1'i yanlış yönlendirmişti — düzeltildi.
+>   Yeni kayıt `★ SIRADAKİ ADAYLAR`'dan ÖNCE, dizinin sonuna girer.
+> - **KAPANAN AÇIK KALEMLER:** KAYIP BELGE (FAZ1a) · KB BAYAT · KB yeniden yükleme ·
+>   KK1 kural kütüğü. Hepsi ⛔ SUPERSEDED / üstü çizili işaretlendi. Tarihsel ifadelere
+>   DOKUNULMADI — yalnız açık iş kalemleri kapatıldı.
+>
 
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
@@ -993,13 +1036,13 @@
 >   → ✅ **PS3-A KAPANDI (2026-07-28, `87d162d`).** KALAN: **PS3-B — nakit öngörü raporu
 >   (ofis × para birimi × vade kırılımı — ASIL ÖDÜL; iki yön de artık kayıtlı, önkoşul
 >   tamam)** · ofis yönetim ekranı (ekle/kapat, Iraq kararı) · Reference Data admin sayfası ·
->   **kural kütüğü (ELL_LOCKED_KARARLAR_OZET'e iş kuralları bölümü — S/H/W/U/D hükümleri
->   indekssiz birikiyor)** · ödeme↔kalem eşleştirme (S-6) · agent formunda ofis düzenleme ·
+>   ~~**kural kütüğü (ELL_LOCKED_KARARLAR_OZET'e iş kuralları bölümü — S/H/W/U/D hükümleri
+>   indekssiz birikiyor)**~~ → ✅ **KK1, 2026-07-29** · ödeme↔kalem eşleştirme (S-6) · agent formunda ofis düzenleme ·
 >   **D-1 schedule-default ön-doldurma görsel borcu**.
 >   → ✅ **BELGE KONSOLİDASYONU KAPANDI (2026-07-28, `4278bc8` + `1f53fb6`).**
->   AÇIK: **KB yeniden yükleme (c44ffeb'de donmuş)** · **FAZ1a_DURUM.md KB'den indirilecek** ·
+>   AÇIK: ~~**KB yeniden yükleme (c44ffeb'de donmuş)**~~ · ~~**FAZ1a_DURUM.md KB'den indirilecek**~~ ·
 >   ELL_RULES ⛔ÖLÜ'ye çekilsin mi · yol haritası :50 kanıt zincirine dosya adları eklensin mi ·
->   **KK1 kural kütüğü (evi artık belli: ELL_LOCKED_KARARLAR_OZET.md repoda)**.
+>   ~~**KK1 kural kütüğü (evi artık belli: ELL_LOCKED_KARARLAR_OZET.md repoda)**~~ → ✅ **2026-07-29**.
 > - **Belge güncelleme borcu:** `archive` B3 v1.0/v1.1 → S7 v1.2 (belge dilimi).
 > - ~~**⚠️ DURAN BORÇ (KORUNUYOR):** `ELL_YOL_HARITASI_v5` + `ELL_BILGI_MIMARISI` hâlâ LEENA-native
 >   karara (finans/komisyon LEENA'da; ELIZA marka/Finance-tab) göre **güncellenmedi**.~~ → ✅
@@ -1011,8 +1054,10 @@
 > ---
 >
 > **Bu nedir:** ELL projesinde yapılan her şeyin, karşılaşılan sorunların ve açık
-> kuyrukların tek kaydı. Faz başına ayrı belge YOK — her şey burada, en üstte en güncel.
-> Durumu buradan gör.
+> kuyrukların tek kaydı. Faz başına ayrı belge YOK — her şey burada.
+> **KAYIT SIRASI = KRONOLOJİK-ARTAN:** en YENİ kayıt, `★ SIRADAKİ ADAYLAR` bloğundan ÖNCE,
+> dizinin SONUNA girer. (Eski "en üstte en güncel" ifadesi YANLIŞTI — düzeltildi 2026-07-29;
+> KK1'i yanlış yönlendirmişti.) Durumu buradan gör.
 >
 > **Pusula:** `ELL_YOL_HARITASI_v5.md` (canonical roadmap — çelişkide o kazanır; v4 superseded).
 > **Kontrol listeleri:** `ELAN_EXPO_REQUIREMENTS_v1_0.md` (ne lazım) +
