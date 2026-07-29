@@ -25,6 +25,7 @@ ELL Platformu'nun tek-ev (source-of-truth) dokümantasyon repo'su.
 ## archive/
 
 Yürürlükte olmayan tarihsel belgeler. Okunmaz, silinmez — referans için korunur.
+Mimari faz kanıt belgeleri (gap analizi, üç derin analiz, cross-DB ölçümü, gerçek durum, oturum özeti, FAZ0) da burada — yol haritasının dayandığı ölçümler.
 
 ## Çakışma kuralı
 
