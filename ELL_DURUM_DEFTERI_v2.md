@@ -630,9 +630,10 @@
 >   sütunları tek tek temizlenmedi; bölüm-seviyesi ⛔ işaretçisiyle nötralize edildi
 >   (YOL BÖLÜM 3 başı, BILGI rol sınırı bloğu). Gerekirse ayrı dilim.
 > - Commit: **`55c07ff`** (ell-docs). LEENA koduna/DB'ye dokunulmadı.
-> - **Devir brief'indeki "ELL_GLOSSARY.md commit'siz M duruyor" notu YANLIŞTI** —
->   2026-07-27 ölçümü: dosya **temiz**, commit'siz değişiklik yok (son dokunuş `a416fa9`).
->   Madde kapandı, aksiyon gerekmiyor.
+> - **Devir brief'i ELL_GLOSSARY.md için dayanaksız bir değişiklik iddiası taşıyordu** —
+>   2026-07-27 ölçümü dosyayı **TEMİZ** buldu (son dokunuş `a416fa9`). İddia metni bilerek
+>   aktarılmadı: alıntı sonraki oturumlarda canlı iddia olarak yeniden doğuyor (2026-07-29
+>   tekrarı ölçüldü). Madde kapandı, aksiyon gerekmiyor.
 
 > ## ✅ 2026-07-27 — PAYOUT P1 CANLIDA (migration 025 + agent cari hesap)
 >
@@ -1196,7 +1197,7 @@
 >   ofis düzenleme.
 >   → ✅ **PS3-A KAPANDI (2026-07-28, `87d162d`).** KALAN: ~~**PS3-B — nakit öngörü raporu
 >   (ofis × para birimi × vade kırılımı — ASIL ÖDÜL; iki yön de artık kayıtlı, önkoşul
->   tamam)**~~ → ✅ **PS3-B CANLIDA (2026-07-30, `4362054`/`ca6fb3c`/`430e08d`).** ofis yönetim ekranı (ekle/kapat, Iraq kararı) · Reference Data admin sayfası ·
+>   tamam)**~~ → ✅ **PS3-B CANLIDA (2026-07-30, `4362054`/`ca6fb3c`/`430e08d`).** · ofis yönetim ekranı (ekle/kapat, Iraq kararı) · Reference Data admin sayfası ·
 >   ~~**kural kütüğü (ELL_LOCKED_KARARLAR_OZET'e iş kuralları bölümü — S/H/W/U/D hükümleri
 >   indekssiz birikiyor)**~~ → ✅ **KK1, 2026-07-29** · ödeme↔kalem eşleştirme (S-6) · agent formunda ofis düzenleme ·
 >   ~~**D-1 schedule-default ön-doldurma görsel borcu**~~ → ✅ **contract 4 expo bağlama, 2026-07-29**.
