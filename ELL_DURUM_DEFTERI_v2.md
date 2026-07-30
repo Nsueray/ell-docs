@@ -1016,6 +1016,39 @@
 >   DOKUNULMADI — yalnız açık iş kalemleri kapatıldı.
 >
 
+> ## ✅ 2026-07-29 — PS3-B ÖNKOŞUL GATE (expo_id komisyon yolunda yok)
+>
+> PS3-B gate: expo_id komisyon yolunda YOK. Dayanak = statik analiz (grep boş,
+> dört yüzey file:line ile çivili) + K0 kalibrasyonu (koddan çıkarılan SQL ekran
+> sayılarını yeniden üretti) + B1 (DB-tarafı mekanizma yok).
+> Sayısal önce/sonra testi KOŞULMADI: test SQL'i expos'a hiç bakmadığı için
+> sonucu koşmadan belliydi — döngüseldi. "Ampirik olarak test edildi" DEĞİLDİR.
+
+> ## ✅ 2026-07-29 — CONTRACT 4 EXPO BAĞLANDI (expo 15) + D-1 GÖRSEL BORCU KAPANDI
+>
+> - **Yazma:** `UPDATE contracts SET expo_id = 15 WHERE id = 4` — dry-run (ROLLBACK,
+>   teyitli) → BEGIN/COMMIT, Suer'in Render Shell'inden. Migration YOK, kod değişikliği YOK.
+>   Organizer eşleşmesi önceden doğrulandı (c_org = e_org = 1).
+> - **NEDEN UPDATE:** `expo_id`'yi yerinde güncelleyen endpoint YOK. Tek yazma yolu
+>   transfer (`contracts.js:853-914`) ve o append-only klon üretir — contract 4'ü bağlamaz,
+>   yeni contract doğurur. Bağlama bu yüzden elle yapıldı.
+> - **EXPO SEÇİMİ = 15 ("test", start_date 2026-11-18).** Ölçümle seçildi: 4 test fuarı
+>   adayından 16 elendi (start_date NULL → plan üretilemez), 4 elendi (2026-03-03, geçmiş →
+>   nakit öngörüsü geleceği göstermez), 11 elendi (contract 3 orada + reactivation smoke
+>   test fixture'ı). 15'te sıfır visitor/checkin/contract vardı.
+>   **⚠️ EXPO 15 ARTIK CONTRACT TAŞIYOR — SİLİNMEZ** (contract 4 zincirinin parçası,
+>   S8 E2E'ye kadar).
+> - **GATE'İN AMPİRİK KARŞILIĞI (ekranda, bağlama SONRASI):** contract 4 sr earned
+>   **342.00** · commissions.html cut Jul 31 Period Total **342.00** (5 satır birebir aynı) ·
+>   agent 47 statement earned **342.00**. Üçü de gerçek endpoint'ten, app pool'undan.
+>   PS3-B gate'te koşulamayan sayısal doğrulama BUDUR — döngüsellik yok.
+> - **D-1 GÖRSEL BORCU KAPANDI.** [Generate default] → Revision 1, 2 satır:
+>   Jul 31 7.440,00 EUR (%40) + Oct 19 11.160,00 EUR (%60), Σ 18.600,00 ≡ revenue
+>   ("matches revenue"). **Her iki satırda Expected office = Turkey** (SR BENGU DOGRUER →
+>   agent 47 → Turkey, SUNUCUDA çözüldü). Oct 19 = expo start_date 2026-11-18 eksi
+>   `payment_deadline_days_before` 30. Agent rolü VE expo'su olan kontrat ilk kez doğdu.
+> - **KALICI TEST VERİSİ (eklendi, SİLİNMEZ):** contract 4 schedule Revision 1 (2 satır).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - ~~**★ PAYOUT dilimi** (ayrı, gelecek): fiilî agent ödemesi bir **OLAYDIR** — kaydı/ledger'ı bu
@@ -1038,7 +1071,7 @@
 >   tamam)** · ofis yönetim ekranı (ekle/kapat, Iraq kararı) · Reference Data admin sayfası ·
 >   ~~**kural kütüğü (ELL_LOCKED_KARARLAR_OZET'e iş kuralları bölümü — S/H/W/U/D hükümleri
 >   indekssiz birikiyor)**~~ → ✅ **KK1, 2026-07-29** · ödeme↔kalem eşleştirme (S-6) · agent formunda ofis düzenleme ·
->   **D-1 schedule-default ön-doldurma görsel borcu**.
+>   ~~**D-1 schedule-default ön-doldurma görsel borcu**~~ → ✅ **contract 4 expo bağlama, 2026-07-29**.
 >   → ✅ **BELGE KONSOLİDASYONU KAPANDI (2026-07-28, `4278bc8` + `1f53fb6`).**
 >   AÇIK: ~~**KB yeniden yükleme (c44ffeb'de donmuş)**~~ · ~~**FAZ1a_DURUM.md KB'den indirilecek**~~ ·
 >   ELL_RULES ⛔ÖLÜ'ye çekilsin mi · yol haritası :50 kanıt zincirine dosya adları eklensin mi ·
