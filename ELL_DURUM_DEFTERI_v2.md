@@ -1049,6 +1049,134 @@
 >   `payment_deadline_days_before` 30. Agent rolü VE expo'su olan kontrat ilk kez doğdu.
 > - **KALICI TEST VERİSİ (eklendi, SİLİNMEZ):** contract 4 schedule Revision 1 (2 satır).
 
+> ## ✅ 2026-07-30 — PS3-B CANLIDA (nakit öngörü raporu: ofis × vade, EUR, tamamen türetilmiş)
+>
+> - **Üç commit canlıda:** `4362054` (çekirdek rapor) · `ca6fb3c` (K14 overdue +
+>   K15 on hold) · `430e08d` (K16 planlanmamış gelir sayaçları + etiket hijyeni).
+>   **MIGRATION YOK · ŞEMA DEĞİŞİKLİĞİ YOK · SAKLAMA YOK** — her sayı okuma anında
+>   türetilir (D2/S-11r). Dört dosya: `routes/cashForecast.js` (YENİ) · `index.js`
+>   (mount) · `public/cash-forecast.html` (YENİ) · `main-panel-v2.html` (nav).
+>   Komisyon motoruna (contracts.js computeCommission, commissions.js,
+>   utils/commissionSlices.js, payouts.js) **DOKUNULMADI**.
+>
+> - **⚠️ K1-K16 GEÇİCİ ETİKETLERDİR — KALICI ID KÜTÜKTE VERİLECEK.**
+>   Buradaki **K4** (Σplan≠revenue işareti) ve **K7** (EUR çevrimi) defterdeki
+>   kilitli **K4** (`default_commission_pct`, defter:440) ve **K7** (komisyon motor
+>   kuralları, defter:457) **DEĞİLDİR**. İsim-alanı çakışması Sentez bloklarında
+>   doğdu, kodda değil. Kütük turunda PLN-NN tahsis edilecek, eski ad parantezde
+>   korunacak. Aynı uyarı `cashForecast.js` başında da duruyor, silinmez.
+>
+> - **MODEL (kilitli hükümler):**
+>   **K7** plan satırı EUR'ya rapor anında çevrilir: `amount × contracts.exchange_rate`
+>   — kontratın KENDİ kilitli kuru. Yeni kur icat edilmez, "bugünkü kur" kullanılmaz.
+>   Plana kur kolonu EKLENMEDİ (S-4 korundu).
+>   **K8** tahsilat düşümü: `Σpayments.amount_eur` (reversal'lar dahil NET, status
+>   filtresi YOK) aktif plan satırlarına **due_date ASC, eşitlikte item_no ASC**
+>   sırasıyla düşülür. Formül komisyon motorunun `effective_pay` teleskop deseniyle
+>   BİREBİR AYNI: `LEAST(paid, cum_after) − LEAST(paid, cum_before)`. İkinci formül
+>   YAZILMADI. `remaining` yapısal olarak 0'ın altına inmez; fazla tahsilat ayrı
+>   sütunda (`excess_eur`), gizlenmez.
+>   **⚠️ K8 BİR VARSAYIMDIR, EKRANDA YAZAR:** hangi taksitin kapandığı sistemde
+>   KAYITLI DEĞİL (S-6; ölçüm: `payments.schedule_item_id` **0/13 dolu**).
+>   Toplam kalan DOĞRUDUR, **ay dağılımı varsayıma dayalıdır**. Gerçek çözüm =
+>   satır eşleştirme, AYRI DİLİM.
+>   **K9** eksen = **OFİS × VADE**, toplamlar EUR. Para birimi toplama ekseni DEĞİL,
+>   satır bilgisi (orijinal tutar + currency satırda görünür). Özgün "ofis × para
+>   birimi × vade" tarifi Suer'in iş kuralıyla bu yönde daraldı: **tüm raporlama
+>   EUR'dadır, giriş anındaki kilitli kurdan çevrilir** (Zoho'daki yerleşik davranış).
+>   **K10 KARA LİSTE (beyaz liste DEĞİL), İKİ KATMANDA:** plan CTE'de
+>   `Transferred`+`Cancelled` (tamamen dışarıda) · gruplamada `On Hold` (dışarıda
+>   ama K15'te sayılır — CTE'de atılsaydı kalanı hesaplanamazdı).
+>   **⚠️ 5. bir statü eklenirse hangi katmana yazılacağı AÇIK KARAR GEREKTİRİR;**
+>   yanlış katman sessizce "on hold" muamelesi görür. (D-1'in "AYNI KURAL İKİ
+>   KATMANDA" uyarısıyla aynı sınıf.)
+>   **On Hold dışlama gerekçesi (Suer):** beklemedeki kontrat ödeme yapmaz — ya
+>   iptal edilir ya müşteri başka fuara ikna edilip sözleşme aktarılır.
+>   **K14 OVERDUE** = `due_date < CURRENT_DATE AND remaining > 0`. Satır bayrağı +
+>   ofis içi alt toplam — AYRI ÜST GRUP DEĞİL (eksen ofis, gecikmiş satırın hangi
+>   ofise ait olduğu kaybolmasın). `remaining = 0` olan geçmiş satır OVERDUE değildir
+>   ama rapordan da gizlenmez.
+>   **K16** planlanmamış gelir sayaçları: `Y` = plansız kontratların Σrevenue_eur ·
+>   `X` = planlı ama eksik planlı kontratların Σ(revenue_eur − plan_total_eur).
+>   **NETLEŞME YASAK (E1):** yalnız `revenue_eur > plan_total_eur` toplanır; fazla
+>   planlanmış kontrat X'i AZALTMAZ (5.000 eksik + 5.000 fazla = 0 sessiz gizleme
+>   olurdu). **AYRIKLIK (E2):** her kontrat TEK sayaçta, Y ∩ X = ∅.
+>   **K1** NULL ofis GİZLENMEZ — "(No office)" kovası, rapor anında ofis
+>   tahmin/çıkarım YAPILMAZ. **K13** plansız kontrat sayacı · **K11** `to_char` ·
+>   **K12** organizer scope.
+>
+> - **VARLIK SEBEBİ — BANNER TOPLAM ALACAK DEĞİLDİR.** Canlı ölçüm: banner
+>   **12.065,20 €**, gerçek toplam bakiye **24.945,20 €** (c4 11.160,00 + c3
+>   13.785,20). Fark **12.880,00 €** = contract 3'ün planlanmamış geliri.
+>   Banner *tarihli planlanmış nakdi* gösterir; toplam alacak AYRI bir rapordur,
+>   tek sayıda birleştirilmez (Sentez hükmü). K16 sayaçları farkı görünür kılar.
+>
+> - **BU DİLİMDE ÖLÇÜLENLER (kayda geçsin, sonraki dilimlerin girdisi):**
+>   `payment_schedule_items` (026): `due_date` DATE (TZ yok) · `amount` +
+>   `currency` (CHECK YOK) · `percent` · `source` · `expected_office_id` nullable ·
+>   `superseded_at`. **`exchange_rate`/`amount_eur` YOK** (S-4: plan bir para
+>   hareketi değildir).
+>   **Aktif revizyon = `superseded_at IS NULL`** (contracts.js:1162), bayrak kolonu
+>   YOK, `MAX(revision)` yalnız sonraki numarayı üretir (:1111) — aktif seçmez.
+>   `contracts_status_check` = **Active · On Hold · Transferred · Cancelled**
+>   (012:88 + contracts.js:28).
+>   `contracts.exchange_rate` numeric(18,8) **NULLABLE, CHECK YOK** (012:74).
+>   `contracts.revenue_eur` numeric(14,2) **NULLABLE, CHECK YOK** (012:75).
+>   `payments.schedule_item_id` FK var ama **ÖLÜ** — dolduran/okuyan kod YOK
+>   (grep BULAMADIM), canlıda 0/13.
+>   **E1b — ÖDEME PARA BİRİMİ KONTRATTAN FARKLI OLABİLİR:** 13 ödemenin **10'u**
+>   uyumsuz (c1 USD/TRY · c3 USD kontrat, hiç USD ödeme yok · c4 EUR/USD). Ortak
+>   payda yalnız `amount_eur`. K8'in EUR üzerinden çalışmasının sebebi budur.
+>   `GET /:id/schedule` `SELECT *` ile ham DATE döndürüyor (:1162) → TZ kayması
+>   riski. **Ekranda kayma GÖZLENMEDİ** (sunucu muhtemelen UTC) ama sebep
+>   ölçülmedi; forecast kendi okumasında `to_char` kullanır (K11). GET düzeltmesi
+>   **KUYRUKTA**.
+>
+> - **Testler:** cash forecast **41/41** (T1-T24). Regresyon **8/8 suite sapmasız**:
+>   M1 29/29 · M2 30/30 · payout 26/26 · PS1 29/29 · PS2-A 5/5 · PS2-B1 10/10 ·
+>   PS2-C 18/18 · PS3-A 8/8. **Taban contract 4 sr earned 342.00 KAYMADI.**
+>   **⚠️ TEST İZOLASYON BORCU (ürün regresyonu DEĞİL, harness kusuru):** suitler
+>   TOPLU koşulamıyor — `commission_payouts` FK'si sonraki suitin
+>   `DELETE sales_agents` temizliğini bloke ediyor. **Her suite TAZE DB ile koşulur.**
+>   Kaydedilmezse sonraki dilimde "regresyon kırıldı" sanılır.
+>
+> - **GÖRSEL TUR — EKRANDA DOĞRULANDI (8/8):** nav linki · banner 12.065,20
+>   (Overdue 0,00 · Upcoming 12.065,20) · Turkey 11.160,00 (c4 Jul 31 Outstanding
+>   **0,00** = K8 teleskopun canlı kanıtı; Oct 19 11.160,00) · **(No office)**
+>   905,20 (c3 1.000,00 USD → 920,00 EUR = K7 canlı kanıtı, Collected 14,80) ·
+>   Contracts'ta c3 kırmızı ⚠ (920 ≠ 13.800), c4 temiz · sayaç satırı
+>   `0 without schedule 0,00 · 1 incomplete 12.880,00 · 0 on hold 0,00 ·
+>   0 no EUR revenue value` · K8 dipnotu görünür.
+>
+> - **BİLİNÇLİ ASİMETRİLER (ileride "hata" sanılmasın):**
+>   (a) Eksik planlamanın EUR karşılığı var (K16/X), **fazla planlamanın YOK** —
+>   dördüncü sayaç açılmadı. Gerekçe: canlıda örnek yok + fazla planlama
+>   "planlanmamış gelir" değil, farklı bir anomali; aynı sayaca konursa ikisi de
+>   bulanır. `matches_revenue` ⚠ kontrat bazında görünür kılıyor.
+>   (b) `exchange_rate` NULL olan planlı kontrat K16/X'e **giremez**
+>   (`revenue_eur > NULL` = unknown) — kabul edilmiş davranış, çünkü
+>   `contracts_unconvertible`'da görünür.
+>   (c) X/Y bir **BÖLÜNMEDİR** (her kontrat tekinde); `contracts_unconvertible` ve
+>   `contracts_missing_revenue_eur` ise **TEŞHİS EKSENİDİR** — X/Y ile örtüşebilirler.
+>   Bu çifte sayım DEĞİL, tasarım gereğidir.
+>
+> - **KOZMETİK BORÇ (aksiyonsuz):** sayaç satırında `"1 contracts have incomplete
+>   schedules"` — tekil/çoğul uyumsuz, `"1 contract has"` olmalı ·
+>   `contracts_unconvertible` sayaç satırında **koşullu görünüyor**, diğer dört
+>   sayaç sıfırken bile duruyor (desen tutarsızlığı) ·
+>   `excess_eur` `GREATEST(numeric,0)` sıfırken integer `"0"` döndürüyordu →
+>   `::numeric(14,2)` ile düzeltildi (test yakaladı).
+>
+> - **KALICI TEST VERİSİ (SİLİNMEZ):** contract 3 (expo 11, schedule rev 6, tek
+>   satır 1.000 USD @ Sep 10, ofissiz) · contract 4 (expo 15, schedule rev 1, iki
+>   satır, ofis Turkey). İkisi de PS3-B'nin canlı kabul verisidir; değişirse
+>   ekran sayıları kayar.
+>
+> - **KUYRUKTA (bu dilimde bilinçle yapılmadı):** `GET /:id/schedule` TZ düzeltmesi ·
+>   `schedule_item_id` satır eşleştirme mantığı (K8'i varsayımdan çıkarır) ·
+>   K1-K16 → PLN-NN kalıcı ID tahsisi (kütük turu) · test harness izolasyonu ·
+>   ofis yönetim ekranı · Reference Data admin sayfası · agent formunda ofis düzenleme.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - ~~**★ PAYOUT dilimi** (ayrı, gelecek): fiilî agent ödemesi bir **OLAYDIR** — kaydı/ledger'ı bu
@@ -1066,9 +1194,9 @@
 >   ofis yönetim ekranı (ekle/kapat, Iraq kararı) · Reference Data admin sayfası ·
 >   ödeme↔kalem eşleştirme (S-6) · schedule UI kartı (contract-detail) · agent formunda
 >   ofis düzenleme.
->   → ✅ **PS3-A KAPANDI (2026-07-28, `87d162d`).** KALAN: **PS3-B — nakit öngörü raporu
+>   → ✅ **PS3-A KAPANDI (2026-07-28, `87d162d`).** KALAN: ~~**PS3-B — nakit öngörü raporu
 >   (ofis × para birimi × vade kırılımı — ASIL ÖDÜL; iki yön de artık kayıtlı, önkoşul
->   tamam)** · ofis yönetim ekranı (ekle/kapat, Iraq kararı) · Reference Data admin sayfası ·
+>   tamam)**~~ → ✅ **PS3-B CANLIDA (2026-07-30, `4362054`/`ca6fb3c`/`430e08d`).** ofis yönetim ekranı (ekle/kapat, Iraq kararı) · Reference Data admin sayfası ·
 >   ~~**kural kütüğü (ELL_LOCKED_KARARLAR_OZET'e iş kuralları bölümü — S/H/W/U/D hükümleri
 >   indekssiz birikiyor)**~~ → ✅ **KK1, 2026-07-29** · ödeme↔kalem eşleştirme (S-6) · agent formunda ofis düzenleme ·
 >   ~~**D-1 schedule-default ön-doldurma görsel borcu**~~ → ✅ **contract 4 expo bağlama, 2026-07-29**.
