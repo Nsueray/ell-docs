@@ -1215,7 +1215,7 @@
 > - **Commit'ler:** `72ff64b` (kütük tahsisi + defter hijyeni, 2026-07-30) · `55729d6`
 >   (kod sed'i, LEENA) · bu KK2 kaydı (ell-docs). PUSH YOK — Suer atar.
 >
-> - **KB yeniden yüklendi (YON-03 kapanış şartı, Suer dolduracak):** KB @ ________
+> - **KB yeniden yüklendi (YON-03 kapanış şartı, Suer dolduracak):** KB @ aad1773
 >   *(push + KB yükleme sonrası hash yazılınca dilim KAPANIR; teyit yoksa AÇIK.)*
 
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
