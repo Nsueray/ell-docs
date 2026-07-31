@@ -96,7 +96,8 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 > ID'lere tahsis edildi: RAP-01..03 · PLN-09..11 · OFS-06 · PLN-04/05/06/07 genişletmeleri ·
 > OFS-01. ID ALMAYANLAR: K2→D2 mimari ilkesi · K5→OFS-01 · K6 (UI iskelet) / K9-axis (yerleşim
 > tasarımı) / K11 (to_char teknik koruması) tasarım-teknik, kural değil · K12 (organizer scope)
-> mimari çok-kiracı invaryantı. Kodda `K` etiketi kalmadı (sed pasosu ayrı commit).
+> mimari çok-kiracı invaryantı. Kod etiketleri `55729d6`'te kalıcı ID'lere çevrildi; `K[0-9]` deseni
+> cashForecast.js · cash-forecast.html · test dosyasında SIFIR (grep ile doğrulandı).
 > Tiresiz `S1..S9` (açık soru takibi) · `D1..D4` (agent import kararı) · `D2` (D2 mimari ilkesi)
 > AYRI namespace'lerdir — arama deseni tire'yi zorunlu tutmalı, gevşetilirse çöp girer.
 > **YON grubu bu turda dolduruldu** (YON-01..04) — süreç hükümleri.
@@ -164,5 +165,5 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 
 - **YON-01** — Defterdeki her kayıt TARİHSELDİR: yazıldığı günün ölçümüdür, bugünkü durum değildir. Defterden okunan hiçbir şey güncel durum olarak aktarılmaz; güncel durum yalnız ölçümle bilinir. Kayıt DOĞRU ve düzgün yazılmış olsa bile geçerlidir.
 - **YON-02** — Sentez KRİTER yazar, KOMUT yazmaz; dosya yolu / SQL prosedürü / shell adımı Sentez'in işi değildir.
-- **YON-03** — Belge commit'i kapanış şartı: push → KB yeniden yükleme (Sentez VE Orchestrator) → deftere tek satır "KB @ &lt;hash&gt;". Teyit yoksa dilim AÇIK.
+- **YON-03** — Belge commit'i kapanış şartı: push → KB yeniden yükleme (Sentez VE Orchestrator) → deftere tek satır `KB @ <hash>`. Teyit yoksa dilim AÇIK.
 - **YON-04** — Para biriminin nasıl raporlanacağı İŞ KARARIDIR; Sentez veremez (uygulama: RAP-01).

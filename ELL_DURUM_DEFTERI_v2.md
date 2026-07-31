@@ -1178,6 +1178,46 @@
 >   K1-K16 → PLN-NN kalıcı ID tahsisi (kütük turu) · test harness izolasyonu ·
 >   ofis yönetim ekranı · Reference Data admin sayfası · agent formunda ofis düzenleme.
 
+> ## ✅ 2026-07-31 — KK2: PS3-B kural tahsisi + kod etiket sed'i
+>
+> - **Ne yapıldı:** PS3-B'nin geçici `K1..K16` etiketleri kalıcı kütük ID'lerine tahsis
+>   edildi. **Yeni ID:** RAP grubu (RAP-01 EUR-raporlama · RAP-02 sessiz-kaybolmama
+>   sayaçları · RAP-03 kara-liste kapsamı) · PLN-09 (rapor EUR çevrimi) · PLN-10 (satır
+>   teleskop düşüm) · PLN-11 (overdue) · OFS-06 (NULL ofis gizlenmez) · YON-01..04 (süreç).
+>   **Genişletme (yeni ID YOK):** PLN-04/05/06/07 · OFS-01 · TAH-04 çapraz referans.
+>   **ID ALMAYAN:** K2→D2 mimari ilkesi · K6/K9-axis/K11 (tasarım-teknik) · K12 (mimari
+>   çok-kiracı invaryantı).
+>
+> - **RAP grubu DAR tutuldu:** yalnız ALAN-BAĞIMSIZ raporlama ilkeleri girer; bir hüküm
+>   tek bir alanı (plan/ofis/komisyon/payout) ilgilendiriyorsa o grubun içine yazılır.
+>   Emsal: komisyon raporlaması MOT-05'te yaşıyor. Bu yüzden PS3-B raporlama hükümlerinin
+>   çoğu PLN'e/OFS'e dağıtıldı; yalnız global EUR-raporlama (RAP-01) ve sessiz-kaybolmama
+>   (RAP-02) + kara-liste (RAP-03) RAP'a girdi.
+>
+> - **KK1 simetri kuralı uygulandı:** K13 (plansız sayaç) + K15 (On Hold dışlanır-ama-sayılır)
+>   + K16 (planlanmamış gelir sayaçları) tek bir hükmün üç tezahürüydü → **TEK parent RAP-02**;
+>   E1 (netleşme yasak) ve E2 (ayrıklık) alt madde olarak yazıldı.
+>
+> - **⚠️ AÇIK SORU (bu dilimde ÇÖZÜLMEDİ):** RAP-03'te 5. bir kontrat statüsü eklenirse
+>   hangi katmana (plan CTE tam-dışlama vs gruplama-dışlama-ama-sayma) yazılacağı açık karar
+>   gerektirir; yanlış katman sessizce "on hold" muamelesi görür.
+>
+> - **Defter :633 sertleştirildi:** ELL_GLOSSARY.md için devir brief'indeki dayanaksız
+>   değişiklik iddiasının TIRNAKLI çekirdek metni kaldırıldı, iddia tarif edildi (alıntı
+>   sonraki oturumlarda canlı iddia olarak yeniden doğuyordu). "Kök neden düzeltildi"
+>   YAZILMADI — nedensellik kanıtlanmadı, yalnız sertleştirme.
+>
+> - **Kod sed'i (`55729d6`):** geçici `K` etiketleri kalıcı ID'lere çevrildi (yalnız
+>   yorum/etiket satırları; kod/SQL mantığı değişmedi). `K[0-9]` deseni cashForecast.js ·
+>   cash-forecast.html · test dosyasında SIFIR (grep doğrulandı). Cash forecast **41/41**.
+>   `cashForecast.js` başlığındaki isim-alanı uyarısı kalıcı ID'lere göre yeniden yazıldı.
+>
+> - **Commit'ler:** `72ff64b` (kütük tahsisi + defter hijyeni, 2026-07-30) · `55729d6`
+>   (kod sed'i, LEENA) · bu KK2 kaydı (ell-docs). PUSH YOK — Suer atar.
+>
+> - **KB yeniden yüklendi (YON-03 kapanış şartı, Suer dolduracak):** KB @ ________
+>   *(push + KB yükleme sonrası hash yazılınca dilim KAPANIR; teyit yoksa AÇIK.)*
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - ~~**★ PAYOUT dilimi** (ayrı, gelecek): fiilî agent ödemesi bir **OLAYDIR** — kaydı/ledger'ı bu
