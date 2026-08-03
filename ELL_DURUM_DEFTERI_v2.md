@@ -1172,6 +1172,9 @@
 >   satır 1.000 USD @ Sep 10, ofissiz) · contract 4 (expo 15, schedule rev 1, iki
 >   satır, ofis Turkey). İkisi de PS3-B'nin canlı kabul verisidir; değişirse
 >   ekran sayıları kayar.
+>   ⚠️ GÜNCELLEME 2026-08-03: contract 4'e payment #14 (10,00 EUR eşleşmiş) +
+>   reversal'ı eklendi (TAH-04 görsel turu); ödeme listesi bu blokta yazıldığı
+>   günkü haliyle kalmıştır (YON-01).
 >
 > - **KUYRUKTA (bu dilimde bilinçle yapılmadı):** `GET /:id/schedule` TZ düzeltmesi ·
 >   `schedule_item_id` satır eşleştirme mantığı (K8'i varsayımdan çıkarır) ·
@@ -1218,6 +1221,111 @@
 > - **KB yeniden yüklendi (YON-03 kapanış şartı, Suer dolduracak):** KB @ aad1773
 >   *(push + KB yükleme sonrası hash yazılınca dilim KAPANIR; teyit yoksa AÇIK.)*
 
+> ## ✅ 2026-08-03 — TAH-04 CANLIDA (ödeme↔taksit eşleştirme: öneri + kullanıcı onayı)
+>
+> - **Commit'ler:** `e83b805` (kod) · `3d0caef` (regresyon kaydı, boş commit) ·
+>   `32131d1` (sayaç kusuru fix). **MIGRATION YOK** — `payments.schedule_item_id`
+>   026'da zaten vardı (nullable, UNIQUE/CHECK/ON DELETE yok), kolon eklenmedi.
+>   Dört dosya: `routes/contracts.js` · `routes/cashForecast.js` ·
+>   `public/cash-forecast.html` · `public/contract-detail.html`.
+>   Komisyon motoruna DOKUNULMADI.
+>
+> - **İŞ KURALI (Suer, kilitli):** eşleştirme = OTOMATİK ÖNERİ + KULLANICI ONAYI.
+>   Ödeme formunda taksit alanı en eski açık taksitle ön-doldurulur; kullanıcı
+>   ezebilir veya boşaltabilir. Kilit DEĞİLDİR (OFS-05 deseni). Boş eşleştirme
+>   geçerli bir durumdur.
+>   Önerinin sırası PLN-10 teleskobuyla AYNI: `due_date ASC, item_no ASC`.
+>   Ayrışırsa form ile rapor birbirinden kopar — kullanıcı önerileri onayladıkça
+>   rapor "düzelirken" bozulurdu.
+>
+> - **FORMÜL (tek kaynak, ikinci formül yazılmadı — MOT-01):**
+>   `matched_i` = o kaleme eşleşmiş `payments.amount_eur` (NET)
+>   `cap_i` = **LEAST( GREATEST(plan_eur_i − matched_i, 0), plan_eur_i )**
+>   `U` = eşleşmemiş + düşmüş ödemeler (NET)
+>   `covered_i` = U'nun cap üzerinde teleskopu · `remaining_i` = cap_i − covered_i
+>   `excess_i` = GREATEST(matched_i − plan_eur_i, 0)
+>   **⚠️ ÜST KIRPMA NEDEN GEREKLİ:** reversal orijinalin `schedule_item_id`'sini
+>   devralır → bir kaleme eşleşmiş toplam NEGATİF olabilir → `plan − matched > plan`
+>   olurdu, kalem kendi tutarından fazla borç gösterirdi. T29 bunu kanıtlıyor.
+>   **CEBİR (C3'ün yapısal kanıtı):** Σremaining = Σplan − Σmatched − U =
+>   Σplan − paid_net → eşleştirme TOPLAMI DEĞİŞTİRMEZ, yalnız AY DAĞILIMINI
+>   düzeltir. Testle değil cebirle garanti.
+>   **⚠️ ÇİFTE SAYIM YASAĞI:** U yalnız eşleşmemiş ödemeleri içerir. Eşleşmiş
+>   ödeme hem kendi kalemine hem U'ya sayılırsa toplam bozulur.
+>
+> - **⚠️ Ö0a — C8 × C4 ÇAKIŞMASI VE ÇÖZÜMÜ (kalıcı davranış, "bug" sanılmasın):**
+>   C8 revizyonda eşleşmelerin düşmesini, C4 ödemenin UPDATE edilmemesini istiyordu.
+>   Boşaltma bilgiyi yok ederdi: "hiç eşleşmemiş" ile "revizyonda düştü" ayırt
+>   edilemez olurdu (RAP-02 ihlali).
+>   ÖLÇÜM: `applyScheduleRevision` superseded satırı **UPDATE ile damgalıyor,
+>   SİLMİYOR** → FK hedefi duruyor, referans bütünlüğü kırılmıyor.
+>   **KARAR: BOŞALTMA YOK.** "düşmüş" = FK'nın gösterdiği satırın
+>   `superseded_at IS NOT NULL` olması. TÜRETİLİR, saklanmaz (D2). Migration yok,
+>   ödemeye dokunulmuyor (C4), bilgi kaybolmuyor.
+>   **⚠️ KALICI SONUÇ: `schedule_item_id` ASLA kendiliğinden temizlenmez.**
+>   Superseded bir satırı göstermeye devam eder — BU NORMALDİR. Kullanıcı yeniden
+>   eşleştirene kadar sayaçta görünür. "Temizlenmemiş veri" DEĞİLDİR.
+>
+> - **REVERSAL / TRANSFER TAŞIMA:**
+>   Reversal orijinalin `schedule_item_id`'sini DEVRALIR (TAH-01 deseni) — net
+>   sıfırlama taksidin İÇİNDE gerçekleşsin.
+>   Transfer: kaynaktaki kapama satırı kaynağın item'ını devralır; **klondaki
+>   kopya NULL kalır** — klonun planı YOK (ölçüldü: transfer `payment_schedule_items`'a
+>   hiç dokunmuyor, klon plansız doğar). KAÇINILMAZ NULL; klonun planı sonradan
+>   üretilince kullanıcı elle eşleştirir.
+>   **⚠️ OFS-05 SINIFI BORÇ:** aynı devralma kuralı reversal ve transfer bloklarında
+>   AYRI yazılıyor, ortak kod yok — kural değişirse İKİ yer de güncellenir.
+>
+> - **C9 — GERİYE DÖNÜK GÖÇ YAPILMADI.** Mevcut ödemeler eşleşmemiş başladı.
+>   Gerekçe: otomatik doldurma teleskop varsayımını veriye KALICI yazar ve geri
+>   alınamaz — kullanıcının bilinçli seçimi ile göç ürünü veride AYIRT EDİLEMEZ olur.
+>   **⚠️ Contract 1'in 3 ödemesi (Transferred, plansız) HİÇBİR ZAMAN eşleşemez →
+>   %100 kapsama yapısal olarak imkânsız. Karma mod (C1) KALICI gerçektir,
+>   geçiş durumu değil.**
+>
+> - **GÖRSEL TUR — BİR KUSUR YAKALADI, DÜZELTİLDİ (`32131d1`):**
+>   Reversal sonrası sayaç `1 payments matched — 10.00 EUR` gösteriyordu; satır
+>   ve banner ise doğru (net 0) idi.
+>   **KÖK NEDEN (ölçüldü):** `paystat` sorgusu reversal'ı (`reverses_payment_id
+>   IS NULL` ile) eliyordu ama **TERSLENMİŞ ORİJİNALİ elemiyordu**. Sayaç ile
+>   satır/banner FARKLI KAYNAKTAN besleniyordu (paystat vs matched CTE).
+>   **AYNI KUSURUN İKİNCİ UCU:** `unmatched` EUR'u BRÜT idi (33.063,80), oysa
+>   net 7.454,80. Aynı düzeltmeyle net oldu.
+>   **KARAR:** `matched` = `schedule_item_id` dolu VE `reverses_payment_id IS NULL`
+>   VE kendisi terslenmemiş. Sayı ve EUR TEK KAYNAKTAN. Sayaç · satır · banner
+>   üçü aynı tanımı kullanır (RAP-02: sayaç panonun doğruluk göstergesidir,
+>   tabloyla çelişemez).
+>   **⚠️ Danışmanın "2 bekleniyordu" hipotezi ÖLÇÜMLE ÇÜRÜDÜ** — sayı 1'di çünkü
+>   reversal zaten eleniyordu; hata terslenmiş orijinaldeydi. Ölçüm hipotezden önce.
+>
+> - **Ekranda doğrulandı (deploy sonrası):** gün-1 değişmezlik (banner 12.065,20 ·
+>   Turkey 11.160,00 · (No office) 905,20 · c3 kırmızı ⚠) · Matched sütunu render
+>   ediliyor, Collected'dan görsel ayrı (C1) · 10 EUR eşleştirme → Matched 10,00,
+>   Outstanding 11.150,00, banner 12.055,20 · reversal → ofis (Turkey) ve item
+>   devralındı, banner 12.065,20'ye döndü · fix sonrası sayaç
+>   `0 matched — 0,00 · 3 unmatched — 7.454,80 (net)`.
+>   **TABAN contract 4 sr earned 342.00 KAYMADI.**
+>
+> - **⚠️ REGRESYON — DÜRÜST BEYAN, "8/8" DEĞİLDİR:**
+>   8 eski suite dosyası (M1/M2/payout/PS1/PS2-A/PS2-B1/PS2-C/PS3-A)
+>   **`/private/tmp` scratchpad'inden OS temizliğiyle SİLİNMİŞTİ** — koşulamadılar.
+>   Yerine dokunulan dört yol için assertion'lar YENİDEN YAZILDI (R1-R8, kütükten
+>   okundu, uydurulmadı): OFS-03 ofissiz ödeme → 400 · TAH-01 reversal devralma ·
+>   SEM-01 method sözlüğü · PLN-05 revizyon damgalama · PLN-01 yarım plan → 400 ·
+>   A4 transfer klon plansız · PLN-10 gün-1 birebir · OFS-06 NULL ofis kovası.
+>   Suite 67/67 (41 PS3-B + T25-T38 + R1-R8).
+>   **⚠️ TEST BORCU: suitler `/private/tmp`'de yaşıyor, OS temizliği bir kez sildi.
+>   İkinci kez olursa yine ölçüm kaybı olur. Repoya alınması AYRI DİLİM**
+>   (hardcoded `/Users/nsa` yolları + `ell_comm_test` bağımlılığı temizlenmeli).
+>
+> - **KALICI TEST VERİSİ (eklendi, SİLİNMEZ):** contract 4'e 2026-08-03'te
+>   payment #14 (10,00 EUR, ofis Turkey, Oct 19 taksitine eşleşmiş) + reversal'ı
+>   girildi. Görsel turun eşleştirme/reversal kanıtıdır; silinirse o kanıt kaybolur.
+>
+> - **KUYRUKTA (bu dilimde bilinçle yapılmadı):** test suitlerinin repoya alınması ·
+>   `GET /:id/schedule` TZ düzeltmesi · RAP-03 5. statü açık sorusu · ofis yönetim
+>   ekranı · Reference Data admin · Faz 4 rol/yetki.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - ~~**★ PAYOUT dilimi** (ayrı, gelecek): fiilî agent ödemesi bir **OLAYDIR** — kaydı/ledger'ı bu
@@ -1239,7 +1347,7 @@
 >   (ofis × para birimi × vade kırılımı — ASIL ÖDÜL; iki yön de artık kayıtlı, önkoşul
 >   tamam)**~~ → ✅ **PS3-B CANLIDA (2026-07-30, `4362054`/`ca6fb3c`/`430e08d`).** · ofis yönetim ekranı (ekle/kapat, Iraq kararı) · Reference Data admin sayfası ·
 >   ~~**kural kütüğü (ELL_LOCKED_KARARLAR_OZET'e iş kuralları bölümü — S/H/W/U/D hükümleri
->   indekssiz birikiyor)**~~ → ✅ **KK1, 2026-07-29** · ödeme↔kalem eşleştirme (S-6) · agent formunda ofis düzenleme ·
+>   indekssiz birikiyor)**~~ → ✅ **KK1, 2026-07-29** · ~~ödeme↔kalem eşleştirme (S-6)~~ → ✅ **TAH-04 CANLIDA (2026-08-03, `e83b805`/`3d0caef`/`32131d1`)** · agent formunda ofis düzenleme ·
 >   ~~**D-1 schedule-default ön-doldurma görsel borcu**~~ → ✅ **contract 4 expo bağlama, 2026-07-29**.
 >   → ✅ **BELGE KONSOLİDASYONU KAPANDI (2026-07-28, `4278bc8` + `1f53fb6`).**
 >   AÇIK: ~~**KB yeniden yükleme (c44ffeb'de donmuş)**~~ · ~~**FAZ1a_DURUM.md KB'den indirilecek**~~ ·
