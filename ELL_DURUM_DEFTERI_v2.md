@@ -1460,6 +1460,39 @@
 > - **⚠️ ÖLÇÜLMEDİ:** eski 8 suite'in bu 24 testle örtüşme oranı (dosyalar yok) ·
 >   kenar durumların riski (bu turların testlerinden çıkacak) · canlı doğrulama (test turu).
 
+> ## ✅ 2026-08-04 — M4 TEST KAPSAMI: PLN (plan üretimi, kütükten)
+>
+> - **PLN turu (commit `84135a7`):** `tests/test_schedule.js`, **15 test / 7 kural**,
+>   **FAIL yok** — plan üretim kodu doğru (son turlarda sessiz kalmış olsa da).
+>   PLN-01 yarım plan yasak (4 önkoşul NULL→400+0) · PLN-02 %40/%60 (d2>d1: 400/600;
+>   d2≤d1: tek %100) · PLN-03 · PLN-04 (planda kur yok, şema) · PLN-05 immutable/revizyon ·
+>   PLN-06 (ödeme durumu saklanmaz, şema) · PLN-07 (Σ≠revenue→warning).
+>   Ürün koduna DOKUNULMADI.
+>
+> - **⚠️ PLN-03 tam davranışı (kütükten, doğrulandı):** yuvarlama artığı **İKİNCİ
+>   kaleme** yazılır (default üretici: `a1=round2(revenue×0,40)`, `a2=revenue−a1` →
+>   artığı a2 emer), Σ kalem ≡ revenue TAM. El hesabı: 100,01 × %40 = 40,004 → 40,00 (ilk);
+>   100,01 − 40,00 = **60,01** (ikinci); Σ = 100,01. "Son" değil, "ikinci" — kütük kazandı.
+>
+> - **Ö3 KARARI — FRONTEND KATMANI TEST EDİLMEDİ, BORÇ DEĞİL:** ölçüldü ki
+>   `contract-detail.html generateDefault()` yalnız `POST /schedule/default` çağırıyor;
+>   **client-side %40/%60 matematiği YOK** (grep boş) → plan üretim matematiği SERVER-ONLY,
+>   frontend duplikasyonu yok → sunucu-testi PLN'i TAM kapsar. (OFS-05 iki-katman borcu
+>   ödeme-formu ofis ön-doldurmasıdır, PLN dışı — o borç ayrı, hâlâ açık.)
+>
+> - **PLN-09/10/11 çift yazılMADI** — cash-forecast suite'inde zaten test ediliyor.
+>
+> - **Toplam test: 112** — cash-forecast 67 · agent 6 · payouts 12 · commissions 12 ·
+>   schedule 15. `npm test` beşini zincirler, idempotent, **TABAN 342.00** korunuyor.
+>
+> - **⚠️ AÇIKTA KALAN KAPSAM (M4 sürüyor):** PLN-08 (plan≠ödeme ofisi zorlanmaz) ·
+>   OFS-04/05 (+ OFS-05 frontend/SQL iki-katman borcu) · PS2-C agent office backfill ·
+>   **tüm kenar durumlar** (sıfır bakiye, kesim sınırı çoklu dönem, EUR-dışı, W-3 reversal
+>   ofis devralma). Yazıldı: ODE(3) + MOT(5) + PLN-01..07.
+>
+> - **⚠️ ÖLÇÜLMEDİ:** eski PS1 suite'inin bu 15 testle örtüşmesi (dosya yok) ·
+>   kenar durumların riski · frontend office-prefill katmanı (OFS-05, ayrı borç) · canlı doğrulama.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - ~~**★ PAYOUT dilimi** (ayrı, gelecek): fiilî agent ödemesi bir **OLAYDIR** — kaydı/ledger'ı bu
