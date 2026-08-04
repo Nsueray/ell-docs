@@ -1493,6 +1493,49 @@
 > - **⚠️ ÖLÇÜLMEDİ:** eski PS1 suite'inin bu 15 testle örtüşmesi (dosya yok) ·
 >   kenar durumların riski · frontend office-prefill katmanı (OFS-05, ayrı borç) · canlı doğrulama.
 
+> ## ✅ 2026-08-04 — OFİS YÖNETİM EKRANI + kapalı-ofis ad çözümü (M2)
+>
+> - **Commit `3ebe8b5`.** `routes/offices.js` (GET param + POST + PUT) · `offices.html`
+>   (YENİ ekran) · üç ekran ad-çözümü düzeltmesi · `main-panel-v2` nav · `tests/test_offices.js`.
+>
+> - **Migration YAZILMADI:** `is_active boolean NOT NULL DEFAULT true` 026'da zaten
+>   vardı (ölçüldü). Kapatma = `is_active=false`.
+>
+> - **⛔ DELETE endpoint'i YAZILMADI (gerekçe ölçümle):** canlıda 5 ofisin **hepsinin
+>   bağlı kaydı var** (Turkey 122 agent + payments/sched; Morocco/Nigeria/Kenya/China
+>   agent'lar) — 4 FK hepsi RESTRICT → bugün **tek ofis bile silinemez**; DELETE yazılsa
+>   ilk günden ölü kod olurdu. Ofis geçmiş kayıtlarda referanstır.
+>
+> - **AD ÇÖZÜMÜ ÇAKIŞMASI M2 tarafından YARATILDI → aynı dilimde KAPATILDI:** ekran ilk
+>   ofisi kapattığı an, `officeName` GET /api/offices (aktif-only) besleniyorsa geçmiş
+>   kayıtların ofis adı `#id`'ye dönerdi (RAP-02 sınıfı: aynı bilgi iki kaynaktan çelişir).
+>   **Desen:** ad çözümü **tüm ofislerden** (`?include_inactive=1`), dropdown **yalnız aktiften**.
+>   Düzeltilen 3 ekran: `contract-detail.html` (payments/schedule ofis sütunu + ödeme
+>   dropdown) · `sales-agents.html` (liste + form) · `agent-statement.html` (payout sütunu +
+>   record-payout dropdown). **`cash-forecast.html` DOKUNULMADI** — backend LEFT JOIN, bağışık.
+>
+> - **⚠️ İKİ DESEN YAN YANA (açık borç):** ad çözümü artık iki farklı desende —
+>   **backend-JOIN** (cash-forecast) vs **client-side eşleme** (diğer üç ekran). Hangi
+>   desende birleşileceği KARAR gerektirir, bu dilimde çözülmedi.
+>
+> - **⚠️ ROL GATE YOK:** yazma endpoint'leri (POST/PUT) bugün **her kimliği doğrulanmış
+>   kullanıcıya** açık (`offices.js` TODO Faz 4). **BİLİNÇLİ**, unutulmuş değil — kod
+>   yorumunda da yazılı.
+>
+> - **Kapatma ONAY adımı:** ekranda `is_active` aktif→kapalı geçişinde `confirm()`
+>   ("Close office 'X'? … Existing records keep their office."). Engelleme değil, onay.
+>
+> - **Iraq:** ofis VERİSİ girilmedi (kod turu) — Iraq/ofissiz ülkeler kararı (defter:827)
+>   AYRI, hâlâ açık.
+>
+> - **Testler:** `tests/test_offices.js` (YENİ) **F1-F8 / 8 test**, FAIL yok. Toplam
+>   **120** (cash-forecast 67 · agent 6 · payouts 12 · commissions 12 · schedule 15 ·
+>   offices 8). İdempotent, **TABAN 342.00** korunuyor, mevcut testler bozulmadı.
+>
+> - **⚠️ ÖLÇÜLMEDİ:** görsel tur (Suer) · iki-desen birleşme kararı · kapalı ofisli
+>   canlı senaryo (bugün kapalı ofis yok) · ad-çözümü düzeltilen 3 ekran dışında başka
+>   gösterim yeri olup olmadığı (tam repo taranmadı).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - ~~**★ PAYOUT dilimi** (ayrı, gelecek): fiilî agent ödemesi bir **OLAYDIR** — kaydı/ledger'ı bu
@@ -1512,7 +1555,7 @@
 >   ofis düzenleme.
 >   → ✅ **PS3-A KAPANDI (2026-07-28, `87d162d`).** KALAN: ~~**PS3-B — nakit öngörü raporu
 >   (ofis × para birimi × vade kırılımı — ASIL ÖDÜL; iki yön de artık kayıtlı, önkoşul
->   tamam)**~~ → ✅ **PS3-B CANLIDA (2026-07-30, `4362054`/`ca6fb3c`/`430e08d`).** · ofis yönetim ekranı (ekle/kapat, Iraq kararı) · Reference Data admin sayfası ·
+>   tamam)**~~ → ✅ **PS3-B CANLIDA (2026-07-30, `4362054`/`ca6fb3c`/`430e08d`).** · ~~ofis yönetim ekranı (ekle/kapat)~~ → ✅ **CANLIDA (2026-08-04, `3ebe8b5`; Iraq veri girişi ayrı, açık)** · Reference Data admin sayfası ·
 >   ~~**kural kütüğü (ELL_LOCKED_KARARLAR_OZET'e iş kuralları bölümü — S/H/W/U/D hükümleri
 >   indekssiz birikiyor)**~~ → ✅ **KK1, 2026-07-29** · ~~ödeme↔kalem eşleştirme (S-6)~~ → ✅ **TAH-04 CANLIDA (2026-08-03, `e83b805`/`3d0caef`/`32131d1`)** · ~~agent formunda ofis düzenleme~~ → ✅ **CANLIDA (2026-08-04, `ff080fb`)** ·
 >   ~~**D-1 schedule-default ön-doldurma görsel borcu**~~ → ✅ **contract 4 expo bağlama, 2026-07-29**.
