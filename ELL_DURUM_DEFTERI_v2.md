@@ -1423,6 +1423,43 @@
 > - **⚠️ ÖLÇÜLMEDİ:** görsel tur (Suer ekranda doğrulayacak) · pasif ofisli agent'ın
 >   edit'te ofisinin korunup korunmadığı canlıda (yalnız kod: is_active şartsız varlık).
 
+> ## ✅ 2026-08-04 — M4 TEST KAPSAMI: ODE + MOT (kütükten yeniden yazım)
+>
+> - **AMAÇ:** OS temizliğinin sildiği 8 suite'in yerine, **KÜTÜKTEN** yazılmış test
+>   seti. Kaynak kütük; eski dosyalar yok, **kopya değil, sayı hedefi yok** (defterdeki
+>   29/30/26… TARİHSEL, doğrulanamaz). Ürün koduna DOKUNULMADI — ikisinde de FAIL yok.
+>
+> - **ODE turu (commit `b5b6384`):** `tests/test_payouts.js`, **12 test / 3 kural**.
+>   ODE-01 cari hesap (earned/paid/balance türetilir) · ODE-02 fazla ödeme negatife
+>   düşer + reversal mahsup · ODE-03 immutable (düzeltme=negatif reversal).
+>   ⚠️ **O1b deseni** (kayda değer): bir kolonun **YOKLUĞUNU şema üzerinden** kanıtlar
+>   (commission_payouts'ta dönem/kesim kolonu yok) — modelin sessizce bozulmasını engeller.
+>   ⚠️ **O3d:** cross-agent reversal koruması **kütükte YAZMIYOR, koddan ölçüldü**
+>   (payouts.js:151).
+>
+> - **MOT turu (commit `32717fe`):** `tests/test_commissions.js`, **12 test / 5 kural**.
+>   MOT-01 tek kaynak · MOT-02 tahsilat oranı (plan değil) · MOT-03 tavan/(cap) ·
+>   MOT-04 kesim (gün≤15→15, ≥16→son) · MOT-05 rapor yalnız hak edilmiş.
+>   ⚠️ **M01a 3-AYAK (döngüsellik önlemi):** M1 computeCommission == statement (SLICE_CTES)
+>   == **EL HESABI literal 342.00** (base 17.100 × %5 = 855; 855 × 0,40 = 342). İki yol
+>   aynı yanlış formülü kullansa eşit çıkardı → üçüncü ayak (sabit sayı) bunu yakalar.
+>   ⚠️ **MOT-02 eski M2 listesinde YOKTU** (tarihsel eksik) → bu turda yazıldı, eksiklik
+>   devralınmadı.
+>   ⚠️ Ölçüm: `computeCommission` SLICE_CTES kullanmıyor (AYRI M1 yolu); MOT-01'in
+>   "tek kaynak" iddiası dilim CTE'leri içindir, (a)/(b) farklı yollar → eşitlikleri anlamlı.
+>
+> - **Toplam test: 97** — `test_cash_forecast.js` 67 · `test_agent_office.js` 6 ·
+>   `test_payouts.js` 12 · `test_commissions.js` 12. `npm test` dördünü zincirler,
+>   idempotent, **TABAN 342.00** (T35 + M01a el-hesabı) korunuyor.
+>
+> - **⚠️ AÇIKTA KALAN KAPSAM (HÂLÂ test edilmiyor):** PLN-02/03/06/07/08 (default-gen
+>   matematiği/revizyon/plan) · OFS-04/05 · PS2-C agent office backfill · **tüm kenar
+>   durumlar** (sıfır bakiye, kesim sınırı çoklu dönem, EUR-dışı, reversal ofis devralma
+>   W-3). M4 sürüyor; sıradaki turlar bu listeden seçilir.
+>
+> - **⚠️ ÖLÇÜLMEDİ:** eski 8 suite'in bu 24 testle örtüşme oranı (dosyalar yok) ·
+>   kenar durumların riski (bu turların testlerinden çıkacak) · canlı doğrulama (test turu).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - ~~**★ PAYOUT dilimi** (ayrı, gelecek): fiilî agent ödemesi bir **OLAYDIR** — kaydı/ledger'ı bu
