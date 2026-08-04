@@ -1386,6 +1386,9 @@
 >   aynılığı (canlıya dokunulmadı) · CI'da koşum (CI yok) · başka host/OS'ta
 >   koşum (yalnız bu makinede doğrulandı) · `.gitignore` (repoda yok, bu
 >   dilimde açılmadı — yanlış desen dosya yutabilir).
+> - **KB yeniden yüklendi: `1b181d1`** (YON-03). Yüklenen belgeler:
+>   `ELL_DURUM_DEFTERI_v2.md` + `ELL_LOCKED_KARARLAR_OZET.md` (son 10 commit'te
+>   değişen tek iki dosya, `git log --name-only` ile ölçüldü).
 
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
