@@ -1390,6 +1390,39 @@
 >   `ELL_DURUM_DEFTERI_v2.md` + `ELL_LOCKED_KARARLAR_OZET.md` (son 10 commit'te
 >   değişen tek iki dosya, `git log --name-only` ile ölçüldü).
 
+> ## ✅ 2026-08-04 — AGENT FORMUNDA OFİS DÜZENLEME (create/edit)
+>
+> - **Commit `ff080fb`.** MIGRATION YOK — `sales_agents.office_id` 028'de zaten vardı.
+>   Komisyon/ödeme/payout/schedule yollarına DOKUNULMADI.
+>
+> - **KUSUR (tam hali):** kolon 028'de vardı, `salesAgents.js` GET **okuyordu**
+>   (SELECT_COLS), ama INSERT ve UPDATE **yazmıyordu**, `sales-agents.html`'de
+>   ofis alanı **yoktu** → elle eklenen agent ofissiz doğuyor ve UI'dan düzeltilemiyordu.
+>
+> - **⚠️ ETKİ (doğru hali):** ofissiz agent bir ödemeyi **DOĞRUDAN REDDETTİRMEZ** —
+>   OFS-03 zorunluluğu `payments.received_office_id` üzerindedir, `sales_agents.office_id`
+>   üzerinde DEĞİL. Gerçek sonuç: OFS-05 ön-doldurma zincirinin (`agent → sr → NULL`)
+>   `agent` adımı boş dönüyordu → ofis alanı sessizce boş geliyor, kullanıcı fark
+>   etmeden devam edebiliyordu. **Sessiz eksiklik.**
+>
+> - **Yapılan:** POST INSERT + PUT UPDATE'e `office_id` (nullable); `officeExists`
+>   DB varlık kontrolü (is_active şartı YOK — düzenlemede pasifleşmiş ofis korunur);
+>   geçersiz → 400. Form Office `<select>` **`GET /api/offices`'ten** (OFS-01: koda
+>   gömülmedi; boş = "— No office —"). Liste Office sütunu (client-side ad çözümü).
+>   **OFS-05 zinciri DEĞİŞMEDİ** — yalnız `agent` adımının kaynağı UI'dan doldurulabilir oldu.
+>
+> - **Ofis ZORUNLU DEĞİL** (NULL kabul, OFS-04 ruhu).
+>
+> - **⛔ 151 KAYDA DOKUNULMADI:** ölçüm 151 dolu / 0 NULL (Zoho import'undan geldi) →
+>   **backfill/veri düzeltme YAPILMADI**, gerek yoktu.
+>
+> - **Testler:** `tests/test_agent_office.js` (YENİ, ayrı dosya) A1-A6 → 6/6; `npm test`
+>   zincirledi. Regresyon cash-forecast **67/67**, **TABAN contract 4 sr earned 342.00
+>   (T35) geçti**. Toplam 73.
+>
+> - **⚠️ ÖLÇÜLMEDİ:** görsel tur (Suer ekranda doğrulayacak) · pasif ofisli agent'ın
+>   edit'te ofisinin korunup korunmadığı canlıda (yalnız kod: is_active şartsız varlık).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - ~~**★ PAYOUT dilimi** (ayrı, gelecek): fiilî agent ödemesi bir **OLAYDIR** — kaydı/ledger'ı bu
@@ -1411,7 +1444,7 @@
 >   (ofis × para birimi × vade kırılımı — ASIL ÖDÜL; iki yön de artık kayıtlı, önkoşul
 >   tamam)**~~ → ✅ **PS3-B CANLIDA (2026-07-30, `4362054`/`ca6fb3c`/`430e08d`).** · ofis yönetim ekranı (ekle/kapat, Iraq kararı) · Reference Data admin sayfası ·
 >   ~~**kural kütüğü (ELL_LOCKED_KARARLAR_OZET'e iş kuralları bölümü — S/H/W/U/D hükümleri
->   indekssiz birikiyor)**~~ → ✅ **KK1, 2026-07-29** · ~~ödeme↔kalem eşleştirme (S-6)~~ → ✅ **TAH-04 CANLIDA (2026-08-03, `e83b805`/`3d0caef`/`32131d1`)** · agent formunda ofis düzenleme ·
+>   indekssiz birikiyor)**~~ → ✅ **KK1, 2026-07-29** · ~~ödeme↔kalem eşleştirme (S-6)~~ → ✅ **TAH-04 CANLIDA (2026-08-03, `e83b805`/`3d0caef`/`32131d1`)** · ~~agent formunda ofis düzenleme~~ → ✅ **CANLIDA (2026-08-04, `ff080fb`)** ·
 >   ~~**D-1 schedule-default ön-doldurma görsel borcu**~~ → ✅ **contract 4 expo bağlama, 2026-07-29**.
 >   → ✅ **BELGE KONSOLİDASYONU KAPANDI (2026-07-28, `4278bc8` + `1f53fb6`).**
 >   AÇIK: ~~**KB yeniden yükleme (c44ffeb'de donmuş)**~~ · ~~**FAZ1a_DURUM.md KB'den indirilecek**~~ ·
