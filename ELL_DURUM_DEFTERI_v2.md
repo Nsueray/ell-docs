@@ -1325,6 +1325,8 @@
 > - **KUYRUKTA (bu dilimde bilinçle yapılmadı):** test suitlerinin repoya alınması ·
 >   `GET /:id/schedule` TZ düzeltmesi · RAP-03 5. statü açık sorusu · ofis yönetim
 >   ekranı · Reference Data admin · Faz 4 rol/yetki.
+>
+> - **KB yeniden yüklendi (YON-03 kapanış şartı, Suer dolduracak):** KB @ 42b3a6b
 
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
