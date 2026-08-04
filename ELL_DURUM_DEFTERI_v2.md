@@ -1328,6 +1328,65 @@
 >
 > - **KB yeniden yüklendi (YON-03 kapanış şartı, Suer dolduracak):** KB @ 42b3a6b
 
+> ## ✅ 2026-08-04 — TEST ALTYAPISI REPOYA ALINDI (`tests/`, setup yeniden kuruldu)
+>
+> - **Commit `0542fc2`.** Ürün koduna DOKUNULMADI; `package.json`'da yalnız
+>   `scripts.test` + `scripts.test:setup` eklendi (bağımlılık DEĞİŞMEDİ,
+>   framework EKLENMEDİ). Migration yazılmadı.
+>
+> - **SORUN:** test suitleri `/private/tmp` scratchpad'inde yaşıyordu; OS
+>   temizliği **9 dosyayı sildi** — 8 suite (M1/M2/payout/PS1/PS2-A/PS2-B1/
+>   PS2-C/PS3-A) **ve `setup_comm_db.js`**. Hiçbiri commit edilmemişti, tek kopya
+>   oradaydı. Arama: `/private/tmp` · `/tmp` · `~/Desktop` · `~/Projects` ·
+>   git geçmişi → **BULAMADIM**. `ell_comm_test` yalnız postgres onu tuttuğu için
+>   yaşıyordu; düşseydi kimse yeniden kuramazdı.
+>
+> - **YENİ YAPI:** `tests/test_cash_forecast.js` (taşındı) ·
+>   `tests/setup_test_db.js` (YENİ) · `tests/README.md` (koşum talimatı).
+>   Taşınan testte YALNIZ İKİ SATIR değişti: mutlak `BE` yolu →
+>   `path.join(__dirname,'..')` · `new Pool({host:'localhost',...})` →
+>   `process.env.TEST_DATABASE_URL || 'postgresql://postgres@localhost:5432/ell_comm_test'`.
+>   **Test mantığı/assertion/fixture DEĞİŞMEDİ** — T3 ancak böyle ölçülebilirdi.
+>
+> - **⚠️ SETUP HATIRADAN DEĞİL ÖLÇÜMDEN YAZILDI (YON-01):** silinmiş dosyanın
+>   hatırlanan hali yeniden yazılmadı. Ayakta duran `ell_comm_test` şeması
+>   ölçüldü: **canlı 10 tablo − migration'ın ürettiği 8 = 2 STUB**
+>   (`expos`, `core_countries` — 012-028 aralığında yok, FK hedefi).
+>   Stub şemaları `\d` ile çıkarıldı: `expos` (id serial PK, name, start_date,
+>   end_date, organizer_id) seed id 1-5 org=1 · `core_countries` (code char(2) PK,
+>   name varchar(100) NOT NULL) seed TR/MA/NG/KE/CN.
+>   **FK sırası ölçüldü:** `expos` → 012'den ÖNCE (`contracts.expo_id`) ·
+>   `core_countries` → 026'dan ÖNCE (`offices.country_code`).
+>   Migration 012→028, 17 dosya, atlanan yok. `offices` (+5 seed) 026'dan gelir,
+>   stub DEĞİL.
+>
+> - **T3 KANITI — iki değişken AYRI ayrı izole edildi:**
+>   (1) referans koşusu, taşımadan önce, eski DB → **67/67**
+>   (2) taşınmış test, ESKİ DB'de (tek değişken = taşıma) → 67/67 BİREBİR
+>   (3) taşınmış test, YENİ setup'la sıfırdan → 67/67 BİREBİR
+>   (4) ikinci `test:setup && test` → 67/67 BİREBİR (**setup IDEMPOTENT**)
+>   Test adları da birebir karşılaştırıldı, yalnız sayı değil.
+>   **TABAN contract 4 sr earned 342.00 (T35) geçti.**
+>
+> - **T2 — SIR TARAMASI:** `tests/` altında connection string/şifre/token YOK.
+>   `JWT_SECRET = 'test-only-secret-not-production'` literal duruyor — açıkça
+>   non-production test imza anahtarı, gerçek credential değil.
+>
+> - **⚠️ AÇIKTA KALAN TEST KAPSAMI (bu dilimde bilinçle yapılmadı — T4):**
+>   Silinen 8 suite YENİDEN YAZILMADI; altyapı önce, kapsam sonra.
+>   Bugün **test edilmeyen** alanlar (Ö5'te kütükten türetildi, defterdeki test
+>   sayıları TARİHSEL ve doğrulanamaz):
+>   M2 kesim raporu (MOT-01/03/04/05) · payout cari hesap (ODE-01/02/03) ·
+>   PLN-02/03/06/07/08 default-gen matematiği · OFS-04/05 · PS2-C agent office.
+>   R1-R8 + T35'in kapsadıkları AYRI: OFS-03 · TAH-01 · SEM-01 · PLN-05 ·
+>   PLN-01 · A4 transfer · PLN-10 gün-1 · OFS-06.
+>   **Yeniden yazım AYRI DİLİM; kapsam listesi budur.**
+>
+> - **ÖLÇÜLMEDİ:** `ell_comm_test` şemasının canlı LEENA şemasıyla birebir
+>   aynılığı (canlıya dokunulmadı) · CI'da koşum (CI yok) · başka host/OS'ta
+>   koşum (yalnız bu makinede doğrulandı) · `.gitignore` (repoda yok, bu
+>   dilimde açılmadı — yanlış desen dosya yutabilir).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - ~~**★ PAYOUT dilimi** (ayrı, gelecek): fiilî agent ödemesi bir **OLAYDIR** — kaydı/ledger'ı bu
