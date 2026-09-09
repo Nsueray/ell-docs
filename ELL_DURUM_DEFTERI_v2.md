@@ -1536,8 +1536,94 @@
 >   canlı senaryo (bugün kapalı ofis yok) · ad-çözümü düzeltilen 3 ekran dışında başka
 >   gösterim yeri olup olmadığı (tam repo taranmadı).
 
+> ## 📋 2026-08-04 — HEDEFE MESAFE ÖLÇÜMÜ (envanter turu; kayıt 2026-09-09'da yazıldı)
+>
+> ⚠️ **GECİKMİŞ KAYIT.** Ölçüm 2026-08-04'te yapıldı, deftere o gün yazılmadı;
+> bulgular bir ay boyunca yalnız sohbet geçmişinde durdu. Aradaki sürede ELL'e
+> hiç dokunulmadı (ell-docs `e911166`'da sabit; LEENA finans motoru —
+> contracts/commissions/payouts/cashForecast/commissionSlices — `3ebe8b5..HEAD`
+> aralığında HİÇ değişmedi, ölçüldü). Sayılar ölçüm günündendir.
+>
+> - **AMAÇ:** kuyruk organik büyümüş bir listeydi, HEDEFE giden yol haritası
+>   değildi. Bu tur "satışçıya açılma" eşiğine ne kaldığını ÖLÇTÜ.
+>
+> - **⚠️ ÜÇ VARSAYIM ÇÜRÜDÜ:**
+>   1. **LEENA'da `users` TABLOSU YOK.** Kolon değil, TABLO. `migrations` +
+>      `initial.sql` grep BOŞ. Daha önce "users.office_id kaç kullanıcıda dolu"
+>      diye sorulmuştu — kolon da yok, tablo da. JWT yalnız `organizer_id` taşıyor.
+>   2. **LIFFY "read-only seed, aktif geliştirilmiyor" DEĞİL.** Kod
+>      `~/Projects/liffyv1/backend/` altında: **154 .js dosyası**, migrations
+>      001-052, ~40 route. Modüller: mining/prospecting · campaigns · leads ·
+>      pipeline · quotes · companies/persons · userManagement · zoho.js ·
+>      verification. Tam bir prospecting/CRM/campaign/quote platformu.
+>      Son commit **2026-06-12**. (Önceki "liffyv1 kökü boş" ölçümü YANLIŞ
+>      DİZİNE bakmıştı — kök .md ağırlıklı, kod `backend/`'de.)
+>   3. **Rol/yetki gate YOK.** `authMiddleware.js:13-18` yalnız KİMLİK doğruluyor
+>      (JWT verify → `req.organizer_id`). Yetki kontrolü yok → geçerli JWT'si olan
+>      **altı Finance sayfasının hepsini** (Contracts · Sales Agents · Commissions ·
+>      Cash Forecast · Offices · Agent Statement) görür VE değiştirir.
+>
+> - **⚠️ KİLİTLİ HÜKÜMLE ÇELİŞKİ (karar Suer'de, bu turda çözülmedi):**
+>   Faz 4 (rol/yetki) "EN SONA" diye kilitliydi. Ölçüm gösteriyor ki
+>   **satışçıya açılmak rol gate olmadan mümkün değil** — bir satışçı bugün
+>   giriş yapsa tüm finans verisini görür ve değiştirir. Sıralama kararı
+>   Suer'in; ama kilitli hüküm ile ölçüm çelişiyor, kayda geçer.
+>
+> - **CONVERT KÖPRÜSÜ YARI KURULU:** LEENA `routes/contracts.js:2-10` —
+>   "LIFFY signed quote (payload) → LEENA contract INSERT" endpoint'i VAR,
+>   ama **PAYLOAD-DRIVEN**: cross-system fetch YOK. Convert eden, quote verisini
+>   body'de elle gönderir. Canlı LIFFY→LEENA otomatik aktarım YOK.
+>   (Transport, LIFFY aktivasyonuna ertelenmişti.)
+>
+> - **KATALOG LIFFY'DE, LEENA'DA DEĞİL:** `products` (LIFFY 050:132) ·
+>   `product_prices` (050:180) · `exchange_rates` (050:227) · `quotes` (051:31) ·
+>   `quote_line_items` (051:112). **242 SKU import'u bu yüzden LIFFY işidir.**
+>
+> - **İKİ SİSTEM AYRI DB:** LEENA `leena_v401` (PGDATABASE) · LIFFY
+>   `process.env.DATABASE_URL`. Paylaşımlı DB YOK, canlı API çağrısı YOK.
+>   `canonical_expo_id` LIFFY `expos`'ta VAR (050:90) ama **soft UUID ref, FK YOK**
+>   ("cross-system integration key, no FK"). Doluluk ÖLÇÜLMEDİ.
+>
+> - **İKİ SİSTEMDE DE VAR OLAN KAVRAMLAR (birleşme envanteri, tasarım YAPILMADI):**
+>   `offices` (LEENA 026 + LIFFY 050) · `expos` (ikisinde de) ·
+>   `companies` (LIFFY 046; LEENA'da kontratta `company_name`) ·
+>   `users` (LIFFY VAR, LEENA YOK) · agents (LEENA `sales_agents`;
+>   LIFFY `sales_owner_user_id` 048).
+>
+> - **8 CORE WORKFLOW (gereksinim belgesi Part 2) — bugün nerede:**
+>   2.1 Lead Acquisition → LIFFY · 2.2 Sales Cycle → LIFFY quotes + convert
+>   yarı-kurulu · 2.3 Contract Management → LEENA ✓ · 2.4 Catalogue Production →
+>   LIFFY (tablolar var, akış ölçülmedi) · 2.5 Expo Operations → LEENA EMS ✓ ·
+>   2.6 Financial Operations → LEENA finance ✓ · 2.7 Communication → LEENA emails
+>   + LIFFY campaigns · 2.8 Reporting → ELIZA + LEENA reports.
+>
+> - **LIFFY DB'YE BAĞLANILAMADI:** `backend/.env` var ama DB/DATABASE/PG anahtarı
+>   İÇERMİYOR; `db.js:20` `process.env.DATABASE_URL` istiyor; shell'de UNSET.
+>   → Bağlantı yalnız Render runtime env'inde. Katalog doluluğu, quote sayısı,
+>   `canonical_expo_id` doluluğu, LIFFY users sayısı **ÖLÇÜLEMEDİ** — Render
+>   Shell'den Suer koşabilir.
+>
+> - **SATIŞÇI EŞİĞİ — ölçülmüş engel listesi (üçü birbirine bağlı):**
+>   1. per-user hesap: LEENA'da `users` tablosu YOK
+>   2. rol/yetki matrisi: YOK (`authMiddleware` yalnız kimlik)
+>   3. user → agent/office bağı: tablo olmadığı için yok
+>   ⚠️ Zincir: rol gate user olmadan yazılamaz; convert'in kimin adına yapıldığı
+>   user olmadan bilinemez. **İlk halka `users`.**
+>
+> - **ÖLÇÜLMEDİ (bu turda bilinçle, zaman sınırı):** LIFFY deploy durumu ·
+>   convert'in fiili kullanımı (kaç kontrat convert'ten doğdu) · Katalog Production
+>   ve Reporting akışlarının işlevselliği (dosya varlığı ölçüldü, çalışması değil) ·
+>   ELIZA'nın bugünkü durumu · birleşme TASARIMI (nasıl birleşecekler — ayrı iş) ·
+>   gereksinim belgesi Part 3/4.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
+> - **★ SATIŞÇI EŞİĞİ (ölçüldü 2026-08-04):** LEENA `users` tablosu ·
+>   rol/yetki gate · user→agent/office bağı. Üçü zincir, ilk halka `users`.
+>   ⚠️ Faz 4 "en sona" kilidiyle ÇELİŞİYOR — karar Suer'de.
+> - **CONVERT canlı transport** (LIFFY→LEENA otomatik): bugün payload-driven.
+> - **LIFFY DB ölçümleri** (katalog/quote/canonical_expo_id/users doluluğu):
+>   Render Shell'den koşulacak, psql blokları hazır.
 > - ~~**★ PAYOUT dilimi** (ayrı, gelecek): fiilî agent ödemesi bir **OLAYDIR** — kaydı/ledger'ı bu
 >   dilimin işi; **`commissions` tablosu ancak o zaman doğar** (Sentez-1). Clawback/adjustment
 >   semantiği de payout masasında. *(Komisyon motoru M1/M2 tamam — `5c7ccfd`/`320f00f`/`f28e6a6`;
