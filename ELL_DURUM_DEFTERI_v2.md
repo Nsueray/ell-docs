@@ -1616,8 +1616,61 @@
 >   ELIZA'nın bugünkü durumu · birleşme TASARIMI (nasıl birleşecekler — ayrı iş) ·
 >   gereksinim belgesi Part 3/4.
 
+> ## ✅ 2026-09-09 — ui2 KABUK DİLİMİ: yeni arayüz iskeleti (nav + kimlik + yetki kancası)
+>
+> **Ne:** Yeni ELIZA arayüzünün ilk taşı — `public/ui2/` altında **KABUK**. Bu bir
+> deneme/atılacak UI DEĞİL: zamanla **ASIL sistem** olacak (eski taraf en sona kapanır).
+> Bu dilim **YALNIZ KABUK** — ekran içeriği yok, Finance dahil hepsi placeholder.
+>
+> **Üç katman bilinçle ayrıldı (dilimin çekirdek kararı):**
+> 1. **İSKELET** (kabuk/nav/auth/veri-katmanı/yetki-kancası) = GERÇEK, şimdi kuruldu.
+> 2. **KAPSAM** (ekranlar) = artımlı, dilim dilim gelecek (bugün boş).
+> 3. **BACKEND YETENEĞİ** (rol motoru) = **Faz 4, TAKLİT EDİLMEZ.** Sahte "yetki
+>    gerekli" ekranı YOK; yetki kancası bugün gerçek veri-modelini (users yokluğunu)
+>    yansıtır, uydurmaz.
+>
+> **Kabuk deseni — vanilla `shell.js` include (emsal: `leena-fetch.js`/`leena-toast.js`):**
+> framework/npm bağımlılığı YOK. Nav içeriği **TEK KAYNAK** `public/ui2/shell.js`'te
+> yaşar; sayfalar yalnız `<div id="ui2-nav">` mount + `<script src="shell.js">` taşır,
+> nav HTML TAŞIMAZ (30 dosyada menü tekrarı hatasını yapısal önler).
+> - **KİMLİK tek nokta** `ui2CurrentUser()` — bugün tek kişi (users YOK); Faz 4 users okur.
+> - **YETKİ tek nokta** `ui2CanSee()` — bugün **HER ZAMAN TRUE** (rol motoru YOK);
+>   Faz 4 `user_permissions` okur, **ekran kodu DEĞİŞMEZ**.
+> - **AUTH** mevcut desenle: token `localStorage['token']` → yoksa `/login.html`;
+>   `/leena-fetch.js` include (aynı origin, ui2 ayrı giriş istemez).
+> - **Nav** (brief :32-34): **Sales**(alt: liffy) · **Operations**(alt: leena) ·
+>   **Finance**(alt yok) — üçü de görünür. Tasarım `signal.css`+`themes.css`
+>   `public/ui2/styles/`'a kopyalandı (`.topnav`/`.domain-tab` emsal sınıfları).
+>
+> **Dosyalar (hepsi YENİ, `public/ui2/`):** `shell.js` · `index.html` ·
+> `sales.html`/`operations.html`/`finance.html` (placeholder) · `styles/signal.css`+
+> `styles/themes.css`. `express.static` public kökünden servis ettiği için `/ui2/...`
+> otomatik erişilir (SPA/catch-all YOK — ölçüldü `index.js:46`).
+>
+> **SINIR (bu dilim, bilinçle):** mevcut `public/*.html`'e sıfır dokunuş · yeni endpoint
+> YOK (kapsam sınırı — "endpoint yasak" değil, **ayrı dilim**) · client-side hesap YOK
+> (RAP-02) · migration YOK · routes/utils/index.js'e dokunulmadı · rol motoru simüle
+> edilmedi. **Sales boş kabuk** (liffy ayrı platform, ayrı DB).
+>
+> **YON-05 (ölçüm dersi):** 5/5 Finance mockup'ı (Commissions/Expo-Finance[Line/Budget/
+> Actual/Variance]/War-Room[KPI]/Ledger/Reports) mevcut endpoint'ten **ZENGİN** — mockup
+> ≠ mevcut kabiliyet. Önceki "Finance-Commissions.html birebir şu veriye karşılık gelir"
+> ölçülmemiş varsayımdı; çürütüldü. Ekranlar geldikçe her biri ayrı ölçülecek.
+>
+> **BACKEND İŞ KUYRUĞU (kabuğun açığa çıkardığı, sıra Suer'de):** `users` tablosu (satışçı
+> eşiği #1) · rol/yetki matrisi (`ui2CanSee` gerçek cevabı) · ekran-başı endpoint dilimleri.
+>
+> **Regresyon:** `npm test` **120/120** (67+6+12+12+15+8) · **T35 TABAN 342.00 KAYMADI** ·
+> M01a 342.00 sağlam. ui2 salt `public/` — backend'e sıfır dokunuş kanıtlandı.
+>
+> **Commit'ler (push YOK):** LEENA `ui2 shell (nav + auth + permission hook)` + `ui2 kabuk
+> dilimi`; ell-docs bu kayıt.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
+> - **★ ui2 KAPSAM DİLİMLERİ (kabuk kuruldu 2026-09-09):** ilk ekran içeriği hangi domain?
+>   Her ekran ayrı ölçülür (mockup ≠ endpoint, YON-05). Backend önkoşulu: `users` +
+>   rol matrisi (`ui2CanSee` bugün TRUE; gerçek cevap Faz 4).
 > - **★ SATIŞÇI EŞİĞİ (ölçüldü 2026-08-04):** LEENA `users` tablosu ·
 >   rol/yetki gate · user→agent/office bağı. Üçü zincir, ilk halka `users`.
 >   ⚠️ Faz 4 "en sona" kilidiyle ÇELİŞİYOR — karar Suer'de.
