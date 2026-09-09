@@ -1666,11 +1666,72 @@
 > **Commit'ler (push YOK):** LEENA `ui2 shell (nav + auth + permission hook)` + `ui2 kabuk
 > dilimi`; ell-docs bu kayıt.
 
+> ## ✅ 2026-09-09 — ui2 İLK GERÇEK FINANCE EKRANI: Contract (kapsama ölçümüyle seçildi)
+>
+> **Ne:** ui2 kabuğuna ilk gerçek ekran — **Contract detail** (`finance-contract.html`),
+> gerçek veri `leenaFetch` ile. "Hangi ekran" tahminle değil **kapsama oranıyla** seçildi.
+>
+> **KAPSAMA ORANI (endpoint alanı DOĞRUDAN döndürüyor / mockup alanı; türetilebilir SAYILMAZ, RAP-02):**
+> | Ekran | Oran | ~% | En iyi endpoint |
+> |---|---|---|---|
+> | **Contract** ✅ | **8/14** | **~57%** | GET `/api/contracts/:id` + `/:id/payments` (+header alanları ayrıca kapalı) |
+> | Commissions | 4/12 | ~33% | GET `/api/commissions` (statement eklenirse ~50%, ama liste endpoint'i yok) |
+> | Expo Finance | 0/8 | 0% | YOK (cash-forecast = ofis×vade nakit; Budget/Actual/Variance/Costs kaynağı yok) |
+> | Ledger | 0/10 | 0% | YOK (ledger/journal endpoint'i yok; yürüyen Balance zaten client-hesap, RAP-02) |
+> | War Room | 0/10 | 0% | YOK (FY hedef, cash position, AR yaşlandırma, aylık trend — hiçbiri yok) |
+>
+> Contract en yüksek **ve %50 eşiğinin üstünde** → seçildi (DUR-ve-SOR tetiklenmedi).
+> ⚠️ cash-forecast HİÇBİR mockup'a karşılık gelmiyor (ölçüldü, varsayılmadı) — ayrı ekran.
+>
+> **Kurulan ekran (gösterilemeyen SİLİNDİ, boş sütun/placeholder YOK):**
+> header (company/af/expo/tarih/status) · metrik şeridi Revenue/Paid/Balance (üçü de
+> doğrudan) · **Line items** (Description/Qty/Unit) · **Commission** (Role/Agent/Rate/
+> Earned-EUR — per-rol, hepsi `commission.roles[]`'ten doğrudan) · **Payments**
+> (Date/Method/Amount/FX/EUR-booked). Görsel sistem signal.css; düzen veriye uyarlandı.
+>
+> **BACKEND İŞ KUYRUĞU (silinen alanlar = kusur DEĞİL, iş listesi):**
+> - Line items **Amount** (satır toplamı) → `/api/contracts/:id` line_items'a `amount`
+>   eklenmeli. Bugün yok: hesap var, alan döndürülmüyor (RAP-02 → client türetemez).
+> - Line items **EUR equiv** → satır EUR karşılığı (amount×exchange_rate). Kur var, alan yok.
+> - Line items **Comm % / Commission** (per-satır) → model komisyonu **per-ROL** veriyor,
+>   per-satır YOK. Mockup per-satır gösteriyor — model farkı (LEENA: komisyon satır değil
+>   sözleşme-rol seviyesinde). Karar gerektirir, otomatik iş değil.
+> - Payments **Type** → payments'ta `payment_type` kolonu yok.
+> - Payments **Status** → payments'ta `status` kolonu yok (reversal negatif satırla; ekranda
+>   `reverses_payment_id` → "reversal" etiketiyle gösterildi, tam Status değil).
+> - Metrik **Commission total** → endpoint per-rol `earned_eur` veriyor, TOPLAM döndürmüyor;
+>   client toplayamaz (RAP-02) → metrik konmadı. Endpoint contract-level toplam döndürmeli.
+>
+> **SUBNAV KARARI (kural #1'in ikinci uygulaması):** tasarımda her Finance mockup'ı AYNI
+> subnav'ı (War Room·Expos·Ledger·Contracts·Commissions·Reports) **kendi içine kopyalıyor** —
+> kaçındığımız tekrar. → `shell.js`'e `UI2_SUBNAV` (domain→öğe) + `ui2RenderSubnav()` **tek
+> kaynak** eklendi; sayfa yalnız `UI2_SUBACTIVE` bildirir. Yalnız GERÇEK ekranı olan öğe
+> listelenir (bugün Finance=1: Contracts). Yapı ikinci ekranı bir satırla taşır.
+>
+> **Ö1 (nav'da iki "NI") sonucu — KUSUR DEĞİL:** `shell.js` avatarı **tam bir kez** üretir
+> (satır 82); metin üreten CSS pseudo-element yok. İki-öğe **tasarım mockup artefaktı** —
+> mockup nav-right'ında search-ikonu+bell-ikonu+avatar var (`Finance - Commissions.html:94-98`);
+> ui2 zaten tek avatara indirgenmiş. Düzeltilecek çoğaltma yok. **Ö2 CSS sızıntısı:**
+> `grep -l signal.css/themes.css public/*.html` → ui2 DIŞINDA isabet YOK (sızıntı yok).
+> **Ö3 incognito:** token yoksa `shell.js:43-47` **koşulsuz** `/login.html` (mutlak, doğru).
+> ⚠️ Ek gözlem: leena-fetch 401 yolunda `logout()` **göreli** `login.html`'e gider (/ui2'den
+> yanlış çözülür) — paylaşılan dosyaya dokunmadan sayfa catch'inde mutlakla önceledim.
+>
+> ⚠️ Kabuk dilimi görsel turu KISMİ geçti (Suer): nav/etiket/aktif vurgu doğrulandı; incognito
+> yönlendirme + CSS sızıntısı canlıda tam doğrulanmadı — kod kanıtı var, görsel teyit Suer'de.
+>
+> **Regresyon:** `npm test` **120/120** · **T35 342.00 KAYMADI** · M01a 342.00. Ürün koduna
+> (routes/utils/index.js) sıfır dokunuş — testler etkilenmedi. Ekran testi yazılmadı (harness
+> DOM koşmuyor); doğrulama görsel turda. **Commit (push YOK):** LEENA `ui2 first finance
+> screen` (finance.html→finance-contract.html) + ell-docs bu kayıt.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
-> - **★ ui2 KAPSAM DİLİMLERİ (kabuk kuruldu 2026-09-09):** ilk ekran içeriği hangi domain?
->   Her ekran ayrı ölçülür (mockup ≠ endpoint, YON-05). Backend önkoşulu: `users` +
->   rol matrisi (`ui2CanSee` bugün TRUE; gerçek cevap Faz 4).
+> - **★ ui2 SONRAKİ FINANCE EKRANI (Contract kuruldu 2026-09-09):** oran tablosuna göre 2.
+>   en yüksek Commissions (~33%, statement'la ~50%) — ama önce **backend iş kuyruğu** (contract-level
+>   commission total · line-item amount/EUR · payments type/status) hangi ekranı açar? Her ekran
+>   ayrı ölçülür (mockup ≠ endpoint, YON-05). Backend önkoşulu sürüyor: `users` + rol matrisi
+>   (`ui2CanSee`/`ui2RenderSubnav` bugün TRUE; gerçek cevap Faz 4).
 > - **★ SATIŞÇI EŞİĞİ (ölçüldü 2026-08-04):** LEENA `users` tablosu ·
 >   rol/yetki gate · user→agent/office bağı. Üçü zincir, ilk halka `users`.
 >   ⚠️ Faz 4 "en sona" kilidiyle ÇELİŞİYOR — karar Suer'de.
