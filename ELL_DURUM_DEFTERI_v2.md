@@ -2144,6 +2144,36 @@
 >
 > **Kütük yazımı (2026-09-13):** A-J hükümleri işlendi → AD-01 (A, yeni grup) · YON-05 (B) · YON-06 (C) · YON-07 (D) · YON-08 (E) · SEM-03 (F) · SEM-04 (G) · SEM-05 (H) · YON-09 (I) · YON-10 (J).
 
+> ## ✅ 2026-09-14 — users TABLOSU TESTLERİ: B10 trigger İLK KEZ tetiklendi (ÇALIŞTI)
+>
+> - **`tests/test_users.js` yazıldı, 12 test** (endpoint yok — users route dilim 2; test doğrudan
+>   `pool.query` + hata yakalama, `expectReject`/`expectPass`). Her kural pozitif+negatif.
+> - **⚠️ B10 trigger `enforce_min_one_active_owner` İLK KEZ TETİKLENDİ.** Dilim 1'de yazılmış ama
+>   canlıda HİÇ çalıştırılmamıştı (dilim 1 raporu). **Sonuç: ÇALIŞTI, kusur YOK.** U5 (tek Owner
+>   is_active=false) · U6 (tek Owner DELETE) · U7 (tek Owner is_owner=false) — üçü de **REDDEDİLDİ**
+>   (trigger RAISE). U8 (2 Owner varken birini pasife çek) → GEÇER. ⚠️ Ö2: trigger `AFTER UPDATE OR
+>   DELETE FOR EACH STATEMENT` — **INSERT kapsamda DEĞİL** (doğru: Owner eklemek invariant'ı ihlal
+>   etmez; son-Owner UPDATE/DELETE ile korunuyor). Açık: TRUNCATE trigger'ı atlar (nadir/admin,
+>   test edilmedi).
+> - **021 `external_user_null_check` İLK KEZ test edildi** (032'yle anlam kazanmıştı): U10
+>   (external_freelance + user_id dolu → REDDEDİLDİ, CHECK) · U11 (internal + geçerli user_id →
+>   GEÇER). Kütük ölçümü doğrulandı: `CHECK (agent_type='internal' OR user_id IS NULL)`.
+> - Diğer kurallar: SEM-03 (id uuid default, U1) · SEM-04 (password_hash NULL, U2/U2b — seed Owner
+>   NULL canlıda) · FK sales_agents.user_id→users(id) (U9, olmayan uuid reddedildi) · email UNIQUE
+>   (U3) · organizer_id FK (U4).
+> - **RESET stratejisi:** seed Suer = TEK aktif Owner korunur; negatif B10 testleri onu düşürmeye
+>   çalışır → trigger RAISE query'yi geri alır, state bozulmaz. Reset: sales_agents sil (user_id FK
+>   önce) → extra users sil (Suer koru) → Suer aktif+owner garanti.
+> - **⚠️ Yeni suite `npm test` ZİNCİRİNDE DEĞİL** — `package.json` SIEMA dondurmasında (3 Ekim).
+>   Ayrı koşuluyor (`node tests/test_users.js`). **3 Ekim sonrası zincire eklenecek — borç.**
+> - **DOĞRULAMA:** 7 suite ayrı → cash_forecast **67** · agent_office **6** · payouts **12** ·
+>   commissions **12** · schedule **15** · offices **8** · users **12/12**. İlk 6 DEĞİŞMEDİ ·
+>   TABAN **342.00** (T35+M01a) · idempotent (2. koşum aynı) · package.json diff boş.
+> - **`CLAUDE.md` (monorepo):** "ELIZA EMEKLİ" → "eliza-legacy EMEKLİ (AD-01). ELIZA = ürünün adı."
+>   (tek satır, parantez korundu). AD-01 ile hizalandı.
+> - **Commit:** LEENA `tests/test_users.js` + `CLAUDE.md` (tek commit) + ell-docs bu kayıt. PUSH YOK.
+>   Ürün koduna / migration'a / package.json'a / auth.js'e DOKUNULMADI.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 >   - **★★ TEST DB SENKRONU (ACİL):** `setup_test_db.js` 012→028 kuruyor,
