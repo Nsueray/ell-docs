@@ -1725,8 +1725,98 @@
 > DOM koşmuyor); doğrulama görsel turda. **Commit (push YOK):** LEENA `ui2 first finance
 > screen` (finance.html→finance-contract.html) + ell-docs bu kayıt.
 
+> ## 📋 2026-09-13 — FAZ 4 PLANLAMA TURU (kimlik+yetki; salt ölçüm, kod yok)
+>
+> **Faz 4 KİLİDİ KALKTI (Suer, 9 Eyl).** Ertelemenin eski gerekçesi ("dışarıdan kimse
+> LEENA'da değil") 3-sistem yön değişikliğiyle geçersizleşti. ⚠️ AMA bugün hâlâ **tek
+> kullanıcı Suer** → enforcement/gate **ACİL DEĞİL**; kimlik altyapısı (users+köprü) önceliği.
+>
+> **ÖLÇÜMLER (salt okuma, file:line):**
+> - **Ö1 — sales_agents.user_id VAR.** `012_finance_foundation.sql:36` (`user_id integer`,
+>   nullable) + `UNIQUE(user_id)` `014:33` (`sales_agents_user_id_key`). **FK YOK** (users
+>   tablosu yok → FK olamaz). `021` internal→user_id kuralını askıya aldı (users doğunca geri
+>   gelir). → **Köprünün yarısı hazır; 3. dilim küçülür.**
+> - **Ö2 — LIFFY users** (`004_create_organizers_users…:21-28`): PK **UUID**, organizer_id UUID
+>   FK, email/password_hash NOT NULL, role VARCHAR(20) ('owner'/'admin'/'user'), is_active.
+>   `reports_to` UUID FK `039:14`; motor `middleware/userScope.js:105-226` (recursive CTE).
+>   Kayıt sayısı DB'ye bağlanılamadı (DATABASE_URL Render'da) → psql bloğu üretildi (aşağıda).
+> - **Ö3 — LEENA login** `routes/auth.js:21`: `organizers` tablosu (users DEĞİL), bcrypt
+>   `password_hash:38`, JWT `sign:48` payload `{organizer_id, email}`, secret `JWT_SECRET:53`.
+>   organizer_id DB'den (organizers.id).
+> - **Ö4 — LIFFY permissions JSONB** `039:24` (DEFAULT `'{}'`). **Enforcement kodu YOK** —
+>   kolon var, hiçbir yerde okunmuyor. (matrix emsali var ama LIFFY'de bile gate yok.)
+> - **Ö5 — JWT secret:** iki sistem de `process.env.JWT_SECRET`, HS256 (varsayılan). ⚠️ **Aynı
+>   env ADI ≠ aynı değer** (ayrı deploy, ayrı Render servisi). SSO zemini var (algoritma+ad deseni
+>   aynı); kalan = değer paylaşımı + user eşleme. LIFFY'de fallback default string var (auth.js:8).
+> - **Ö6 — "eski yol kırılmaz" DOĞRULANDI:** payload'da `user_id` YOK, `exp=30d` (uzun geçiş),
+>   `req.organizer_id` 26 dosyada, middleware YALNIZ `decoded.organizer_id` okuyor
+>   (`authMiddleware.js:17`). → user_id eklemek **additive**; eski token'da user_id yok ama kimse
+>   okumadığı için umursanmaz; yeni okuyucu `decoded.user_id ?? null` yazarsa kırılmaz.
+> - **Ö7 — ui2 shell imzaları:** `ui2CurrentUser()` argümansız→`{name,id}` (`shell.js:40`),
+>   `ui2CanSee(domainKey)`→bool (`:52`). **İmza KORUNABİLİR** koşuluyla: kimlik+yetki ya JWT
+>   payload'ında taşınır (senkron decode) ya da shell.js DOMContentLoaded'da (zaten async bağlam)
+>   **init-once** ile /api/me çeker, cache'ler; iki fonksiyon senkron o cache'i okur. ⚠️ RİSK: biri
+>   bunları Promise-döndürür yaparsa çağıranlar kırılır → **Faz 4 senkron sözleşmeyi korumalı**.
+>   Sağlanırsa SAYFA (ekran) kodu değişmez — kabuk vaadi tutar.
+>
+> **DİLİM SIRASI (Sentez iskeletinden SAPMA ölçümle):**
+> 1. **users + ilk Owner + sales_agents FK** ← *genişledi:* Ö1 kolon+UNIQUE zaten var, yalnız FK
+>    users'a bağlı → FK'yi dilim 1'e aldım (ayrı dilim gereksiz).
+> 2. JWT'ye **user_id + name** ← *name eklendi:* Ö7, ui2CurrentUser senkron kalsın diye kimlik
+>    payload'da taşınmalı (yalnız user_id değil).
+> 3. ~~sales_agents.user_id köprüsü~~ → *küçüldü:* FK dilim 1'e taşındı; kalan = internal agent
+>    user_id **backfill** (küçük, ayrı).
+> 4. permission matrix (enforcement YOK) · 5. gate (ACİL DEĞİL — tek kullanıcı) · 6. SSO (zemin
+>    var: Ö5).
+>
+> **İLK DİLİM TANIMI:**
+> - **Migration** `032_users_and_first_owner.sql` (sıradaki no ölçüldü: 031 dolu) — YAZILIR,
+>   ÇALIŞTIRILMAZ (Suer Render Shell'de dry-run→commit).
+>   - `CREATE TABLE users` (B2 LEENA kendi kimlik tablosu): **id serial PK** (sales_agents.user_id
+>     integer + organizers integer ile uyumlu — Ö1) · organizer_id integer FK organizers · email
+>     UNIQUE · password_hash · **is_owner** bool (B10: aktif Owner<1 olamaz — partial index/CHECK) ·
+>     **display_role** (B9: yetki DEĞİL) · **password_must_change** (B7) · is_active · created_at.
+>   - `ALTER TABLE sales_agents ADD CONSTRAINT … FOREIGN KEY (user_id) REFERENCES users(id)`
+>     (kolon+UNIQUE zaten var, Ö1).
+>   - **İlk Owner = Suer** INSERT, `password_must_change=true` (B7). Şifre hash migration'a GÖMÜLMEZ
+>     (değer yazılmaz) — geçici hash + must_change, ilk girişte değişir.
+> - **Dosyalar:** yalnız migration. **Kod YOK** (login users'ı bu dilimde okumaz — o dilim 2).
+> - **NE KIRILMAZ:** mevcut giriş `organizers` üstünden çalışır (auth.js users'a dokunmaz); JWT
+>   payload değişmez; FK eklenmesi mevcut sales_agents satırlarını etkilemez (hepsi user_id NULL —
+>   ⚠️ ÖN-DOĞRULAMA psql: `SELECT COUNT(*) FILTER (WHERE user_id IS NOT NULL) FROM sales_agents;`
+>   0 değilse o id'ler users'a önce girmeli, yoksa FK patlar).
+> - **NASIL DOĞRULANIR:** dry-run BEGIN…ROLLBACK · `\d users` + `\d sales_agents` (FK görünür) ·
+>   ilk Owner SELECT · mevcut organizer login hâlâ token alıyor · `npm test` **120** bozulmaz
+>   (users additive, testler değmez) · TABAN 342.00.
+>
+> **psql blokları (Suer, Render Shell, salt okuma):**
+> - LIFFY sayım: `SELECT COUNT(*) AS users, COUNT(*) FILTER(WHERE is_active) AS active,
+>   COUNT(DISTINCT organizer_id) AS orgs, COUNT(*) FILTER(WHERE role='owner') AS owners,
+>   COUNT(*) FILTER(WHERE reports_to IS NOT NULL) AS with_mgr,
+>   COUNT(*) FILTER(WHERE permissions <> '{}'::jsonb) AS custom_perms FROM users;`
+> - LEENA FK ön-kontrol: `SELECT COUNT(*) FILTER (WHERE user_id IS NOT NULL) AS agents_with_user
+>   FROM sales_agents;`
+>
+> **⚠️ YON-05 (varsayım çürüdü):** ui2 ilk ekranda hem Sentez hem Orchestrator **Commissions**
+> önermişti; oran ölçümü ikisini de çürüttü (Commissions 4/12 ~%33 · **Contract 8/14 ~%57**).
+> Ölçüm olmasa yarısı silinmiş ekran kurulacaktı. Ayrıca `cash-forecast` (canlıdaki en olgun
+> rapor, 67 test) **hiçbir mockup'a karşılık gelmiyor** — tasarım tarafında boşluk.
+>
+> **⚠️ AÇIK BORÇ — logout() göreli yönlendirme:** `leena-fetch` 401 yolu göreli `login.html`'e
+> gidiyor → `/ui2/`'den `/ui2/login.html` çözülür (404). CC sayfa catch'inde mutlakla aştı
+> (paylaşılan dosyaya dokunmamak doğruydu) ama **HER YENİ ui2 SAYFASINDA TEKRAR EDER.** Çözüm
+> adayı: `shell.js`'e taşımak (kabuk zaten tek kaynak, kural #1) — ölçülmedi.
+>
+> **ui2 finance-contract görsel turu 6/6 GEÇTİ** (canlı, `696568a`): TABAN 342.00 ekranda ·
+> 999999→"not found" · CSS sızıntısı YOK (contract-list + cash-forecast temiz, banner 12.065,20 durdu).
+>
+> **Çalışma kuralları K1/K2/K3 CLAUDE.md'ye eklendi** (LEENA repo, additive; ölçüm turu "commit
+> yok" istisnası — Sentez açıkça istedi). **Commit:** LEENA `CLAUDE.md` + ell-docs bu kayıt. PUSH YOK.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
+> - **★ FAZ 4 DİLİM 1 (planlandı 2026-09-13):** users tablosu + ilk Owner (Suer) + sales_agents FK.
+>   Migration `032_users_and_first_owner.sql` yazılır-çalıştırılmaz. Kimlik altyapısı; gate ACİL DEĞİL.
 > - **★ ui2 SONRAKİ FINANCE EKRANI (Contract kuruldu 2026-09-09):** oran tablosuna göre 2.
 >   en yüksek Commissions (~33%, statement'la ~50%) — ama önce **backend iş kuyruğu** (contract-level
 >   commission total · line-item amount/EUR · payments type/status) hangi ekranı açar? Her ekran
