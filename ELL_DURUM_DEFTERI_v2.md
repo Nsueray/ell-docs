@@ -1999,12 +1999,6 @@
 >     Yalancı yeşil. Faz 4 dilim 2'den ÖNCE çözülmeli.
 >   - **FAZ 4 DİLİM 2:** JWT'ye `user_id` + `name` · **şifre belirleme akışı**
 >     (bootstrap açığı) · `ui2CurrentUser()` senkron kalacak.
->
-> - **★★ TEST DB SENKRONU (ACİL — yalancı yeşil):** `setup_test_db.js` 012→028 kuruyor; 029/030/031/
->   032 test'e girmiyor → 117 test var-olmayan şemayı doğruluyor. Sabit-tarih fixture'lar da
->   CURRENT_DATE-göreli yapılmalı (T1/T4/T7; OVERDUE niyeti korunarak). Sessiz çürüme: otomatik koşum yok.
-> - **★ FAZ 4 DİLİM 2:** JWT'ye user_id + name; login users'ı okur (NULL-hash guard → 401, 500 değil);
->   `ui2CurrentUser()` senkron kalır. Önkoşul: dilim 1 migration koşulmuş olmalı (Suer).
 > - **★ ui2 SONRAKİ FINANCE EKRANI (Contract kuruldu 2026-09-09):** oran tablosuna göre 2.
 >   en yüksek Commissions (~33%, statement'la ~50%) — ama önce **backend iş kuyruğu** (contract-level
 >   commission total · line-item amount/EUR · payments type/status) hangi ekranı açar? Her ekran
