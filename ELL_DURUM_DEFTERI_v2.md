@@ -1866,7 +1866,139 @@
 > (T35) · M01a 342.00. Migration test DB'sine girmiyor (setup 012→028). **Commit:** LEENA migration
 > `032` + ell-docs bu kayıt. Sonra **DUR** — Suer BLOK 1-8'i koşacak.
 
+> ## ✅ 2026-09-13 — FAZ 4 DİLİM 1 CANLIDA: `users` tablosu + ilk Owner + `sales_agents` FK
+>
+> - **Migration `032_users_and_first_owner.sql` canlıda KOŞTU** (Suer, Render Shell,
+>   `BEGIN … \i … COMMIT` tek oturum). Kod commit'i `bbc69ff` (monorepo).
+>   ⚠️ Faz 4 kilidi 9 Eylül'de kalktı; ertelemenin eski gerekçesi ("dışarıdan kimse
+>   LEENA'da değil") yön değişikliğiyle geçersizleşti. Bugün hâlâ tek kullanıcı
+>   Suer → **gate ACİL DEĞİL**, sıra buna göre kuruldu.
+>
+> - **ÖN ÖLÇÜMLER (Suer, canlı DB):** PG **17.9** → `gen_random_uuid()` çekirdekte,
+>   `CREATE EXTENSION` gerekmedi · `sales_agents` **152 satır, `user_id` dolu 0** →
+>   tip değişimi no-op · `organizers` **TEK SATIR**, id=1, suer@elan-expo.com.
+>
+> - **⚠️ BLOKE EDİCİ ÖLÇÜM — Render'da otomatik migration YOK.**
+>   Repo: `package.json` start/prestart/postinstall YOK · `render.yaml` /
+>   `Procfile` / `Dockerfile` YOK · `index.js` yalnız `app.listen`.
+>   Dashboard (Suer): Build=`npm install` · **Pre-Deploy Command BOŞ** ·
+>   Start=`node index.js`.
+>   ⚠️ Pre-Deploy tam migration'ın koşacağı yerdir — boş.
+>   **Bu ölçülmeseydi push migration'ı SESSİZCE koşturabilirdi** ve
+>   "yazılır-çalıştırılmaz" kuralı farkında olmadan çiğnenirdi.
+>   Ayrıca ölçüldü: Root Directory = `backend/leena-v401-backend` → Render Shell
+>   orada açılıyor, `\i migrations/...` göreli yolu doğru çözülüyor.
+>
+> - **ŞEMA:** `users.id` **uuid**, DEFAULT `gen_random_uuid()` ·
+>   `organizer_id` **integer** FK → `organizers(id)` (organizers serial KALDI) ·
+>   `email` UNIQUE · `password_hash` **NULLABLE** · `is_owner` (B10) ·
+>   `display_role` (B9, **yetki DEĞİL**) · `password_must_change` (B7) · `is_active`.
+>   `sales_agents.user_id` **integer → uuid**, UNIQUE korundu, FK eklendi.
+>
+> - **UUID GEREKÇESİ — LEENA'nın KENDİ ihtiyacı:**
+>   1. Sıralı ID sayım sızdırır (`users/47` → kaç kullanıcı var, `users/46` denenebilir).
+>   2. ID kayıt atmadan üretilebilir (toplu içe aktarma, kuyruk, çevrimdışı).
+>   3. İçe aktarma/birleştirmede çakışmaz.
+>   ⚠️ "LIFFY UUID olduğu için" gerekçesi **İPTAL** — LEENA çekirdektir; LIFFY'yi
+>   değiştirmemek için LEENA'da taviz verilmez (Suer hükmü).
+>
+> - **⚠️ `password_hash` NULLABLE — sentinel REDDEDİLDİ.**
+>   `'!PENDING_FIRST_LOGIN'` gibi bir değer yazılması önerilmişti; reddedildi:
+>   **hash kolonuna hash olmayan yazmak veride yalandır**, o kolonu okuyan her
+>   kod yolu için kalıcı mayın. NULL = "henüz şifre yok", dürüst.
+>   Migration koşulmadan önce düzeltildi → bedava.
+>
+> - **B10 = statement-level trigger** `enforce_min_one_active_owner`
+>   (AFTER DELETE OR UPDATE, FOR EACH STATEMENT).
+>   Kütükten okundu: "1'in ALTINA inemez" = **en az 1** → partial unique index
+>   ELENDİ (o en-fazla-1 yapar). Self-grant yarısı app-layer'a (dilim 4).
+>
+> - **⚠️ ÖLÇÜMDE ÇIKAN, PLANDA OLMAYAN:** `sales_agents_external_user_null_check`
+>   (021) — "agent_type internal değilse `user_id` NULL olmalı". `users` tablosu
+>   olmadığı için ASKIDA duruyormuş; şimdi **ANLAM KAZANDI**: dış ajans/freelance
+>   agent **DB seviyesinde** `users` kaydı ALAMAZ.
+>   "Freelance satışçılar LIFFY'de kalır, çapraz erişim yalnız iç ekip" hükmüyle
+>   örtüşüyor — 021'de bilinçle konmuş.
+>
+> - **DOĞRULAMA — DRY-RUN ÖNCE, GERÇEK KOŞUM SONRA:**
+>   Dry-run (`BEGIN … ROLLBACK`) temiz geçti; ROLLBACK sonrası `users` YOK,
+>   `sales_agents.user_id` **integer**'a geri döndü (canlıda iz yok, teyitli).
+>   Gerçek koşum sonrası: Owner satırı
+>   `ae219804-f737-46ed-b9b3-74e4105d90a4` · `password_hash` NULL ·
+>   `is_owner` t · `password_must_change` t · `user_id` **uuid** kalıcı.
+>   **⚠️ HÜKMÜN SINAVI GEÇTİ:** `leena.app` çıkış→giriş ÇALIŞTI, ayrıca
+>   **incognito'da eski şifreyle giriş yapıldı** — önbelleğe alınmış oturum değil,
+>   gerçek kimlik doğrulama turu. "Okuyan kod yok" iddiası canlıda kanıtlandı.
+>
+> - **GERİ ALMA BLOĞU HAZIR, KOŞULMADI.** Migration dosyasından okunarak üretildi
+>   (nesne adları `032:31/59/69/82/86` ile eşleşiyor), ters sıra: FK drop →
+>   `user_id` uuid→integer → trigger drop → fonksiyon drop → `users` drop.
+>   Başında dolu-satır koruması (`RAISE EXCEPTION`). Sözdizimi denetlendi,
+>   runtime test EDİLEMEDİ — kabul.
+>
+> - **⚠️ SIRA HÜKMÜ — (a) ŞİMDİ KOŞ, gerekçesi DEĞİŞKEN İZOLASYONU:**
+>   "Migration ve kod aynı anda canlıya çıksın" seçeneği ÇÜRÜDÜ — migration elle
+>   koşuluyor, kod push ile gidiyor, **her hâlükârda iki ayrı eylem**.
+>   Migration tek başına koşunca `ALTER TYPE` + FK + trigger **izole** doğrulandı.
+>   Dilim 2 koduyla birlikte koşsaydı, sorun çıktığında sebep ayırt edilemezdi.
+>   **Bir tur = bir değişken.**
+>
+> - **⚠️ DİLİM 2 KAPSAMI BÜYÜDÜ — BOOTSTRAP AÇIĞI:**
+>   İlk Owner `password_hash` NULL. `auth.js` ölçüldü: `:25-27` boş kontrolü
+>   yalnız istek gövdesi için, DB NULL kontrolü YOK. Login bugün `organizers`
+>   okuyor → NULL yolu bugün TETİKLENMİYOR.
+>   Dilim 2'de giriş `users`'a taşındığı an: kayıt var, şifre yok, şifre belirleme
+>   akışı da yok → **KİMSE GİREMEZ**. 401 guard 500'ü önler ama **giriş yolu değildir**.
+>   → Dilim 2 yalnız "JWT'ye `user_id` ekle" DEĞİL; **şifre belirleme akışını da
+>   içermeli**. Guard: `if (!user.password_hash) return 401`.
+>
+> - **`organizers` HEDEF/YOL HÜKMÜ (Sentez):** (a) ve (b) alternatif DEĞİL —
+>   (a) hedef, (b) ona giden yol.
+>   **HEDEF:** `organizers` SAF KİRACI olur, giriş `users`'a **TAŞINIR** (kopyalanmaz).
+>   Bugün `organizers` içindeki e-posta/şifre giriş verisidir; kiracı tablosunda
+>   durması tek-kaynak ilkesinin ihlalidir.
+>   **YOL:** JWT geçiş boyunca HER İKİSİNİ taşır; `organizer_id` çalışmaya devam
+>   eder → 26 dosya + middleware dokunulmaz, eldeki token'lar geçerli kalır.
+>   ⚠️ **ÖLÇÜLMÜŞ KISIT: `exp = 30d`** → eski yol en erken dilim 2'den **30 GÜN
+>   SONRA** emekli edilebilir. **Takvimdir, tercih değil.**
+>
+> - **`ui2CurrentUser()` SENKRON KALACAK** (dilim 2 notu). Promise'e çevrilirse
+>   çağıran her ekran kırılır ve kabuğun "ekran kodu DEĞİŞMEZ" vaadi bozulur.
+>   Çözüm: init-once async çek → senkron cache.
+>
+> - **⚠️ AÇIK BORÇ — 1. MADDE: TEST DB'Sİ CANLIDAN 4 MIGRATION GERİDE.**
+>   `setup_test_db.js` 012→028 kuruyor; **029/030/031/032 test DB'sine HİÇ
+>   GİRMİYOR** → geçen 117 test **artık var olmayan bir şemayı doğruluyor:
+>   YALANCI YEŞİL.** Her yeni migration açığı büyütüyor.
+>   **Sıradaki dilimin ana işi.**
+>
+> - **⚠️ AÇIK BORÇ — 2. madde: tarih-bağımlı 3 fail** (fixture `due_date`
+>   `'2026-09-10'` < bugün). Backend doğru, test kırılgan. Boyutu ÖLÇÜLMEDİ
+>   (kaç sabit tarih daha kırılacak).
+>   **3. madde — SESSİZ ÇÜRÜME:** 9 Eylül'de 120/120 idi; 4 gün kimse `npm test`
+>   koşmadı, suite kırmızıya döndü, kimse bilmedi. Suite yalnız dilim koşarken
+>   çalışıyor, aralarda çürüyor.
+>   **4. madde — DÜZELTMENİN TUZAĞI:** tarihleri `CURRENT_DATE`-göreli yapmak
+>   kolay, ama hepsi `+30` olursa OVERDUE senaryosu HİÇ test edilmez. Niyet
+>   korunmalı: bazı satırlar geçmişte, bazıları gelecekte.
+>
+> - **⚠️ KUYRUĞA (Sentez açtı, bugün çözülmedi):**
+>   "`organizers` bugün HEM kiracı HEM giriş kimliği. SaaS'ta bu ikisi ayrılır
+>   (tenant ≠ user). PK tipinden BÜYÜK konu."
+>   "Multi-tenant güvenliği UUID ile GELMEZ — her sorgunun kiracıya göre
+>   filtrelenmesiyle gelir. ÖLÇÜLMEDİ."
+>
+> - **SUER GENEL KURALI (kütüğe girecek, ayrı iş):** "ELIZA anlık iş çözsün diye
+>   değil, multi-tenant SaaS hassasiyetinde kurulur. Hızlı çözüm tercih edilmez.
+>   En kaliteli seçenek kurulumu aşırı uzatmıyorsa, her zaman en doğru yol seçilir."
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
+>
+>   - **★★ TEST DB SENKRONU (ACİL):** `setup_test_db.js` 012→028 kuruyor,
+>     029/030/031/032 girmiyor → 117 test var olmayan şemayı doğruluyor.
+>     Yalancı yeşil. Faz 4 dilim 2'den ÖNCE çözülmeli.
+>   - **FAZ 4 DİLİM 2:** JWT'ye `user_id` + `name` · **şifre belirleme akışı**
+>     (bootstrap açığı) · `ui2CurrentUser()` senkron kalacak.
 >
 > - **★★ TEST DB SENKRONU (ACİL — yalancı yeşil):** `setup_test_db.js` 012→028 kuruyor; 029/030/031/
 >   032 test'e girmiyor → 117 test var-olmayan şemayı doğruluyor. Sabit-tarih fixture'lar da
