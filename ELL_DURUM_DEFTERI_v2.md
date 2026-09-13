@@ -1992,6 +1992,64 @@
 >   değil, multi-tenant SaaS hassasiyetinde kurulur. Hızlı çözüm tercih edilmez.
 >   En kaliteli seçenek kurulumu aşırı uzatmıyorsa, her zaman en doğru yol seçilir."
 
+> ## ✅ 2026-09-13 — TEST DB SENKRONU: yalancı yeşilden çıkış + setup GUARD
+>
+> - **⚠️ YENİ İLKE (Sentez):** "Test DB'si tüm veritabanının aynası değil, **TEST EDİLEN
+>   KODUN aynasıdır**." Finans testleri → finans şeması (012+) + bağlı olduğu OMURGA
+>   (`organizers`). Sentez'in ilk "dizini oku ne varsa koş" kriteri ölçümle çürüdü:
+>   `organizers` test DB'de yoktu · 029/031 email altyapısına (`email_campaigns`/`email_queue`)
+>   bağımlı · 031 `CREATE INDEX CONCURRENTLY` transaction içinde çalışmıyor (PG kısıtı, tercih değil).
+>
+> - **YALANCI YEŞİL KAPANDI:** `setup_test_db.js` artık `migrations/` dizinini OKUYOR
+>   (sabit dizi KALDIRILDI), 012'den **sayısal** sıralı koşar. → **033+ finans migration'ı
+>   OTOMATİK girer**, borç yeniden açılmaz. Kanıt: setup 18 migration koştu (012→028 + **032**),
+>   test DB'de `users` VAR (id uuid, `password_hash` nullable), `sales_agents.user_id` **uuid** +
+>   FK→users(id), UNIQUE korundu.
+>
+> - **DIŞLA-LİSTESİ** (kod içinde, her satır tek-cümle gerekçe): 029 (email evreni) · 030
+>   (callcenter, bağımsız olsa da finans-dışı tutarlılık) · 031 (email_queue yok + CONCURRENTLY).
+>   ⚠️ **SINAVLA KANITLANDI:** 029 listeden çıkarılınca setup **GÜRÜLTÜYLE patladı**
+>   (`relation "email_campaigns" does not exist`, exit 1) — sessiz yalancı-yeşil DEĞİL. Sabit-aralıktan
+>   farkı: aralık her migration'da güncellenmeli; dışla-listesi yalnız yeni bir email/callcenter
+>   migration'ında (nadir), unutulursa gürültülü arıza.
+>
+> - **`organizers` stub — OMURGA** (authMiddleware okur; 032 `users.organizer_id` FK + ilk Owner
+>   seed). MINIMUM: id (FK hedefi) + email (DO bloğu eşleşmesi). Canlı ölçüm (defter 13 Eyl:
+>   TEK SATIR id=1 suer@elan-expo.com) + 032'nin canlı koşumu (id integer olduğunu kanıtladı).
+>
+> - **Yerel PG 14.18** (Homebrew) → PG13+, `gen_random_uuid()` çekirdekte, sorun yok.
+>
+> - **⚠️ setup GUARD eklendi** (whitelist): hedef DB adı TAM `ell_comm_test` değilse script
+>   **hiçbir şey yapmadan çıkar** (DB adı `URL` API ile ayrıştırılır, elle string kesme yok;
+>   ayrıştırma başarısız = ret). Kontrol `DROP DATABASE`'den ÖNCE, çıkış non-zero, bağlantı
+>   string'i gösterilmez (şifre). Gerekçe: `DROP DATABASE` prod'a karşı bugüne dek YALNIZ
+>   TESADÜFEN korunuyordu (Render'da `TEST_DATABASE_URL` tanımsız). Tesadüf güvenlik değildir.
+>   ⚠️ KANITLANDI: sahte ad (`ell_comm_tset`) → reddedildi, exit **1**, sahte DB **yaratılmadı**
+>   (`pg_database` 0 satır); doğru ad → exit 0; env tanımsız (varsayılan) → çalışır.
+>
+> - **DOĞRULAMA:** her suite AYRI koşuldu → **117/120** (cash_forecast 64/3 · agent_office 6 ·
+>   payouts 12 · commissions 12 · schedule 15 · offices 8), aynı 3 tarih-fail, **YENİSİ YOK** ·
+>   **TABAN 342.00** (T35 + M01a). İdempotent: ikinci `setup+test` aynı sonuç.
+>
+> - **⚠️ YENİ KEŞİF — AÇIK BORÇ: `npm test` zinciri ilk fail'de DURUYOR.** `package.json`
+>   `test` script'i `&&` ile bağlı → cash_forecast 3-fail'de exit 1 verip zinciri kesiyor;
+>   kalan 5 suite (53 test) **HİÇ KOŞMUYOR**, `npm test` yalnız 64/3 gösteriyor. Bu, tarih-fail'in
+>   gizlediği İKİNCİ yalancı-durum katmanı: `npm test` çağıran biri diğer 53 testin durumunu görmez.
+>   Ürün kodu değil (script). Bu dilimde ÇÖZÜLMEDİ (bir dilim bir değişken) — tarih dilimiyle veya
+>   ayrı ele alınmalı (`&&`→`;` veya suite-runner).
+>
+> - **⚠️ AÇIK BORÇ: 029/030/031 test DB'sinde YOK ve TEST EDİLMİYOR** (şema senkron, kapsam değil).
+>   032 girdi ama `users` testleri dilim 2'nin işi.
+>
+> - **⚠️ AÇIK BORÇ — TARİH (ayrı dilim):** **115 sabit tarih, 7 dosyada** (biri npm test kapsamı
+>   dışı). "3 fail" bugünün sayısıydı, borcun boyutu değil. Çoğu SABİT KALMALI (kontrat imza
+>   tarihi bugüne göre kaymaz — göreli yapmak YANLIŞ). Yalnız kodun bugünle karşılaştırdıkları
+>   çürür: `due_date` · `cut_date` · forecast penceresi. "Hepsi +30" tuzağı: OVERDUE senaryosu
+>   hiç test edilmez. Sıra: şema senkronundan SONRA, dilim 2'den ÖNCE. **Bu dilimde tarihlere
+>   DOKUNULMADI** (bir dilim bir değişken).
+>
+> - **Commit:** LEENA `setup_test_db.js` + ell-docs bu kayıt. PUSH YOK.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 >   - **★★ TEST DB SENKRONU (ACİL):** `setup_test_db.js` 012→028 kuruyor,
