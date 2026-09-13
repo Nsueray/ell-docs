@@ -1813,10 +1813,66 @@
 > **Çalışma kuralları K1/K2/K3 CLAUDE.md'ye eklendi** (LEENA repo, additive; ölçüm turu "commit
 > yok" istisnası — Sentez açıkça istedi). **Commit:** LEENA `CLAUDE.md` + ell-docs bu kayıt. PUSH YOK.
 
+> ## ✅ 2026-09-13 — FAZ 4 DİLİM 1: users tablosu + ilk Owner + sales_agents FK (migration yazıldı, KOŞULMADI)
+>
+> Migration `032_users_and_first_owner.sql` YAZILDI, ÇALIŞTIRILMADI (Suer Render Shell'de
+> koşar). Login akışı (`routes/auth.js`), JWT payload, `organizers` DEĞİŞMEDİ. Commit var, PUSH YOK.
+>
+> **⚠️ 1 — TEST DB'Sİ CANLIDAN ÜÇ MIGRATION GERİDE (YALANCI YEŞİL, YON-05):** `setup_test_db.js`
+> yalnız **012→028** kuruyor (ölçüldü `:19-24`; önceki tur "031" tahmini YANLIŞTI). **029/030/031
+> test DB'sine HİÇ girmiyor** → geçen 117 test artık var olmayan bir şemayı doğruluyor. 032 dördüncü
+> açık. Bu, 3 tarih-fail'inden **BÜYÜK** kusur ve **sıradaki dilimin ana işi**. İlk raporda "borç"
+> diye yan not geçilmişti — yalancı yeşil olduğu görülmemişti.
+> **⚠️ 2 — tarih-bağımlı 3 fail:** T1/T4/T7 cash-forecast. Fixture `test_cash_forecast.js:82`
+> `due_date:'2026-09-10'`, assert `is_overdue===false` (`:98`). Bugün 2026-09-13 → backend DOĞRU
+> (`is_overdue=TRUE`); TEST sabit-tarih fixture'ıyla kırılıyor. Dilim-DIŞI (032 test'e girmiyor).
+> **⚠️ 3 — sessiz çürüme:** 9 Eyl 120/120'di; 4 gün kimse koşmadı, kırmızıya döndü, kimse bilmedi.
+> Suite yalnız dilim koşarken çalışıyor (CI/otomatik koşum yok).
+> **⚠️ 4 — borç boyutu ÖLÇÜLMEDİ:** kaç sabit tarih daha kırılacak (test fixture'larında)?
+> **⚠️ 5 — düzeltmenin tuzağı:** hepsi `CURRENT_DATE + 30` yapılırsa OVERDUE senaryosu hiç test
+> edilmez. Fixture düzeltilirken hem geçmiş hem gelecek kalem NİYETİ korunmalı.
+> **6 — password_hash NULL kararı (Suer):** kolon `NOT NULL` DEĞİL, sentinel YOK. NULL = "henüz
+> şifre yok". Gerekçe: hash kolonuna hash-olmayan değer yazmak veride yalandır, o kolonu okuyan her
+> kod yolu için kalıcı mayın — NULL dürüst. İlk Owner: `password_hash NULL + password_must_change=true`.
+> Migration koşulmadı → değişim bugün bedava (koştuktan sonra ikinci migration gerekirdi).
+> **7 — B10 + Ö2 (doğru):** B10 kütük "1'in ALTINA inemez" = **en az 1** → partial unique index
+> elendi (en-fazla-1 verir); **statement-level trigger** `enforce_min_one_active_owner` (AFTER
+> UPDATE/DELETE, INSERT'te değil). Self-grant yarısı app-layer (dilim 4). Ö2: `sales_agents_user_id_key`
+> CONSTRAINT (index değil), `ALTER COLUMN TYPE` otomatik rebuild; 0 satır → `USING` no-op.
+>
+> **auth.js NULL-şifre ÖLÇÜMÜ (düzeltilmedi, dilim 2'nin işi):** `auth.js:25-27` boş kontrolü yalnız
+> istek gövdesi için; DB `password_hash` NULL kontrolü YOK (`:38` öncesi). Login bugün `organizers`
+> okuyor (`:30`), users DEĞİL → NULL yolu bugün tetiklenmez. ⚠️ Dilim 2 users okuyunca NULL-hash'li
+> Owner girişi → `bcrypt.compare(plain,null)` throw → catch(`:65`) → **500 (401 değil)**. Dilim 2
+> guard'ı: users'tan önce `if(!user.password_hash) return 401`.
+>
+> **PG SÜRÜMÜ ÖLÇÜLDÜ (Suer, Render dashboard 10 Eyl):** `leena_v401_db` = **PostgreSQL 17** →
+> `gen_random_uuid()` çekirdekte, `CREATE EXTENSION` GEREKMEZ. Migration olduğu gibi. BLOK 1 teyit
+> olarak Suer listesinde kalıyor (kuşak değil, doğrulama).
+>
+> **Önceki kararlar (korunuyor):** `users.id`=**UUID** (LEENA'nın kendi ihtiyacı: sayım sızıntısı ·
+> kayıt-öncesi ID · birleştirme çakışması; "LIFFY UUID olduğu için" DEĞİL — LEENA çekirdek, taviz
+> vermez). `organizers.id` **SERIAL kaldı** (26 dosya + JWT bağlı; `users.organizer_id` integer FK,
+> iki-tip kasıtlı). Ö3 ön koşul: `sales_agents` user_id dolu **0** beklenir (BLOK 2, Suer). İlk Owner
+> e-posta `suer@elan-expo.com` BLOK 3 ile doğrulanır.
+>
+> **⚠️ KUYRUĞA (Sentez, bugün çözülmedi):** `organizers` bugün HEM kiracı HEM giriş kimliği; SaaS'ta
+> ayrılır (tenant ≠ user). users geldiğinde giriş users üzerinden, organizers saf kiracı olmalı —
+> PK tipinden BÜYÜK konu. Multi-tenant güvenliği UUID ile GELMEZ, her sorgunun kiracıya göre
+> filtrelenmesiyle gelir (ÖLÇÜLMEDİ). Dilim 2: `ui2CurrentUser()` **SENKRON KALMALI** (init-once
+> async çek → senkron cache); Promise'e çevrilirse kabuk vaadi bozulur.
+>
+> **Doğrulama:** `npm test` bugün **117/120** (3 tarih-fail dilim-dışı) · **TABAN 342.00 KAYMADI**
+> (T35) · M01a 342.00. Migration test DB'sine girmiyor (setup 012→028). **Commit:** LEENA migration
+> `032` + ell-docs bu kayıt. Sonra **DUR** — Suer BLOK 1-8'i koşacak.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
-> - **★ FAZ 4 DİLİM 1 (planlandı 2026-09-13):** users tablosu + ilk Owner (Suer) + sales_agents FK.
->   Migration `032_users_and_first_owner.sql` yazılır-çalıştırılmaz. Kimlik altyapısı; gate ACİL DEĞİL.
+> - **★★ TEST DB SENKRONU (ACİL — yalancı yeşil):** `setup_test_db.js` 012→028 kuruyor; 029/030/031/
+>   032 test'e girmiyor → 117 test var-olmayan şemayı doğruluyor. Sabit-tarih fixture'lar da
+>   CURRENT_DATE-göreli yapılmalı (T1/T4/T7; OVERDUE niyeti korunarak). Sessiz çürüme: otomatik koşum yok.
+> - **★ FAZ 4 DİLİM 2:** JWT'ye user_id + name; login users'ı okur (NULL-hash guard → 401, 500 değil);
+>   `ui2CurrentUser()` senkron kalır. Önkoşul: dilim 1 migration koşulmuş olmalı (Suer).
 > - **★ ui2 SONRAKİ FINANCE EKRANI (Contract kuruldu 2026-09-09):** oran tablosuna göre 2.
 >   en yüksek Commissions (~33%, statement'la ~50%) — ama önce **backend iş kuyruğu** (contract-level
 >   commission total · line-item amount/EUR · payments type/status) hangi ekranı açar? Her ekran
