@@ -2058,6 +2058,55 @@
 >
 > - **Commit:** LEENA `setup_test_db.js` + ell-docs bu kayıt. PUSH YOK.
 
+> ## ✅ 2026-09-13 — TARİH BORCU DÜZELTİLDİ: cash_forecast is_overdue fixture'ları göreli
+>
+> - **⚠️ BORÇ 141 TARİHTEN 2 SATIRA İNDİ** (ölçüm turu daralttı): 5 suite × `is_overdue`/
+>   `CURRENT_DATE` **0 isabet** → schedule(37)+commissions(21)+payouts(5)+offices(2) **B sınıfı,
+>   dokunulmadı**. Tek çürüme noktası `cashForecast.js:143` (`due_date < CURRENT_DATE AND
+>   remaining>0`). ⚠️ **"115 sabit tarih" borcun boyutu SANILMIŞTI — sayı ≠ borç**; çoğu sabit
+>   kalmalı (kontrat/ödeme/expo tarihi bugüne göre kaymaz).
+>
+> - **DEĞİŞEN: SADECE 2 tarih** (ikisi upcoming, cash_forecast T1/T4/T7): eski `2026-09-10`
+>   (bugün kırıktı) + `2026-10-19` (19 Ekim'de kırılacaktı) → `daysAhead(30)`/`daysAhead(60)`.
+>   Helper `_ymd`/`daysAhead`/`daysAgo` (aynı dosyada). ⚠️ **YEREL bileşen**, `toISOString`
+>   DEĞİL: DB CURRENT_DATE `Europe/Istanbul` = yerel makine TZ (ölçüldü); toISOString UTC'ye
+>   çevirip gece yarısı 00:00-03:00 gün kaydırırdı.
+>
+> - **⚠️ C SINIFI KAPATILDI (kod izlendi):** `2026-08-01`/`09-01` çiftleri (T5 revizyon · T18
+>   incomplete · T25/T26 ödeme↔kalem · T2 excess · T3 statü) **HİÇBİRİ is_overdue kullanmıyor**
+>   → B, çürümüyor. Ölçüm turundaki "yeşil ama anlamsız" endişesi bu çiftler için **GEÇERSİZ**
+>   çıktı (is_overdue assertion'ı yok). Gerçek gizli çürüme yalnız `2026-10-19` (gelecek-tarama).
+>
+> - **⚠️ PENCERE UYUMU:** `WIDE=?from=2026-01-01&to=2026-12-31` sabit üst sınırı `daysAhead`'i
+>   Aralık'ta taşırırdı (satır düşer → yanlış-sebeple geç/kal). T1 çağrısı `T1WIN=daysAgo(400)..
+>   daysAhead(400)` göreli pencereye çevrildi. Diğer testlerin WIDE'ına dokunulmadı (B tarihleri,
+>   is_overdue yok).
+>
+> - **NİYET KORUNDU** (overdue + upcoming İKİSİ de test ediliyor):
+>   | senaryo | test | tarih | çürür mü |
+>   |---|---|---|---|
+>   | overdue | T10, T13 | `2020-01-01` (SABİT, uzak-geçmiş) | hayır |
+>   | upcoming | T1, T4/T7 | `daysAhead(60/30)` (GÖRELİ) | hayır |
+>   | upcoming | T13 | `2030-01-01` (SABİT, uzak-gelecek) | hayır |
+>   | remaining=0 (tarih-duyarsız) | T1 Jul31, T11 | `2026-07-31`/`2020` (SABİT) | hayır |
+>   ⚠️ TUZAKTAN KAÇINILDI: hepsi `daysAhead` OLMADI — overdue tarafı 2020 sabit kaldı, yoksa
+>   overdue senaryosu hiç test edilmezdi (yalancı yeşilin üçüncü biçimi).
+>
+> - **DOĞRULAMA:** 6 suite ayrı → **120/120** (cash_forecast **67/67** — 3 fail gitti; diğer 5
+>   değişmedi 6+12+12+15+8) · **TABAN 342.00** (T35 + M01a). setup 032/uuid şeması üstünde.
+>
+> - **ZAMAN YOLCULUĞU SINAVI — kısmi:** sahte bugün 2026-11-20'de (eski 09-10/10-19 ikisi geçmiş
+>   olurdu) helper `daysAhead(30/60)` hâlâ GELECEK üretti (12-20, 2027-01-19) + pencere kapsadı →
+>   göreli mantık kanıtlandı. ⚠️ **Uçtan-uca DB-kaydırma YAPILAMADI:** `faketime` yok + DB
+>   `CURRENT_DATE` built-in (ürün kodu mock yasak, sistem saati kapsam dışı). Helper-mantık +
+>   JS-sahte-bugün kanıtı verildi; DB-seviyesi zaman-yolculuğu ÖLÇÜLEMEDİ.
+>
+> - **AÇIK:** `test_wizard_silent.js` (1 tarih `2026-09-30`) — npm test kapsamı dışı,
+>   sınıflandırılmadı, dokunulmadı.
+>
+> - **Commit:** LEENA `test_cash_forecast.js` + ell-docs bu kayıt. PUSH YOK. Ürün koduna, diğer
+>   5 suite'e, setup'a, package.json'a (SIEMA dondurması) DOKUNULMADI.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 >   - **★★ TEST DB SENKRONU (ACİL):** `setup_test_db.js` 012→028 kuruyor,
