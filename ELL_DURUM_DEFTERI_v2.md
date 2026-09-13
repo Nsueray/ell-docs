@@ -1725,6 +1725,41 @@
 > DOM koşmuyor); doğrulama görsel turda. **Commit (push YOK):** LEENA `ui2 first finance
 > screen` (finance.html→finance-contract.html) + ell-docs bu kayıt.
 
+> ## 📋 2026-09-09 — SUER HÜKÜMLERİ: adlandırma + Faz 4 kilidi + ui2 hattı (gecikmiş kayıt, yazım 2026-09-13)
+>
+> ⚠️ **GECİKMİŞ KAYIT.** Hükümler 9 Eyl Sentez oturumunda Suer tarafından sözlü verildi, deftere o
+> gün DÜŞMEDİ; kütüğe 13 Eyl'de ID aldı (AD-01, YON-05), defter hikâyesi bugün yazıldı.
+>
+> - **ADLANDIRMA (→ kütük AD-01):** ELIZA = ürün/marka adı (kullanıcının gördüğü) · ELL = iç kod
+>   adı (repo/dosya) · eski bağımsız sistem = **"eliza-legacy"** · LEENA Finance sekmesi yalnız
+>   "Finance" · nav'da `liffy`/`leena` küçük etiket. ⚠️ **CUTOFF: Bu kayıttan ÖNCEKİ tüm defter/kod
+>   kayıtlarında ELIZA = eliza-legacy.**
+> - **YON-05 önerisi** (bir ölçüm turu bir varsayımı çürütürse bulgusu aynı turda deftere kayıt
+>   girer) — kütükte ID aldı 13 Eyl.
+> - **FAZ 4 KİLİDİ KALDIRILDI.** Ertelemenin dayanağı ("dışarıdan kimse LEENA'da değil") ekibe açma
+>   kararıyla ORTADAN KALKTI. ⚠️ Ama bugün hâlâ tek kullanıcı Suer → gate ACİL DEĞİL.
+> - **ui2 HATTI AÇILDI.** Suer: "ilerlemeyi göremediğim için iş kararlarına katkı veremiyorum" —
+>   konfor talebi değil, KARAR KALİTESİ sorunu.
+
+> ## 📋 2026-09-10 — WEB KESİNTİSİ: Render deploy katmanı (gecikmiş kayıt, yazım 2026-09-13)
+>
+> ⚠️ **GECİKMİŞ KAYIT.** Kesinti gece yaşandı; SIEMA kendi repo'suna yazdı (LEENA monorepo
+> `docs/sessions/SIEMA_OPS_20260909.md`), ELL defterine DÜŞMEDİ. Kural (YON-06) doğdu ama hikâyesi
+> kayıt dışı kaldı.
+>
+> **Zaman çizelgesi (UTC, ölçülmüş):** 20:52 `493ad39` auto-deploy · 21:08 **Timed Out** (build
+> BAŞARILI, uygulama çıktısı YOK) · 21:08–21:33 `leena.app` **502** · 21:23 restart → 21:27 boot
+> (⚠️ 4 dk ERKEN bakıldı) · 21:30 `4be38ed` specific-commit deploy → 21:31 **Live**.
+> **Render Status:** "Degraded Build and Deploy Times, Oregon" — Investigating **21:26 UTC**, bizim
+> timeout'tan **18 DK SONRA** → platform sorunu bizde göründüğünde henüz ilan edilmemişti.
+>
+> **ÖLÇÜLENLER:** Worker HİÇ düşmedi (`493ad39`) · DB Available · bellek %20, CPU ~0 · **kod hatası
+> YOK** (iki boot da temiz) → arıza **Render deploy katmanında**.
+> **KAYIP (SIEMA ölçümü):** ~45-55 açılma/tıklama · Zoho ~5-6 kayıt (retry ~8-9 kurtardı) · 1 public
+> form. **Aktivasyon kaybı 0. A2 güvende.**
+> **SONUÇ:** **YON-06** (push öncesi platform durumu ölçülür) · restart boot'a **~4-5 dk** ister ·
+> harici uptime monitörü todo (fuar sonrası).
+
 > ## 📋 2026-09-13 — FAZ 4 PLANLAMA TURU (kimlik+yetki; salt ölçüm, kod yok)
 >
 > **Faz 4 KİLİDİ KALKTI (Suer, 9 Eyl).** Ertelemenin eski gerekçesi ("dışarıdan kimse
@@ -2115,6 +2150,7 @@
 >     029/030/031/032 girmiyor → 117 test var olmayan şemayı doğruluyor.
 >     Yalancı yeşil. Faz 4 dilim 2'den ÖNCE çözülmeli.
 >   - **FAZ 4 DİLİM 2:** JWT'ye `user_id` + `name` · **şifre belirleme akışı**
+>     ⛔ **4 EKİM'E KADAR KİLİTLİ** (fuar: Siema 22-24 Eyl, Madesign 1-3 Eki). Açılış: ölçüm + inşa AYNI TURDA, önceki ölçüm bayat sayılır.
 >     (bootstrap açığı) · `ui2CurrentUser()` senkron kalacak.
 > - **★ ui2 SONRAKİ FINANCE EKRANI (Contract kuruldu 2026-09-09):** oran tablosuna göre 2.
 >   en yüksek Commissions (~33%, statement'la ~50%) — ama önce **backend iş kuyruğu** (contract-level
