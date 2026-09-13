@@ -101,6 +101,12 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 > Tiresiz `S1..S9` (açık soru takibi) · `D1..D4` (agent import kararı) · `D2` (D2 mimari ilkesi)
 > AYRI namespace'lerdir — arama deseni tire'yi zorunlu tutmalı, gevşetilirse çöp girer.
 > **YON grubu bu turda dolduruldu** (YON-01..04) — süreç hükümleri.
+>
+> **⚠️ ATIF BİÇİMİ: `[defter:YYYY-MM-DD BAŞLIK-PARÇASI]`** (ör. `[defter:2026-09-13 FAZ 4 DİLİM 1]`) —
+> başlık yazıldıktan sonra değişmez, tek, grep'lenir. Eski `[defter:NNN]` satır-no atıfları **dönüşüm
+> BEKLİYOR** (ölçüm 2026-09-13: 45 atfın 35'i eski satır-no; örneklemde bir kısmı DOĞRU, bir kısmı
+> araya-eklemeyle KAYMIŞ — MOT-01 [660]→payout, MOT-02 [762]→PLN-warning, ODE-03 [658]→ODE-02-içerik
+> gibi. Tam dönüşüm AYRI TUR, K2).
 
 ### MOT — komisyon motoru
 
@@ -150,9 +156,9 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 
 - **SEM-01** (eski H7) — Tek sözlük: `expected_method` / `payout_method` / `payment_method` aynı beş değeri kullanır; kısa sözlük açılmaz. [defter:742, 798]
 - **SEM-02** (eski H-4) — `CURRENCIES` sabiti tek yerde tanımlanır; kopyalar borçtur (kalan kopya sayısı defterde izlenir). [defter:841]
-- **SEM-03** (F, Sentez 13 Eyl) — `users.id` = **uuid**; gerekçe LEENA'nın KENDİ ölçütü (sıralı ID sayım sızdırır · kayıt öncesi üretilebilir · import çakışmaz). `organizers.id` **SERIAL KALIR** (ayrı karar, kuyrukta). Dilim 1'de uygulandı (`bbc69ff`). [defter:2026-09-13]
-- **SEM-04** (G, Sentez 13 Eyl) — `users.password_hash` **nullable**; NULL = "henüz şifre yok". Hash kolonuna hash-OLMAYAN (sentinel) değer yazmak YASAK (veride yalan). İlk Owner NULL + `password_must_change = true`. [defter:2026-09-13]
-- **SEM-05** (H, Sentez 13 Eyl — dilim 2 öncesi BAĞLAYICI) — HEDEF: `organizers` saf kiracı, giriş `users`'a **TAŞINIR** (e-posta/şifre kopyalanmaz, tek-kaynak). YOL: JWT geçişte ikisini taşır (`organizer_id`, `users.organizer_id`'den türetilir); **exp=30d → eski yol dilim 2'den en erken 30 gün sonra emekli (takvim)**. Dilim 2 kapsamı: JWT `user_id`+`name` + **ŞİFRE BELİRLEME AKIŞI** (Owner NULL bootstrap açığı; 401 guard giriş yolu DEĞİL); `ui2CurrentUser()` SENKRON KALIR. [defter:2026-09-13]
+- **SEM-03** (F, Sentez 13 Eyl) — `users.id` = **uuid**; gerekçe LEENA'nın KENDİ ölçütü (sıralı ID sayım sızdırır · kayıt öncesi üretilebilir · import çakışmaz). `organizers.id` **SERIAL KALIR** (ayrı karar, kuyrukta). Dilim 1'de uygulandı (`bbc69ff`). [defter:2026-09-13 FAZ 4 DİLİM 1 CANLIDA]
+- **SEM-04** (G, Sentez 13 Eyl) — `users.password_hash` **nullable**; NULL = "henüz şifre yok". Hash kolonuna hash-OLMAYAN (sentinel) değer yazmak YASAK (veride yalan). İlk Owner NULL + `password_must_change = true`. [defter:2026-09-13 FAZ 4 DİLİM 1 CANLIDA]
+- **SEM-05** (H, Sentez 13 Eyl — dilim 2 öncesi BAĞLAYICI) — HEDEF: `organizers` saf kiracı, giriş `users`'a **TAŞINIR** (e-posta/şifre kopyalanmaz, tek-kaynak). YOL: JWT geçişte ikisini taşır (`organizer_id`, `users.organizer_id`'den türetilir); **exp=30d → eski yol dilim 2'den en erken 30 gün sonra emekli (takvim)**. Dilim 2 kapsamı: JWT `user_id`+`name` + **ŞİFRE BELİRLEME AKIŞI** (Owner NULL bootstrap açığı; 401 guard giriş yolu DEĞİL); `ui2CurrentUser()` SENKRON KALIR. [defter:2026-09-13 FAZ 4 DİLİM 1 CANLIDA]
 
 ### RAP — raporlama (alan-bağımsız)
 
@@ -170,13 +176,13 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 - **YON-02** — Sentez KRİTER yazar, KOMUT yazmaz; dosya yolu / SQL prosedürü / shell adımı Sentez'in işi değildir.
 - **YON-03** — Belge commit'i kapanış şartı: push → KB yeniden yükleme (Sentez VE Orchestrator) → deftere tek satır `KB @ <hash>`. Teyit yoksa dilim AÇIK.
 - **YON-04** — Para biriminin nasıl raporlanacağı İŞ KARARIDIR; Sentez veremez (uygulama: RAP-01).
-- **YON-05** (B, Sentez 9 Eyl) — Bir ölçüm turu bir varsayımı ÇÜRÜTTÜYSE bulgusu aynı turda deftere kısa kayıt girer (ne varsayılıyordu / ne ölçüldü / kanıt file:line|çıktı). Yalnız TEYİT eden ölçüm ayrı kayıt açmaz. [defter:2026-09-09]
-- **YON-06** (C, Suer 10 Eyl) — LEENA push öncesi İKİ ölçüm: (a) pencere açık mı (kampanya/fuar takvimi), (b) platform sağlığı (status.render.com). Kod riskinin temiz olması deploy riskini KAPATMAZ. Kaynak: 10 Eyl kesintisi. [defter:2026-09-13]
-- **YON-07** (D, Suer 13 Eyl) — Her tasarım kararı çok-kiracı SaaS hassasiyetinde tartılır; hızlı çözüm tercih DEĞİL; en kaliteli seçenek kurulumu aşırı uzatmıyorsa her zaman en doğru yol seçilir. [defter:2026-09-13]
-- **YON-08** (E, Suer 13 Eyl) — LIFFY vazgeçilebilir (kullanıcı/önemli veri yok, kapatılabilir); **LEENA çekirdektir**; LIFFY'yi değiştirmemek için LEENA'da taviz verilmez. [defter:2026-09-13]
-- **YON-09** (I, Sentez 13 Eyl) — Test DB'si tüm veritabanının değil **TEST EDİLEN KODUN** aynasıdır; finans testleri → finans şeması + omurga (`organizers`); email/callcenter evreni girmez; dışla-listesi gerekçeli; yeni EMS migration'ı unutulursa setup GÜRÜLTÜYLE patlar (doğru arıza biçimi, sessiz değil). [defter:2026-09-13]
-- **YON-10** (J, Suer 13 Eyl) — Çalışma kuralları: K1 tek iş · K2 çok-aşamalı iş ayrı tur · K3 Suer yazmaz, yapıştırır. Metin LEENA `CLAUDE.md`'de (tek kaynak, `dd116d5`); burada yalnız ATIF. [defter:2026-09-13]
+- **YON-05** (B, Sentez 9 Eyl) — Bir ölçüm turu bir varsayımı ÇÜRÜTTÜYSE bulgusu aynı turda deftere kısa kayıt girer (ne varsayılıyordu / ne ölçüldü / kanıt file:line|çıktı). Yalnız TEYİT eden ölçüm ayrı kayıt açmaz. [defter:2026-09-09 ui2 KABUK DİLİMİ]
+- **YON-06** (C, Suer 10 Eyl) — LEENA push öncesi İKİ ölçüm: (a) pencere açık mı (kampanya/fuar takvimi), (b) platform sağlığı (status.render.com). Kod riskinin temiz olması deploy riskini KAPATMAZ. Kaynak: 10 Eyl kesintisi. [defter:BULAMADIM — 10 Eyl kesintisi/push-öncesi-platform defterde kayıtlı kayıt DEĞİL; hüküm Suer sözlü]
+- **YON-07** (D, Suer 13 Eyl) — Her tasarım kararı çok-kiracı SaaS hassasiyetinde tartılır; hızlı çözüm tercih DEĞİL; en kaliteli seçenek kurulumu aşırı uzatmıyorsa her zaman en doğru yol seçilir. [defter:2026-09-13 FAZ 4 DİLİM 1 CANLIDA]
+- **YON-08** (E, Suer 13 Eyl) — LIFFY vazgeçilebilir (kullanıcı/önemli veri yok, kapatılabilir); **LEENA çekirdektir**; LIFFY'yi değiştirmemek için LEENA'da taviz verilmez. [defter:2026-09-13 FAZ 4 DİLİM 1 CANLIDA]
+- **YON-09** (I, Sentez 13 Eyl) — Test DB'si tüm veritabanının değil **TEST EDİLEN KODUN** aynasıdır; finans testleri → finans şeması + omurga (`organizers`); email/callcenter evreni girmez; dışla-listesi gerekçeli; yeni EMS migration'ı unutulursa setup GÜRÜLTÜYLE patlar (doğru arıza biçimi, sessiz değil). [defter:2026-09-13 TEST DB SENKRONU]
+- **YON-10** (J, Suer 13 Eyl) — Çalışma kuralları: K1 tek iş · K2 çok-aşamalı iş ayrı tur · K3 Suer yazmaz, yapıştırır. Metin LEENA `CLAUDE.md`'de (tek kaynak, `dd116d5`); burada yalnız ATIF. [defter:2026-09-13 FAZ 4 PLANLAMA TURU]
 
-### AD — adlandırma / marka  ⚠️ [YENİ GRUP — Sentez onayına tabi; reddedilirse tek Edit'le YON'a taşınır]
+### AD — adlandırma / marka
 
-- **AD-01** (A, Suer 9 Eyl) — **ELIZA** = platformun ürün/marka adı (kullanıcının gördüğü); **ELL** = yalnız iç kod adı (repo/dosya adlarında yaşar); eski bağımsız sistem = **"eliza-legacy"**. LEENA Finance sekmesi yalnız "Finance"; nav'da `liffy`/`leena` küçük etiket. ⚠️ **CUTOFF: Bu kayıttan ÖNCEKİ tüm defter/kod kayıtlarında ELIZA = eliza-legacy.** [defter:2026-09-13]
+- **AD-01** (A, Suer 9 Eyl) — **ELIZA** = platformun ürün/marka adı (kullanıcının gördüğü); **ELL** = yalnız iç kod adı (repo/dosya adlarında yaşar); eski bağımsız sistem = **"eliza-legacy"**. LEENA Finance sekmesi yalnız "Finance"; nav'da `liffy`/`leena` küçük etiket. ⚠️ **CUTOFF: Bu kayıttan ÖNCEKİ tüm defter/kod kayıtlarında ELIZA = eliza-legacy.** [defter:BULAMADIM — adlandırma sözlüğü (ELIZA/ELL/eliza-legacy) defterde spesifik kayıt DEĞİL; kavram kökü 2026-06-19 MİMARİ KARAR, hüküm Suer 9 Eyl sözlü]
