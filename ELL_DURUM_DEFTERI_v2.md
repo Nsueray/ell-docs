@@ -2106,6 +2106,8 @@
 >
 > - **Commit:** LEENA `test_cash_forecast.js` + ell-docs bu kayıt. PUSH YOK. Ürün koduna, diğer
 >   5 suite'e, setup'a, package.json'a (SIEMA dondurması) DOKUNULMADI.
+>
+> **Kütük yazımı (2026-09-13):** A-J hükümleri işlendi → AD-01 (A, yeni grup) · YON-05 (B) · YON-06 (C) · YON-07 (D) · YON-08 (E) · SEM-03 (F) · SEM-04 (G) · SEM-05 (H) · YON-09 (I) · YON-10 (J).
 
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
