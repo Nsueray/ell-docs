@@ -103,59 +103,60 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 > **YON grubu bu turda dolduruldu** (YON-01..04) — süreç hükümleri.
 >
 > **⚠️ ATIF BİÇİMİ: `[defter:YYYY-MM-DD BAŞLIK-PARÇASI]`** (ör. `[defter:2026-09-13 FAZ 4 DİLİM 1]`) —
-> başlık yazıldıktan sonra değişmez, tek, grep'lenir. Eski `[defter:NNN]` satır-no atıfları **dönüşüm
-> BEKLİYOR** (ölçüm 2026-09-13: 45 atfın 35'i eski satır-no; örneklemde bir kısmı DOĞRU, bir kısmı
-> araya-eklemeyle KAYMIŞ — MOT-01 [660]→payout, MOT-02 [762]→PLN-warning, ODE-03 [658]→ODE-02-içerik
-> gibi. Tam dönüşüm AYRI TUR, K2).
+> başlık yazıldıktan sonra değişmez, tek, grep'lenir. Satır-no atıfları KULLANILMAZ (kayar).
+> **Dönüşüm TAMAMLANDI 2026-09-13:** 35 eski `[defter:NNN]` atfı içerikten (KOYAN defter kaydına)
+> eşleştirilip başlıklı biçime çevrildi; **BULAMADIM: 0**. Çift-kayıtlılar (PLN-05/07, OFS-01/05,
+> TAH-04) KOYAN + genişletme ikinci/üçüncü atfına bağlandı. Orta-güven: OFS-04/05 (PS3-A), TAH-04
+> [747]→PS1 — defter tarafı doğrulandı, gerekçe defterde.
 
 ### MOT — komisyon motoru
 
-- **MOT-01** (eski S-8) — Dilim CTE'leri `utils/commissionSlices.js → SLICE_CTES`'te tek kaynaktır; ikinci komisyon formülü açılmaz. [defter:660]
-- **MOT-02** (eski S-8) — Komisyon tahsilat oranına bağlıdır (`paid_eur/revenue_eur`), vade planına DEĞİL. [defter:762]
-- **MOT-03** (eski U1a) — Tavan kümülatif-marjinal uygulanır ve dilimlere "(cap)" notuyla yansır. [defter:559]
-- **MOT-04** (eski U2a) — Kesim takvim günüdür (`payment_date` DATE, TZ yok). [defter:559]
-- **MOT-05** (eski U3a) — Rapor yalnız hak edilmişi gösterir; potansiyel detayda kalır. [defter:560]
+- **MOT-01** (eski S-8) — Dilim CTE'leri `utils/commissionSlices.js → SLICE_CTES`'te tek kaynaktır; ikinci komisyon formülü açılmaz. [defter:2026-07-25 FAZ 3b-3 TAMAM]
+- **MOT-02** (eski S-8) — Komisyon tahsilat oranına bağlıdır (`paid_eur/revenue_eur`), vade planına DEĞİL. [defter:2026-07-25 FAZ 3b-3 TAMAM]
+- **MOT-03** (eski U1a) — Tavan kümülatif-marjinal uygulanır ve dilimlere "(cap)" notuyla yansır. [defter:2026-07-25 FAZ 3b-3 TAMAM]
+- **MOT-04** (eski U2a) — Kesim takvim günüdür (`payment_date` DATE, TZ yok). [defter:2026-07-25 FAZ 3b-3 TAMAM]
+- **MOT-05** (eski U3a) — Rapor yalnız hak edilmişi gösterir; potansiyel detayda kalır. [defter:2026-07-25 FAZ 3b-3 TAMAM]
 
 ### TAH — tahsilat / ödeme girişi
 
-- **TAH-01** (eski W-8) — Reversal ve transfer satırında ofis/method sunucuda orijinalden devralınır; istemciden gelen değer yok sayılır. [defter:801]
-- **TAH-02** (eski W-9) — Add-payment tarihi bugünle ön-doldurulur; sunucuda tarih zorlaması yoktur. [defter:836]
-- **TAH-03** (eski W-10) — Tek ödeme formu vardır (`contract-detail.html`); satır içi hızlı form açılmaz. [defter:838]
-- **TAH-04** (eski S-6) — `payments.schedule_item_id` kolonu vardır ama ödeme↔kalem eşleştirme mantığı bilinçli olarak YOKTUR. [defter:747] Bu yüzden PLN-10'un ay dağılımı bir VARSAYIMDIR (satır eşleştirme yapılamıyor). [defter:1052]
+- **TAH-01** (eski W-8) — Reversal ve transfer satırında ofis/method sunucuda orijinalden devralınır; istemciden gelen değer yok sayılır. [defter:2026-07-28 PS2 CANLIDA]
+- **TAH-02** (eski W-9) — Add-payment tarihi bugünle ön-doldurulur; sunucuda tarih zorlaması yoktur. [defter:2026-07-28 PS2 CANLIDA]
+- **TAH-03** (eski W-10) — Tek ödeme formu vardır (`contract-detail.html`); satır içi hızlı form açılmaz. [defter:2026-07-28 PS2 CANLIDA]
+- **TAH-04** (eski S-6) — `payments.schedule_item_id` kolonu vardır ama ödeme↔kalem eşleştirme mantığı bilinçli olarak YOKTUR. [defter:2026-07-28 PAYMENT SCHEDULE PS1] Bu yüzden PLN-10'un ay dağılımı bir VARSAYIMDIR (satır eşleştirme yapılamıyor). [defter:2026-07-30 PS3-B CANLIDA]
 
 ### ODE — payout / cari hesap
 
-- **ODE-01** (eski S-1) — Payout modeli CARİ HESAPTIR; kayıtta dönem/kesim kolonu yoktur, bakiye her okumada türetilir. [defter:642]
-- **ODE-02** (eski S-3) — Clawback ayrı mekanizma değildir; fazla ödeme bakiyeyi negatife düşürür, sonraki ödemede mahsuplaşır. [defter:656]
-- **ODE-03** (eski S-4) — Payout immutable'dır; UPDATE/DELETE yok, düzeltme = negatif tutarlı yeni satır + `reverses_payout_id`. [defter:658]
+- **ODE-01** (eski S-1) — Payout modeli CARİ HESAPTIR; kayıtta dönem/kesim kolonu yoktur, bakiye her okumada türetilir. [defter:2026-07-27 PAYOUT P1 CANLIDA]
+- **ODE-02** (eski S-3) — Clawback ayrı mekanizma değildir; fazla ödeme bakiyeyi negatife düşürür, sonraki ödemede mahsuplaşır. [defter:2026-07-27 PAYOUT P1 CANLIDA]
+- **ODE-03** (eski S-4) — Payout immutable'dır; UPDATE/DELETE yok, düzeltme = negatif tutarlı yeni satır + `reverses_payout_id`. [defter:2026-07-27 PAYOUT P1 CANLIDA]
 
 ### PLN — vade planı
 
-- **PLN-01** (eski S-1) — Yarım plan yasaktır; `contract_date`/`expo_id`/`expo.start_date`/`revenue`'dan biri NULL ise 400 + 0 satır. [defter:755]
-- **PLN-02** (eski S-2) — `d2 <= d1` ise tek kalem %100 @ d1; değilse %40 @ d1 + kalan @ d2. [defter:752]
-- **PLN-03** (eski S-3) — Yuvarlama artığı ikinci kaleme yazılır; Σ kalem ≡ revenue TAM olur. [defter:754]
-- **PLN-04** (eski S-4) — Planda kur dondurulmaz; `exchange_rate`/`amount_eur` kolonu yoktur, tutar kontrat para birimindedir. [defter:725] Rapor tarafı: PLN-09 (kontratın kuruyla EUR'ya çevrilir).
-- **PLN-05** (eski S-5, eski H3, eski K3) — Tutar/tarih ASLA UPDATE edilmez; revizyonda eski satırlar `superseded_at` damgalanır, yeni satırlar `revision = max+1` ile eklenir. **Okuma tarafı:** aktif plan = `superseded_at IS NULL`; `MAX(revision)` aktif seçmez, yalnız sonraki numarayı üretir. [defter:727, 929, 1052]
-- **PLN-06** (eski S-7) — Ödeme durumu saklanmaz; "ödenmemiş" = Σ schedule > Σ payments olarak kontrat seviyesinde türetilir. [defter:730] Satır seviyesi tahsilat dağılımı → PLN-10.
-- **PLN-07** (eski S-9, eski K4) — Σ ≠ revenue engellenmez; elle girişte uyuşmazlık kabul edilir, yanıtta `warning` döner. **Rapor yüzeyi:** uyuşmazlık kontrat satırında ⚠ işaretlenir (`matches_revenue = false`). [defter:760, 1052]
-- **PLN-08** (eski S-13r) — Plan ≠ gerçektir; plan ofisi ile ödeme ofisinin eşleşmesi zorlanmaz, uyarı üretilmez. [defter:724]
-- **PLN-09** (eski K7) — Nakit öngörü raporunda plan satırı EUR'ya kontratın KENDİ kilitli kuruyla çevrilir (`amount × contracts.exchange_rate`); yeni/bugünkü kur kullanılmaz, plana kolon eklenmez. PLN-04'ün rapor-tarafı tamamlayıcısı. [defter:1052]
-- **PLN-10** (eski K8) — Tahsilat düşümü SATIR seviyesindedir: `Σ payments.amount_eur` (NET, reversal dahil, status filtresi yok) aktif satırlara `due_date ASC`, eşitlikte `item_no ASC` teleskopuyla düşülür (MOT `effective_pay` formülü, ikinci formül yazılmaz); `remaining` < 0 olmaz, fazla tahsilat ayrı sütunda. ⚠️ Hangi taksitin kapandığı KAYITLI DEĞİL (TAH-04) → ay dağılımı VARSAYIMDIR, toplam kalan doğrudur. PLN-06'nın satır-seviyesi genişletmesi. [defter:1052]
-- **PLN-11** (eski K14) — Plan satırı "vadesi geçmiş" sayılır: `due_date < bugün AND remaining > 0`. Satır bayrağı + ofis-içi alt toplam olarak gösterilir (ayrı üst grup DEĞİL); `remaining = 0` geçmiş satır overdue değildir ama gizlenmez. [defter:1052]
+- **PLN-01** (eski S-1) — Yarım plan yasaktır; `contract_date`/`expo_id`/`expo.start_date`/`revenue`'dan biri NULL ise 400 + 0 satır. [defter:2026-07-28 PAYMENT SCHEDULE PS1]
+- **PLN-02** (eski S-2) — `d2 <= d1` ise tek kalem %100 @ d1; değilse %40 @ d1 + kalan @ d2. [defter:2026-07-28 PAYMENT SCHEDULE PS1]
+- **PLN-03** (eski S-3) — Yuvarlama artığı ikinci kaleme yazılır; Σ kalem ≡ revenue TAM olur. [defter:2026-07-28 PAYMENT SCHEDULE PS1]
+- **PLN-04** (eski S-4) — Planda kur dondurulmaz; `exchange_rate`/`amount_eur` kolonu yoktur, tutar kontrat para birimindedir. [defter:2026-07-28 PAYMENT SCHEDULE PS1] Rapor tarafı: PLN-09 (kontratın kuruyla EUR'ya çevrilir).
+- **PLN-05** (eski S-5, eski H3, eski K3) — Tutar/tarih ASLA UPDATE edilmez; revizyonda eski satırlar `superseded_at` damgalanır, yeni satırlar `revision = max+1` ile eklenir. **Okuma tarafı:** aktif plan = `superseded_at IS NULL`; `MAX(revision)` aktif seçmez, yalnız sonraki numarayı üretir. [defter:2026-07-28 PAYMENT SCHEDULE PS1; 2026-07-28 PS3-A CANLIDA; 2026-07-30 PS3-B CANLIDA]
+- **PLN-06** (eski S-7) — Ödeme durumu saklanmaz; "ödenmemiş" = Σ schedule > Σ payments olarak kontrat seviyesinde türetilir. [defter:2026-07-28 PAYMENT SCHEDULE PS1] Satır seviyesi tahsilat dağılımı → PLN-10.
+- **PLN-07** (eski S-9, eski K4) — Σ ≠ revenue engellenmez; elle girişte uyuşmazlık kabul edilir, yanıtta `warning` döner. **Rapor yüzeyi:** uyuşmazlık kontrat satırında ⚠ işaretlenir (`matches_revenue = false`). [defter:2026-07-28 PAYMENT SCHEDULE PS1; 2026-07-30 PS3-B CANLIDA]
+- **PLN-08** (eski S-13r) — Plan ≠ gerçektir; plan ofisi ile ödeme ofisinin eşleşmesi zorlanmaz, uyarı üretilmez. [defter:2026-07-28 PAYMENT SCHEDULE PS1]
+- **PLN-09** (eski K7) — Nakit öngörü raporunda plan satırı EUR'ya kontratın KENDİ kilitli kuruyla çevrilir (`amount × contracts.exchange_rate`); yeni/bugünkü kur kullanılmaz, plana kolon eklenmez. PLN-04'ün rapor-tarafı tamamlayıcısı. [defter:2026-07-30 PS3-B CANLIDA]
+- **PLN-10** (eski K8) — Tahsilat düşümü SATIR seviyesindedir: `Σ payments.amount_eur` (NET, reversal dahil, status filtresi yok) aktif satırlara `due_date ASC`, eşitlikte `item_no ASC` teleskopuyla düşülür (MOT `effective_pay` formülü, ikinci formül yazılmaz); `remaining` < 0 olmaz, fazla tahsilat ayrı sütunda. ⚠️ Hangi taksitin kapandığı KAYITLI DEĞİL (TAH-04) → ay dağılımı VARSAYIMDIR, toplam kalan doğrudur. PLN-06'nın satır-seviyesi genişletmesi. [defter:2026-07-30 PS3-B CANLIDA]
+- **PLN-11** (eski K14) — Plan satırı "vadesi geçmiş" sayılır: `due_date < bugün AND remaining > 0`. Satır bayrağı + ofis-içi alt toplam olarak gösterilir (ayrı üst grup DEĞİL); `remaining = 0` geçmiş satır overdue değildir ama gizlenmez. [defter:2026-07-30 PS3-B CANLIDA]
 
 ### OFS — ofis
 
-- **OFS-01** (eski S-16r, eski K5) — Ofis listesi koda gömülmez; enum/CHECK/frontend sabiti yoktur, tüketici `GET /api/offices`'ten okur (nakit öngörü raporu da öyle). [defter:739, 1052]
-- **OFS-02** (eski S-11r) — Ofis × para birimi × tahsilat şekli çarpım tablosu kurulmaz; kombinasyon seçilir, saklanmaz. [defter:738]
-- **OFS-03** (eski W-6) — Ofis zorunluluğu API/form katmanındadır (yeni payment/payout → 400); DB kolonları nullable kalır, reversal ve transfer muaftır. [defter:807]
-- **OFS-04** (eski U-10) — Plan ofisi zorunlu değildir; ödemeden KASITLI farktır, boş bırakılabilir. [defter:882]
-- **OFS-05** (eski W-7, eski D-1) — Ofis `agent → sr → NULL` sırasıyla ön-doldurulur, kilit değildir (kullanıcı ezebilir); **aynı kural frontend'de ve SQL'de AYRI uygulanır, ortak kod yoktur — kural değişirse İKİ yer de güncellenir.** [defter:831, 872]
-- **OFS-06** (eski K1) — Rapor anında ofis TAHMİN/ÇIKARIM yapılmaz; plan satırının `expected_office_id`'si NULL ise "(No office)" kovasında GÖRÜNÜR, gizlenmez. OFS-04'ün (plan ofisi zorunlu değil) rapor-tarafı tamamlayıcısı. [defter:1052]
+- **OFS-01** (eski S-16r, eski K5) — Ofis listesi koda gömülmez; enum/CHECK/frontend sabiti yoktur, tüketici `GET /api/offices`'ten okur (nakit öngörü raporu da öyle). [defter:2026-07-28 PS2 CANLIDA; 2026-07-30 PS3-B CANLIDA]
+- **OFS-02** (eski S-11r) — Ofis × para birimi × tahsilat şekli çarpım tablosu kurulmaz; kombinasyon seçilir, saklanmaz. [defter:2026-07-28 PS2 CANLIDA]
+- **OFS-03** (eski W-6) — Ofis zorunluluğu API/form katmanındadır (yeni payment/payout → 400); DB kolonları nullable kalır, reversal ve transfer muaftır. [defter:2026-07-28 PS2 CANLIDA]
+- **OFS-04** (eski U-10) — Plan ofisi zorunlu değildir; ödemeden KASITLI farktır, boş bırakılabilir. [defter:2026-07-28 PS3-A CANLIDA]
+- **OFS-05** (eski W-7, eski D-1) — Ofis `agent → sr → NULL` sırasıyla ön-doldurulur, kilit değildir (kullanıcı ezebilir); **aynı kural frontend'de ve SQL'de AYRI uygulanır, ortak kod yoktur — kural değişirse İKİ yer de güncellenir.** [defter:2026-07-28 PS3-A CANLIDA; 2026-07-28 PS2 CANLIDA]
+- **OFS-06** (eski K1) — Rapor anında ofis TAHMİN/ÇIKARIM yapılmaz; plan satırının `expected_office_id`'si NULL ise "(No office)" kovasında GÖRÜNÜR, gizlenmez. OFS-04'ün (plan ofisi zorunlu değil) rapor-tarafı tamamlayıcısı. [defter:2026-07-30 PS3-B CANLIDA]
 
 ### SEM — şema / veri
 
-- **SEM-01** (eski H7) — Tek sözlük: `expected_method` / `payout_method` / `payment_method` aynı beş değeri kullanır; kısa sözlük açılmaz. [defter:742, 798]
-- **SEM-02** (eski H-4) — `CURRENCIES` sabiti tek yerde tanımlanır; kopyalar borçtur (kalan kopya sayısı defterde izlenir). [defter:841]
+- **SEM-01** (eski H7) — Tek sözlük: `expected_method` / `payout_method` / `payment_method` aynı beş değeri kullanır; kısa sözlük açılmaz. [defter:2026-07-28 PS2 CANLIDA]
+- **SEM-02** (eski H-4) — `CURRENCIES` sabiti tek yerde tanımlanır; kopyalar borçtur (kalan kopya sayısı defterde izlenir). [defter:2026-07-28 PS2 CANLIDA]
 - **SEM-03** (F, Sentez 13 Eyl) — `users.id` = **uuid**; gerekçe LEENA'nın KENDİ ölçütü (sıralı ID sayım sızdırır · kayıt öncesi üretilebilir · import çakışmaz). `organizers.id` **SERIAL KALIR** (ayrı karar, kuyrukta). Dilim 1'de uygulandı (`bbc69ff`). [defter:2026-09-13 FAZ 4 DİLİM 1 CANLIDA]
 - **SEM-04** (G, Sentez 13 Eyl) — `users.password_hash` **nullable**; NULL = "henüz şifre yok". Hash kolonuna hash-OLMAYAN (sentinel) değer yazmak YASAK (veride yalan). İlk Owner NULL + `password_must_change = true`. [defter:2026-09-13 FAZ 4 DİLİM 1 CANLIDA]
 - **SEM-05** (H, Sentez 13 Eyl — dilim 2 öncesi BAĞLAYICI) — HEDEF: `organizers` saf kiracı, giriş `users`'a **TAŞINIR** (e-posta/şifre kopyalanmaz, tek-kaynak). YOL: JWT geçişte ikisini taşır (`organizer_id`, `users.organizer_id`'den türetilir); **exp=30d → eski yol dilim 2'den en erken 30 gün sonra emekli (takvim)**. Dilim 2 kapsamı: JWT `user_id`+`name` + **ŞİFRE BELİRLEME AKIŞI** (Owner NULL bootstrap açığı; 401 guard giriş yolu DEĞİL); `ui2CurrentUser()` SENKRON KALIR. [defter:2026-09-13 FAZ 4 DİLİM 1 CANLIDA]
@@ -166,9 +167,9 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 > (plan, ofis, komisyon, payout) ilgilendiriyorsa O grubun içine yazılır — RAP çöp çekmecesi değildir.
 > (Emsal: komisyon raporlaması MOT-05'te yaşar, nakit-plan raporlaması PLN-09/10/11'de.)
 
-- **RAP-01** (eski K9-global) — Tüm raporlama EUR'dadır; başka para biriminde girilen işlem GİRİŞ ANINDAKİ KİLİTLİ KURDAN çevrilir (yeni/bugünkü kur değil). Orijinal para birimi satırda görünür, toplama EUR üzerinden yapılır. Suer iş kuralı; cash-forecast'tan büyük, her rapora uygulanır. [defter:1052]
-- **RAP-02** (eski K13, eski K15, eski K16) — Rapordan DIŞLANAN veya EKSİK olan hiçbir şey sessizce kaybolmaz; sayaçta görünür. **Alt maddeler:** E1 netleşme yasak (eksik ve fazla birbirini götürmez — yalnız `revenue > plan` toplanır); E2 ayrıklık (her kontrat tek sayaçta, Y∩X=∅). **Not:** teşhis eksenleri (`contracts_unconvertible`, `contracts_missing_revenue_eur`) parent sayaçlarla örtüşebilir — çifte sayım DEĞİL, tasarım gereği. [defter:1052]
-- **RAP-03** (eski K10) — Rapor kapsamı dışlaması KARA LİSTEDİR (beyaz liste DEĞİL): yeni bir statü eklenirse otomatik DAHİL olur, sessizce düşmez. **Not (nakit öngörü örneği):** dışlanan statüler = Transferred + Cancelled + On Hold; İKİ KATMANDA uygulanır (Transferred+Cancelled plan CTE'de tamamen; On Hold gruplamada, RAP-02 sayacında görünür — CTE'de atılsaydı kalanı hesaplanamazdı). **⚠️ AÇIK SORU (bu dilimde ÇÖZÜLMEDİ):** 5. bir statü eklenirse hangi katmana yazılacağı açık karar gerektirir — yanlış katman sessizce "on hold" muamelesi görür. [defter:1052]
+- **RAP-01** (eski K9-global) — Tüm raporlama EUR'dadır; başka para biriminde girilen işlem GİRİŞ ANINDAKİ KİLİTLİ KURDAN çevrilir (yeni/bugünkü kur değil). Orijinal para birimi satırda görünür, toplama EUR üzerinden yapılır. Suer iş kuralı; cash-forecast'tan büyük, her rapora uygulanır. [defter:2026-07-30 PS3-B CANLIDA]
+- **RAP-02** (eski K13, eski K15, eski K16) — Rapordan DIŞLANAN veya EKSİK olan hiçbir şey sessizce kaybolmaz; sayaçta görünür. **Alt maddeler:** E1 netleşme yasak (eksik ve fazla birbirini götürmez — yalnız `revenue > plan` toplanır); E2 ayrıklık (her kontrat tek sayaçta, Y∩X=∅). **Not:** teşhis eksenleri (`contracts_unconvertible`, `contracts_missing_revenue_eur`) parent sayaçlarla örtüşebilir — çifte sayım DEĞİL, tasarım gereği. [defter:2026-07-30 PS3-B CANLIDA]
+- **RAP-03** (eski K10) — Rapor kapsamı dışlaması KARA LİSTEDİR (beyaz liste DEĞİL): yeni bir statü eklenirse otomatik DAHİL olur, sessizce düşmez. **Not (nakit öngörü örneği):** dışlanan statüler = Transferred + Cancelled + On Hold; İKİ KATMANDA uygulanır (Transferred+Cancelled plan CTE'de tamamen; On Hold gruplamada, RAP-02 sayacında görünür — CTE'de atılsaydı kalanı hesaplanamazdı). **⚠️ AÇIK SORU (bu dilimde ÇÖZÜLMEDİ):** 5. bir statü eklenirse hangi katmana yazılacağı açık karar gerektirir — yanlış katman sessizce "on hold" muamelesi görür. [defter:2026-07-30 PS3-B CANLIDA]
 
 ### YON — yönetim / süreç
 
@@ -176,8 +177,8 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 - **YON-02** — Sentez KRİTER yazar, KOMUT yazmaz; dosya yolu / SQL prosedürü / shell adımı Sentez'in işi değildir.
 - **YON-03** — Belge commit'i kapanış şartı: push → KB yeniden yükleme (Sentez VE Orchestrator) → deftere tek satır `KB @ <hash>`. Teyit yoksa dilim AÇIK.
 - **YON-04** — Para biriminin nasıl raporlanacağı İŞ KARARIDIR; Sentez veremez (uygulama: RAP-01).
-- **YON-05** (B, Sentez 9 Eyl) — Bir ölçüm turu bir varsayımı ÇÜRÜTTÜYSE bulgusu aynı turda deftere kısa kayıt girer (ne varsayılıyordu / ne ölçüldü / kanıt file:line|çıktı). Yalnız TEYİT eden ölçüm ayrı kayıt açmaz. [defter:2026-09-09 ui2 KABUK DİLİMİ]
-- **YON-06** (C, Suer 10 Eyl) — LEENA push öncesi İKİ ölçüm: (a) pencere açık mı (kampanya/fuar takvimi), (b) platform sağlığı (status.render.com). Kod riskinin temiz olması deploy riskini KAPATMAZ. Kaynak: 10 Eyl kesintisi. [defter:BULAMADIM — 10 Eyl kesintisi/push-öncesi-platform defterde kayıtlı kayıt DEĞİL; hüküm Suer sözlü]
+- **YON-05** (B, Sentez 9 Eyl) — Bir ölçüm turu bir varsayımı ÇÜRÜTTÜYSE bulgusu aynı turda deftere kısa kayıt girer (ne varsayılıyordu / ne ölçüldü / kanıt file:line|çıktı). Yalnız TEYİT eden ölçüm ayrı kayıt açmaz. [defter:2026-09-09 SUER HÜKÜMLERİ]
+- **YON-06** (C, Suer 10 Eyl) — LEENA push öncesi İKİ ölçüm: (a) pencere açık mı (kampanya/fuar takvimi), (b) platform sağlığı (status.render.com). Kod riskinin temiz olması deploy riskini KAPATMAZ. Kaynak: 10 Eyl kesintisi. [defter:2026-09-10 WEB KESİNTİSİ]
 - **YON-07** (D, Suer 13 Eyl) — Her tasarım kararı çok-kiracı SaaS hassasiyetinde tartılır; hızlı çözüm tercih DEĞİL; en kaliteli seçenek kurulumu aşırı uzatmıyorsa her zaman en doğru yol seçilir. [defter:2026-09-13 FAZ 4 DİLİM 1 CANLIDA]
 - **YON-08** (E, Suer 13 Eyl) — LIFFY vazgeçilebilir (kullanıcı/önemli veri yok, kapatılabilir); **LEENA çekirdektir**; LIFFY'yi değiştirmemek için LEENA'da taviz verilmez. [defter:2026-09-13 FAZ 4 DİLİM 1 CANLIDA]
 - **YON-09** (I, Sentez 13 Eyl) — Test DB'si tüm veritabanının değil **TEST EDİLEN KODUN** aynasıdır; finans testleri → finans şeması + omurga (`organizers`); email/callcenter evreni girmez; dışla-listesi gerekçeli; yeni EMS migration'ı unutulursa setup GÜRÜLTÜYLE patlar (doğru arıza biçimi, sessiz değil). [defter:2026-09-13 TEST DB SENKRONU]
@@ -185,4 +186,4 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 
 ### AD — adlandırma / marka
 
-- **AD-01** (A, Suer 9 Eyl) — **ELIZA** = platformun ürün/marka adı (kullanıcının gördüğü); **ELL** = yalnız iç kod adı (repo/dosya adlarında yaşar); eski bağımsız sistem = **"eliza-legacy"**. LEENA Finance sekmesi yalnız "Finance"; nav'da `liffy`/`leena` küçük etiket. ⚠️ **CUTOFF: Bu kayıttan ÖNCEKİ tüm defter/kod kayıtlarında ELIZA = eliza-legacy.** [defter:BULAMADIM — adlandırma sözlüğü (ELIZA/ELL/eliza-legacy) defterde spesifik kayıt DEĞİL; kavram kökü 2026-06-19 MİMARİ KARAR, hüküm Suer 9 Eyl sözlü]
+- **AD-01** (A, Suer 9 Eyl) — **ELIZA** = platformun ürün/marka adı (kullanıcının gördüğü); **ELL** = yalnız iç kod adı (repo/dosya adlarında yaşar); eski bağımsız sistem = **"eliza-legacy"**. LEENA Finance sekmesi yalnız "Finance"; nav'da `liffy`/`leena` küçük etiket. ⚠️ **CUTOFF: Bu kayıttan ÖNCEKİ tüm defter/kod kayıtlarında ELIZA = eliza-legacy.** [defter:2026-09-09 SUER HÜKÜMLERİ]
