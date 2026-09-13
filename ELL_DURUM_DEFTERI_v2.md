@@ -2035,8 +2035,16 @@
 >   `test` script'i `&&` ile bağlı → cash_forecast 3-fail'de exit 1 verip zinciri kesiyor;
 >   kalan 5 suite (53 test) **HİÇ KOŞMUYOR**, `npm test` yalnız 64/3 gösteriyor. Bu, tarih-fail'in
 >   gizlediği İKİNCİ yalancı-durum katmanı: `npm test` çağıran biri diğer 53 testin durumunu görmez.
->   Ürün kodu değil (script). Bu dilimde ÇÖZÜLMEDİ (bir dilim bir değişken) — tarih dilimiyle veya
->   ayrı ele alınmalı (`&&`→`;` veya suite-runner).
+>   Ürün kodu değil (script). ⚠️ `package.json` **SIEMA DONDURMA LİSTESİNDE (3 Ekim'e kadar)** →
+>   düzeltme (`&&`→`;` veya suite-runner) **3 Ekim sonrası ilk iş**. O tarihe kadar doğrulama
+>   yöntemi: **6 suite AYRI koşulur** (bu turda yapıldı; şema-sonrası kanıt: `user_id` uuid üstünde
+>   64/3+6+12+12+15+8=117/120, aynı 3 tarih-fail). Sonraki promptlarda "npm test" değil "6 suite
+>   ayrı" yazılır.
+> - **⚠️ İŞLEM HATASI (ders):** dışla-listesi sınavında 029'u geri koymak için `git checkout`
+>   kullanıldı → commit'siz yeni `setup_test_db.js` silindi, yeniden yazıldı (sınav sonucu geçerli).
+>   **Ders: commit'siz dosya varken `git checkout` geri-alma aracı DEĞİL** — working-tree'yi
+>   committed hale döndürür, yeni yazımı yok eder. Tekrarlanmasın (geçici düzenlemeyi geri almak
+>   için: yeniden Write veya `git stash`, checkout değil).
 >
 > - **⚠️ AÇIK BORÇ: 029/030/031 test DB'sinde YOK ve TEST EDİLMİYOR** (şema senkron, kapsam değil).
 >   032 girdi ama `users` testleri dilim 2'nin işi.
