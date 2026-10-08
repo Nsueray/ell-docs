@@ -2495,16 +2495,75 @@
 > - **Bilinçle yapılmayanlar:** öneri · tasarım · karar · LEENA'da değişiklik · dal değişikliği.
 > - **Commit:** yeni dosya + bu defter (ell-docs). PUSH YOK.
 
+> ## ✅ 2026-10-08 — LEDGER KRİTER HÜKÜMLERİ
+>
+> - **Ne:** Sentez'in 8 Eki ledger kriter hükümleri + Suer kararları kanonik belgelere işlendi
+>   (kütük LED grubu, REQ ve glossary amendment'ları). Girdi: `LEDGER_ON_OLCUM_2026-10-08.md`
+>   (Ç1–Ç9, boşluk 1–17). Kod / migration / tasarım YOK.
+> - **Çelişki hükümleri:**
+>   - **Ç1** — REQ v1.0 tamamdır, amendment'lıdır; "In progress" künyesi tarihsel; Part 2/3
+>     başlarındaki `[TBD]` işaretleri kaldırıldı (altları dolu).
+>   - **Ç2** (ADR-011 düzenle/sil ↔ ödemeler değiştirilemez) — **bu görevde hüküm metni gelmedi; AÇIK.**
+>     ADR-011 dokunulmadı.
+>   - **Ç3** — ödeme yöntemi SEM-01'in 5 değeri; SWIFT = `bank_transfer`; kredi bakiyesi ledger olayı → **LED-01**.
+>   - **Ç4** — para birimleri referans tablosu (8 birim, ISO, TL→TRY), arayüz tablodan okur → **LED-02**.
+>   - **Ç5** — "account" = para hesabı; Zoho Account = company → **LED-03**.
+>   - **Ç6** — "Transferred In/Out" = SEM-06'dan türetilmiş gösterim (REQ + glossary notu).
+>     ADR-012:39'daki "aynen aktar" ifadesi dokunulmadı — AÇIK (ADR ell-docs'ta, bu görevin
+>     yazım listesinde yok).
+>   - **Ç7** — tek kaynak: tutar bir kez saklanır, ledger hareketi payout/payment'a FK ile
+>     bağlanır, gelir `payments`'tan türetilir (D2) → **LED-04**.
+>   - **Ç8** — kur satırda değişmez; kur düzeltmesi = ters kayıt + yeni kayıt → **LED-05**.
+>   - **Ç9** (proforma ↔ fatura kapsamı) — **bu görevde hüküm metni gelmedi; AÇIK.**
+> - **Boşluk hükümleri:**
+>   - **1** (Sentez kriteri) — transfer: tek mantıksal olay, iki bağlı hareket, tek atomik yazım → **LED-06**.
+>   - **2** (Sentez kriteri) — sahibin cari hesabı "owner" tipinde sanal hesap → **LED-07**.
+>   - **3** (Suer kararı) — gider onayı YOK; düzeltme ters kayıt; "kim girer" Faz 4 → **LED-08**.
+>   - **4** (Suer kararı) — makbuz: v1'de gider kaydında nullable belge bağlantısı alanı (Drive URL
+>     deseni); dosya yükleme kurulmaz.
+>   - **5** (Suer kararı) — bütçe: Owner kilitler; kilit sonrası yalnız revizyon; kilidi Owner açar → **LED-09**.
+>   - **6** (Suer kararı) — gelir hedefi expo başına TEK EUR rakamı; gider bütçesi kategori/tip satırlı.
+>   - **7–16** — **bu görevde hüküm aktarılmadı.** REQ'deki mevcut durum: 7 kur farkı (yer tutucu),
+>     8 bölünmüş atıf (yok), 9 muhasebe dışa aktarımı, 10 e-fatura, 11 online tahsilat (ertelenmiş);
+>     12 yerel ofis gider yetkisi, 13 banka mutabakatı, 14 dönem tanımı, 15 tarihsel transfer
+>     ölçütü, 16 hesap türü listesi — AÇIK.
+>   - **17** — `[TBD]` işaretleri: Ç1 ile kapandı.
+> - **Kesit sırası L-1…L-6:** dilim 2 kapanışından SONRA, her biri bir ui2 ekranıyla kapanır.
+>   **Kesitlerin içerikleri bu görevde aktarılmadı** — deftere yazılmadı.
+> - **Ortak kurallar (tüm kesitler):** tutar değiştirilemez (düzeltme ters kayıt) · EUR karşılığı
+>   girişte donar · bakiye saklanmaz, türetilir · TABAN 342.00 korunur.
+> - **Eklenen kütük ID'leri:** LED-01 · LED-02 · LED-03 · LED-04 · LED-05 · LED-06 · LED-07 ·
+>   LED-08 · LED-09 (yeni grup "LED — ledger").
+> - **REQ amendment (2026-10-08):** üstte tarihli amendment bloğu (07-20 amendment'ının biçimi) +
+>   ilgili satırlarda kısa işaret: künye, iki `[TBD]`, para birimi (1.2 ve 3.5), ödeme yöntemi,
+>   Transferred Out/In, kur düzeltmesi (3.6), mail limiti (2.7) + §6.4 sürüm geçmişine bir satır.
+>   **Mail limiti:** LIFFY'de mevcut davranış bulundu ve REQ'e kanıtıyla "mevcut davranış" olarak
+>   yazıldı (kullanıcı başına günlük limit, varsayılan 500, takvim günü, kampanya sahibi bazlı;
+>   worker batch'i kalan hakka kırpar). Kenya kâğıt listesindeki belge borcu KAPANDI.
+> - **Glossary amendment:** "account" satırı (LED-03), Zoho eşleme maddesi, kontrat statüleri (Ç6).
+> - **16 Eki+ sonrasına kalanlar:** 1.4 ölçümü — ADR-011/012 LEENA'da DEĞİL, ell-docs'ta → Kenya
+>   kilidine takılmıyor; ancak Ç2/Ç6 hükmü gelmediği için dokunulmadı (AÇIK). LED-02'nin kod
+>   karşılığı (para birimi tablosu + arayüz listelerinin tablodan okuması) LEENA işi → Kenya
+>   kilidi, 16 Eki+; ledger kesitleriyle planlanır.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Sentez'in Ç2, Ç9, boşluk 7–16 hükümleri ve L-1…L-6 içerikleri
+>   bu görevde yoktu · LIFFY mail limiti canlıda hangi değerlerle çalışıyor (DB ölçülmedi) ·
+>   LEENA'da değişiklik yok.
+> - **Bilinçle yapılmayanlar:** LEENA / LIFFY değişikliği · DB · ledger tasarımı · yeni belge ·
+>   ADR düzenlemesi.
+> - **Commit:** kütük + REQ + glossary + bu defter (ell-docs, tek commit). PUSH YOK.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ GÜNCEL SIRA (2026-10-08):**
 >   1) ~~ui2 liste ekranı: push + Suer görsel onayı.~~ → ✅ KAPANDI (2026-10-08).
 >   2) Kenya haftası (kâğıt, LEENA'ya dokunmadan): rotasyon runbook'u Faz A · Faz 4 dilim 2
 >      tasarımı · ölçümler (TEST OFFICE, schema_migrations 030-032 planı, ell-docs
->      leena/CLAUDE.md farkı) · ledger ön-ölçümü. **Sıra (8 Eki): 2d ledger ön-ölçümü → v402
->      temizlik sayımı.** Faz 4 dilim 2 dalda YAZILDI (`faz4-dilim2`: `49fa217` + `3d9896a`).
+>      leena/CLAUDE.md farkı) · ledger ön-ölçümü. **Sıra (8 Eki): ~~2d ledger ön-ölçümü~~ ✅
+>      (+ LEDGER KRİTER HÜKÜMLERİ işlendi) → v402 temizlik sayımı.** ~~Mail limiti belge borcu~~ ✅.
+>      Faz 4 dilim 2 dalda YAZILDI (`faz4-dilim2`: `49fa217` + `3d9896a`).
 >   3) 16 Eki+: Faz A rotasyonu (A4 düştü — eliza-legacy kalır) → Faz 4 dilim 2 kapanışı
->      (merge + push + 033 + 034 + ilk şifre + ui2 görsel onay) → LEDGER → katalog/quote.
+>      (merge + push + 033 + 034 + ilk şifre + ui2 görsel onay) → **Ledger L-1…L-6 (dilim 2
+>      sonrası, her biri ui2 ekranıyla)** → katalog/quote.
 >   Bekleyen: em-dash · test kapsamı · package.json zinciri · Faz B.
 > - **Açık kuyruklar (2026-10-08 eklendi):**
 >   - Temizlik listesi: TEST OFFICE (+1 agent) · contracts 1/3/4 birleşme. ⚠️ TABAN 342.00
@@ -2522,8 +2581,8 @@
 >   - eliza-legacy kapatma: birleşme sonrası, yeni sistem aynı cevapları verince.
 >   - Rol/yetki dilimi: `/me` eski-token 409 köprüsü yeniden ele alınır · şifre ≥6 → SaaS
 >     ölçüsü (YON-07).
->   - Belge borcu (Kenya kâğıt listesi): LIFFY kullanıcı başına mail limiti gereksinime
->     "mevcut davranış" olarak yazılır.
+>   - ~~Belge borcu (Kenya kâğıt listesi): LIFFY kullanıcı başına mail limiti gereksinime
+>     "mevcut davranış" olarak yazılır.~~ → ✅ REQ amendment 2026-10-08.
 >
 > *(Aşağıdakiler önceki adaylar — tarihsel, 2026-10-08 sırası önceliklidir.)*
 >

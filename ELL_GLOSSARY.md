@@ -118,7 +118,7 @@ A signed or approved commercial agreement between Elan Expo and a Company.
   - **Sponsorship contract** — company sponsors the expo but may have no stand
   - **Equipment/service contract** — additional services for an existing exhibitor
   - **Pavilion agent contract** — an agent (e.g., China agent) buys 100m² and brings 10 companies inside
-- Statuses: Draft, Valid, Transferred In, Transferred Out, Cancelled, On Hold
+- Statuses: Draft, Valid, Transferred In, Transferred Out, Cancelled, On Hold *(Amendment 2026-10-08: "Transferred In / Out" is a display derived from the single `Transferred` status + `transferred_from_contract_id` — kütük SEM-06.)*
 - Note: 1 Contract ≠ 1 Exhibitor (see Exhibitor definition)
 
 ### Payment Schedule
@@ -307,7 +307,7 @@ These terms are **banned** from code, UI, and documentation. Use the correct ter
 | client | Company | Ambiguous — could mean company, contact, or account |
 | customer | Company | Same — use Company consistently |
 | participant | Exhibitor | "Participant" could mean visitor, speaker, or exhibitor |
-| account | Company | Zoho term — we're leaving Zoho terminology behind |
+| account | Company | Zoho term — we're leaving Zoho terminology behind — *Amendment 2026-10-08 (kütük LED-03): in ELL "account" means a MONEY account (bank / cash / virtual) in the ledger; Zoho's "Account" is always "company". The ban applies to the Zoho sense only.* |
 | deal | Opportunity or Contract | "Deal" is informal — be specific about which stage |
 | event | Expo or Edition | "Event" is too generic — specify the brand or the year |
 | booking | Contract | "Booking" implies hotel/restaurant — we make Contracts |
@@ -321,5 +321,5 @@ These terms are **banned** from code, UI, and documentation. Use the correct ter
 When writing code for any ELL system:
 1. Use entity names exactly as defined in this glossary (table names, variable names, API endpoints)
 2. If you encounter a term not in this glossary, flag it and ask before proceeding
-3. When migrating from Zoho, map Zoho terms to ELL terms (Sales_Orders → contracts, Vendors → expos, Accounts → companies)
+3. When migrating from Zoho, map Zoho terms to ELL terms (Sales_Orders → contracts, Vendors → expos, Accounts → companies) *(Amendment 2026-10-08: Zoho Accounts → companies; ELL "account" = money account, LED-03.)*
 4. Never create a new entity without adding it to this glossary first

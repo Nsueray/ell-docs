@@ -6,9 +6,30 @@
 > Single-source-of-truth principle locked: see `decisions/ELL_TEK_KAYNAK_KILIT.md`.
 > Where this document references ELIZA as a standalone system, read LEENA Finance.
 
-**Version:** 1.0 (Document complete — all parts filled)
+> **Amendment 2026-10-08 (ledger criteria — Sentez rulings, Suer decisions; ledger
+> `ELL_DURUM_DEFTERI_v2.md` "2026-10-08 — LEDGER KRİTER HÜKÜMLERİ"; rules LED-01..09 in
+> `ELL_LOCKED_KARARLAR_OZET.md`).** Original text below is kept; marked lines read as amended:
+> - **Status:** version 1.0 is complete and carries amendments; the "In progress" status line is
+>   historical. The `[TBD]` markers at the start of Part 2 and Part 3 were removed (sections are filled).
+> - **Payment methods** (3.5): the vocabulary is the five values `bank_transfer`, `cash`, `cheque`,
+>   `credit_card`, `other`. SWIFT is `bank_transfer`. "Credit balance" is not a payment method — it
+>   is a ledger event (LED-01).
+> - **Currencies** (1.2, 3.5): ISO codes — EUR, NGN, MAD, **TRY** (was "TL"), USD, KES, DZD, GHS —
+>   held in a reference table, never hard-coded; UI lists read from the table (LED-02).
+> - **Contract statuses** (2.3): "Transferred In / Transferred Out" are a display derived from the
+>   single `Transferred` status plus the `transferred_from_contract_id` link (SEM-06), not two
+>   stored statuses.
+> - **Exchange rate corrections** (3.6): a correction is a reversal entry plus a new entry; the
+>   rate on a saved row never changes (LED-05).
+> - **Per-user daily email limit** (2.7): existing behaviour in LIFFY — `users.daily_email_limit`
+>   (LIFFY `backend/migrations/032_user_isolation.sql:45`, default 500), counted per campaign owner
+>   per calendar day from `campaign_events` "sent" (`backend/utils/dailyLimit.js:18-43`); the worker
+>   clamps each batch to the remaining allowance (`backend/worker.js:186-196`) and campaign start
+>   returns 429 when the limit is reached (`backend/routes/campaigns.js:805-822`). 0 / NULL = no limit.
+
+**Version:** 1.0 (Document complete — all parts filled) *(amended 2026-10-08 — see top)*
 **Date:** 2026-05-06
-**Status:** In progress — being filled section by section
+**Status:** In progress — being filled section by section *(historical — v1.0 complete with amendments, 2026-10-08)*
 **Owner:** Suer Ay
 **Purpose:** Canonical requirements document for ELL system design. This is the source of truth for what Elan Expo needs. Existing Zoho usage is reference, not blueprint. ELL must match Zoho's coverage AND exceed it on flexibility, autonomy, speed, usefulness, and adaptability — otherwise the migration has no purpose.
 
@@ -49,7 +70,7 @@ The business is fundamentally **relationship-driven and operations-heavy**. A si
 
 **Active markets:** Nigeria, Morocco, Algeria, Kenya, Ghana, China, Turkey, plus exhibitor sourcing from Western Europe (Germany, Italy, Spain, France), India, and other regions.
 
-**Currencies in regular use:** EUR (default reporting), NGN (Nigeria), MAD (Morocco), TL (Turkey), USD (some contracts), KES (Kenya), DZD (Algeria), GHS (Ghana). Exchange rates are updated when transactions occur, frozen at the rate-of-record once entered, and consolidated to EUR for reporting.
+**Currencies in regular use:** EUR (default reporting), NGN (Nigeria), MAD (Morocco), TL (Turkey), USD (some contracts), KES (Kenya), DZD (Algeria), GHS (Ghana). *(Amendment 2026-10-08: ISO codes, TL → TRY; reference table, LED-02.)* Exchange rates are updated when transactions occur, frozen at the rate-of-record once entered, and consolidated to EUR for reporting.
 
 **Languages in daily use:** Turkish (HQ internal), English (primary cross-office), French (Morocco, Algeria), Arabic (Morocco, occasionally), with translated outreach in additional languages depending on target market.
 
@@ -160,7 +181,7 @@ These are realities that affect how the system must be designed. They are not pr
 
 ## Part 2 — The Eight Core Workflows
 
-[TBD — to be filled in next session]
+*(Amendment 2026-10-08: former [TBD] marker removed — section is filled.)*
 
 ### 2.1 Lead Acquisition & Distribution
 
@@ -399,9 +420,9 @@ A Sales Contract has five possible statuses, each representing a real operationa
 
 2. **On Hold** — the customer has signaled intent to cancel, but is being persuaded to stay. The Sales Manager or Owner is in active negotiation with the customer. The contract is paused but not cancelled. From here it returns to Active or moves to Cancelled / Transferred.
 
-3. **Transferred Out** — the customer agreed to switch to a different expo instead of the original one. The contract is closed at this expo, and a new contract is created at the destination expo (see Transferred In). Payments and commission carry forward to the new contract.
+3. **Transferred Out** — *(Amendment 2026-10-08: display derived from the single `Transferred` status + `transferred_from_contract_id`, SEM-06.)* the customer agreed to switch to a different expo instead of the original one. The contract is closed at this expo, and a new contract is created at the destination expo (see Transferred In). Payments and commission carry forward to the new contract.
 
-4. **Transferred In** — a contract that exists because a customer transferred from another expo. It is linked to the original contract via `transferred_from_contract_id`. The cloning is structural: the new contract carries the company, the contact, the payment history, and the commission attribution from the original.
+4. **Transferred In** — *(Amendment 2026-10-08: derived display, SEM-06.)* a contract that exists because a customer transferred from another expo. It is linked to the original contract via `transferred_from_contract_id`. The cloning is structural: the new contract carries the company, the contact, the payment history, and the commission attribution from the original.
 
 5. **Cancelled** — the customer has finally cancelled. Refund or credit balance is processed (credit is preferred — see 2.6). Commission already paid is deducted from the salesperson's next commission payment (see commission section below).
 
@@ -1158,7 +1179,7 @@ The selection of which language to send is rule-driven, with a clear precedence:
 
 Country-based defaults are reference data — when a new local-language expo is created, the office configures which exhibitor countries get the local language. This is editable, not hardcoded. The Owner can override the language per contact at any time.
 
-**Marketing campaigns and unsubscribe**
+**Marketing campaigns and unsubscribe** *(Amendment 2026-10-08: per-user daily email limit — existing LIFFY behaviour, see top.)*
 
 Marketing communication — the outreach the sales side runs to leads, past contacts, and prospects — runs on different rules. The sales rep or the campaign manager creates a campaign, selects a list, picks a template (marketing-flagged), schedules or sends.
 
@@ -1360,7 +1381,7 @@ Reporting without traceability is opinion. Reporting with traceability is eviden
 
 ## Part 3 — Cross-Cutting System Requirements
 
-[TBD — to be filled in next session]
+*(Amendment 2026-10-08: former [TBD] marker removed — section is filled.)*
 
 ### 3.1 Permission & Access Control [PRINCIPLE]
 
@@ -1652,8 +1673,8 @@ The following are reference data in ELL:
 
 **Commercial:**
 - **Products** — the master pricing catalogue (~242 SKUs today, including PES, RF, SYK, per-expo equipment, visa letters, sponsorships, ancillary services)
-- **Currencies** — EUR, NGN, MAD, TL, USD, KES, DZD, GHS, plus any new ones the Owner adds
-- **Payment methods** — bank transfer, cash, SWIFT, credit balance, etc.
+- **Currencies** — EUR, NGN, MAD, TL, USD, KES, DZD, GHS, plus any new ones the Owner adds *(Amendment 2026-10-08: TL → TRY, ISO codes; LED-02.)*
+- **Payment methods** — bank transfer, cash, SWIFT, credit balance, etc. *(Amendment 2026-10-08: five values bank_transfer · cash · cheque · credit_card · other; SWIFT = bank_transfer; credit balance is a ledger event, not a method — LED-01.)*
 
 **Financial:**
 - **Expense Categories** — six top-level categories (Office, Operation, Pre-Event, Sales, Marketing, Conference)
@@ -1725,7 +1746,7 @@ The audit log captures changes that have organizational, financial, or relations
 - **Status changes** — Sales Contract status changes, Quote conversions, expo activation/archival, user activation/deactivation
 - **Permission changes** — every grant, revocation, and template re-application on any user's matrix
 - **Reference data changes** — new categories, renamed values, deactivations
-- **Financial actions** — refund approvals, commission adjustments, transfer events between accounts, exchange rate corrections
+- **Financial actions** — refund approvals, commission adjustments, transfer events between accounts, exchange rate corrections *(Amendment 2026-10-08: a rate correction = reversal + new entry; LED-05.)*
 - **Identity changes** — user creation, user deactivation, sales agent creation, sales agent rename
 - **Email template edits** — operational and marketing
 - **Configuration changes** — per-expo trigger configuration, notification defaults, integration settings
@@ -2299,6 +2320,7 @@ Selected terms used throughout the document:
 - v0.8 (2026-05-08): Part 3.1 (Permission & Access Control), 3.2 (Identity & User Management), 3.3 (Multi-Currency & Multi-Account), 3.4 (Hierarchical Visibility & Data Scope), 3.5 (Reference Data Management) — synthesis of cross-cutting principles from Part 2 plus profile templates list (10 templates), three-identity-concept separation (users/agents/contractors), four multi-currency mechanics, scope composition rules, reference data inventory.
 - v0.9 (2026-05-08): Part 3.6 (Audit & History), 3.7 (Search & Navigation), 3.8 (Notification System), 3.9 (Integration Points) — 24-month rolling audit retention with archive, global search respecting scope, three notification channels (in-app/email/WhatsApp) with per-user preferences, online payment + e-invoice + accounting export deferred to Phase 2. Part 3 complete.
 - v1.0 (2026-05-08): Part 4 ("Better Than Zoho" Targets), Part 5 (Out of Scope), Part 6 (Appendices) added. Document complete and ready as input for the architecture phase.
+- v1.0 amendment (2026-10-08): ledger criteria (Sentez rulings, Suer decisions) — status, payment methods, currencies (ISO, TRY), Transferred In/Out as derived display, rate corrections, LIFFY per-user daily email limit — see top; rules LED-01..09.
 
 ---
 

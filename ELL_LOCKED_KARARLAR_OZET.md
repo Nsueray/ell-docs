@@ -162,6 +162,18 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 - **SEM-05** (H, Sentez 13 Eyl — dilim 2 öncesi BAĞLAYICI) — HEDEF: `organizers` saf kiracı, giriş `users`'a **TAŞINIR** (e-posta/şifre kopyalanmaz, tek-kaynak). YOL: JWT geçişte ikisini taşır (`organizer_id`, `users.organizer_id`'den türetilir); **exp=30d → eski yol dilim 2'den en erken 30 gün sonra emekli (takvim)**. Dilim 2 kapsamı: JWT `user_id`+`name` + **ŞİFRE BELİRLEME AKIŞI** (Owner NULL bootstrap açığı; 401 guard giriş yolu DEĞİL); `ui2CurrentUser()` SENKRON KALIR. [defter:2026-09-13 FAZ 4 DİLİM 1 CANLIDA]
 - **SEM-06** (B3, Sentez — RTM nihai, 8 Eki) — `Transferred` TEK statüdür (yalnız devreden kaynak taşır; elle geçiş kapalı, yalnız Transfer aksiyonu yazar). Yön ayrı statüyle değil `transferred_from_contract_id` ile tutulur (devam = yeni `Active` satır; "transferred to" ters join'le türetilir, saklanmaz). [defter:2026-10-08 KENYA ÖLÇÜM PAKETİ + ui2 LİSTE KAPANIŞI]
 
+### LED — ledger (hesaplar · transfer · gider · gelir · bütçe)
+
+- **LED-01** (Ç3, Sentez 8 Eki) — Ödeme yöntemi sözlüğü SEM-01'in 5 değeridir; SWIFT = `bank_transfer`; "kredi bakiyesi" ödeme yöntemi DEĞİL, ledger olayıdır. [defter:2026-10-08 LEDGER KRİTER HÜKÜMLERİ]
+- **LED-02** (Ç4, Sentez 8 Eki) — Para birimleri bir referans TABLOSUDUR (8 birim, ISO kodu; TL→TRY); koda gömülmez, arayüz listeleri tablodan okur. [defter:2026-10-08 LEDGER KRİTER HÜKÜMLERİ]
+- **LED-03** (Ç5, Sentez 8 Eki) — "account" = para hesabı (banka / kasa / sanal); Zoho'nun Account'u her yerde "company"dir. [defter:2026-10-08 LEDGER KRİTER HÜKÜMLERİ]
+- **LED-04** (Ç7, Sentez 8 Eki) — Tek kaynak: her tutar bir kez saklanır; ledger hareketi payout'a / payment'a FK ile bağlanır, tutarı kopyalamaz; gelir `payments`'tan türetilir, ayrı gelir tablosu doğmaz (D2). [defter:2026-10-08 LEDGER KRİTER HÜKÜMLERİ]
+- **LED-05** (Ç8, Sentez 8 Eki) — Kur satırda değişmez; "kur düzeltmesi" = ters kayıt + yeni kayıt. [defter:2026-10-08 LEDGER KRİTER HÜKÜMLERİ]
+- **LED-06** (boşluk 1, Sentez 8 Eki) — Transfer = tek mantıksal olay, iki bağlı hareket, tek atomik yazım; iki hareket ayrı silinemez/değişemez; bakiye türetilir. [defter:2026-10-08 LEDGER KRİTER HÜKÜMLERİ]
+- **LED-07** (boşluk 2, Sentez 8 Eki) — Sahibin cari hesabı = "owner" tipinde sanal hesap; cebinden ödenen gider buradan çıkar, eksi bakiye = şirketin sahibe borcu, geri ödeme = banka→owner transferi. [defter:2026-10-08 LEDGER KRİTER HÜKÜMLERİ]
+- **LED-08** (boşluk 3, Suer 8 Eki) — Gider onayı YOKTUR: gider değiştirilemez olaydır, düzeltme ters kayıttır; onay statüsü/akışı kurulmaz; "kim girebilir" Faz 4 iznidir. [defter:2026-10-08 LEDGER KRİTER HÜKÜMLERİ]
+- **LED-09** (boşluk 5, Suer 8 Eki) — Bütçeyi Owner kilitler; kilit sonrası değişiklik yalnız yeni revizyondur (eski satırlar superseded, UPDATE yok), kim/ne zaman kaydıyla; kilidi yalnız Owner açar; "kim yazar" Faz 4 iznidir. [defter:2026-10-08 LEDGER KRİTER HÜKÜMLERİ]
+
 ### RAP — raporlama (alan-bağımsız)
 
 > **Sınır:** RAP yalnız ALAN-BAĞIMSIZ raporlama ilkelerini taşır. Bir hüküm tek bir alanı
