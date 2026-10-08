@@ -11,6 +11,18 @@
 >
 > ---
 
+> 🔄 **PARTIALLY SUPERSEDED — 2026-10-08** (Sentez, ledger kriter hükmü Ç2)
+>
+> **Edit Payment / Delete Payment sütunları SUPERSEDED:** ödeme değiştirilemez bir olaydır;
+> düzeltme ters kayıtla yapılır, düzenleme/silme yoktur. Gerekçe: kütük TAH-01 ve ODE-03 —
+> defter/kütük ADR'ye göre kazanır.
+> **Geçerli kalan:** rol/kapsam kısmı (yerel ofis yalnız kısıtlı formla girer, yalnız kendi
+> ülkesini görür) — Faz 4 yetki matrisi girdisi olarak.
+>
+> **Atıf:** `ELL_DURUM_DEFTERI_v2.md` [defter:2026-10-08 LEDGER KRİTER HÜKÜMLERİ]
+>
+> ---
+
 **Status:** DECIDED
 **Date:** 2026-04-10
 **Decided by:** Suer Ay
@@ -28,6 +40,8 @@ Who beyond Yaprak should have payment recording permissions?
 
 ### Permission Tiers
 
+> ⛔ *2026-10-08: "Edit Payment" / "Delete Payment" sütunları SUPERSEDED (Ç2 — TAH-01, ODE-03); üstteki nota bakın. Rol ve görünürlük sütunları Faz 4 yetki girdisi olarak geçerli.*
+
 | Role | Create Payment | Edit Payment | Delete Payment | View All | View Own |
 |------|---------------|-------------|---------------|----------|----------|
 | CEO (Suer) | Yes | Yes | Yes | Yes | Yes |
@@ -36,6 +50,8 @@ Who beyond Yaprak should have payment recording permissions?
 | Sales Agent | No | No | No | No | No |
 
 ### How Local Offices Record Payments
+
+> ✅ *2026-10-08: bu bölüm (kısıtlı form, kendi ülkesi) Faz 4 yetki girdisi olarak GEÇERLİ.*
 
 Current Zoho model preserved: local offices (Nigeria, Morocco, Kenya) use a **restricted online form** that pushes payment records to ELIZA. They:
 - CAN record new incoming payments (amount, date, method, currency)

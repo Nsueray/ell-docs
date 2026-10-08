@@ -2503,18 +2503,19 @@
 > - **Çelişki hükümleri:**
 >   - **Ç1** — REQ v1.0 tamamdır, amendment'lıdır; "In progress" künyesi tarihsel; Part 2/3
 >     başlarındaki `[TBD]` işaretleri kaldırıldı (altları dolu).
->   - **Ç2** (ADR-011 düzenle/sil ↔ ödemeler değiştirilemez) — **bu görevde hüküm metni gelmedi; AÇIK.**
->     ADR-011 dokunulmadı.
+>   - **Ç2** — defter/kütük kazanır: ödeme değiştirilemez, düzeltme ters kayıt (TAH-01, ODE-03).
+>     ADR-011'in düzenle/sil satırlarına SUPERSEDED notu; rol/kapsam kısmı (yerel ofis kısıtlı
+>     form, kendi ülkesi) Faz 4 yetki girdisi olarak geçerli kalır.
 >   - **Ç3** — ödeme yöntemi SEM-01'in 5 değeri; SWIFT = `bank_transfer`; kredi bakiyesi ledger olayı → **LED-01**.
 >   - **Ç4** — para birimleri referans tablosu (8 birim, ISO, TL→TRY), arayüz tablodan okur → **LED-02**.
 >   - **Ç5** — "account" = para hesabı; Zoho Account = company → **LED-03**.
->   - **Ç6** — "Transferred In/Out" = SEM-06'dan türetilmiş gösterim (REQ + glossary notu).
->     ADR-012:39'daki "aynen aktar" ifadesi dokunulmadı — AÇIK (ADR ell-docs'ta, bu görevin
->     yazım listesinde yok).
+>   - **Ç6** — "Transferred In/Out" = SEM-06'dan türetilmiş gösterim (REQ + glossary notu;
+>     ADR-012'ye de aynı not).
 >   - **Ç7** — tek kaynak: tutar bir kez saklanır, ledger hareketi payout/payment'a FK ile
 >     bağlanır, gelir `payments`'tan türetilir (D2) → **LED-04**.
 >   - **Ç8** — kur satırda değişmez; kur düzeltmesi = ters kayıt + yeni kayıt → **LED-05**.
->   - **Ç9** (proforma ↔ fatura kapsamı) — **bu görevde hüküm metni gelmedi; AÇIK.**
+>   - **Ç9** — `payer` alanı ledger v1'de VAR (R7). Proforma = belge üretimi, ledger dışı; fatura
+>     kapsamıyla birlikte sonraki faz.
 > - **Boşluk hükümleri:**
 >   - **1** (Sentez kriteri) — transfer: tek mantıksal olay, iki bağlı hareket, tek atomik yazım → **LED-06**.
 >   - **2** (Sentez kriteri) — sahibin cari hesabı "owner" tipinde sanal hesap → **LED-07**.
@@ -2523,15 +2524,29 @@
 >     deseni); dosya yükleme kurulmaz.
 >   - **5** (Suer kararı) — bütçe: Owner kilitler; kilit sonrası yalnız revizyon; kilidi Owner açar → **LED-09**.
 >   - **6** (Suer kararı) — gelir hedefi expo başına TEK EUR rakamı; gider bütçesi kategori/tip satırlı.
->   - **7–16** — **bu görevde hüküm aktarılmadı.** REQ'deki mevcut durum: 7 kur farkı (yer tutucu),
->     8 bölünmüş atıf (yok), 9 muhasebe dışa aktarımı, 10 e-fatura, 11 online tahsilat (ertelenmiş);
->     12 yerel ofis gider yetkisi, 13 banka mutabakatı, 14 dönem tanımı, 15 tarihsel transfer
->     ölçütü, 16 hesap türü listesi — AÇIK.
+>   - **7** — kur farkı kâr/zarar: v1 dışı.
+>   - **8** — bölünmüş atıf: yok (REQ 1034).
+>   - **9 / 10 / 11** — muhasebe aktarımı, e-fatura, online tahsilat: sonraki faz.
+>   - **12** — yerel ofis gider yetkisi: Faz 4 yetki matrisi; şema `office_id` taşır.
+>   - **13** — banka mutabakatı: v1 dışı.
+>   - **14** — dönem: raporlar tarih aralığıyla; sabit mali yıl kavramı YOK; expo ekseni `expo_id`
+>     ile (ADR-012: mali yıl ≠ edisyon).
+>   - **15** — tarihsel transfer aktarımı: Faz 6 göç ölçütü.
+>   - **16** — hesap türleri: banka · kasa · sanal (owner dahil). Şema kişiye cari hesap açmaya izin
+>     verir (hesap ↔ kişi bağı nullable), UI'da yalnız owner.
 >   - **17** — `[TBD]` işaretleri: Ç1 ile kapandı.
-> - **Kesit sırası L-1…L-6:** dilim 2 kapanışından SONRA, her biri bir ui2 ekranıyla kapanır.
->   **Kesitlerin içerikleri bu görevde aktarılmadı** — deftere yazılmadı.
+> - **Kesit sırası (dilim 2 kapanışından SONRA, her biri bir ui2 ekranıyla):**
+>   - **L-1** hesaplar + referans veri (para birimleri, gider/gelir kategorileri — Zoho tohumlu) +
+>     hesap ekstresi ekranı
+>   - **L-2** transferler (iki hareket) + owner hesabı
+>   - **L-3** giderler (belge bağlantısı alanı dahil)
+>   - **L-4** `payments`'a `account_id` + `payer`; payout ↔ ledger bağı; gelir görünümü
+>   - **L-5** expo bütçesi (revizyon + kilit) vs gerçekleşen
+>   - **L-6** nakit / alacak / komisyon özet raporu (R12, R15)
+>   - Migration'lar yazılır, Suer koşar; canlı LEENA'ya dokunan her kesit fuar takvimine göre
+>     pencereye girer.
 > - **Ortak kurallar (tüm kesitler):** tutar değiştirilemez (düzeltme ters kayıt) · EUR karşılığı
->   girişte donar · bakiye saklanmaz, türetilir · TABAN 342.00 korunur.
+>   girişte donar (R4, RAP-01) · hiçbir bakiye saklanmaz (R13/D2) · TABAN 342.00 korunur.
 > - **Eklenen kütük ID'leri:** LED-01 · LED-02 · LED-03 · LED-04 · LED-05 · LED-06 · LED-07 ·
 >   LED-08 · LED-09 (yeni grup "LED — ledger").
 > - **REQ amendment (2026-10-08):** üstte tarihli amendment bloğu (07-20 amendment'ının biçimi) +
@@ -2541,16 +2556,19 @@
 >   yazıldı (kullanıcı başına günlük limit, varsayılan 500, takvim günü, kampanya sahibi bazlı;
 >   worker batch'i kalan hakka kırpar). Kenya kâğıt listesindeki belge borcu KAPANDI.
 > - **Glossary amendment:** "account" satırı (LED-03), Zoho eşleme maddesi, kontrat statüleri (Ç6).
-> - **16 Eki+ sonrasına kalanlar:** 1.4 ölçümü — ADR-011/012 LEENA'da DEĞİL, ell-docs'ta → Kenya
->   kilidine takılmıyor; ancak Ç2/Ç6 hükmü gelmediği için dokunulmadı (AÇIK). LED-02'nin kod
+> - **ADR notları:** ADR-011 (Ç2, düzenle/sil SUPERSEDED; rol/kapsam Faz 4 girdisi) ve ADR-012
+>   (Ç6, In/Out türetilmiş gösterim) mevcut tarihli-blockquote biçimiyle notlandı; metin silinmedi.
+> - **16 Eki+ sonrasına kalanlar:** ADR-011/012 LEENA'da DEĞİL, ell-docs'ta → Kenya kilidine
+>   takılmadı, aynı gün notlandı. LED-02'nin kod
 >   karşılığı (para birimi tablosu + arayüz listelerinin tablodan okuması) LEENA işi → Kenya
 >   kilidi, 16 Eki+; ledger kesitleriyle planlanır.
-> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Sentez'in Ç2, Ç9, boşluk 7–16 hükümleri ve L-1…L-6 içerikleri
->   bu görevde yoktu · LIFFY mail limiti canlıda hangi değerlerle çalışıyor (DB ölçülmedi) ·
->   LEENA'da değişiklik yok.
-> - **Bilinçle yapılmayanlar:** LEENA / LIFFY değişikliği · DB · ledger tasarımı · yeni belge ·
->   ADR düzenlemesi.
-> - **Commit:** kütük + REQ + glossary + bu defter (ell-docs, tek commit). PUSH YOK.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** LIFFY mail limiti canlıda hangi değerlerle çalışıyor (DB
+>   ölçülmedi) · LEENA'da değişiklik yok · Sentez'in kaynak metni CC tarafından görülmedi
+>   (Orchestrator brief'inden aynen aktarıldı).
+> - **Bilinçle yapılmayanlar:** LEENA / LIFFY değişikliği · DB · ledger tasarımı · yeni belge.
+> - **Commit:** kütük + REQ + glossary + bu defter (ell-docs, `900ec25`); tamamlama + ADR notları
+>   ayrı commit. PUSH YOK.
+> - **Tamamlama:** Orchestrator brief'i ilk turda eksikti; metinler aynı gün eklendi.
 
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >

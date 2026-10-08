@@ -38,6 +38,8 @@ These business rules MUST be preserved during migration:
 
 2. **Contract statuses** — Valid, Transferred In, Transferred Out, Cancelled, On Hold must be migrated exactly as-is.
 
+   > ℹ️ *2026-10-08 (Sentez, ledger kriter hükmü Ç6): "Transferred In / Out" türetilmiş gösterimdir — LEENA'da tek `Transferred` statüsü + `transferred_from_contract_id` bağı (kütük SEM-06). Atıf: [defter:2026-10-08 LEDGER KRİTER HÜKÜMLERİ]*
+
 3. **Currency records** — local currency payments (NGN, MAD) historically stored as EUR in Zoho must be migrated with:
    - Original local currency amount (if available)
    - Zoho's exchange rate at time of entry
