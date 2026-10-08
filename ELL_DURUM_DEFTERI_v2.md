@@ -2570,6 +2570,37 @@
 >   ayrı commit. PUSH YOK.
 > - **Tamamlama:** Orchestrator brief'i ilk turda eksikti; metinler aynı gün eklendi.
 
+> ## ✅ 2026-10-08 — DİLİM 2 SEM-05 HİZALAMA (dal)
+>
+> - **Ne uyuşmuyordu:** kütük SEM-05 (Sentez 13 Eyl, dilim 2 öncesi BAĞLAYICI) dilim 2 için
+>   JWT'de `user_id` + `name` ve `ui2CurrentUser()`'ın SENKRON kalmasını ister. Dal `3d9896a`
+>   token'a `uid` koymuştu, `name` yoktu; yeni ui2 login yalnız `token` yazdığı için
+>   `ui2CurrentUser()` ya boş (`{name:'User', id:null}`) ya da önceki klasik oturumdan kalma
+>   organizer'ı (yanlış kişi) döndürüyordu.
+> - **Ne değişti (dal `faz4-dilim2`, commit `a67ab0f`):**
+>   - Claim `uid` → **`user_id`**; tüm okuyucular güncellendi (`/me` artık `user_id` döner).
+>   - `ui2CurrentUser()` senkron kaldı, fetch eklenmedi: ui2 login, yanıttaki kimliği YENİ
+>     `ui2User` anahtarına token'a bağlı olarak (son 16 karakter) yazar; kabuk bu kaydı yalnız
+>     o token hâlâ geçerliyse okur, aksi hâlde klasik davranış (`organizer` / `organizerId`)
+>     birebir sürer. Eski login'in anahtarlarına dokunulmadı.
+>   - Yeni test `test_ui2_current_user.js` (8): gerçek `shell.js` sahte depolamayla koşulur;
+>     senkron dönüş, doğru kullanıcı, bayat kayıt yok sayılır, klasik/boş davranış değişmedi.
+> - **`name` durumu: Sentez kararı bekliyor (EKLENMEDİ).** Kanıtlı tek kaynak yok: `users`'ta ad
+>   kolonu yok (032); `organizers.name` kiracının adı (SEM-05: organizers saf kiracı);
+>   `sales_agents.name` yalnız isteğe bağlı `user_id` bağıyla (canlıda dolu 0). Şema değişikliği
+>   gerekeceği için yazılmadı. Kabuk gösterim için geçici olarak e-postayı kullanıyor (CC varsayılanı).
+> - **Testler:** 161 → **169/169** (finans 120 + users 30 + line-item 11 + ui2-current-user 8),
+>   iki koşu aynı. **TABAN 342.00 KAYMADI.**
+> - **ADR INDEX:** ADR-011 satırı ve özet maddesi "PARTIALLY SUPERSEDED 2026-10-08" notu aldı.
+> - **YON-05 notu:** Orchestrator dilim 2 brief'ini yazmadan önce kütüğü taramadı; SEM-05 atlandı.
+>   **Ders:** dilim brief'inden önce kütükte ilgili grup aranır.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** ui2 login → kabuk akışı gerçek tarayıcıda denenmedi
+>   (`ui2CurrentUser` birim testi gerçek `shell.js` ile; `login.html`'in yazımı kaynak kontrolü
+>   + testte aynı biçimle kuruldu) · canlı DB.
+> - **Bilinçle yapılmayanlar:** `name` · main'de kod · push · merge · eski login · authMiddleware ·
+>   dualAuth · leena-fetch · migration.
+> - **Commit:** LEENA dal `a67ab0f` · ell-docs defter + INDEX. PUSH YOK.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ GÜNCEL SIRA (2026-10-08):**
@@ -2578,7 +2609,7 @@
 >      tasarımı · ölçümler (TEST OFFICE, schema_migrations 030-032 planı, ell-docs
 >      leena/CLAUDE.md farkı) · ledger ön-ölçümü. **Sıra (8 Eki): ~~2d ledger ön-ölçümü~~ ✅
 >      (+ LEDGER KRİTER HÜKÜMLERİ işlendi) → v402 temizlik sayımı.** ~~Mail limiti belge borcu~~ ✅.
->      Faz 4 dilim 2 dalda YAZILDI (`faz4-dilim2`: `49fa217` + `3d9896a`).
+>      Faz 4 dilim 2 dalda YAZILDI (`faz4-dilim2`: `49fa217` + `3d9896a` + `a67ab0f` SEM-05 hizalama; `name` Sentez kararı bekliyor).
 >   3) 16 Eki+: Faz A rotasyonu (A4 düştü — eliza-legacy kalır) → Faz 4 dilim 2 kapanışı
 >      (merge + push + 033 + 034 + ilk şifre + ui2 görsel onay) → **Ledger L-1…L-6 (dilim 2
 >      sonrası, her biri ui2 ekranıyla)** → katalog/quote.

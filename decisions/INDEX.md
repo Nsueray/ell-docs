@@ -58,7 +58,7 @@ edilmesi veya geçersiz kılınması gereken** durumda:
 | 008 | [Zoho exit: parallel, target Jan 2027](ADR-008-zoho-exit-timeline.md) | DECIDED | 2026-04-10 | Strategy |
 | 009 | [Sales adoption: pilot Bengü first, value-first positioning](ADR-009-sales-adoption.md) | DECIDED | 2026-04-10 | Operations |
 | 010 | [Floorplan: not Phase 1, CRM first, dual-layer architecture](ADR-010-floorplan-integration-depth.md) | DECIDED (NEEDS REVISION) | 2026-04-10 | Architecture |
-| 011 | [Payment authority: CEO+Yaprak full, local offices form-only](ADR-011-payment-authority.md) | DECIDED | 2026-04-10 | Business Rule |
+| 011 | [Payment authority: CEO+Yaprak full, local offices form-only](ADR-011-payment-authority.md) | DECIDED (PARTIALLY SUPERSEDED 2026-10-08 — edit/delete satırları; ödeme değiştirilemez, TAH-01 · ODE-03) | 2026-04-10 | Business Rule |
 | 012 | [Historical migration: full 2014-2027, all data](ADR-012-historical-migration-scope.md) | DECIDED | 2026-04-10 | Migration |
 | 013 | [SaaS: long-term option, not priority, keep door open](ADR-013-saas-priority.md) | DECIDED | 2026-04-10 | Strategy |
 | 014 | [LİFFY person-centric model — known limitation](ADR-014-person-centric-limitation.md) | DECIDED (NEEDS REVISION) | 2026-04-15 | Architecture |
@@ -81,7 +81,7 @@ These business insights emerged during decision discussions and are critical for
 
 2. **Adoption through value, not force** (ADR-009) — Position LİFFY as "makes your job easier" not "Zoho is going away." Start with what LİFFY does better (data mining, campaigns), then grow into CRM.
 
-3. **Local offices need restricted forms** (ADR-011) — Local accountants record payments via limited forms that push to ELIZA. They cannot edit, delete, or see other countries' data. Mirrors current Zoho model.
+3. **Local offices need restricted forms** (ADR-011) — Local accountants record payments via limited forms that push to ELIZA. They cannot edit, delete, or see other countries' data. Mirrors current Zoho model. *(PARTIALLY SUPERSEDED 2026-10-08: düzenle/sil kısmı geçersiz — ödeme değiştirilemez, düzeltme ters kayıt; kısıtlı form + kendi ülkesi Faz 4 yetki girdisi olarak geçerli.)*
 
 4. **Campaign → CRM gap** (ADR-009, ADR-010) — LİFFY currently has no post-campaign data management. Agents send campaigns but can't manage responses in LİFFY. This is the #1 gap to close before quote features.
 
