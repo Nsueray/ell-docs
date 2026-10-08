@@ -2381,6 +2381,56 @@
 >   bağlantısı · Render API.
 > - **Commit:** yalnız bu defter (ell-docs). PUSH YOK.
 
+> ## ✅ 2026-10-08 — FAZ 4 DİLİM 2 YAZILDI (dal, push yok)
+>
+> - **Sentez kararları:**
+>   - **K-A token:** mevcut JWT + `uid`; AYNI secret, AYNI süre (30 gün), AYNI middleware
+>     (`authMiddleware` `organizer_id` okur → mevcut route'lar yeni token'la değişmeden çalışır).
+>   - **K-B ilk şifre:** Render Shell script'i; yalnız Owner hash'i NULL iken yazar, EZME YOK.
+>   - **K-C:** Kenya'da ayrı dal; Faz A ile aynı gece DEĞİL, Faz A önce.
+>   - **033 şartı:** 029–032 için geriye dönük `schema_migrations` kaydı YALNIZ şema izi
+>     kanıtlıysa (izi olmayan eklenmez; `applied_at` NULL — kayıt uygulama kanıtı değildir).
+> - **Suer onayı (8 Eki):** K2 aynen kalır — şifre/anahtar değişimi 16 Eki+.
+> - **Dal:** LEENA `faz4-dilim2` (main `ae3cd4f`'den) · commit **`49fa217`**. main'e DOKUNULMADI,
+>   PUSH YOK.
+> - **Eklenen dosyalar:** `routes/userAuth.js` (login · me · change-password) ·
+>   `migrations/033_users_truncate_guard.sql` · `scripts/set-first-owner-password.js` ·
+>   `public/ui2/login.html` · `public/ui2/whoami.html`. **Değişen:** `index.js` (tek mount satırı) ·
+>   `package.json` (test zincirine `test_users.js`) · `public/ui2/index.html` (link) ·
+>   `tests/test_users.js` (+18 test).
+> - **Ölçümler (yazmadan önce):** çalışan uygulama `contract_line_items`'a UPDATE/DELETE yapmıyor ·
+>   B10 fonksiyonu TG_OP'a bakmıyor → AFTER TRUNCATE'te aynen çalışır · `authMiddleware` fazla
+>   claim'i reddetmiyor, yalnız `organizer_id`'yi req'e koyuyor → `me` için ayrı küçük middleware
+>   (route dosyasında) · token anahtarı tek: `token` · bcrypt 10, JWT 30 gün, register uzunluk
+>   kuralı ≥6 · `schema_migrations(version PK, applied_at)` · 033/034 numaraları boştu.
+> - **Testler (yerel test DB):** önce **132** (finans 120 + users 12) → sonra **150/150**
+>   (finans 120 + users 30), ikinci koşu aynı (idempotent). **TABAN 342.00 KAYMADI** (T35 + M01a).
+>   Setup 033'ü otomatik aldı (19 migration). Test DB'de 033 yalnız 032 kaydını ekledi; izi
+>   olmayan 029/030/031 eklenmedi (R1 testi). TRUNCATE users (CASCADE dahil) reddedildi (T1).
+> - **034 BLOKE (yazılmadı):** `contract_line_items` UPDATE/DELETE reddi trigger'ı mevcut altı
+>   finans suite'ini kırar — reset'leri `DELETE FROM contract_line_items` yapıyor. Testler
+>   sessizce değiştirilmedi. → **Sentez kararı:** test reset yolu (ör. test-only bypass /
+>   TRUNCATE / şema yeniden kurma) ya da trigger kapsamı.
+> - **Orchestrator / CC varsayılanları (Sentez onayı bekliyor):**
+>   - Uç yolu `/api/user-auth/*`.
+>   - Eski-login token'ı `me`'de **409 `NOT_USER_SESSION`** (401/403 değil — leena-fetch 401/403'te
+>     oturumu siler).
+>   - Yanlış mevcut şifre **400** (aynı neden).
+>   - Şifre uzunluğu ≥6 (register kuralı; 10 varsayılanı KULLANILMADI çünkü kural mevcuttu).
+>   - Kullanıcı yokken de bcrypt karşılaştırması (zamanlama eşitliği).
+>   - Script: birden fazla şifresiz aktif Owner varsa yazmaz ("ambiguous").
+>   - ui2 login yalnız `token` anahtarını yazar (`organizer` / `organizerId` yazmaz).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** canlı DB (bağlanılmadı; 033'ün canlıda hangi geriye dönük
+>   kayıtları ekleyeceği canlı şemaya bağlı) · script'in etkileşimli CLI kısmı (gizli giriş,
+>   onay) — yalnız mantık fonksiyonu test edildi · ui2 login/panel gerçek tarayıcıda açılmadı ·
+>   `index.js` uygulama olarak ayağa kaldırılmadı (yalnız sözdizimi kontrolü).
+> - **Bilinçle yapılmayanlar:** eski login/register · authMiddleware · dualAuth · shell.js ·
+>   leena-fetch · rol/yetki matrisi · organizers taşıması · ikinci kullanıcı · sıfırlama e-postası
+>   · rate limit · 034.
+> - **Kapanış (Faz A gecesinden SONRAKİ pencerede):** merge + push + 033 (Suer koşar; 034
+>   kararından sonra) + ilk şifre (Suer, script) + ui2 görsel onay.
+> - **Commit:** yalnız bu defter (ell-docs). PUSH YOK.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ GÜNCEL SIRA (2026-10-08):**
