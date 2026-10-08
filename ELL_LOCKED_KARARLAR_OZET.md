@@ -160,6 +160,7 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 - **SEM-03** (F, Sentez 13 Eyl) — `users.id` = **uuid**; gerekçe LEENA'nın KENDİ ölçütü (sıralı ID sayım sızdırır · kayıt öncesi üretilebilir · import çakışmaz). `organizers.id` **SERIAL KALIR** (ayrı karar, kuyrukta). Dilim 1'de uygulandı (`bbc69ff`). [defter:2026-09-13 FAZ 4 DİLİM 1 CANLIDA]
 - **SEM-04** (G, Sentez 13 Eyl) — `users.password_hash` **nullable**; NULL = "henüz şifre yok". Hash kolonuna hash-OLMAYAN (sentinel) değer yazmak YASAK (veride yalan). İlk Owner NULL + `password_must_change = true`. [defter:2026-09-13 FAZ 4 DİLİM 1 CANLIDA]
 - **SEM-05** (H, Sentez 13 Eyl — dilim 2 öncesi BAĞLAYICI) — HEDEF: `organizers` saf kiracı, giriş `users`'a **TAŞINIR** (e-posta/şifre kopyalanmaz, tek-kaynak). YOL: JWT geçişte ikisini taşır (`organizer_id`, `users.organizer_id`'den türetilir); **exp=30d → eski yol dilim 2'den en erken 30 gün sonra emekli (takvim)**. Dilim 2 kapsamı: JWT `user_id`+`name` + **ŞİFRE BELİRLEME AKIŞI** (Owner NULL bootstrap açığı; 401 guard giriş yolu DEĞİL); `ui2CurrentUser()` SENKRON KALIR. [defter:2026-09-13 FAZ 4 DİLİM 1 CANLIDA]
+- **SEM-06** (B3, Sentez — RTM nihai, 8 Eki) — `Transferred` TEK statüdür (yalnız devreden kaynak taşır; elle geçiş kapalı, yalnız Transfer aksiyonu yazar). Yön ayrı statüyle değil `transferred_from_contract_id` ile tutulur (devam = yeni `Active` satır; "transferred to" ters join'le türetilir, saklanmaz). [defter:2026-10-08 KENYA ÖLÇÜM PAKETİ + ui2 LİSTE KAPANIŞI]
 
 ### RAP — raporlama (alan-bağımsız)
 

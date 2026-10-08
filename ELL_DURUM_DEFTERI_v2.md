@@ -2236,16 +2236,106 @@
 > - **Durum:** PUSH EDİLMEDİ. Push (SIEMA penceresi + status.render.com, 12 Eki öncesi) ve Suer
 >   görsel onayı bekliyor. Dilim onayla kapanır; teyit sonraki dilimin kaydına düşer.
 
+> ## ✅ 2026-10-08 — KENYA ÖLÇÜM PAKETİ + ui2 LİSTE KAPANIŞI
+>
+> - **ui2 liste ekranı KAPANDI:** Suer görsel onayı (canlı, 3 satır, paid/balance eski ekranla
+>   birebir, satır→detay çalışıyor). Push: LEENA `02d8908..ae3cd4f` (merge, SIEMA PR #22
+>   üstüne; mesajdaki ":wq" kozmetik, kalır), ell-docs `16868f1..bb51e55`. Render web + worker
+>   Live. **Auto-Deploy main'de açık** (E6 kapandı) — Suer gözlemi, CC panelden görmedi.
+> - **Ne yapıldı:** Kenya haftası kâğıt işlerinin girdisi ölçüldü (CC, LEENA salt-okunur,
+>   DB bağlantısı YOK, setup script'i koşulmadı).
+> - **0 — Durum:** iki repo yerelde zaten origin ile eşit (LEENA `ae3cd4f`, ell-docs `bb51e55`),
+>   ff gerekmedi. `8895919..ae3cd4f` (8798dc6 hariç): `708daee` feat(footer) + `02d8908` PR #22
+>   merge + `ae3cd4f` merge → üçü de YALNIZ `utils/trackingPixel.js` (e-posta footer'ı).
+>   auth / middleware / migrations / tests / package.json / index.js / email_worker.js /
+>   ui2 / finans route'larına dokunan YOK.
+> - **1 — Migration + test DB (2c):**
+>   - 030 = `callcenter_leads` tablosu + 4 index · 031 = `email_queue` üstünde 2 index
+>     (`CREATE INDEX CONCURRENTLY`) · 032 = `users` + B10 trigger + `sales_agents.user_id`
+>     uuid/FK + ilk Owner seed. **Üçü de (ve 029) `schema_migrations`'a kendini YAZMIYOR.**
+>   - Kayıt mekanizması: runner YOK. 013 tabloyu kurar ve 000–012'yi toplu işler; 013–028
+>     dosyaların her biri kendi INSERT'ünü taşır. `migrate.js` yalnız `initial.sql` koşar,
+>     `schema_migrations`'a dokunmaz. Canlıda "028'de duruyor" bu yüzden — 029–032 uygulanmış
+>     ama kayıtsız.
+>   - Test DB setup: dizini okur, ≥012, DIŞLA-listesi 029/030/031 (gerekçeli), sayısal sıra →
+>     **18 migration: 012–028 + 032. Sentez beyanı DOĞRU; 030/031 GİRMİYOR (bilinçli).**
+>   - 030/031 şemasına dayanan finans testi YOK. Email smoke'ları `email_queue`'yu test DB'den
+>     değil canlı/salt-okunur URL'den okur (test DB kapsamı dışında).
+>   - Defter 2030 (TEST DB SENKRONU kapanışı) bugünkü kodla UYUŞUYOR. ⚠️ ★SIRADAKİ içindeki eski
+>     "★★ TEST DB SENKRONU (ACİL)" maddesi BAYAT (2030 kaydıyla kapanmış).
+> - **2 — Dilim 2 auth tabanı (bugünkü kod):**
+>   - Login `POST /api/auth/login` → **`organizers`** tablosundan okur, bcrypt karşılaştırır;
+>     token alanları **`organizer_id`, `email`**; süre **30 gün**. `POST /api/auth/register` da
+>     `organizers`'a yazar.
+>   - `authMiddleware` token doğrular, `req.organizer_id` yazar (eksik → 401, geçersiz → 403);
+>     32 dosya require eder, ~116 route tanımında kullanılır. `dualAuth` yalnız
+>     `routes/visitors.js`: `/paginated`, `/import` (bulk_print) + `/manual` (`forKinds(['scanner'])`);
+>     JWT yolunda `req.organizer_id` + `authMode`, terminal yolunda `req.terminal`,
+>     `scopedExpoId`.
+>   - `middleware/auth.js` (req.user, gömülü fallback'li) **ÖLÜ:** hiçbir .js require etmiyor
+>     (grep 0, OLD/backup dahil).
+>   - `users` (032, sonrası değişiklik yok): id uuid · organizer_id FK · email UNIQUE ·
+>     password_hash nullable · is_owner · display_role (yetkide kullanılmaz) ·
+>     password_must_change · is_active · created_at. Trigger `trg_min_one_active_owner`
+>     AFTER UPDATE OR DELETE, statement — TRUNCATE kapsamda değil. `sales_agents.user_id` uuid,
+>     FK→users, UNIQUE (014), external için NULL zorunlu (021 CHECK).
+>   - `users`'a giden route/middleware/utils kodu: **YOK** (grep 0).
+> - **3 — B3:** `contracts.status` izinli değerler Active / On Hold / Transferred / Cancelled
+>   (012 CHECK + kod sabiti). Transfer aksiyonu: kaynak `Transferred`'a çekilir, devam YENİ satır
+>   (`Active`) ve yön `transferred_from_contract_id` ile tutulur (016 kolon, 019 tek-devam
+>   index'i); "Transferred to" ters join'le türetilir; elle `Transferred`'a geçiş kapalı.
+>   **Hüküm koda/şemaya UYUYOR** → kütüğe SEM-06 işlendi.
+> - **4 — TEST OFFICE + TABAN:**
+>   - "TEST OFFICE" repoda seed/migration/script olarak YOK; 026 seed'i yalnız 5 ofis. Aynı adı
+>     yaratan tek kod `tests/test_offices.js` — ama hedefi test DB (`ell_comm_test`). Canlı
+>     satırın kaynağı repodan BULUNAMADI (UI'dan elle açılmış olabilir — ölçülmedi).
+>   - TABAN 342.00: monorepo CLAUDE.md "contract 4 sr earned = 342.00" der; defterde canlı
+>     contract 4 doğrulamaları (ör. ui2 görsel turu). **Testler contract 4'e bağlı DEĞİL** —
+>     T35 ve M01a kendi fixture'ını kurar (base 17.100 × %5 × 0,4). ui2 detay ekranı `?contract`
+>     yoksa varsayılan 4'ü açar. → contract 4 silinirse testler kırılmaz; canlı çapa ve ui2
+>     varsayılanı kırılır.
+> - **5 — ell-docs `leena/CLAUDE.md` farkı:** çalışma kopyası (2369 satır) = LEENA `72a6d56`
+>   (2026-09-07) sürümünün BİREBİR kopyası; LEENA HEAD (2899 satır) değil. Eksik bölümler:
+>   v4.0.12–v4.0.21 + "Çalışma kuralları (Suer, 13 Eyl)". `leena/todo.md` çalışma kopyası
+>   LEENA geçmişindeki hiçbir sürümle eşleşmiyor. Sır taşıyan satır sayıları ölçüldü (CLAUDE.md
+>   ve todo.md'de var); içerik/konum burada YOK. Dosyalara dokunulmadı.
+> - **Çalışma düzeni:** yalnız Orchestrator ↔ Suer ↔ Sentez. Eliza Audit ve v402 kapandı;
+>   işleri Orchestrator kuyruğunda.
+> - **Render bakımı 14 Eki 04:00 İstanbul** — o gece LEENA push'u yok.
+> - **RTM nihai (Sentez hükümlü):**
+>   - **B2:** contract_line_items UPDATE/DELETE engelleyen trigger — migration 16 Eki+ YAZILIR,
+>     dilim 2 migration'ıyla aynı gece, AYRI dosya; test: UPDATE/DELETE reddi, INSERT serbest.
+>   - **B3:** kütüğe işlendi (SEM-06).
+>   - **B4 ve 4a-3:** aksiyon yok — password_hash NULL bilinçli, ilk-şifre akışı dilim 2'nin
+>     parçası.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** DB (canlı/test) — bağlanılmadı · Render Auto-Deploy ve
+>   Live durumu (Suer gözlemi) · TEST OFFICE canlı satırının kaynağı · route kullanım sayısı
+>   (~116) satır-grep'idir, `router.use` düzeyi ayrıca sayılmadı.
+> - **Bilinçle yapılmayanlar:** LEENA'da değişiklik · rotasyon runbook'u · dilim 2 tasarımı ·
+>   migration yazımı (B2 dahil) · ledger ön-ölçümü · v402 sayımı · em-dash · test zinciri ·
+>   ★SIRADAKİ'deki bayat ACİL maddesinin silinmesi.
+> - **Commit:** ell-docs defter + kütük (tek commit). PUSH YOK.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ GÜNCEL SIRA (2026-10-08):**
->   1) ui2 liste ekranı: push + Suer görsel onayı.
+>   1) ~~ui2 liste ekranı: push + Suer görsel onayı.~~ → ✅ KAPANDI (2026-10-08).
 >   2) Kenya haftası (kâğıt, LEENA'ya dokunmadan): rotasyon runbook'u Faz A · Faz 4 dilim 2
 >      tasarımı · ölçümler (TEST OFFICE, schema_migrations 030-032 planı, ell-docs
 >      leena/CLAUDE.md farkı) · ledger ön-ölçümü.
 >   3) 16 Eki+: Faz A rotasyonu → Faz 4 dilim 2 (TRUNCATE açığı bu migration'a) → LEDGER →
 >      katalog/quote.
 >   Bekleyen: em-dash · test kapsamı · package.json zinciri · Faz B.
+> - **Açık kuyruklar (2026-10-08 eklendi):**
+>   - Temizlik listesi: TEST OFFICE (+1 agent) · contracts 1/3/4 birleşme. ⚠️ TABAN 342.00
+>     contract 4'e bağlı (canlı çapa + ui2 detay varsayılanı; testler bağlı değil): yeni TABAN
+>     çapası Sentez kararıyla belirlenmeden contract 4 silinmez/değişmez.
+>   - v402'den devralınan temizlik (yalnız çıkarma, yeni ekran yok; Kenya sonrası, SIEMA
+>     penceresi): kopya mail kapıları, ölü kampanya sayfası, fuar numarası gömülü 10 dosya.
+>     Önce Orchestrator sayımıyla kapsam → Sentez onayı → dilimler.
+>   - 030/031 test DB durumu: **KAPALI (bilinçli dışlama)** — setup 012–028 + 032 koşar,
+>     030/031 DIŞLA-listesinde, bunlara dayanan finans testi yok. Açık kalan ayrı konu:
+>     029–032'nin canlı `schema_migrations` kaydı (plan Kenya haftası kâğıdı).
 >
 > *(Aşağıdakiler önceki adaylar — tarihsel, 2026-10-08 sırası önceliklidir.)*
 >
