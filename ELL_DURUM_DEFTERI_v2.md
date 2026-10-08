@@ -2316,6 +2316,71 @@
 >   ★SIRADAKİ'deki bayat ACİL maddesinin silinmesi.
 > - **Commit:** ell-docs defter + kütük (tek commit). PUSH YOK.
 
+> ## ✅ 2026-10-08 — RENDER ENVANTERİ + FAZ A ROTASYON ÖN-ÖLÇÜMÜ
+>
+> - **Render envanteri çıkarıldı** (Suer: panel + Shell, salt okuma): 19 servis (16 aktif,
+>   3 askıda). Ayrıntılı envanter ve rotasyon runbook taslağı Orchestrator proje KB'sinde
+>   (RENDER_ENVANTER, RUNBOOK_FAZ_A) — repo public olduğu için repoda DEĞİL.
+> - **LEENA (Suer gözlemi):** web + worker Auto-Deploy On Commit · env group yok · health check
+>   path boş. DB: Basic-1gb, PostgreSQL 17, PITR 7 gün + export var. Tüm tablolar uygulama
+>   rolüne ait.
+> - **Shell'den DB girişi:** `psql "$DATABASE_INTERNAL_URL"` veya argümansız `psql` çalışıyor.
+>   Web'deki `DATABASE_URL` harici adresi gösteriyor ve Render içinden bağlanmıyor (neden
+>   ölçülmedi).
+> - **DÜZELTME (8 Eki ölçüm raporu):** "DATABASE_INTERNAL_URL Render ortamında tanımlı" —
+>   çalışan uygulamanın env'inde YOK; yalnız Render Shell oturumunda var.
+> - **LIFFY (Suer, SQL salt okuma):** DB'de Render credential rotasyonu YARIM (yeni default
+>   kullanıcı var, servisler eski kullanıcıda). Yeni default kullanıcı eski sahibin rolüne üye,
+>   tüm tablolarda okuma + yazma yetkili.
+> - **Teknik karar (Orchestrator):** LEENA DB rotasyonu Render'ın "New default credential"
+>   yoluyla, geçişten önce yetki kontrolüyle. Render desteğine soru gönderildi; cevap
+>   bekleniyor, artık bloke etmiyor.
+> - **Sentez'e açık:** konfeti / konfeti-db nedir · eliza-legacy'nin diğer 3 parçası
+>   (dashboard, bot, db) hâlâ çalışıyor, karar yalnız eliza-api · LIFFY JWT_SECRET Faz A
+>   kapsamında mı.
+> - **B-4 bulguları (CC, kod salt-okuma; LEENA `ae3cd4f`, LIFFY `9954054`, ikisi origin'le eşit):**
+>   - **1 — LEENA JWT:** `JWT_SECRET` okuyan çalışan kod yalnız `routes/auth.js` (sign),
+>     `middleware/authMiddleware.js`, `middleware/dualAuth.js` (verify) — 8 Eki listesi
+>     TAM, ek YOK. Ayrıca `middleware/auth.js` (gömülü fallback'li) okuyor ama hâlâ hiçbir
+>     yerden require EDİLMİYOR (ölü). Testler kendi test-secret'ını kurar.
+>   - **2 — JWT'siz yollar:** `terminalAuth` (yalnız `x-terminal-key` + DB lookup) ve iki
+>     callcenter middleware'i (`x-callcenter-key` / `x-callcenter-supervisor-key` +
+>     `CALLCENTER_*` env) JWT kullanmıyor → JWT rotasyonu terminal ve call-center
+>     oturumlarını düşürmez; yalnız admin/organizer oturumları yeniden giriş ister.
+>   - **3 — LEENA DB okuyucuları:** çalışan zincirde YALNIZ iki yer: `utils/db.js` (web,
+>     `index.js`'ten erişilir) ve `email_worker.js` (worker, kendi Pool'u); ikisi de `PG*`
+>     okur, SSL açık (worker yalnız production'da). `DATABASE_URL` / `DATABASE_INTERNAL_URL`
+>     çalışan uygulamada OKUNMUYOR — yalnız tek başına script'lerde (migrate, setup-fresh-db,
+>     debug/native-db, import-zoho-agents). `import-zoho-agents` önce `DATABASE_URL`'e bakar,
+>     sonra `DATABASE_INTERNAL_URL`'e → Render Shell'de web'in harici `DATABASE_URL`'i önce
+>     seçilir (Shell'de koşulursa bağlanamayabilir — ölçülmedi). `config/database.js`,
+>     `public/utils/db.js`, `deep-debug.js`, `email_worker_backup.js` erişilmeyen ölü kopyalar;
+>     `deep-debug.js`'de koda gömülü harici DB host fallback'i var (sır değil, temizlik adayı).
+>   - **4 — eliza / konfeti:** LEENA kodunda eliza-api'ye ya da eliza host'una çağrı YOK
+>     ("eliza" yalnız ui2 marka/tema ve yorumlarda). "konfeti" LEENA'da ve LIFFY'de (izlenen +
+>     izlenmeyen) HİÇ geçmiyor.
+>   - **5 — Mac'teki yerel sır dosyaları:** repo dışı/izlenmeyen **5 yerel dosyada** DB/JWT
+>     değişkeni ya da bağlantı dizesi var (LEENA 2, LIFFY 1, CC proje ayarları 2 — ayarlar
+>     ignore'lu, hiç commit edilmemiş). Ayrıca repoda izlenen 3 `.env.backup` (bilinen). CC'nin
+>     LEENA salt-okunur bağlantısı (`claude_readonly`) LEENA backend'in yerel env dosyasında;
+>     **CC'nin LIFFY bağlantısı LIFFY uygulama rolüyle** (salt-okunur rol değil) ve CC proje
+>     ayarlarında duruyor; CC'nin LEENA proje ayarlarında da 1 uygulama-rolü bağlantısı var →
+>     Faz A rotasyonu bu yerel girdileri de bozar, runbook'a "yerel güncelleme" adımı gerekir.
+>   - **6 — LIFFY kodu:** `DATABASE_URL` 5 yerde (uygulama: `config.js`, `db.js`; 3 script).
+>     `JWT_SECRET` 30 dosyada okunuyor ve **30 dosyanın 30'unda koda gömülü fallback** var
+>     (3 farklı literal). LIFFY repo da PUBLIC → env'de `JWT_SECRET` tanımsız kalırsa token
+>     sahtelenebilir. Faz A kapsam kararına girdi.
+> - **YON-05 notu:** bu oturumda Orchestrator, defterde yazılı Shell komutunu aramadan yanlış
+>   komut verdi ve `env` çıktısından değişkenin yokluğuna hükmetti. Ders: Shell komutu
+>   vermeden önce defter/KB aranır.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Render panel/Shell bulguları (Suer gözlemi) · LIFFY DB yetki
+>   durumu (Suer SQL'i) · üretimde `JWT_SECRET`'ın LEENA/LIFFY env'inde tanımlı olup olmadığı ·
+>   web `DATABASE_URL`'in neden bağlanmadığı · require grafiği statik (göreli `require`),
+>   dinamik yükleme taranmadı.
+> - **Bilinçle yapılmayanlar:** rotasyon · runbook yazımı · LEENA/LIFFY'de değişiklik · DB
+>   bağlantısı · Render API.
+> - **Commit:** yalnız bu defter (ell-docs). PUSH YOK.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ GÜNCEL SIRA (2026-10-08):**
