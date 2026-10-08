@@ -2431,15 +2431,58 @@
 >   kararından sonra) + ilk şifre (Suer, script) + ui2 görsel onay.
 > - **Commit:** yalnız bu defter (ell-docs). PUSH YOK.
 
+> ## ✅ 2026-10-08 — SENTEZ KAPANIŞ KARARLARI + 034 (dal)
+>
+> - **K-D — 034 kontrat kalemi değiştirilemez:** trigger `contract_line_items` üzerinde UPDATE +
+>   DELETE + TRUNCATE'i reddeder (statement-level BEFORE), INSERT serbest. Açık adlı oturum
+>   anahtarı `ell.allow_line_item_reset`, varsayılan KAPALI (tanımsız/boş/'on' dışı = kapalı);
+>   yalnız test kurulumu/temizliği açar (`SET LOCAL`, transaction süresince). Ürün kodunda anahtar
+>   YOK — kaynak taraması testi bunu bekçiler.
+>   - Ölçüm (yazmadan önce): ürün kodunda bu tabloya UPDATE/DELETE yok · FK ON DELETE CASCADE
+>     yok · ürün kodunda contracts silme yok → durma koşulu tetiklenmedi. Kodda önceden
+>     `current_setting` ile okunan özel ayar yoktu → `ell.` öneki ilk kez kullanıldı.
+>   - Test: altı finans suite'inin tek satırlık kalem temizliği ortak yardımcıya geçti
+>     (assertion'lara dokunulmadı). `test_users` T1 (TRUNCATE users CASCADE) artık kalemlere de
+>     iner; B10'u ölçmeye devam etsin diye anahtar yalnız o geri alınan transaction'da açılır.
+>     Yeni suite 11 test.
+>   - **Dal `faz4-dilim2` commit `3d9896a`** (dilim 2 = `49fa217` + `3d9896a`). Test **150 → 161/161**
+>     (finans 120 + users 30 + line-item 11), iki koşu aynı. **TABAN 342.00 KAYMADI.**
+>   - Kapanış: dilim 2 ile aynı pencerede (merge + push + 033 + 034 Suer koşar), Faz A gecesinden
+>     SONRA. main'e kod girmedi, PUSH YOK.
+> - **K-E — LIFFY JWT_SECRET Faz B'de;** fallback temizliği + "env yoksa başlama" koruması ile
+>   (YON-08).
+> - **konfeti / konfeti-db:** Suer'in kişisel servisi (davetiye), ELL dışı, DOKUNULMAZ.
+> - **eliza-legacy (api, dashboard, bot, db) KALIR:** Suer WhatsApp botunu ve dashboard'u
+>   kullanıyor (Zoho salt-okunur ayna). Kapatma birleşme sonrası, yeni sistem aynı cevapları
+>   verince. **Faz A'dan A4 düştü.** Zoho/Twilio anahtarları Faz B kuyruğunda.
+> - **`/me`'de eski token → 409:** geçici köprü (leena-fetch 401/403'te oturumu siliyor);
+>   rol/yetki diliminde yeniden ele alınır.
+> - **Şifre ≥ 6:** bugün tek kullanıcı Suer; yetki diliminde SaaS ölçüsüne çekilir (YON-07) —
+>   kuyruk.
+> - **033 geriye dönük kayıtlar `applied_at` NULL:** doğru, tarih uydurulmadı.
+> - **Kullanıcı başına mail limiti:** LIFFY Faz 1b'de mevcut (worker günlük limit, kullanıcı
+>   bazlı); gereksinime "mevcut davranış" olarak yazılması belge borcu — Kenya kâğıt listesi.
+> - **Kenya sırası:** 2d ledger ön-ölçümü → v402 temizlik sayımı.
+> - **Kütük:** AD-01'e not eklendi (eliza-legacy emekli = üzerine inşa edilmez; birleşmeye kadar
+>   okuma aracı olarak serviste).
+> - **★SIRADAKİ:** "eliza-api askıya" maddesi ★SIRADAKİ'de YOKTU (yalnız 8 Eki K2 tarihsel
+>   kaydında geçiyor — tarihsel kayıt değiştirilmedi); kuyruk maddeleri ve belge borcu eklendi.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** canlı DB (034'ün canlı tabloda reddettiği bir iş akışı
+>   olup olmadığı yalnız koddan ölçüldü) · `index.js` ayağa kaldırılmadı · ui2 sayfaları
+>   tarayıcıda açılmadı.
+> - **Bilinçle yapılmayanlar:** main'de kod · push · merge · canlı DB · rol/yetki · LIFFY.
+> - **Commit:** defter + kütük (ell-docs, tek commit). PUSH YOK.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ GÜNCEL SIRA (2026-10-08):**
 >   1) ~~ui2 liste ekranı: push + Suer görsel onayı.~~ → ✅ KAPANDI (2026-10-08).
 >   2) Kenya haftası (kâğıt, LEENA'ya dokunmadan): rotasyon runbook'u Faz A · Faz 4 dilim 2
 >      tasarımı · ölçümler (TEST OFFICE, schema_migrations 030-032 planı, ell-docs
->      leena/CLAUDE.md farkı) · ledger ön-ölçümü.
->   3) 16 Eki+: Faz A rotasyonu → Faz 4 dilim 2 (TRUNCATE açığı bu migration'a) → LEDGER →
->      katalog/quote.
+>      leena/CLAUDE.md farkı) · ledger ön-ölçümü. **Sıra (8 Eki): 2d ledger ön-ölçümü → v402
+>      temizlik sayımı.** Faz 4 dilim 2 dalda YAZILDI (`faz4-dilim2`: `49fa217` + `3d9896a`).
+>   3) 16 Eki+: Faz A rotasyonu (A4 düştü — eliza-legacy kalır) → Faz 4 dilim 2 kapanışı
+>      (merge + push + 033 + 034 + ilk şifre + ui2 görsel onay) → LEDGER → katalog/quote.
 >   Bekleyen: em-dash · test kapsamı · package.json zinciri · Faz B.
 > - **Açık kuyruklar (2026-10-08 eklendi):**
 >   - Temizlik listesi: TEST OFFICE (+1 agent) · contracts 1/3/4 birleşme. ⚠️ TABAN 342.00
@@ -2451,6 +2494,14 @@
 >   - 030/031 test DB durumu: **KAPALI (bilinçli dışlama)** — setup 012–028 + 032 koşar,
 >     030/031 DIŞLA-listesinde, bunlara dayanan finans testi yok. Açık kalan ayrı konu:
 >     029–032'nin canlı `schema_migrations` kaydı (plan Kenya haftası kâğıdı).
+> - **Açık kuyruklar (2026-10-08 Sentez kapanışı):**
+>   - Faz B: LIFFY `JWT_SECRET` (K-E — fallback temizliği + env yoksa başlama, YON-08) ·
+>     Zoho/Twilio anahtarları.
+>   - eliza-legacy kapatma: birleşme sonrası, yeni sistem aynı cevapları verince.
+>   - Rol/yetki dilimi: `/me` eski-token 409 köprüsü yeniden ele alınır · şifre ≥6 → SaaS
+>     ölçüsü (YON-07).
+>   - Belge borcu (Kenya kâğıt listesi): LIFFY kullanıcı başına mail limiti gereksinime
+>     "mevcut davranış" olarak yazılır.
 >
 > *(Aşağıdakiler önceki adaylar — tarihsel, 2026-10-08 sırası önceliklidir.)*
 >

@@ -187,4 +187,4 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 
 ### AD — adlandırma / marka
 
-- **AD-01** (A, Suer 9 Eyl) — **ELIZA** = platformun ürün/marka adı (kullanıcının gördüğü); **ELL** = yalnız iç kod adı (repo/dosya adlarında yaşar); eski bağımsız sistem = **"eliza-legacy"**. LEENA Finance sekmesi yalnız "Finance"; nav'da `liffy`/`leena` küçük etiket. ⚠️ **CUTOFF: Bu kayıttan ÖNCEKİ tüm defter/kod kayıtlarında ELIZA = eliza-legacy.** [defter:2026-09-09 SUER HÜKÜMLERİ]
+- **AD-01** (A, Suer 9 Eyl) — **ELIZA** = platformun ürün/marka adı (kullanıcının gördüğü); **ELL** = yalnız iç kod adı (repo/dosya adlarında yaşar); eski bağımsız sistem = **"eliza-legacy"**. LEENA Finance sekmesi yalnız "Finance"; nav'da `liffy`/`leena` küçük etiket. ⚠️ **CUTOFF: Bu kayıttan ÖNCEKİ tüm defter/kod kayıtlarında ELIZA = eliza-legacy.** [defter:2026-09-09 SUER HÜKÜMLERİ] · **Not (8 Eki):** eliza-legacy emekli = üzerine inşa edilmez; birleşmeye kadar okuma aracı olarak serviste. [defter:2026-10-08 SENTEZ KAPANIŞ KARARLARI + 034 (dal)]
