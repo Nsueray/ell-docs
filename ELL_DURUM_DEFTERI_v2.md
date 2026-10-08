@@ -2473,6 +2473,28 @@
 > - **Bilinçle yapılmayanlar:** main'de kod · push · merge · canlı DB · rol/yetki · LIFFY.
 > - **Commit:** defter + kütük (ell-docs, tek commit). PUSH YOK.
 
+> ## ✅ 2026-10-08 — 2d LEDGER ÖN-ÖLÇÜMÜ
+>
+> - **Ne yapıldı:** ledger (hesaplar · transfer · bütçe · gider · gelir) için salt-okunur ön-ölçüm;
+>   öneri/tasarım/karar YOK. Çıktı: **`LEDGER_ON_OLCUM_2026-10-08.md`** (kök — README'de belge türü
+>   klasörü tanımlı değil).
+> - **Sayılar:** gereksinim maddesi **21** (REQ §2.6 + 3.1/3.3/3.4/3.5/3.6/3.9 + 1.2/1.5 + Part 5) ·
+>   boş/TBD **17** (en önemlileri: transferin veri şekli, sahip-ödemeli gider mekanizması, gider
+>   onayı, gider belgesi/makbuz, bütçe yetkisi, gelir hedefi yapısı, dönem tanımı) · belgeler arası
+>   çelişki **9** (biri belge↔kod farkı olarak işaretli: komisyon ödemesi REQ'de gider kaydı,
+>   LEENA'da ayrı payout tablosu).
+> - **LEENA bugün:** ledger tablosu YOK (migrations + initial.sql grep 0); ledger'a değen yapılar
+>   `contracts` kur/EUR kolonları · `payments` (+ters kayıt, ofis, vade bağı) · `payment_schedule_items` ·
+>   `commission_payouts` · `offices` · nakit öngörü / agent ekstresi / komisyon uçları. `payments`'ta
+>   `account_id` + `payer` bilinçli olarak ledger fazına bırakılmış.
+> - **Sentez kriter turuna girdi.**
+> - **KB @ 5e8b193** — Orchestrator KB yenilendi (8 Eki 21:50); Sentez KB: ölçülmedi.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** DB (canlı/test) · Zoho'nun kendisi ve ZOHO_USAGE_REFERENCE ·
+>   LIFFY · Sentez KB · `ELL_MIMARI_v1.0_KONSOLIDE.md`, `HANDOVER_BRIEF.md`,
+>   `ELL_FEATURE_INSPIRATION.md`, `archive/` taranmadı.
+> - **Bilinçle yapılmayanlar:** öneri · tasarım · karar · LEENA'da değişiklik · dal değişikliği.
+> - **Commit:** yeni dosya + bu defter (ell-docs). PUSH YOK.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ GÜNCEL SIRA (2026-10-08):**
