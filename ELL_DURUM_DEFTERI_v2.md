@@ -2174,7 +2174,80 @@
 > - **Commit:** LEENA `tests/test_users.js` + `CLAUDE.md` (tek commit) + ell-docs bu kayıt. PUSH YOK.
 >   Ürün koduna / migration'a / package.json'a / auth.js'e DOKUNULMADI.
 
+> ## ✅ 2026-10-08 — FUAR SONRASI ÖLÇÜM + KARARLAR
+>
+> - **Ne yapıldı:** 14 Eyl – 8 Eki aralığı salt-okunur ölçüldü (iki repo, CC); üretim DB
+>   sayımı Suer tarafından Render Shell'de koşuldu (yalnız SELECT). Kararlar Suer'den.
+> - **ELL tarafı 14 Eyl – 8 Eki SIFIR hareket** (ell-docs'ta commit yok).
+> - **LEENA:** 25 EMS/fuar commit'i (3'ü merge) + main dışı 1 dal. İkisi ortak boot dosyalarına
+>   dokundu: `index.js` (qr-image ucu; boot mantığı değişmedi) · `email_worker.js` (nightly
+>   rapor). Finans davranışı ETKİLENMEDİ; package.json / finans / ui2 / auth / migration / tests
+>   temiz.
+> - **14 Eyl kuyruğu 5/5 BEKLİYOR:** em-dash atıf biçimi · test kapsamı (test_users zincirde
+>   değil) · TRUNCATE açığı · package.json zinciri · Faz 4 dilim 2.
+> - **Üretim DB sayımı (8 Eki, Render Shell, yalnız SELECT — Suer koştu, CC görmedi):**
+>   users 1 · sales_agents 152 · contracts 3 · payments 15, net 7.454,80 EUR ·
+>   commission_payouts 8, net 390,00 EUR · ledger tablosu 0 · schema_migrations 028'de
+>   duruyor, 032 şema izi canlı · terminals 50 anahtarlı / 20 aktif · "TEST OFFICE" ofisli
+>   1 agent.
+> - **Render oturumu read-only bayrağı OFF ile açıldı;** set yalnız SELECT'ti, yazma olmadı.
+> - **İki repo PUBLIC** — bilinçli kabul edilmiş risk, sahibi Suer (K1).
+> - **Sır envanteri çıkarıldı;** konum listesi repo public olduğu için deftere YAZILMAZ,
+>   Orchestrator sohbetinde tutulur.
+> - **Sınır kayması:** ölçüm sırasında CC bir token değerini tool çıktısında gördü; rapora
+>   yazmadı.
+> - **Kararlar (Suer, 8 Eki):**
+>   - **K1** — repolar public kalır.
+>   - **K2** — DB şifresi + JWT + ilk yedek + eliza-api askıya → **16 Eki+**; Kenya öncesi
+>     restart yok.
+>   - **K3** — Operations ekranlarının evi **ui2**; v402 yalnız çıkarma/temizlik.
+>   - **Sıra:** Faz 4 dilim 2 → LEDGER → katalog/quote.
+> - **Hız:** güvenlik, sistem bitince kapsamlı auditin konusu; tek istisna K2 (Faz A). Faz B
+>   kuyrukta, tetik Suer.
+> - **Kenya kilidi (13-15 Eki) DAR:** yasak = canlı LEENA'ya dokunan iş; serbest = LIFFY,
+>   ui2'de yeni GET-only dosya (deploy kapı saatleri dışında), belge/plan.
+> - **Çalışma ritmi:** her dilim bir ui2 ekranıyla kapanır; Suer görsel onayı şart. Haftada
+>   tek hedef.
+> - **v402 sayım uyuşmazlığı** (8≠9, 2≠3, 37≠16); kanıt dosyası repoda yok; mutabakat sonra.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** DB sayımları CC tarafından gözlenmedi (Suer'in aktarımı) ·
+>   Render panel ayarları (auto-deploy dalı) ölçülmedi.
+> - **Bilinçle yapılmayanlar:** sır temizliği/rotasyon (K2 → 16 Eki+) · em-dash · test zinciri ·
+>   TRUNCATE · Faz 4 dilim 2.
+> - **Commit:** yalnız bu defter (ell-docs). PUSH YOK.
+
+> ## ✅ 2026-10-08 — ui2 FINANCE CONTRACT LİSTE EKRANI (yazıldı)
+>
+> - **Ne yapıldı:** ui2'de ilk gezilebilir finans akışı: ui2 girişi → contract listesi →
+>   mevcut ui2 contract detayı. Yalnız okuma.
+> - **Dosyalar (LEENA):** YENİ `public/ui2/finance-contracts.html` · DEĞİŞEN `public/ui2/index.html`
+>   (yalnız tek link).
+> - **Commit:** LEENA `8798dc6` "ui2: finance contract liste ekranı (read-only)".
+> - **Veri kaynağı:** tek GET `/api/contracts` (mevcut uç, authMiddleware, organizer scope).
+>   paid_eur / balance_eur SUNUCUDA hesaplanıyor (D2); ekran yeniden hesaplamaz, yalnız
+>   biçimler. Satır → `finance-contract.html?contract=<id>`.
+> - **EKSİK ALAN:** yok — 7 kolonun 7'si uçta mevcut (fuar ADI `expo_name` olarak geliyor).
+> - **Ölçülenler:** `git diff --stat` = 2 dosya · tek fetch (GET) · paid/balance üzerinde
+>   aritmetik yok · sahte veriyle Node harness: render + satır tıklaması doğru, HTML kaçışlı.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** gerçek tarayıcıda sunucu + test DB ile açılış (yerelde
+>   `.env` canlı bilgi taşıyor, sunucu kaldırılmadı; headless Chrome bu ortamda yanıt vermedi).
+>   Görsel kabul deploy sonrası Suer'de. Subnav "Contracts" sekmesi hâlâ detay sayfasına
+>   gidiyor (shell.js kapsam dışı).
+> - **Bilinçle yapılmayanlar:** shell.js / stil / backend / eski sayfalar / filtre / buton yok.
+> - **Durum:** PUSH EDİLMEDİ. Push (SIEMA penceresi + status.render.com, 12 Eki öncesi) ve Suer
+>   görsel onayı bekliyor. Dilim onayla kapanır; teyit sonraki dilimin kaydına düşer.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
+>
+> - **★ GÜNCEL SIRA (2026-10-08):**
+>   1) ui2 liste ekranı: push + Suer görsel onayı.
+>   2) Kenya haftası (kâğıt, LEENA'ya dokunmadan): rotasyon runbook'u Faz A · Faz 4 dilim 2
+>      tasarımı · ölçümler (TEST OFFICE, schema_migrations 030-032 planı, ell-docs
+>      leena/CLAUDE.md farkı) · ledger ön-ölçümü.
+>   3) 16 Eki+: Faz A rotasyonu → Faz 4 dilim 2 (TRUNCATE açığı bu migration'a) → LEDGER →
+>      katalog/quote.
+>   Bekleyen: em-dash · test kapsamı · package.json zinciri · Faz B.
+>
+> *(Aşağıdakiler önceki adaylar — tarihsel, 2026-10-08 sırası önceliklidir.)*
 >
 >   - **★★ TEST DB SENKRONU (ACİL):** `setup_test_db.js` 012→028 kuruyor,
 >     029/030/031/032 girmiyor → 117 test var olmayan şemayı doğruluyor.
