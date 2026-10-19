@@ -2601,9 +2601,86 @@
 >   dualAuth · leena-fetch · migration.
 > - **Commit:** LEENA dal `a67ab0f` · ell-docs defter + INDEX. PUSH YOK.
 
+> ## ✅ 2026-10-19 — YENİDEN BAŞLAMA: KİLİT KALKTI, TEK YOL HARİTASI
+>
+> - **Kilit kalktı (Suer, 19 Eki):** Kenya bitti; uzun süre fuar yok. Fuar pencereleri, Kenya
+>   kilidi ve SIEMA koordinasyonu KALKTI. Tek kontrol: **status.render.com**. Suer bir sonraki
+>   fuar takvimini bildirince kilit yeniden tanımlanır.
+> - **Chat düzeni:** yalnız Orchestrator ↔ Suer ↔ Sentez. Eski Orchestrator sohbeti kapandı;
+>   yeni sohbet bu kayıtla açılır.
+> - **Ölçüm 1 — repolar (CC, 19 Eki; fetch sonrası):**
+>   - LEENA yerel `main` = `ae3cd4f` (8 Eki ile aynı); `origin/main` = `08f76cb` → yerel 0 ileri,
+>     **2 geri**. Çalışma kopyası 8 Eki ile aynı: 1 M (`backend/leena-v401-backend/.DS_Store`) +
+>     22 izlenmeyen. Stash 2 (eski filter-branch kayıtları).
+>   - `ae3cd4f..origin/main`: `48c12e1` (12 Eki, Kenya konferans sertifikası) + `08f76cb` (PR #23
+>     merge). Dosyalar: `public/certificate-ke.html` (A), `public/certificate.html` (M),
+>     `routes/conferenceCertificates.js` (M). auth / userAuth / middleware / migrations / tests /
+>     package.json / index.js / email_worker.js / ui2 / finans: **hiçbirine dokunulmadı** →
+>     **"dilim 2 tabanı değişmedi" DOĞRULANDI.**
+>   - Dal `faz4-dilim2` HEAD `a67ab0f` (yalnız yerel; origin'de yok), merge-base `ae3cd4f`.
+>     origin/main'e göre 2 geri / 3 ileri. Merge dry-run (yerel main'e `--no-commit --no-ff`):
+>     **çakışma YOK**, 20 dosya; `--abort` sonrası HEAD `ae3cd4f` ve `status` önceki ile birebir.
+>     `origin/main`'e karşı `git merge-tree`: **çakışma YOK** (iki tarafın ortak dosyası 0).
+>   - Migrations: `ae3cd4f`'ten sonra main'e yeni dosya YOK (son `032`). `033`/`034` tüm
+>     ref'lerde yalnız `faz4-dilim2`'de → **numara çakışması YOK**, yeniden numaralama gerekmez.
+>   - `package.json` test zinciri: main 6 dosya (`test_users` zincirde DEĞİL); dal 9 dosya
+>     (`test_users` + `test_line_item_immutable` + `test_ui2_current_user` eklendi).
+>   - ell-docs: `main` origin'den 1 ileri (`2ad238a` push edilmedi). `leena/CLAUDE.md` ve
+>     `leena/todo.md` commit'lenmemiş farkı **hâlâ VAR**. Sır taraması (değer basılmadan, satır
+>     sayısı): CLAUDE.md'de koda gömülü JWT fallback literal'i geçen 2 eklenen satır; şifre /
+>     bağlantı dizesi / anahtar biçimli satır bu kalıplarla 0. 8 Eki'deki sayımın kalıbı defterde
+>     yok → birebir karşılaştırma ÖLÇÜLMEDİ. Dosyalara dokunulmadı.
+> - **Ölçüm 2 — testler (yerel `ell_comm_test`):** main zinciri **120/120** + `test_users` ayrıca
+>   **12/12** = **132** (8 Eki referansı ile aynı). Dal, ayrı worktree'de: **169/169** (finans 120 +
+>   users 30 + line-item 11 + ui2-current-user 8); **T35 TABAN sr earned 342.00 KAYMADI**.
+>   Worktree kaldırıldı (`git worktree list` yalnız ana kopya + başka oturumdan kalma `om19`).
+> - **Ölçüm 3 — Faz A girdileri:**
+>   - LEENA `JWT_SECRET`/`PG*`/`DATABASE_URL`/`DATABASE_INTERNAL_URL` okuyan dosyalar: main
+>     `ae3cd4f` ile `origin/main` AYNI (48 dosya) → 8 Eki E4 listesine fark YOK. Dal +2:
+>     `routes/userAuth.js` (`JWT_SECRET` verify :39, yoksa reddet :57, sign :77) ve
+>     `scripts/set-first-owner-password.js` (yalnız `PG*`). → Merge sonrası rotasyonda JWT
+>     okuyan çalışan kod listesine `routes/userAuth.js` girer.
+>   - LIFFY `liffyv1` `9954054` (= origin, 8 Eki ile aynı): DB yalnız `DATABASE_URL` —
+>     `backend/config.js:5`, `backend/db.js:20` + 3 script; `PG*`/`DATABASE_INTERNAL_URL` yok.
+>     Süreçler: `npm start` = `node backend/server.js`; sequence ve action worker aynı süreçte
+>     (`server.js:122-133`); ayrı `backend/worker.js` de `./db` → aynı `DATABASE_URL`. Render'da
+>     worker.js'i hangi servisin koştuğu ÖLÇÜLMEDİ (repoda render.yaml/Procfile yok).
+>     `liffy-ui` `7b15ced`: DB/JWT env okumuyor.
+>   - İlk-şifre script'i: dal `scripts/set-first-owner-password.js` (111 satır). Bağlantı yalnız
+>     ortamdaki `PG*`, dotenv yüklemez (:9); `PGHOST`/`PGDATABASE` yoksa çıkar (:75). Hash
+>     doluysa yazmaz ("hash dolu, değişiklik yok", ROLLBACK) — ama bu kontrol "evet" onayı ve
+>     şifre sorulduktan SONRA yapılır (:86-93). **Ad SORMUYOR** (K-F henüz uygulanmadı).
+> - **K-F (Sentez 19 Eki):** `users`'a nullable ad kolonu, dilim 2 penceresinde AYRI migration;
+>   Owner adı ilk-şifre script'inde alınır; token `name` doluysa taşır, boşsa e-posta.
+> - **K-G (Sentez 19 Eki):** `shell.js` sapması kabul. Kriter: "eski davranış değişmez; ekleme
+>   geriye uyumlu ve testli olmak şartıyla serbest".
+> - **TEK YOL HARİTASI** (★SIRADAKİ'ye taşındı; eski sıralar tarihsel):
+>   1) **Faz A** — export + DB şifresi + LIFFY DB + JWT (A4 yok).
+>   2) **Dilim 2** — merge, push, 033 + 034 + ad kolonu (üç dosya, Suer koşar); ilk-şifre
+>      script'i; ui2 login / "kim girdi" görsel onay. **İş 1 ve İş 2 aynı gün, arka arkaya; İş 1 önce.**
+>   3) Faz 4 kalan: kullanıcı yönetimi ekranı (davet, aktif/pasif, yetki matrisi çekirdeği).
+>   4) Ledger L-1…L-6.
+>   5) Katalog/quote (LIFFY aktivasyon paketi).
+>   6) Zoho göçü + raporlama.
+>   Paralel/sonda: v402 temizlik sayımı (L-1 sonrası) · Faz B · em-dash · test zinciri.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** canlı DB (bağlanılmadı) · Render servis/env durumu ve
+>   status.render.com · LIFFY'de `worker.js`'i koşan Render servisi · 8 Eki sır-satırı sayımıyla
+>   birebir karşılaştırma · dalın `origin/main` üstünde test koşusu (yerel main 2 geri; aradaki
+>   commit'ler test zincirine dokunmuyor) · ui2 login gerçek tarayıcıda.
+> - **Bilinçle yapılmayanlar:** LEENA'da commit/merge/checkout/pull · migration · push ·
+>   ell-docs `leena/*` farkı.
+> - **Commit:** ell-docs yalnız defter. PUSH YOK (Suer).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
-> - **★ GÜNCEL SIRA (2026-10-08):**
+> - **★ TEK YOL HARİTASI (2026-10-19 — bu kazanır; aşağıdaki sıralar tarihsel):**
+>   1) Faz A (export + DB şifresi + LIFFY DB + JWT; A4 yok) → 2) dilim 2 (merge, push, 033 + 034 +
+>   ad kolonu — üç dosya, Suer koşar; ilk-şifre script'i; ui2 login / "kim girdi" görsel onay) —
+>   **1 ve 2 aynı gün, arka arkaya; 1 önce** → 3) Faz 4 kalan: kullanıcı yönetimi ekranı (davet,
+>   aktif/pasif, yetki matrisi çekirdeği) → 4) Ledger L-1…L-6 → 5) katalog/quote (LIFFY
+>   aktivasyon paketi) → 6) Zoho göçü + raporlama. Paralel/sonda: v402 temizlik sayımı (L-1
+>   sonrası) · Faz B · em-dash · test zinciri. Fuar kilidi yok (19 Eki); tek kontrol status.render.com.
+> - **GÜNCEL SIRA (2026-10-08) — TARİHSEL (2026-10-19 yol haritası önceliklidir):**
 >   1) ~~ui2 liste ekranı: push + Suer görsel onayı.~~ → ✅ KAPANDI (2026-10-08).
 >   2) Kenya haftası (kâğıt, LEENA'ya dokunmadan): rotasyon runbook'u Faz A · Faz 4 dilim 2
 >      tasarımı · ölçümler (TEST OFFICE, schema_migrations 030-032 planı, ell-docs
@@ -2633,7 +2710,7 @@
 >   - ~~Belge borcu (Kenya kâğıt listesi): LIFFY kullanıcı başına mail limiti gereksinime
 >     "mevcut davranış" olarak yazılır.~~ → ✅ REQ amendment 2026-10-08.
 >
-> *(Aşağıdakiler önceki adaylar — tarihsel, 2026-10-08 sırası önceliklidir.)*
+> *(Aşağıdakiler önceki adaylar — tarihsel, 2026-10-19 tek yol haritası önceliklidir.)*
 >
 >   - **★★ TEST DB SENKRONU (ACİL):** `setup_test_db.js` 012→028 kuruyor,
 >     029/030/031/032 girmiyor → 117 test var olmayan şemayı doğruluyor.
