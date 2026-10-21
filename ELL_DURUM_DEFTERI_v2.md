@@ -3171,21 +3171,38 @@
 >   2026-10-08 — see top)" ibaresinin güncellenmesi (istenmedi) · çelişkili "Package 1 criterion" ifadelerinin
 >   düzeltilmesi (AYNEN kuralı; Sentez turuna) · LED-18 boşluğunun doldurulması · ell-docs'taki önceden değişmiş
 >   `leena/CLAUDE.md` + `leena/todo.md` (commit'e girmedi).
-> - **KB @ (push sonrası — Suer teyidiyle; YON-03).** Bu satır Paket 1 CANLIDA kaydının belge kapanışını da
->   karşılar.
+> - **KB @ ca2bd5b (Orchestrator + Sentez, Suer teyidi; YON-03).** Bu satır Paket 1 CANLIDA kaydının belge
+>   kapanışını da karşılar.
+
+> ## ✅ 2026-10-21 — PAKET 1 BELGE KAPANIŞI (KB @ ca2bd5b) + SENTEZ CEVAPLARI
+>
+> - **Ne yapıldı:** (1) YON-03 kapanışı: **KB @ ca2bd5b** (Orchestrator + Sentez, Suer teyidi) → teknoloji
+>   turu + Paket 1 belge tarafı KAPALI. (2) Kütük: LED-10 / 11 / 12 / 13 / 15 / 17 🔶 işaretleri kaldırıldı →
+>   "Sentez teyitli 21 Eki". (3) Sentez'in Paket 1 kapanış brief'ine cevapları (aşağıda).
+> - **Sentez hükümleri (21 Eki):**
+>   - Gelir kategorisi ledger'daki **income** satırına bağlanır; tek kategori **"Contract revenue"** yeter.
+>   - İade + kredi bakiyesi: **R11, Paket 3 sonrası**.
+>   - Ödeme para birimi ≠ `contract.currency` **serbest** (LED-11: eşitlik hesap ile hareket arasındadır).
+>   - Kontrat devrinin ekstrede **net-sıfır iki satırı kabul**.
+>   - Sapma (e) **kabul**: payout'un hesabı `commission_payouts`'ta değil ledger hareket satırında.
+>   - Faz B'ye: auto-deploy'un `35cad76`'da tetiklenmeme sebebi (**Render event log**) · **Render CLI yenileme**.
+> - **Commit:** ell-docs bu kayıt (Paket 1b ön işi; ayrı küçük commit). PUSH YOK.
+> - **Ölçülenler:** `origin/main` = `ca2bd5b` (`git fetch`; `merge-base --is-ancestor` ✓) · kütükte 🔶 kalan **0**.
+> - **⚠️ ÖLÇÜLMEDİ:** KB yüklemesinin kendisi (Suer teyidi) · gelir kategorisinin bağlanacağı paket (hüküm var,
+>   uygulama yeri belirtilmedi).
+> - **Bilinçle yapılmayanlar:** gelir kategorisi bağlantısının kodu (Paket 1b kapsamında değil) · 037'nin 4 gelir
+>   kategorisine dokunma (hüküm "tek kategori yeter" der, mevcutları silmeyi söylemez).
 
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-21 — bu kazanır; aşağıdakiler tarihsel):**
 >   1) ~~**Staging web servisi kurulumu**~~ → ✅ **STAGING CANLI (21 Eki)** →
 >   2) ~~**Paket 1 — Ledger**~~ → ✅ **CANLIDA (21 Eki 18:30, `35cad76`, KAPI-1 geçti)** — **KAPALI kalır**
->   (yeni kriterler Paket 1b'ye — Sentez EK 21 Eki); belge kapanışı `KB @ <hash>` bekliyor (YON-03; teknoloji
->   turu push'uyla tek satır) →
+>   (yeni kriterler Paket 1b'ye — Sentez EK 21 Eki); ✅ belge kapanışı **KB @ ca2bd5b** →
 >   **Sıra (Sentez EK 21 Eki, değişmedi):** Paket 1b (P1b-1..3) → Paket 2 → Paket 3 (amendment girdi).
->   3) **★ Paket 1b — P1b-1..3**
->   - **P1b-1 / P1b-2:** Sentez önceki bloğu — **Orchestrator'da yok, Suer getirecek.** Suer notu 1 (karşı taraf
->     tablosu: 1b mi 3 mü) ve notu 2 (Zoho tam gider tipi listesi, LED-17) için Sentez kararı Orchestrator'da
->     YOK → AÇIK. P1b-3 `suppliers`'a FK ister; tablonun tanımı Orchestrator'daki hiçbir metinde yok.
+>   3) **★ Paket 1b — P1b-1..3** (Sentez paketi 21 Eki, SERBEST bölge; dal `eliza-next`) — **İNŞADA**
+>   - **P1b-1 tedarikçi kaydı** (`suppliers` + `expenses.supplier_id`; Suer notu 1 → Paket 1b) · **P1b-2 referans
+>     tohumu** (eliza-legacy Zoho aynası ölçülür; Suer notu 2) · **P1b-3 gider taslağı** (aşağıdaki EK metni).
 >   - **P1b-3 GİDER TASLAĞI (bot-yazılabilir giriş) — Sentez EK metni AYNEN:**
 >     - LED-08 DEĞİŞMEZ: gider (expenses) değiştirilemez olaydır, onay statüsü taşımaz. YZ-01 gereği
 >       yapay zeka iş verisi YAZMAZ → yapay zeka yalnız TASLAK yazar: expense_drafts (ayrı tablo):
@@ -3222,14 +3239,16 @@
 >   6) **Zoho göçü + raporlama** + **rapor modülü (Zoho tarzı) + genel arama** (REQ 2.8 / 3.7, amendment
 >   2026-10-21).
 >   **Sentez kuyruğu:** olay kaydı (B6) sırası — Faz 4 kalan mı, ayrı paket mi (SAT-03, eşikli uyarılar, Owner
->   aktivite ekranı buna bağlı) · REQ/YZ-03 "Package 1 criterion" ↔ EK çelişkisi (KB okununca).
+>   aktivite ekranı buna bağlı) · REQ/YZ-03 "Package 1 criterion" ↔ EK çelişkisi (KB okununca) · gelir
+>   kategorisi → ledger income bağlantısının paketi (hüküm 21 Eki: tek kategori "Contract revenue") · iade +
+>   kredi bakiyesi R11 Paket 3 sonrası.
 >   Paralel/sonda: v402 temizlik sayımı (L-1 sonrası) · em-dash · test zinciri · `PRE_MIGRATION_CURRENCIES`
 >   yedeğinin kaldırılması (040 canlıda).
 >   **Faz B kuyruğu:** Anthropic API anahtarı iptal/yenileme (LIFFY `settings.local.json`'dan
 >   sızdı) · 3 izlenen `.env.backup` · LIFFY `JWT_SECRET` (K-E) · staging DB inbound
 >   `0.0.0.0/0` daraltma · sırlı ölü izin kuralları · NOLOGIN kalan eski roller + tablo sahipliği (Sentez sorusu) ·
->   auto-deploy'un `35cad76`'da tetiklenmeme sebebi (ölçülmedi) · Render CLI oturumu (2026-06-17'de düştü;
->   worker logları okunamıyor).
+>   auto-deploy'un `35cad76`'da tetiklenmeme sebebi (Render event log'dan ölçülecek; Sentez 21 Eki) ·
+>   Render CLI yenileme (oturum 2026-06-17'de düştü; worker logları okunamıyor; Sentez 21 Eki).
 >   Takvim: eski `/login.html` emekliliği en erken 2026-11-20 (SEM-05).
 > - **TEK YOL HARİTASI (2026-10-19) — TARİHSEL:** 1) Faz A ✅ (21 Eki) · 2) dilim 2 ✅ (21 Eki CANLIDA).
 >   1) Faz A (export + DB şifresi + LIFFY DB + JWT; A4 yok) → 2) dilim 2 (merge, push, 033 + 034 +
