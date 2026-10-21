@@ -2732,6 +2732,60 @@
 >   dilim 2 dalı · LIFFY/eliza restore. Açılmış geçici arşiv klasörü silindi.
 > - **Kütük:** YON-11 eklendi (Sentez madde 8). **Commit:** ell-docs defter + kütük. PUSH YOK.
 
+> ## ✅ 2026-10-21 — FAZ A TAMAMLANDI
+>
+> - **Panel tarafı (Suer, 21 Eki):** LEENA DB giriş kullanıcısı `leena_app_2026` (eski
+>   `leena_v401_db_user` girişi kaldırıldı) · LIFFY `liffy_app_2026` (`liffy_user` ve
+>   `liffy_user_v2` girişleri kaldırıldı) · `claude_readonly` şifresi yenilendi · LEENA `JWT_SECRET`
+>   yenilendi. Suer kanıtları: `pg_stat_activity` yalnız `leena_app_2026`; ui2 contract 4 → €342.00
+>   eski kullanıcı kaldırıldıktan sonra da açık; liffy.app açık, `liffy_app_2026` 2 bağlantı. A4 yok.
+>   Geri dönüş dayanağı: A0 restore kanıtı (YON-11).
+> - **A6 — yerel değerler (CC; değer YOK):**
+>   - Ölçüm (adlar, `git ls-files`): LEENA `backend/leena-v401-backend/.env` (izlenmiyor, ignore'lu;
+>     `PGUSER PGHOST PGDATABASE PGPASSWORD PGPORT JWT_SECRET SENDGRID_API_KEY SENDER_EMAIL BASE_URL
+>     RENDER_DATABASE_READONLY_URL`) · LEENA `frontend/leena-v401-clean/.env` (izlenmiyor; aynı adlar,
+>     READONLY_URL yok) · LEENA `.claude/settings.local.json` (izlenmiyor; bağlantılar izin
+>     kuralı: 4 `claude_readonly` + 1 `leena_v401_db_user`) · LIFFY `.claude/settings.local.json`
+>     (izlenmiyor; 31 `liffy_user` izin kuralı).
+>   - ⚠️ **Varsayım ÇÜRÜDÜ:** iki `.env`'deki `PG*` canlıyı değil **yerel geliştirme DB'sini**
+>     gösteriyor (`postgres@localhost/leena_v401`); `DATABASE_URL` satırı yok. Suer kararı:
+>     `PG*` ve `JWT_SECRET` yerelde DEĞİŞMEDİ (canlı DB şifresi ve canlı JWT sırrı Mac'e yazılmadı);
+>     `settings.local.json` izin kurallarına DOKUNULMADI (eski şifreler geçersiz).
+>   - Yazılan tek yerel satır: `backend/leena-v401-backend/.env:10` `RENDER_DATABASE_READONLY_URL`
+>     (izlenmeyen dosya; satır sayısı değişmedi). İzlenen dosyaya sır yazılmadı.
+> - **⚠️ `claude_readonly` şifresi 21 Eki'de İKİ KEZ yenilendi; ilk değer sohbete düştü.** Suer
+>   kararıyla CC, sohbetteki değerle bir defalık bağlanıp `ALTER ROLE claude_readonly PASSWORD`
+>   ile yeni değeri atadı (48 hex, `secrets.token_hex(24)`; SCRAM-SHA-256 doğrulayıcı olarak
+>   gönderildi — düz şifre sorgu metnine / `pg_stat_statements`'a girmedi). Yeni değer `.env:10`'da
+>   ve repo dışı 600 izinli yerel dosyada.
+> - **⚠️ CC ölçüm hatası (A6 Adım 1):** LIFFY `settings.local.json` taramasında maskeleme kalıbı
+>   eksikti → CC oturum çıktısına `ANTHROPIC_API_KEY`'in büyük kısmı, LIFFY `JWT_SECRET` başı ve
+>   bir JWT token başı düştü (dosya satırları 45–60, 158, 176, 182). Değerler hiçbir dosyaya
+>   yazılmadı. **Anthropic API anahtarı iptal/yenilenmeli (Suer)**; LIFFY JWT Faz B'de zaten yenileniyor.
+>   **Ders:** sır dosyası taramasında değer değil yalnız ad + satır no basılır.
+> - **Adım 3 — doğrulama (CC, 21 Eki):**
+>   - LEENA `claude_readonly` yeni şifreyle: `current_user = claude_readonly`, read-only `on`.
+>     Sohbetteki (ilk) değer: **REDDEDİLDİ** ("password authentication failed"; rastgele yanlış
+>     şifreyle aynı mesaj). Panel öncesi değer de REDDEDİLDİ.
+>   - LIFFY `liffy_app_2026`: `session_user = liffy_app_2026`, **`current_user = liffy_user`** —
+>     rolde `role=liffy_user` ayarı var. `liffy_user` rolü DURUYOR ama `rolcanlogin = f`; `liffy_user_v2` yok.
+>   - Eski LEENA kimliği (`leena_v401_db_user`, `settings.local.json:70`): **REDDEDİLDİ** — "role
+>     is not permitted to log in".
+>   - `pg_roles`: `leena_v401_db_user` **VAR, NOLOGIN**; `leena_app_2026` onun üyesi ve
+>     `role=leena_v401_db_user` ayarlı → uygulama oturumu eski rolün kimliğiyle çalışır.
+>     **75 tablonun 75'inin `tableowner`'ı `leena_v401_db_user`.** (`leena_v401_db_user`
+>     `claude_readonly`'nin üyesi — önceden kalma; raporlandı, dokunulmadı.)
+>   - `pg_stat_activity` (LEENA): `leena_app_2026` 1 + `claude_readonly` 1 (CC).
+>   - `git status --porcelain`: LEENA ve LIFFY Adım 1 kaydıyla **birebir aynı**.
+> - **Faz B notları:** staging DB inbound `0.0.0.0/0` → daraltılmalı · 3 izlenen `.env.backup` ·
+>   LIFFY `JWT_SECRET` (K-E) · iki `settings.local.json`'daki ölü sırlı izin kuralları temizliği
+>   (Anthropic anahtarı dahil) · "silinen" rollerin NOLOGIN olarak durması bilinçli mi (sahiplik
+>   için gerekli görünüyor) — Sentez.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Render Shell'deki `psql`'in eski kullanıcıyla girip girmediği ·
+>   canlı LEENA `JWT_SECRET` yenilemesinin eski token'ları reddettiği (CC denemedi) · LIFFY'de
+>   eski `liffy_user` şifresiyle bağlantı denemesi (rol NOLOGIN, giriş zaten kapalı) · Render paneli.
+> - **Commit:** ell-docs defter. PUSH YOK.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ TEK YOL HARİTASI (2026-10-19 — bu kazanır; aşağıdaki sıralar tarihsel):**
