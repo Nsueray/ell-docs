@@ -2856,10 +2856,55 @@
 > - **Kapanış (YON-03):** push → KB yeniden yükleme → `KB @ <hash>` satırı Suer teyidiyle girer;
 >   o satıra kadar paket belge tarafında AÇIK.
 
+> ## ✅ 2026-10-21 — STAGING HAZIRLIK
+>
+> - **Karar (Sentez 9 + 7b, Suer):** Render'da ikinci LEENA web servisi `leena-staging`, dal
+>   `eliza-next`'ten auto-deploy, env'i `leena-staging-db`'ye bakar. Koda "staging ise" dalı YOK;
+>   fark yalnız env. **Maliyet onaylandı:** web $7/ay + DB $8,70/ay. Worker servisi YOK (staging'de
+>   kuyruk/kampanya gönderimi olmaz).
+> - **Dal:** `eliza-next` = `main` `931e709` + `fab377d`. Yalnız yerel; push Suer
+>   (`git push -u origin eliza-next`). Kütükte "staging" geçen hüküm YOK.
+> - **Ölçüm — env (çalışan kod; dosya:satır):**
+>   - Boot'ta ÇÖKEN: yalnız `UNSUBSCRIBE_SECRET` (`routes/emailTracking.js:20-22`, exit 1).
+>   - Çökmez ama işlevsiz: `PG*` (`utils/db.js:6-10`, yoksa localhost → her sorgu hata) ·
+>     `JWT_SECRET` (login 500 `routes/userAuth.js:65`, korumalı uçlar 403 `authMiddleware.js:13`).
+>   - Opsiyonel, yoksa: SendGrid üçlüsü → gönderim atlanır, `sendEmail` **true döner**
+>     (`utils/email.js:34-37`; çağıran "gönderildi" sanır — davranış bilgisi, değiştirilmedi) ·
+>     `CALLCENTER_KEY`/`_SUPERVISOR_KEY` → 503 fail-closed (`middleware/callCenter*Auth.js:17`) ·
+>     `CALLCENTER_AGENTS`/`_REPORT_TO` → boş liste · `BASE_BADGE_URL` → **`https://leena.app`
+>     yedeği** (19 yer; staging linkleri canlıyı gösterir) · ⚠️ `ZOHO_WEBHOOK_TOKEN` → **koda gömülü
+>     yedek token** (`routes/webhook.js:8`; repo public → Faz B) · `NODE_ENV` yalnız log/stack.
+>     Worker değişkenleri yalnız `email_worker.js` (ayrı süreç; staging'de yok). Terminal: env yok
+>     (DB anahtarı). Twilio/Anthropic: LEENA backend okumuyor. Frontend API'yi göreli yolla çağırır
+>     (mutlak leena.app yalnız `register.backup.html`) → staging UI canlıya gitmez.
+>   - ⚠️ **Varsayım ÇÜRÜDÜ (YON-05):** "fark yalnız env" bugünkü kodla mümkün değildi — CORS izin
+>     listesi koda gömülü (`index.js:21`, yalnız leena.app); tarayıcı aynı-origin POST'ta da `Origin`
+>     gönderir → staging'de login 500 "CORS not allowed" (21 Eki yerel denemede gözlendi).
+> - **Kod (`fab377d`, eliza-next; canlıya `main` merge'üyle aynen gider):**
+>   `utils/bootGuards.js` + `index.js`: (1) **DB-adı koruması** — boot'ta `current_database`
+>   loglanır; `EXPECTED_DB_NAME` varsa doğrulanmadan dinlenmez, eşleşmezse/okunamazsa exit 1.
+>   (2) **`CORS_EXTRA_ORIGINS`** — izin listesine env'den tam origin ekler. İki değişken de canlı env'de
+>   YOK → canlı davranış aynı (yalnız ad logu). KAPI-2 (boot): (1) Sentez kararı; (2) ölçüm sonucu
+>   eklendi → **Sentez teyidi istenir**.
+> - **Testler:** 181 → **197/197**, iki koşu aynı. Yeni `test_boot_guards.js` (16): birim G1–G7 +
+>   index.js GERÇEK süreçte anahtarsız env'le (B1 yanlış DB → exit 1, hiç dinlemedi · B2 doğru DB →
+>   dinler · B3 login.html 200 · B4 ek origin'den POST geçer · B4b Owner login 200 + `/me` 200 ·
+>   B5 callcenter 503 · B6 SendGrid yok → gönderim atlanır · B7/B8 canlı şekli: dinler, yabancı
+>   origin hâlâ reddedilir). **TABAN T35 342.00 KAYMADI.**
+> - **Staging DB durumu (CC, salt SELECT):** son migration `028_agent_office` (30), Owner hash
+>   NULL, 033/034/035 YOK (19 Eki kopyası, dilim 2 öncesi) → staging'de login için Shell'de
+>   033/034/035 + ilk-şifre script'i gerekir (panel bloğunda).
+> - **Suer panel bloğu:** teslim metninde (form alanları · env listesi kaynaklarıyla · doğrulama).
+>   URL deftere YAZILMAZ.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** canlı servisin build/start komutları ve Node sürümü (repoda
+>   yok — panelden kopyalanacak) · canlı env'de `NODE_ENV` değeri · Render'da staging deploy'u ·
+>   register akışı (test DB'de `organizers.name` yok, YON-09) · webhook ucu anahtarsız.
+> - **Commit:** LEENA `eliza-next` `fab377d` (yerel) · ell-docs defter. PUSH YOK.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-21 — bu kazanır; aşağıdakiler tarihsel):**
->   1) **Staging web servisi kurulumu** (leena-staging-db'ye bağlı; şartları Sentez teyit eder) →
+>   1) **Staging web servisi kurulumu** (hazırlık ✅ 21 Eki, `eliza-next` `fab377d`; kalan: push + panel + Shell) →
 >   2) **Paket 1 — Ledger** (L-1…L-6, her biri ui2 ekranıyla; migration runner bu pakette doğar;
 >   önce Sentez kriter turu). Sonrası (sıra Sentez'de): Faz 4 kalan (kullanıcı yönetimi: davet,
 >   aktif/pasif, yetki matrisi çekirdeği) · katalog/quote (LIFFY aktivasyon) · Zoho göçü + raporlama.
