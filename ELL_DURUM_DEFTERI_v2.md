@@ -3066,16 +3066,163 @@
 > - **Kapanış (YON-03):** ell-docs push → KB yeniden yükleme (Sentez + Orchestrator) → `KB @ <hash>` satırı Suer
 >   teyidiyle girer; o satıra kadar Paket 1 belge tarafında AÇIK.
 
+> ## ✅ 2026-10-21 — TEKNOLOJİ GÜNCELLEME TURU (Sentez + Suer, asistan incelemeli)
+>
+> - **Ne yapıldı (belge dilimi; kod/DB YOK):** Sentez direktifi "Teknoloji güncelleme turu kapanışı" + Sentez →
+>   Orchestrator EK "YZ/SAT Paket 1b ve 2'ye işlendi" uygulandı. **İŞ A:** REQ başına, 2026-10-08 bloğunun altına
+>   "Amendment 2026-10-21" AYNEN + §6.4'e satır. **İŞ B:** kütük — yeni gruplar YZ-01..03 ve SAT-01..04, LED-19,
+>   çapraz referans notları ODE-02 / LED-04 / YON-05 (AD-01 "Not" deseniyle satır sonuna). **İŞ C:** bu kayıt +
+>   ★ SIRADAKİ (Paket 1 KAPALI · Paket 1b = P1b-1..3 · Paket 2 eklemeleri · Paket 3 amendment girdisi ·
+>   madde 6'ya rapor modülü + genel arama).
+> - **Commit:** ell-docs — İŞ A/B uygulandı, **bu kayıtla aynı tek commit** (REQ + kütük + defter); hash teslim
+>   metninde (commit kendi hash'ini taşıyamaz). PUSH YOK (Suer).
+> - **HÜKÜMLER (Sentez bölüm 1 — Suer kararları + Sentez; asistan incelemesi işlendi):**
+>   - **İLKE**
+>     - YZ-01: Çalışma anındaki yapay zeka iş verisi YAZMAZ, yalnız okur; ürettiği her şey insan onayıyla girer;
+>       yapay zekasız yapılabilen yapay zekasız yapılır. (Claude Code'un zincir içinde kod/migration yazması bu
+>       kuralın DIŞINDADIR — kütüğe bu ayrımla.)
+>     - YZ-02: Şirket verisi yapay zekaya yalnız şirket kontrolündeki entegre hesap (API) üzerinden;
+>       şifre/anahtar/bağlantı dizesi ASLA; çalışanların kişisel hesaplarına şirket verisi girmez; ajan, isteyen
+>       kullanıcının görebildiğinden fazlasını görmez (Faz 4 kapsamı). Sağlayıcının "eğitimde kullanmama" şartı
+>       hesap açılışında teyit edilir (ölçülmedi). Suer: D5 = b, 3 şart.
+>     - YZ-03: Her yapay zeka yüzeyi (rapor asistanı, WhatsApp botu) mevcut API'lerin istemcisi, ayrı sistem
+>       değil (2026-07-21 UI-bağımsız API kararının uzantısı). Bot yazması = onay diyaloğu sonrası deterministik
+>       kayıt.
+>   - **DÜŞEN (yazılmaz):** Yeni veri bulma motoru/robotu (mevcut LIFFY robotu olduğu gibi kalır, geliştirilmez;
+>     verimi ölçülür) · sürükle-bırak "kendi tasarımımız" rapor ekranı (Zoho tarzı rapor modülü KALIR) · anlatı
+>     üreten içgörü/sentez modülü (sayısal eşikli uyarılar KALIR) · katalog dizgi motoru (şablon editörü, matbaa
+>     PDF üretici, satır içi yorum) ELL içinde · kullanıcı başına bildirim tercih matrisi, sustur/ertele, zorunlu
+>     liste, bildirim geçmişi · kayıtlı filtre / paylaşılan görünüm / son açılanlar-sabitlenenler · üç dil
+>     varyantı için özel yan yana editör (metinler saklanır).
+>   - **KALAN / EKLENEN**
+>     - SAT-01 e-posta kuralı (Suer, 16:51): lead / kontak / katılımcı KAYDI e-posta ister. E-postasız bulgular
+>       ayrı "ikincil kayıt" tablosunda ("doğrudan e-posta yok" etiketi) durur, kampanyaya giremez, lead/kontak
+>       sayılmaz; yanında "e-postalarını bul" aksiyonu (yapay zeka ya da servis, takılabilir); e-posta bulununca
+>       insan onayıyla asıl tabloya geçer. Mükerrer eşleme ikincil tabloda ad+şirket+ülke(+LinkedIn URL).
+>     - SAT-02 kazanım boru hattı sabit, bulucu değiştirilebilir: istek ekranı → çıktı şablonu → bekleme masası
+>       (doğrulama + mükerrer birleştirme + kaynak etiketi) → tek tuş içeri al. Bulucu = mevcut robot / yapay
+>       zeka ajanı / e-posta servisi; ELL içinde bulucu yazılmaz; dış araçla sistem entegrasyonu şart değil
+>       (içe aktarma yeter).
+>     - SAT-03 sahiplik ve havuz tablodan: ayrılan kullanıcı → havuz; N gün iletişimsiz → uyarı → havuz →
+>       yeniden dağıtım; info@/web form → ülke→ofis tablosu. Eşik/tablo Owner'da; kod yok. Önkoşul: olay kaydı
+>       (kim ne zaman ne gönderdi). N ve tablolar dilim gelince Suer'den.
+>     - SAT-04 bölge yasağı tablodan: ofis/kullanıcı → satabileceği ülkeler (yerel ofisli ülkeye HQ satamaz).
+>       Hem atama kuralı hem yetki girdisi (Faz 4). Owner değiştirir.
+>     - Katalog (Suer: a): şablonlar tasarımcıyla BAŞTAN birkaç adet hazırlanır; her fuarda sistem verisinden
+>       dış araçta OTOMATİK üretim; elle sayfa dizme YOK — "Corel açılmaz" vaadi korunur, motor dışarıda.
+>       Sistemde kalan: katılımcı formu, onay, son tarih kilidi, eksik sayacı, temiz dışa aktarım (tablo +
+>       görseller), web kataloğu, audit. Kabul: bir fuarla pilot; pilot düşerse madde geri gelir.
+>     - Raporlama iki katman: sabit ekranlar (Owner 3 günlük görünüm, nakit öngörü, komisyon kesimi, agent
+>       ekstresi, bütçe/gerçekleşen, fuar başına alacak) + Zoho tarzı rapor modülü (modül→alan→süzgeç→grupla→
+>       sırala→kaydet→Excel); yapay zeka rapor TANIMINI taslak kurar, sistem koşar. Modülün yeri yol haritası 6
+>       (Zoho göçü + raporlama). O güne kadar özel sorular salt-okunur bağlantıyla yapay zekaya (bugünkü yol) —
+>       GEÇİCİ, kütüğe yazılır.
+>     - Genel arama (tek kutu, iki veritabanı) KALIR; rapor modülüyle birlikte (ortak dizin).
+>     - WhatsApp botu KALIR, ileri faz: okur + onay diyaloğuyla yazar (örn. gider girişi); eliza-legacy botu o
+>       güne kadar okuma aracı. ⚠️ PAKET 1 L-3 KRİTERİ (ŞİMDİ): gider giriş API'si bot-yazılabilir tasarlanır
+>       (alanlar eksik/dolu ayrımı, firma eşleme, onay adımı).
+>     - Yetki: önce modül + kapsam (kendi/ekibi/ofisi/hepsi), 4–5 profil; alan gizleme yalnız komisyon, sonra.
+>     - Cevap e-postası okuma: yapay zeka önerir (isim/şirket/ilgi), insan onaylar — YZ-01'in tek istisnası
+>       (serbest metin). Kendi kural seti yazılmaz.
+>     - Olay kaydı (B6) önemi arttı: SAT-03, eşikli uyarılar ve Owner aktivite ekranı buna bağlı. Sıra sorusu
+>       (Faz 4 kalan mı, ayrı paket mi) kuyruğa.
+>     - Girişte süzgeç (doğrulama + mükerrer: e-posta + şirket adı + alan adı) Paket 3 SONRASI, boru hattıyla
+>       birlikte (Suer teyidi bekleniyor; Sentez önerisi).
+>   - **BELGE HİJYENİ:** REQ §2.3 "commission_adjustment kaydı" → SUPERSEDED (ODE-02 cari hesap) · REQ §2.3
+>     "komisyon ödemesi = gider kaydı" → SUPERSEDED (commission_payouts + LED-04) · REQ §5.2: yalnız "LIFFY
+>     mining yeter / orantısız maliyet" cümlesi SUPERSEDED; "no system-level integration" KALIR.
+> - **EK (Sentez → Orchestrator, 21 Eki):** Paket 1 KAPALI kalır; yeni kriter Paket 1b'ye girer → P1b-3 gider
+>   taslağı (★ SIRADAKİ'de AYNEN) + **LED-19** · Paket 2 eklemeleri (★ SIRADAKİ'de). Sentez amendment metnini
+>   henüz okumadı; ell-docs push gelince KB çekilir, çelişki çıkarsa ayrı tur.
+> - **⚠️ Çelişki notu (Sentez çelişki turuna):** REQ 2.8 "Ledger L-3 expense API is designed bot-writable from
+>   day one (**Package 1 criterion**)" · YZ-03 "L-3 gider API'si gün-1 bot-yazılabilir" · bölüm 1 "PAKET 1 L-3
+>   KRİTERİ (ŞİMDİ)" ↔ EK "Paket 1 KAPALI kalır; yeni kriter Paket 1b'ye" (P1b-3, LED-19). Metinler AYNEN
+>   bırakıldı; ★ SIRADAKİ EK'i izler. İkincil: bölüm 1 / REQ 3.1 "4–5 profil" ↔ EK "5 profil".
+> - **YON-05 kaydı:** varsayılan (Sentez) — "yapay zeka mining'in yerini aldı" · ölçülen (Suer) — 261 kişi /
+>   5 e-posta · kanıt: Suer ölçümü (ham çıktı bu defterde YOK; CC ölçmedi) → SAT-01/02.
+> - **Ölçülenler (CC, bu tur):**
+>   - **ID kontrolü:** kütük + defterde `YZ-[0-9]` · `SAT-[0-9]` · `LED-18` · `LED-19` = 0 eşleşme → önerilen
+>     ID'ler çakışmasız, AYNEN tahsis. LED-18 tahsis EDİLMEDİ (kütük kuralı: numaralar süreksiz, kovalanmaz).
+>   - **P1b-3 tabanı — bugünkü gider ucu (LEENA `35cad76`):**
+>     1. `POST /api/ledger/expenses` (`routes/ledger.js:541`) tek transaction'da `expenses` satırı + ledger 'out'
+>        hareketi yazar → 201 `{expense, ledger_entry_id}`. Yetki `authMiddleware` (`:128`) — geçerli her token;
+>        `created_by` = token'daki `user_id`, eski organizer token'ında NULL (`utils/ledger.js:38-48`).
+>     2. Zorunlu: `expense_type_id` (aktif tip + aktif kategori) · `account_id` (aktif hesap) · `expense_date`
+>        (YYYY-MM-DD) · `payment_method` (SEM-01'in 5 değeri) · `amount` > 0 · `exchange_rate` > 0, EUR'da = 1
+>        (`:543-546`, `:78-88`). Opsiyonel: `currency` (yoksa hesabınki, varsa eşit — LED-11, `:556-560`) ·
+>        `expo_id` · `counterparty` · `notes` · `document_url` (http/https). `amount_eur` sunucuda hesaplanır.
+>     3. Karşı taraf: `expenses.counterparty text` nullable düz metin (`039_ledger_core.sql:67`), `trimOrNull`
+>        ile yazılır (`:580`), listede metin döner (`:603`); tedarikçi tablosu / FK / eşleme YOK.
+>     4. Hata biçimi: ilk eksik/yanlış alanda tek mesajlı 400 `{error}` — eksik alan LİSTESİ dönmez, kısmi /
+>        taslak kayıt yok (bot için "eksik/dolu ayrımı" yok).
+>     5. Onay adımı YOK (LED-08): satır doğduğu an hareket yazılır; UPDATE/DELETE trigger'la reddedilir
+>        (`trg_expenses_immutable`, `039:291`); düzeltme yalnız `POST /expenses/:id/reverse` (`:627`). Canlıda
+>        gider 0 satır (21 Eki 15:33 UTC ölçümü). P1b-3 bu ucun ÖNÜNE taslak katmanı koyar; "kabul" bu ucu aynı
+>        doğrulamayla çağırır (EK metni).
+> - **ÖLÇÜLECEK (karar öncesi, bu dilimde değil — Sentez listesi):** Robot: Render'da hangi servis koşuyor
+>   (worker.js dahil), çalışıyor mu, günlük doğrulanmış e-posta, aylık maliyet · firma kayıtlarında sektör alanı
+>   doluluğu (LIFFY DB) · hangi yapay zeka sağlayıcısı şirket hesabında veritabanı bağlantısı + eğitimde
+>   kullanmama veriyor · Zoho'da fiilen kullanılan rapor listesi (ZOHO_USAGE_REFERENCE'tan) — rapor modülünü
+>   boyutlar · katalog pilotu.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** yukarıdaki ölçülecek listesi · Suer'in 261 / 5 ölçümünün ham verisi ·
+>   P1b-1/P1b-2 metni (Sentez önceki bloğu, Orchestrator'da yok) · P1b-3'ün FK verdiği `suppliers` tablosunun
+>   tanımı (Orchestrator'daki hiçbir metinde yok) · Sentez'in amendment metnini okuması (EK'te kendisi söylüyor).
+> - **Bilinçle yapılmayanlar:** kod / DB / LIFFY / LEENA'ya dokunma · REQ "Version" satırındaki "(amended
+>   2026-10-08 — see top)" ibaresinin güncellenmesi (istenmedi) · çelişkili "Package 1 criterion" ifadelerinin
+>   düzeltilmesi (AYNEN kuralı; Sentez turuna) · LED-18 boşluğunun doldurulması · ell-docs'taki önceden değişmiş
+>   `leena/CLAUDE.md` + `leena/todo.md` (commit'e girmedi).
+> - **KB @ (push sonrası — Suer teyidiyle; YON-03).** Bu satır Paket 1 CANLIDA kaydının belge kapanışını da
+>   karşılar.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-21 — bu kazanır; aşağıdakiler tarihsel):**
 >   1) ~~**Staging web servisi kurulumu**~~ → ✅ **STAGING CANLI (21 Eki)** →
->   2) ~~**Paket 1 — Ledger**~~ → ✅ **CANLIDA (21 Eki 18:30, `35cad76`, KAPI-1 geçti)**; belge kapanışı
->   `KB @ <hash>` bekliyor (YON-03) →
->   3) **★ Paket 2 — kullanıcı yönetimi** (davet, aktif/pasif, yetki matrisi çekirdeği) — **KAPI-2** (auth);
->   **Sentez kriter turu bekleniyor**, kriter gelmeden inşa yok. Sentez'de açık karar: karşı taraf
->   (tedarikçi/venue) tablosu Paket 1b mi Paket 3 mü (Suer notu 1) · Zoho tam gider tipi listesi (Suer notu 2,
->   LED-17). Sonrası (sıra Sentez'de): katalog/quote (LIFFY aktivasyon) · Zoho göçü + raporlama.
+>   2) ~~**Paket 1 — Ledger**~~ → ✅ **CANLIDA (21 Eki 18:30, `35cad76`, KAPI-1 geçti)** — **KAPALI kalır**
+>   (yeni kriterler Paket 1b'ye — Sentez EK 21 Eki); belge kapanışı `KB @ <hash>` bekliyor (YON-03; teknoloji
+>   turu push'uyla tek satır) →
+>   **Sıra (Sentez EK 21 Eki, değişmedi):** Paket 1b (P1b-1..3) → Paket 2 → Paket 3 (amendment girdi).
+>   3) **★ Paket 1b — P1b-1..3**
+>   - **P1b-1 / P1b-2:** Sentez önceki bloğu — **Orchestrator'da yok, Suer getirecek.** Suer notu 1 (karşı taraf
+>     tablosu: 1b mi 3 mü) ve notu 2 (Zoho tam gider tipi listesi, LED-17) için Sentez kararı Orchestrator'da
+>     YOK → AÇIK. P1b-3 `suppliers`'a FK ister; tablonun tanımı Orchestrator'daki hiçbir metinde yok.
+>   - **P1b-3 GİDER TASLAĞI (bot-yazılabilir giriş) — Sentez EK metni AYNEN:**
+>     - LED-08 DEĞİŞMEZ: gider (expenses) değiştirilemez olaydır, onay statüsü taşımaz. YZ-01 gereği
+>       yapay zeka iş verisi YAZMAZ → yapay zeka yalnız TASLAK yazar: expense_drafts (ayrı tablo):
+>       alanlar expenses ile aynı + source (ai|import|manual) + confidence notu + eksik alan listesi
+>       (JSON) + supplier_match (suppliers'a FK nullable + eşleşme skoru/aday adı) + status
+>       (pending|accepted|rejected) + reviewed_by/at. İnsan "kabul" deyince expenses satırı doğar
+>       (mevcut POST yolu, aynı doğrulama), taslak accepted olur, FK ile bağlanır; ret → rejected,
+>       silinmez. Taslak ledger'a HİÇ yazmaz.
+>     - API: POST /api/expense-drafts (yazar: yapay zeka istemcisi dahil, YZ-03 — mevcut uçların
+>       istemcisi, ayrı yol yok) · GET liste (eksik alanlı/tam ayrımı filtre) · POST /:id/accept ·
+>       POST /:id/reject. Yetki: şimdilik oturum sahibi; Paket 2'de requirePermission takılır.
+>     - Firma eşleme: suppliers üzerinden ad benzerliği (basit normalize + ILIKE), otomatik atama
+>       YOK, öneri + insan seçer (OFS-05 deseni: öneri kilit değildir).
+>     - YZ-02: yapay zeka istemcisi yalnız şirket hesabının kimliğiyle (users satırı, is_ai bayrağı
+>       YOK — Paket 2'de ayrı "servis kullanıcısı" kararı; şimdilik Owner token'ı).
+>     - Ekran: ui2 "Bekleyen gider taslakları" — eksik alanlar kırmızı, tedarikçi önerisi seçmeli,
+>       Kabul/Ret.
+>     - Kütük: LED-19 "yapay zeka giderde yalnız taslak yazar; gider insan kabulüyle doğar (YZ-01 +
+>       LED-08 birlikte)".
+>   - **P1b-3 tabanı (ölçüldü):** [defter:2026-10-21 TEKNOLOJİ GÜNCELLEME TURU] → "P1b-3 tabanı" (5 madde).
+>   4) **Paket 2 — kullanıcı yönetimi** (davet, aktif/pasif, yetki matrisi çekirdeği) — **KAPI-2** (auth);
+>   **Sentez kriter turu bekleniyor**, kriter gelmeden inşa yok. **Eklemeler (Sentez EK 21 Eki):**
+>   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
+>     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
+>     permissions'a "field" eylemi eklenmez, tablo genişletilebilir kalır.
+>   - SAT-04 yuvası: bölge yasağı yetki çözümlemesine GİRDİ — scope=office/team çözülürken bölge tablosu okunur,
+>     koda bölge gömülmez (S-16r); tablo Paket 3'te (LIFFY tarafı); Paket 2'de `utils/permissions.js`'de
+>     "bölge filtresi" yuvası boş ama tanımlı (ikinci yeniden yazım gerekmesin).
+>   - YZ-03 bot notu: eliza-legacy botu bugün Zoho aynasını doğrudan okuyor; yeniden yazıldığında API
+>     istemcisi olur — Paket 4/5, şimdi aksiyon yok.
+>   5) **Paket 3** — REQ amendment 2026-10-21'i GİRDİ alır (2.1 kazanım hattı + SAT-01..04, 2.4 katalog);
+>   SAT-04 tablosu burada (LIFFY tarafı). Girişte süzgeç (doğrulama + mükerrer) Paket 3 SONRASI, boru hattıyla
+>   (Suer teyidi bekleniyor). Önceki ★ satırındaki "katalog/quote (LIFFY aktivasyon)" ile ilişkisi Sentez'de.
+>   6) **Zoho göçü + raporlama** + **rapor modülü (Zoho tarzı) + genel arama** (REQ 2.8 / 3.7, amendment
+>   2026-10-21).
+>   **Sentez kuyruğu:** olay kaydı (B6) sırası — Faz 4 kalan mı, ayrı paket mi (SAT-03, eşikli uyarılar, Owner
+>   aktivite ekranı buna bağlı) · REQ/YZ-03 "Package 1 criterion" ↔ EK çelişkisi (KB okununca).
 >   Paralel/sonda: v402 temizlik sayımı (L-1 sonrası) · em-dash · test zinciri · `PRE_MIGRATION_CURRENCIES`
 >   yedeğinin kaldırılması (040 canlıda).
 >   **Faz B kuyruğu:** Anthropic API anahtarı iptal/yenileme (LIFFY `settings.local.json`'dan

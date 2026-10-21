@@ -127,7 +127,7 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 ### ODE — payout / cari hesap
 
 - **ODE-01** (eski S-1) — Payout modeli CARİ HESAPTIR; kayıtta dönem/kesim kolonu yoktur, bakiye her okumada türetilir. [defter:2026-07-27 PAYOUT P1 CANLIDA]
-- **ODE-02** (eski S-3) — Clawback ayrı mekanizma değildir; fazla ödeme bakiyeyi negatife düşürür, sonraki ödemede mahsuplaşır. [defter:2026-07-27 PAYOUT P1 CANLIDA]
+- **ODE-02** (eski S-3) — Clawback ayrı mekanizma değildir; fazla ödeme bakiyeyi negatife düşürür, sonraki ödemede mahsuplaşır. [defter:2026-07-27 PAYOUT P1 CANLIDA] · **Çapraz ref (21 Eki):** REQ §2.3 "commission_adjustment" SUPERSEDED (amendment 2026-10-21). [defter:2026-10-21 TEKNOLOJİ GÜNCELLEME TURU]
 - **ODE-03** (eski S-4) — Payout immutable'dır; UPDATE/DELETE yok, düzeltme = negatif tutarlı yeni satır + `reverses_payout_id`. [defter:2026-07-27 PAYOUT P1 CANLIDA]
 
 ### PLN — vade planı
@@ -167,7 +167,7 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 - **LED-01** (Ç3, Sentez 8 Eki) — Ödeme yöntemi sözlüğü SEM-01'in 5 değeridir; SWIFT = `bank_transfer`; "kredi bakiyesi" ödeme yöntemi DEĞİL, ledger olayıdır. [defter:2026-10-08 LEDGER KRİTER HÜKÜMLERİ]
 - **LED-02** (Ç4, Sentez 8 Eki) — Para birimleri bir referans TABLOSUDUR (8 birim, ISO kodu; TL→TRY); koda gömülmez, arayüz listeleri tablodan okur. [defter:2026-10-08 LEDGER KRİTER HÜKÜMLERİ]
 - **LED-03** (Ç5, Sentez 8 Eki) — "account" = para hesabı (banka / kasa / sanal); Zoho'nun Account'u her yerde "company"dir. [defter:2026-10-08 LEDGER KRİTER HÜKÜMLERİ]
-- **LED-04** (Ç7, Sentez 8 Eki) — Tek kaynak: her tutar bir kez saklanır; ledger hareketi payout'a / payment'a FK ile bağlanır, tutarı kopyalamaz; gelir `payments`'tan türetilir, ayrı gelir tablosu doğmaz (D2). [defter:2026-10-08 LEDGER KRİTER HÜKÜMLERİ]
+- **LED-04** (Ç7, Sentez 8 Eki) — Tek kaynak: her tutar bir kez saklanır; ledger hareketi payout'a / payment'a FK ile bağlanır, tutarı kopyalamaz; gelir `payments`'tan türetilir, ayrı gelir tablosu doğmaz (D2). [defter:2026-10-08 LEDGER KRİTER HÜKÜMLERİ] · **Çapraz ref (21 Eki):** REQ §2.3 "komisyon = gider" SUPERSEDED; payout tablosu + ledger bağı. [defter:2026-10-21 TEKNOLOJİ GÜNCELLEME TURU]
 - **LED-05** (Ç8, Sentez 8 Eki) — Kur satırda değişmez; "kur düzeltmesi" = ters kayıt + yeni kayıt. [defter:2026-10-08 LEDGER KRİTER HÜKÜMLERİ]
 - **LED-06** (boşluk 1, Sentez 8 Eki) — Transfer = tek mantıksal olay, iki bağlı hareket, tek atomik yazım; iki hareket ayrı silinemez/değişemez; bakiye türetilir. [defter:2026-10-08 LEDGER KRİTER HÜKÜMLERİ]
 - **LED-07** (boşluk 2, Sentez 8 Eki) — Sahibin cari hesabı = "owner" tipinde sanal hesap; cebinden ödenen gider buradan çıkar, eksi bakiye = şirketin sahibe borcu, geri ödeme = banka→owner transferi. [defter:2026-10-08 LEDGER KRİTER HÜKÜMLERİ]
@@ -181,6 +181,7 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 - **LED-15** (Paket 1 inşası, 21 Eki — 🔶; LED-09 uygulaması) — Bütçede her değişiklik yeni revizyondur (PLN-05). Kilidi Owner atar (`users.is_owner`, ui2 oturumu); kilitli aktif revizyonun ardılını YALNIZ Owner yazar (= kilidi açma); kilit kaydı ardıl revizyonda da korunur. Owner-dışı ret HTTP 409 `OWNER_REQUIRED` — 403 DEĞİL (leena-fetch 401/403'te oturumu siler, G45). [defter:2026-10-21 PAKET 1: STAGING'E HAZIR]
 - **LED-16** (Paket 1 P1-0, 21 Eki) — 036+ migration'lar YALNIZ `scripts/migrate.js` ile uygulanır (dosya içi `ell.migration_runner` koruması; kaydı runner yazar, dosya yazmaz). Runner DUR koşulları: kayıtlı-dosyasız · kayıtsız-ama-şema-izli (yarım) · numara boşluğu/çakışması · sıra dışı bekleyen · eşzamanlı koşu. [defter:2026-10-21 PAKET 1: STAGING'E HAZIR]
 - **LED-17** (Paket 1 inşası, 21 Eki — 🔶) — Referans tohumu YALNIZ belgeli değerlerdir (REQ:1680/1682/1059 + Zoho referansı §3.7/3.8); tam Zoho listesi (6 kategori × ~75 tip, 15 gelir kategorisi) belgede YOK → admin ekranından girilir. Tohum aktif Owner'ı olan kiracıya yazılır. [defter:2026-10-21 PAKET 1: STAGING'E HAZIR]
+- **LED-19** (Sentez EK, 21 Eki — Paket 1b P1b-3) — Yapay zeka giderde yalnız taslak yazar; gider insan kabulüyle doğar (YZ-01 + LED-08 birlikte). [defter:2026-10-21 TEKNOLOJİ GÜNCELLEME TURU]
 
 ### RAP — raporlama (alan-bağımsız)
 
@@ -198,7 +199,7 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 - **YON-02** — Sentez KRİTER yazar, KOMUT yazmaz; dosya yolu / SQL prosedürü / shell adımı Sentez'in işi değildir.
 - **YON-03** — Belge commit'i kapanış şartı: push → KB yeniden yükleme (Sentez VE Orchestrator) → deftere tek satır `KB @ <hash>`. Teyit yoksa dilim AÇIK.
 - **YON-04** — Para biriminin nasıl raporlanacağı İŞ KARARIDIR; Sentez veremez (uygulama: RAP-01).
-- **YON-05** (B, Sentez 9 Eyl) — Bir ölçüm turu bir varsayımı ÇÜRÜTTÜYSE bulgusu aynı turda deftere kısa kayıt girer (ne varsayılıyordu / ne ölçüldü / kanıt file:line|çıktı). Yalnız TEYİT eden ölçüm ayrı kayıt açmaz. [defter:2026-09-09 SUER HÜKÜMLERİ]
+- **YON-05** (B, Sentez 9 Eyl) — Bir ölçüm turu bir varsayımı ÇÜRÜTTÜYSE bulgusu aynı turda deftere kısa kayıt girer (ne varsayılıyordu / ne ölçüldü / kanıt file:line|çıktı). Yalnız TEYİT eden ölçüm ayrı kayıt açmaz. [defter:2026-09-09 SUER HÜKÜMLERİ] · **Not (21 Eki):** Sentez'in "yapay zeka mining'in yerini aldı" varsayımı Suer ölçümüyle (261 kişi / 5 e-posta) çürüdü → SAT-01/02. [defter:2026-10-21 TEKNOLOJİ GÜNCELLEME TURU]
 - **YON-06** (C, Suer 10 Eyl) — LEENA push öncesi İKİ ölçüm: (a) pencere açık mı (kampanya/fuar takvimi), (b) platform sağlığı (status.render.com). Kod riskinin temiz olması deploy riskini KAPATMAZ. Kaynak: 10 Eyl kesintisi. [defter:2026-09-10 WEB KESİNTİSİ]
 - **YON-07** (D, Suer 13 Eyl) — Her tasarım kararı çok-kiracı SaaS hassasiyetinde tartılır; hızlı çözüm tercih DEĞİL; en kaliteli seçenek kurulumu aşırı uzatmıyorsa her zaman en doğru yol seçilir. [defter:2026-09-13 FAZ 4 DİLİM 1 CANLIDA]
 - **YON-08** (E, Suer 13 Eyl) — LIFFY vazgeçilebilir (kullanıcı/önemli veri yok, kapatılabilir); **LEENA çekirdektir**; LIFFY'yi değiştirmemek için LEENA'da taviz verilmez. [defter:2026-09-13 FAZ 4 DİLİM 1 CANLIDA]
@@ -209,3 +210,16 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 ### AD — adlandırma / marka
 
 - **AD-01** (A, Suer 9 Eyl) — **ELIZA** = platformun ürün/marka adı (kullanıcının gördüğü); **ELL** = yalnız iç kod adı (repo/dosya adlarında yaşar); eski bağımsız sistem = **"eliza-legacy"**. LEENA Finance sekmesi yalnız "Finance"; nav'da `liffy`/`leena` küçük etiket. ⚠️ **CUTOFF: Bu kayıttan ÖNCEKİ tüm defter/kod kayıtlarında ELIZA = eliza-legacy.** [defter:2026-09-09 SUER HÜKÜMLERİ] · **Not (8 Eki):** eliza-legacy emekli = üzerine inşa edilmez; birleşmeye kadar okuma aracı olarak serviste. [defter:2026-10-08 SENTEZ KAPANIŞ KARARLARI + 034 (dal)]
+
+### YZ — yapay zeka (yeni grup, 2026-10-21)
+
+- **YZ-01** (Suer, 21 Eki) — Çalışma anındaki yapay zeka iş verisi YAZMAZ, yalnız okur; ürettiği her şey insan onayıyla girer; yapay zekasız yapılabilen yapay zekasız yapılır. Claude Code'un inşa zincirinde kod/migration yazması kapsam DIŞI. [defter:2026-10-21 TEKNOLOJİ GÜNCELLEME TURU]
+- **YZ-02** (Suer D5 = b, 3 şart; 21 Eki) — Veri paylaşımı: yalnız şirket kontrolündeki entegre hesap (API); şifre/anahtar/bağlantı dizesi ASLA; kişisel yapay zeka hesaplarına şirket verisi girmez; ajan isteyen kullanıcının kapsamını aşmaz; sağlayıcı eğitimde-kullanmama şartı açılışta teyit (ölçülmedi). [defter:2026-10-21 TEKNOLOJİ GÜNCELLEME TURU]
+- **YZ-03** (teknoloji turu, 21 Eki) — Her yapay zeka yüzeyi mevcut API'lerin istemcisi (2026-07-21 uzantısı); bot yazması = onay diyaloğu sonrası deterministik kayıt; L-3 gider API'si gün-1 bot-yazılabilir. GEÇİCİ: rapor modülü gelene kadar özel sorular salt-okunur bağlantıyla yapay zekaya, yalnız Owner. [defter:2026-10-21 TEKNOLOJİ GÜNCELLEME TURU]
+
+### SAT — satış tarafı kazanım ve sahiplik (yeni grup, 2026-10-21)
+
+- **SAT-01** (Suer 21 Eki 16:51) — Lead/kontak/katılımcı kaydı e-posta ister. E-postasız bulgu ayrı "ikincil kayıt" tablosunda ("doğrudan e-posta yok"), kampanyaya giremez, lead sayılmaz; "e-postalarını bul" aksiyonu takılabilir; e-posta bulununca insan onayıyla terfi. Mükerrer: ad+şirket+ülke(+LinkedIn URL). [defter:2026-10-21 TEKNOLOJİ GÜNCELLEME TURU]
+- **SAT-02** (teknoloji turu, 21 Eki) — Kazanım boru hattı SABİT (istek → şablon → bekleme masası → içeri al), bulucu DEĞİŞTİRİLEBİLİR; ELL içinde bulucu yazılmaz; dış araçla sistem entegrasyonu şart değil; mevcut robota geliştirme yok, verimi/servisi/maliyeti ölçülür (açık). [defter:2026-10-21 TEKNOLOJİ GÜNCELLEME TURU]
+- **SAT-03** (teknoloji turu, 21 Eki) — Sahiplik ve havuz TABLODAN: ayrılan → havuz; N gün iletişimsiz → uyarı → havuz → yeniden dağıtım; info@/web form → ülke→ofis tablosu; Owner değiştirir, kod değişmez; önkoşul olay kaydı; N ve tablolar dilim gelince Suer'den. [defter:2026-10-21 TEKNOLOJİ GÜNCELLEME TURU]
+- **SAT-04** (teknoloji turu, 21 Eki) — Bölge yasağı TABLODAN (ofis/kullanıcı → satabileceği ülkeler); atama kuralı + yetki girdisi (Faz 4); Owner kararı, değişken. [defter:2026-10-21 TEKNOLOJİ GÜNCELLEME TURU]

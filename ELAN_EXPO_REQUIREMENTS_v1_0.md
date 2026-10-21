@@ -27,6 +27,84 @@
 >   clamps each batch to the remaining allowance (`backend/worker.js:186-196`) and campaign start
 >   returns 429 when the limit is reached (`backend/routes/campaigns.js:805-822`). 0 / NULL = no limit.
 
+> **Amendment 2026-10-21 (technology review — Suer decisions, Sentez rulings; ledger
+> `ELL_DURUM_DEFTERI_v2.md` "2026-10-21 — TEKNOLOJİ GÜNCELLEME TURU"; rules YZ-01..03,
+> SAT-01..04 in `ELL_LOCKED_KARARLAR_OZET.md`).** Original text is kept; marked sections read
+> as amended. Principle (new 3.10): runtime AI reads, never writes business data; anything AI
+> produces enters through human confirmation; deterministic first. Scale (~25 users) is the
+> second filter.
+>
+> **Part 2**
+> - **2.1 Channel 1 "Web mining" → "Acquisition pipeline" (SAT-02).** ELL owns a fixed pipeline:
+>   (1) request screen, (2) output template the finder must fill, (3) intake queue: email
+>   verification + cross-channel dedup + source tag, (4) one-click import with review. The finder
+>   is pluggable (current LIFFY miner, external AI agent, email-finder service); no finder engine
+>   is built inside ELL; no system-level integration with external tools is required (import is
+>   enough). Current miner kept as-is, not developed (measure: Render service, yield, cost).
+> - **2.1 Lead definition (SAT-01).** A lead / contact / exhibitor record requires an email.
+>   Findings without email go to a separate **secondary-records** table ("no direct email" tag):
+>   not a lead, not campaign-eligible, dedup by name+company+country(+LinkedIn URL), with a
+>   "find emails" action (pluggable AI/service). On email found, promoted to lead by human confirm.
+> - **2.1 Auto-routing → "Ownership and pool rules" (SAT-03, SAT-04).** Editable tables, no
+>   code: country → responsible office (info@ / web form); office/user → sellable countries
+>   (territory restriction, e.g. HQ cannot sell into a country with a local office); inactivity
+>   threshold (N days without outreach → owner warning → pool → redistribution); departing user
+>   → pool. Territory rule is also a permission input (3.1). Prerequisite: activity events.
+> - **2.1/2.2 Reply parsing & qualification.** Kept; implementation = AI suggestion + one-click
+>   human confirmation (the YZ-01 exception for free text). No bespoke scoring engine.
+> - **2.3** "commission_adjustment record" — SUPERSEDED (ODE-02 agent current account).
+>   "Commission payments recorded as Expense records" — SUPERSEDED (`commission_payouts`,
+>   linked to ledger per LED-04, Package 1).
+> - **2.4 Catalogue production.** Kept in ELL: submission form, review/approve, per-expo deadline
+>   lock with override, missing-submission counter, audit, clean export (table + assets), public
+>   web catalogue. **Not built in ELL:** template editor, print-grade PDF engine, inline page
+>   comments. Layout = a few master templates designed up front by a designer; per-expo output
+>   generated **automatically** in an external tool from ELL's export — no manual page layout.
+>   "Never open Corel Draw" promise stands; only the rendering engine is external. Acceptance:
+>   one-expo pilot; if it fails, this item returns.
+> - **2.7** Trigger chain, per-expo timing, "send all now", resend, delivery status: kept. Three
+>   language variants stored and approved; no dedicated side-by-side editor.
+> - **2.8 Reporting.** Two layers: (1) fixed, tested, source-traceable screens (Owner's three
+>   daily views, cash forecast, commission cut, agent statement, expo budget vs actual,
+>   outstanding per expo); (2) Zoho-style **report module kept** (module → fields → filters →
+>   group → sort → save → Excel). AI is additive: drafts a report definition from a sentence;
+>   user edits; ELL runs it. Roadmap position: item 6 (Zoho migration + reporting). Interim:
+>   ad-hoc questions via read-only DB access to an AI (current practice, Owner only).
+>   **Dropped:** bespoke insight/synthesis narrative module. **Kept as deterministic threshold
+>   alerts:** zero weekly activity per office; catalogue submission rate below threshold;
+>   reminder sent, no payment after N days. Report module reads LIFFY+LEENA; data-location
+>   decision deferred to that package.
+> - **2.8 WhatsApp bot.** Kept, later phase; eliza-legacy bot remains a read-only tool until
+>   then. Future bot = client of the same APIs (YZ-03), reads and **writes via confirmation
+>   dialogue** (e.g. expense entry). Respects user scope. **Ledger L-3 expense API is designed
+>   bot-writable from day one (Package 1 criterion).**
+>
+> **Part 3**
+> - **3.1** Start with module-level permissions + data scope (own/team/office/all), 4–5 profile
+>   templates; field-level hiding only for commission, later.
+> - **3.7** Global cross-module search kept; built with the report module (shared index over both
+>   databases). Saved/shared filters, recent/pinned: dropped ("save report" covers it).
+> - **3.8** Per-user notification matrix, mute/snooze, mandatory list, history: dropped. Fixed
+>   short list, in-app + email; WhatsApp via the bot.
+> - **3.10 (new) AI principle.** YZ-01 runtime AI reads, never writes business data; AI output
+>   enters only via human confirmation; deterministic first (Claude Code writing code inside the
+>   build chain is out of this rule's scope). YZ-02 company data reaches AI only through a
+>   company-controlled integrated account; never passwords/keys/connection strings; never via
+>   employees' personal AI accounts; the agent sees exactly what the requesting user may see;
+>   provider's no-training terms confirmed at setup. YZ-03 every AI surface is a client of the
+>   existing APIs (2026-07-21), not a system.
+>
+> **Part 4**
+> - **4.2** reads as: threshold alerts (deterministic), AI-drafted report definitions, bot as
+>   client, traceability for fixed reports. Trend/anomaly/synthesis narrative is not a module.
+> - **4.4** "Catalogue review with inline comments", "saved filters, sharable views" dropped.
+>
+> **Part 5**
+> - **5.2 External marketplace integrations:** the sentences "The mining capability inside LIFFY
+>   produces enough leads … add cost without proportional return" are SUPERSEDED — external
+>   research tools are accepted as pluggable finders feeding the 2.1 pipeline. "No system-level
+>   integration" remains.
+
 **Version:** 1.0 (Document complete — all parts filled) *(amended 2026-10-08 — see top)*
 **Date:** 2026-05-06
 **Status:** In progress — being filled section by section *(historical — v1.0 complete with amendments, 2026-10-08)*
@@ -2321,6 +2399,7 @@ Selected terms used throughout the document:
 - v0.9 (2026-05-08): Part 3.6 (Audit & History), 3.7 (Search & Navigation), 3.8 (Notification System), 3.9 (Integration Points) — 24-month rolling audit retention with archive, global search respecting scope, three notification channels (in-app/email/WhatsApp) with per-user preferences, online payment + e-invoice + accounting export deferred to Phase 2. Part 3 complete.
 - v1.0 (2026-05-08): Part 4 ("Better Than Zoho" Targets), Part 5 (Out of Scope), Part 6 (Appendices) added. Document complete and ready as input for the architecture phase.
 - v1.0 amendment (2026-10-08): ledger criteria (Sentez rulings, Suer decisions) — status, payment methods, currencies (ISO, TRY), Transferred In/Out as derived display, rate corrections, LIFFY per-user daily email limit — see top; rules LED-01..09.
+- v1.0 amendment (2026-10-21): technology review — AI principle (3.10, YZ-01..03), acquisition pipeline with pluggable finder, email-required lead definition with secondary-records table (SAT-01/02), ownership/pool/territory tables (SAT-03/04), catalogue rendering external with up-front templates, report module kept with AI-drafted definitions, insight module dropped, WhatsApp bot kept as API client (later), notification matrix and saved filters dropped, §2.3 and §5.2 sentences superseded — see top.
 
 ---
 
