@@ -2995,12 +2995,48 @@
 >   6 ekran görsel onayı → "merge" → canlı sırası (export → push main → canlı Shell dry-run → migrate → ui2
 >   contract 4 €342.00 + özet). Ayrıntı teslim metninde.
 
+> ## ✅ 2026-10-21 — PAKET 1: MAIN'E MERGE (canlı sırası Suer'de)
+>
+> - **Ne yapıldı:** Suer "merge" dedi → yerel `main`'e `git merge --no-ff eliza-next` → **`35cad76`**
+>   (ebeveynler `931e709` = origin/main · `c15ac1f`). Gelenler: `fab377d` (boot korumaları, yalnız env) ·
+>   `ee13814` + `37d6f9a` (CLAUDE.md bölme / 4 kural notu) · `c15ac1f` (ledger 036–040 + runner + API + ekranlar).
+>   **Tek revert:** `git revert -m 1 35cad76`. Merge ağacı = `c15ac1f` ağacı (birebir, `rev-parse ^{tree}`).
+> - **Commit:** LEENA `main` **`35cad76`** (yerel; origin/main'in 5 önünde). **PUSH YOK.**
+> - **Ölçülenler (CC, bu tur; DB'ler salt-okunur):**
+>   - `origin/eliza-next` = `c15ac1f` (push reflog 2026-10-21 16:56 +0300) · `origin/main` = `931e709`.
+>   - **Staging:** `schema_migrations` **42**, son `040_expo_budgets`; 036–040 `applied_at` hepsi
+>     **14:02:12.42 UTC** (tek transaction) · `ledger_entries` / `accounts` / `expo_budgets` VAR ·
+>     `payments.account_id` + `payer` VAR. Tohum: currencies 8 · gider kategori 6 · gider tipi 4 · gelir
+>     kategorisi 4 (= provadaki NOTICE). Suer'in deneme izi: 1 hesap (EUR banka, ofis 1 varsayılanı,
+>     14:13 UTC) · 1 gider + 1 'out' hareketi (14:25 UTC) · transfer 0 · bütçe 0 · hesaplı ödeme 0.
+>     `ui2/finance-summary.html` **200**, `/api/ledger/summary` token'sız **401** (route bağlı).
+>   - **Canlı:** `schema_migrations` **37**, son `035_users_display_name`; ledger tablosu YOK, `payments`'ta
+>     yeni kolon YOK (beklenen) · `leena.app/ui2/finance-summary.html` **404** (beklenen: push öncesi) ·
+>     `/health` 200.
+>   - **TABAN contract 4 sr earned = 342.00 (7 dilim)** staging (migration SONRASI) ve canlıda, SLICE_CTES ile.
+>   - **Testler `main` üzerinde:** **269/269**, ❌ 0 (tek koşu; T35 + M01a + I5 342.00).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Suer'in staging görsel onay raporu (yalnız "merge" geldi) — DB izi
+>   yalnız Accounts + Expenses ekranlarının kullanıldığını gösteriyor; Summary / ekstre / Transfers / Budget /
+>   klasik formun Account alanı açıldı mı bilinmiyor · canlı env'de `EXPECTED_DB_NAME` / `CORS_EXTRA_ORIGINS`
+>   yokluğu bu tur yeniden ölçülmedi (21 Eki STAGING HAZIRLIK ölçümü) · canlı deploy + migration · worker logları.
+> - **Bilinçle yapılmayanlar:** push (`main` ve ell-docs) · canlı DB'ye yazma / migration koşumu · staging
+>   deneme verisinin (1 hesap, 1 gider) silinmesi — ledger silmeyi reddeder, ters kayıt + pasifleme Suer'in
+>   kararı · `eliza-next`'in `main`'e eşitlenmesi (bir sonraki dal işinin ilk adımı: `git merge --ff-only main`).
+> - **Teslim (Suer, canlı sırası):** export (Render panel) → YON-06 (status.render.com + takvim) →
+>   `git push origin main` → Live (~60 sn, G43; arada eski form çalışır, ledger ekranları "not migrated yet") →
+>   canlı Shell `node scripts/migrate.js --dry-run` (DUR: `database` ≠ `leena_v401_db` / "DUR —" / FAILED) →
+>   `node scripts/migrate.js` → "COMMIT: 5" → tekrar koşum "Nothing to apply" → ui2 contract 4 €342.00 +
+>   `finance-summary.html` açılıyor. Shell açıkken deploy yok (G46).
+> - **Kapanış (YON-03):** canlı koşum sonrası CC salt-okunur teyit kaydı (`schema_migrations` 42, TABAN, sayfa 200) ayrı
+>   kayıt olarak girer; o kayda kadar Paket 1 AÇIK.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-21 — bu kazanır; aşağıdakiler tarihsel):**
 >   1) ~~**Staging web servisi kurulumu**~~ → ✅ **STAGING CANLI (21 Eki)** →
->   2) **Paket 1 — Ledger** → ✅ **STAGING'E HAZIR (21 Eki, `eliza-next` `c15ac1f`)**; kalan: Suer push →
->   staging Shell migrate (dry-run → gerçek) → 6 ekran görsel onayı → "merge" → canlı sırası (KAPI-1). Sonrası (sıra Sentez'de): Faz 4 kalan (kullanıcı yönetimi: davet,
+>   2) **Paket 1 — Ledger** → ✅ STAGING'E HAZIR (`c15ac1f`) → ✅ staging migrate (14:02 UTC) →
+>   ✅ **MAIN'E MERGE (21 Eki, `35cad76`, yerel)**; kalan: Suer canlı sırası (export → YON-06 → push main →
+>   canlı Shell dry-run → migrate) → CC salt-okunur teyit kaydı (KAPI-1). Sonrası (sıra Sentez'de): Faz 4 kalan (kullanıcı yönetimi: davet,
 >   aktif/pasif, yetki matrisi çekirdeği) · katalog/quote (LIFFY aktivasyon) · Zoho göçü + raporlama.
 >   Paralel/sonda: v402 temizlik sayımı (L-1 sonrası) · em-dash · test zinciri.
 >   **Faz B kuyruğu:** Anthropic API anahtarı iptal/yenileme (LIFFY `settings.local.json`'dan
