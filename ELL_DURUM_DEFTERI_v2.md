@@ -2835,9 +2835,40 @@
 >   akışı · klasik `/login.html` ile yeni kodun canlıda yan yana çalışması (yerel testte L7 kapsar).
 > - **Commit:** LEENA `main` `931e709` (yerel) · ell-docs defter. PUSH YOK (ikisi de).
 
+> ## ✅ 2026-10-21 — DİLİM 2 CANLIDA (KAPI-1 geçti)
+>
+> - **Suer koşumu (21 Eki):** `git push` `08f76cb..931e709` → web + worker **Live**;
+>   `ui2/login.html` 200. Render Shell: `session_user = leena_app_2026`, `current_user =
+>   leena_v401_db_user`. 033 / 034 / 035 her biri dry-run + gerçek, **hatasız**. İlk-şifre script'i:
+>   "Owner password set; password_must_change = false" (ad girildi). **Görsel onay (Suer):**
+>   ui2/whoami Name / Owner / Yes / User / No; ui2 contract 4 → €342.00 migration'lardan sonra da aynı.
+> - **CC salt-okunur teyit (21 Eki, `claude_readonly`):** `schema_migrations` 029–035 = 7 satır
+>   (029–032 `applied_at` NULL — 033 geriye dönük kaydı, şema iziyle; 033 11:17 · 034 11:18 ·
+>   035 11:19 UTC), toplam 37 · trigger'lar `trg_min_one_active_owner` + `_truncate` +
+>   `trg_contract_line_items_immutable` · `users_display_name_not_blank` VAR · Owner: aktif,
+>   hash dolu, must_change false, `display_name` dolu · **TABAN contract 4 sr earned 342.00
+>   (7 dilim)** · `origin/main` = `931e709` · `leena.app/ui2/login.html` 200.
+> - **Takvim (SEM-05):** token süresi 30 gün → eski `/login.html` yolu en erken **2026-11-20**'de
+>   emekli edilebilir (karar ayrı; otomatik değil).
+> - **⚠️ ÖLÇÜLMEDİ:** klasik `/login.html` girişinin dilim 2 sonrası canlıda denenmesi (Suer
+>   raporunda yok) · worker loglarında hata taraması · eski token'ların JWT_SECRET rotasyonu
+>   sonrası reddi.
+> - **Kapanış (YON-03):** push → KB yeniden yükleme → `KB @ <hash>` satırı Suer teyidiyle girer;
+>   o satıra kadar paket belge tarafında AÇIK.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
-> - **★ TEK YOL HARİTASI (2026-10-19 — bu kazanır; aşağıdaki sıralar tarihsel):**
+> - **★ SIRADAKİ (2026-10-21 — bu kazanır; aşağıdakiler tarihsel):**
+>   1) **Staging web servisi kurulumu** (leena-staging-db'ye bağlı; şartları Sentez teyit eder) →
+>   2) **Paket 1 — Ledger** (L-1…L-6, her biri ui2 ekranıyla; migration runner bu pakette doğar;
+>   önce Sentez kriter turu). Sonrası (sıra Sentez'de): Faz 4 kalan (kullanıcı yönetimi: davet,
+>   aktif/pasif, yetki matrisi çekirdeği) · katalog/quote (LIFFY aktivasyon) · Zoho göçü + raporlama.
+>   Paralel/sonda: v402 temizlik sayımı (L-1 sonrası) · em-dash · test zinciri.
+>   **Faz B kuyruğu:** Anthropic API anahtarı iptal/yenileme (LIFFY `settings.local.json`'dan
+>   sızdı) · 3 izlenen `.env.backup` · LIFFY `JWT_SECRET` (K-E) · staging DB inbound
+>   `0.0.0.0/0` daraltma · sırlı ölü izin kuralları · NOLOGIN kalan eski roller + tablo sahipliği (Sentez sorusu).
+>   Takvim: eski `/login.html` emekliliği en erken 2026-11-20 (SEM-05).
+> - **TEK YOL HARİTASI (2026-10-19) — TARİHSEL:** 1) Faz A ✅ (21 Eki) · 2) dilim 2 ✅ (21 Eki CANLIDA).
 >   1) Faz A (export + DB şifresi + LIFFY DB + JWT; A4 yok) → 2) dilim 2 (merge, push, 033 + 034 +
 >   ad kolonu — üç dosya, Suer koşar; ilk-şifre script'i; ui2 login / "kim girdi" görsel onay) —
 >   **1 ve 2 aynı gün, arka arkaya; 1 önce** → 3) Faz 4 kalan: kullanıcı yönetimi ekranı (davet,
