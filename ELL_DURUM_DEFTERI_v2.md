@@ -2671,6 +2671,67 @@
 >   ell-docs `leena/*` farkı.
 > - **Commit:** ell-docs yalnız defter. PUSH YOK (Suer).
 
+> ## ✅ 2026-10-21 — FAZ A / A0: EXPORT + RESTORE KANITLANDI
+>
+> - **Üç export (Suer, Render paneli, 19 Eki):** LEENA `2026-10-19T15_00Z.dir.tar.gz`
+>   (1.421.091.698 B) · LIFFY `2026-10-19T15_29Z.dir.tar.gz` (164.612.955 B) · eliza-db
+>   `2026-10-19T15_33Z.dir.tar.gz` (1.365.677 B). Yalnız LEENA'nınki açıldı; `~/Downloads`'taki
+>   üç dosyaya dokunulmadı.
+> - **Export anı:** dosya adı `15_00Z`; arşiv başlığı "Archive created at 2026-10-19 15:02:12 +03".
+>   Veriden ölçülen pencere: staging'deki en geç satır `email_events.created_at` **14:54:15 UTC**;
+>   canlıda olup staging'de olmayan ilk satır **15:02:58 UTC** → dump anı 14:54:15–15:02:58 UTC
+>   arasında. "+03" büyük olasılıkla saat dilimi etiketi, saat UTC (15:02 UTC) — **doğrulanmadı**;
+>   "12:02 UTC" okunuşu veriyle ÇÜRÜDÜ.
+> - **Staging DB:** `leena-staging-db` (Render, Oregon), db `leena_staging_db`, user
+>   `leena_staging_db_user`, **PostgreSQL 17.11**. Kalıcı staging. URL repo dışında, 600 izinli
+>   yerel dosyada; hiçbir yere basılmadı. Plan: ÖLÇÜLMEDİ (panel görülmedi).
+> - **Adım 1 — ölçüm:** PATH'teki `pg_restore`/`psql` 14.20 → kurulu `postgresql@17` (17.10)
+>   kullanıldı, yeni kurulum yok. Dump: DIRECTORY formatı, `toc.dat` var, sıkıştırmasız, 17.11'den
+>   alınmış; 544 TOC girdisi: **75 TABLE** (+75 TABLE DATA) · 39 SEQUENCE · 69 INDEX · 61
+>   CONSTRAINT · 84 FK · 3 FUNCTION · 2 TRIGGER · 3 EXTENSION (`pg_stat_statements`, `pgcrypto`,
+>   `uuid-ossp`). Sahip rolü `leena_v401_db_user` 533 girdide. Açık boyut 16,39 GB (15,94 GB'ı
+>   `email_queue` veri dosyası). Staging restore öncesi boş (public 0 tablo).
+> - **Adım 2 — restore:** `pg_restore --no-owner --no-privileges --jobs 4`.
+>   - Deneme 1 (19 Eki 16:01:48 UTC) WARP kapatılırken ağ değişince koptu (16:04:50, "Operation
+>     timed out" + "worker process died", rc=1) → staging yarım kaldı; CC'nin sıfırlama komutu izin
+>     sınıflandırıcısınca engellendi, **Suer sıfırladı**; boşluk yeniden doğrulandı (0 tablo).
+>   - Deneme 2: **19 Eki 16:21:10 → 22:48:26 UTC (6 sa 27 dk), rc=0, hata satırı 0, "errors
+>     ignored" YOK**, extension hatası yok. Süreyi `email_queue` COPY'si belirledi (~0,1 MB/sn
+>     sunucu tarafı). Mac uykusu `caffeinate -i -w <pg_restore pid>` ile engellendi.
+> - **Adım 3 — kanıt (21 Eki 09:35 UTC; canlı `claude_readonly` + read-only):**
+>   - Tablo **75 / 75**. Index 130/130 · trigger 2/2 · sequence 39/39 · `pg_proc` 52/52 aynı
+>     isimler · extension aynı. (`information_schema.routines` canlı 51 / staging 52: fark
+>     `pg_stat_statements_reset` — `claude_readonly` EXECUTE yetkisi olmadığı için göremiyor;
+>     nesne farkı değil.)
+>   - Satır: **75 tablonun 70'i birebir eşit; staging > canlı hiçbir tabloda YOK (ANORMAL 0).**
+>     Fark yalnız 5 tabloda, hepsi export'tan sonra canlıya eklenen satır: `email_events` +673 ·
+>     `email_unsubscribes` +23 · `email_logs` +14 · `email_queue` +14 · `visitors` +2.
+>   - Kesim filtresi (canlıda `< 2026-10-19 15:00 UTC`): `created_at`/`updated_at` kolonlu
+>     **48 tablonun 48'i staging ile eşit** (farklı beş tablonun dördü dahil); `email_logs`'ta bu kolonlar yok,
+>     `sent_at` ile 733.754 = 733.754.
+>   - İstenen tablolar (canlı / staging): `users` 1/1 · `expos` 23/23 · `contracts` 3/3 ·
+>     `contract_line_items` 2/2 · `payments` 15/15 · `commission_payouts` 8/8. `line_items`,
+>     `payouts`, `commissions` adıyla tablo BULAMADIM (karşılıkları yukarıdakiler).
+>   - En büyük 10 (canlı bayt; canlı / staging satır): `email_queue` 570.825/570.811 ·
+>     `campaign_recipients` 250.963/250.963 · `email_events` 749.592/748.919 · `email_logs`
+>     733.768/733.754 · `reactivation_tokens` 207.994/207.994 · `visitors` 112.834/112.832 ·
+>     `callcenter_leads` 41.396/41.396 · `visitor_event_status` 51.207/51.207 · `visitors_backup`
+>     22.542/22.542 · `email_campaigns` 30/30. Toplam boyut canlı 4,09 GB / staging 3,65 GB
+>     (restore şişkinliksiz yazar; satır farkı değil).
+>   - **TABAN contract 4 sr earned: canlı 342.00 (7 dilim) = staging 342.00 (7 dilim).** Sorgu
+>     koddaki `utils/commissionSlices.js` SLICE_CTES metninden üretildi (ikinci formül yok).
+>   - `schema_migrations` son kayıt iki tarafta **`028_agent_office`** (2026-07-28 13:33:03 UTC),
+>     30/30 kayıt. (029–032'nin canlı kaydı yok — bilinen açık, 8 Eki kuyruğu.)
+> - **Hüküm:** LEENA export'u staging'e eksiksiz geri yüklenebiliyor → **geri dönüş iddiası
+>   kanıtlanmış restore'a dayanıyor** (YON-11). Faz A rotasyon adımları (A1+) bu kanıtla açılabilir.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging planı (panel) · dump'ın kesin anı (pencere ölçüldü,
+>   an değil) · satır İÇERİĞİ eşitliği (yalnız sayı; checksum yok) · LIFFY ve eliza-db export'larının
+>   restore'u (kapsam dışı) · staging'e uygulama bağlayıp çalıştırma · zaman kolonsuz 26 tablonun
+>   kesim filtreli sayımı (bunlar zaten tam sayıda eşit).
+> - **Bilinçle yapılmayanlar:** canlıda yazma · credential rotasyonu · staging web servisi ·
+>   dilim 2 dalı · LIFFY/eliza restore. Açılmış geçici arşiv klasörü silindi.
+> - **Kütük:** YON-11 eklendi (Sentez madde 8). **Commit:** ell-docs defter + kütük. PUSH YOK.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ TEK YOL HARİTASI (2026-10-19 — bu kazanır; aşağıdaki sıralar tarihsel):**

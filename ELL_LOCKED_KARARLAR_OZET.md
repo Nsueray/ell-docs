@@ -196,6 +196,7 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 - **YON-08** (E, Suer 13 Eyl) — LIFFY vazgeçilebilir (kullanıcı/önemli veri yok, kapatılabilir); **LEENA çekirdektir**; LIFFY'yi değiştirmemek için LEENA'da taviz verilmez. [defter:2026-09-13 FAZ 4 DİLİM 1 CANLIDA]
 - **YON-09** (I, Sentez 13 Eyl) — Test DB'si tüm veritabanının değil **TEST EDİLEN KODUN** aynasıdır; finans testleri → finans şeması + omurga (`organizers`); email/callcenter evreni girmez; dışla-listesi gerekçeli; yeni EMS migration'ı unutulursa setup GÜRÜLTÜYLE patlar (doğru arıza biçimi, sessiz değil). [defter:2026-09-13 TEST DB SENKRONU]
 - **YON-10** (J, Suer 13 Eyl) — Çalışma kuralları: K1 tek iş · K2 çok-aşamalı iş ayrı tur · K3 Suer yazmaz, yapıştırır. Metin LEENA `CLAUDE.md`'de (tek kaynak, `dd116d5`); burada yalnız ATIF. [defter:2026-09-13 FAZ 4 PLANLAMA TURU]
+- **YON-11** (madde 8, Sentez 19 Eki) — İş birimi görev paketidir (tek dal / tek merge / tek revert / ui2 ekranı + Suer görsel onayı). Kapılar etki alanına göredir: SERBEST / KAPI-1 (merge = deploy, Suer) / KAPI-2 (auth, boot, worker, mevcut davranış-kolon-trigger, veri değiştiren migration, para tablolarında mevcut satır, sır rotasyonu — Sentez kararı). Ölçüm ve inşa aynı oturumdadır. Geri dönüş iddiası ancak kanıtlanmış restore ile geçerlidir. [defter:2026-10-21 FAZ A / A0]
 
 ### AD — adlandırma / marka
 
