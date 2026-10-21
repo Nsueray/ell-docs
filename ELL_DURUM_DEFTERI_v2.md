@@ -2901,6 +2901,8 @@
 >   register akışı (test DB'de `organizers.name` yok, YON-09) · webhook ucu anahtarsız.
 > - **Commit:** LEENA `eliza-next` `fab377d` (yerel) · ell-docs defter. PUSH YOK.
 
+> **Meta not (2026-10-21, defter kaydı değil):** LEENA `CLAUDE.md` 217,581 → 84,841 karakter (Claude Code dosya başı eşiği 150k) — versiyon geçmişi + 4 "✅ FIXED" bloğu `docs/CLAUDE_ARCHIVE.md`'ye AYNEN taşındı; kural metinleri yerinde, değişmedi · LEENA `eliza-next` `ee13814` · PUSH YOK.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-21 — bu kazanır; aşağıdakiler tarihsel):**
