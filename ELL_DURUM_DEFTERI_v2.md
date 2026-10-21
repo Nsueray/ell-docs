@@ -2786,6 +2786,55 @@
 >   eski `liffy_user` şifresiyle bağlantı denemesi (rol NOLOGIN, giriş zaten kapalı) · Render paneli.
 > - **Commit:** ell-docs defter. PUSH YOK.
 
+> ## ✅ 2026-10-21 — DİLİM 2: MERGE HAZIR
+>
+> - **Uygulanan hükümler:** B7 · B9 · B10 (033 TRUNCATE) · B32 (`display_name` adı) · SEM-03 ·
+>   SEM-04 · SEM-05 (JWT `user_id`+`name`, `ui2CurrentUser` senkron) · MOT-01 (TABAN) · K-A · K-B ·
+>   K-D (034) · K-F (035) · K-G · 033 şartı (029–032 kaydı yalnız şema iziyle) · YON-01 · YON-05 ·
+>   YON-06 · YON-07 · YON-09 · YON-10 · YON-11. LED-01..09 bu pakete DEĞMEZ (ledger kapsam dışı).
+>   Kapılar (YON-11): merge = deploy → KAPI-1 (Suer); 033/034 trigger + 035 kolon + auth →
+>   KAPI-2, kararları mevcut (033 şartı, K-D, K-F, K-A/SEM-05).
+> - **Ölçüm 1a:** yerel `main` `ae3cd4f` · `origin/main` `08f76cb` · `faz4-dilim2` `a67ab0f`
+>   (origin'de yok). Çalışma kopyası 1 M (`.DS_Store`) + 22 izlenmeyen (önceki ile aynı).
+>   `om19` worktree (başka oturum, `08f76cb`) HÂLÂ VAR — dokunulmadı.
+> - **Ölçüm 1b — 029–032 canlıda:** dördü de **UYGULANMIŞ-KAYITSIZ** (kısmi/uygulanmamış YOK → DUR
+>   tetiklenmedi). İz: 029 `email_campaigns.delivered_count` + yorum · 030 `callcenter_leads`
+>   (21 kolon) + 4 index · 031 iki `email_queue` index'i `indisvalid = true` · 032 `users` +
+>   `trg_min_one_active_owner` + fonksiyon + `sales_agents.user_id` uuid + FK + Owner satırı
+>   (hash NULL, must_change true). `schema_migrations` 30 kayıt, son `028_agent_office`;
+>   `version` PK, `applied_at` nullable → 033'ün geriye dönük kayıtları yazılabilir. 033/034 izi yok.
+> - **Ölçüm 1c:** dalda 033 + 034 vardı, ikisi idempotent (DROP…IF EXISTS / CREATE OR REPLACE /
+>   ON CONFLICT DO NOTHING), BEGIN/COMMIT içermiyor. K-F ad kolonu dosyası **YOKTU → yazıldı (035)**.
+> - **Ölçüm 1d:** dal kodu 033/034'e bağlı DEĞİL (yalnız trigger + kayıt). 035 kolonu kod
+>   `to_jsonb(u)->>'display_name'` ile okur → kolon yokken login + `/me` çalışır, ad = e-posta
+>   (test N4). → **Sıra: push/deploy ÖNCE, migration'lar SONRA tek tek** (Shell'de dosyalar da
+>   ancak deploy sonrası var).
+> - **İnşa (dal):** `origin/main` (Kenya sertifikası) dala merge (`171feb6`, çakışma yok) ·
+>   `931e709`: `035_users_display_name.sql` (nullable `display_name` + boş-metin CHECK,
+>   idempotent) · `userAuth.js` token/yanıt `name` = ad || e-posta, `/me` `name` + `display_name` ·
+>   ilk-şifre script'i: salt-okunur ön kontrol "evet"ten ÖNCE (hash dolu / Owner yok / belirsiz /
+>   035 yok → soru sormadan çıkar; kilitli kontrol yazımda aynen), Owner adı sorulur (boş = NULL),
+>   hedef satırı `session_user` + `current_user` · ui2: login kayda ad yazar, `ui2CurrentUser()`
+>   adı döner (adsız eski kayıt → e-posta, K-G), whoami "Name" satırı.
+> - **Testler (yerel test DB):** 169 → **181/181**, iki koşu + `main` üzerinde üçüncü koşu aynı
+>   (finans 120 · users 39 · line-item 11 · ui2-current-user 11). Yeni: S0/S2b ön kontrol · N1 ad
+>   yok → e-posta · N2 ad yazımı + token + `/me` · N3a/b boş ad NULL / CHECK reddi · N4/N4b kolon
+>   yokken login · N5 035 iki kez koşum · C9–C11. **TABAN T35 342.00 KAYMADI.**
+> - **ui2 yerel deneme:** test DB + Chrome (headless, Playwright): `ui2/login.html` → `whoami.html`;
+>   Name "Suer Ay" · Owner · Session User · must change No; `ui2CurrentUser()` = {name, id, email,
+>   session:'user'}; sayfa hatası 0. Yerel koşum için repo dışı sarmalayıcı: SSL'siz test pool'u +
+>   CORS yerelde açık (`index.js` izin listesi yalnız leena.app) — kod değişmedi.
+> - **main:** `ae3cd4f` → **`931e709`** (fast-forward; origin/main'in 5 önünde). COMMIT VAR, PUSH YOK.
+> - **Suer bloğu:** push (YON-06 ön kontrolü) → deploy doğrulama (login.html 200, API 401) →
+>   Shell kimlik + dosya kontrolü → 033/034/035 her biri dry-run (`BEGIN … ROLLBACK`) sonra gerçek
+>   (`-1`) → `schema_migrations` 029–035 (7 satır) → ilk-şifre script'i → leena.app/ui2 görsel onay
+>   (+ contract 4 €342.00, klasik login). Her adımda DUR koşulu ve geri dönüş satırı teslim metninde.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Render Shell'in çalışma dizini ve `psql`'in Faz A sonrası
+>   kullanıcısı (blokta 2.0/2.0b kontrolü) · ilk-şifre CLI'sinin uçtan uca koşumu (yerel Postgres
+>   SSL'siz, script SSL zorunlu; mantık birim testli) · canlıda deploy/migration · canlı tarayıcı
+>   akışı · klasik `/login.html` ile yeni kodun canlıda yan yana çalışması (yerel testte L7 kapsar).
+> - **Commit:** LEENA `main` `931e709` (yerel) · ell-docs defter. PUSH YOK (ikisi de).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ TEK YOL HARİTASI (2026-10-19 — bu kazanır; aşağıdaki sıralar tarihsel):**
