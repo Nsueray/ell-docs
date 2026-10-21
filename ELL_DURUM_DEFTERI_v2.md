@@ -3030,18 +3030,59 @@
 > - **Kapanış (YON-03):** canlı koşum sonrası CC salt-okunur teyit kaydı (`schema_migrations` 42, TABAN, sayfa 200) ayrı
 >   kayıt olarak girer; o kayda kadar Paket 1 AÇIK.
 
+> ## ✅ 2026-10-21 — PAKET 1 CANLIDA (KAPI-1 geçti)
+>
+> - **Ne yapıldı (Suer, 21 Eki):** `git push origin main` (`931e709..35cad76`, 18:22 +0300) → auto-deploy
+>   **tetiklenmedi**, Render **Manual Deploy** ile alındı. Canlı Shell `node scripts/migrate.js --dry-run` +
+>   gerçek: **5/5 (036–040)**. **Görsel onay (Suer):** ui2 contract 4 → **€342.00** · `finance-summary.html` açık.
+> - **Commit:** LEENA'da yeni commit YOK (`main` = `origin/main` = `35cad76`) · ell-docs bu kayıt.
+> - **Ölçülenler (CC salt-okunur teyit, 21 Eki 15:33 UTC, `claude_readonly`):**
+>   - `schema_migrations` **42**, son `040_expo_budgets`; 036–040 `applied_at` hepsi **15:29:59.51 UTC**
+>     (tek transaction; 035 11:19 UTC).
+>   - Ledger nesneleri VAR: `ledger_entries` · `ledger_lines` view · `expo_budget_lines` · 6 tabloda 11 trigger
+>     (staging'le aynı sayı) · `payments.account_id` + `payer`.
+>   - Tohum: org 1 → para birimi 8 (DZD, EUR, GHS, KES, MAD, NGN, TRY, USD) · gider kategorisi 6 · gider tipi 4 ·
+>     gelir kategorisi 4. Org 2 → 0 (aktif Owner yok; LED-17 kuralı).
+>   - Veri: hesap **0** · hareket 0 · transfer 0 · gider 0 · bütçe 0 · ödeme 15 (account_id/payer dolu 0) ·
+>     payout 8 → hepsi ledger dışı (LED-14).
+>   - **TABAN contract 4 sr earned = 342.00 (7 dilim)**, SLICE_CTES ile.
+>   - HTTP: `ui2/finance-summary.html` · `finance-accounts.html` · `finance-contract.html` · `/login.html` ·
+>     `ui2/login.html` · `/health` **200** · `/api/ledger/summary` ve `/currencies` token'sız **401**.
+> - **Açık nokta (ölçülen + kod):** canlıda hesap 0 → bundan sonra girilen her ödeme/payout hesapsız kaydedilir;
+>   form "Payment added" + uyarı tostu gösterir (`contract-detail.html:1059`, metin `utils/ledger.js:92`), ledger
+>   dışı sayacı büyür. Ofis varsayılan hesapları açılınca yeni ödemeler kendiliğinden ledger'a girer (LED-12);
+>   öncekiler geriye dönük girmez (LED-14).
+> - **Suer notları (Sentez'e — karar orada):** (1) gider "karşı taraf" düz metin olmamalı → tedarikçi/venue
+>   kaydı + ödeme geçmişi ekranı; Paket 1b mi, Paket 3 mü? (2) gider tipleri eksik → Zoho'nun tam listesi gerekli
+>   (LED-17: belgede BULAMADIM).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** auto-deploy'un `35cad76` için tetiklenmeme sebebi · export'un push öncesi
+>   tamamlandığı (Suer raporunda yok) · dry-run çıktısının metni (Target satırı / NOTICE'ler; rapor "5/5", tohum
+>   sayıları DB'den ölçüldü) · worker logları · canlı tarayıcıda Accounts / Transfers / Expenses / Budget /
+>   ekstre ekranları ve klasik formun Account alanı · canlı env'de `EXPECTED_DB_NAME` / `CORS_EXTRA_ORIGINS`.
+> - **Bilinçle yapılmayanlar:** canlıda hesap açma / veri girişi (Suer) · `PRE_MIGRATION_CURRENCIES` yedeğinin
+>   kaldırılması (koşulu oluştu: 040 canlıda; ayrı dilim) · `eliza-next`'in `main`'e eşitlenmesi.
+> - **Geri dönüş (YON-11):** `git revert -m 1 35cad76` yalnız kodu geri alır; 036–040 şeması kalır. Restore
+>   kanıtlanmadı.
+> - **Kapanış (YON-03):** ell-docs push → KB yeniden yükleme (Sentez + Orchestrator) → `KB @ <hash>` satırı Suer
+>   teyidiyle girer; o satıra kadar Paket 1 belge tarafında AÇIK.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-21 — bu kazanır; aşağıdakiler tarihsel):**
 >   1) ~~**Staging web servisi kurulumu**~~ → ✅ **STAGING CANLI (21 Eki)** →
->   2) **Paket 1 — Ledger** → ✅ STAGING'E HAZIR (`c15ac1f`) → ✅ staging migrate (14:02 UTC) →
->   ✅ **MAIN'E MERGE (21 Eki, `35cad76`, yerel)**; kalan: Suer canlı sırası (export → YON-06 → push main →
->   canlı Shell dry-run → migrate) → CC salt-okunur teyit kaydı (KAPI-1). Sonrası (sıra Sentez'de): Faz 4 kalan (kullanıcı yönetimi: davet,
->   aktif/pasif, yetki matrisi çekirdeği) · katalog/quote (LIFFY aktivasyon) · Zoho göçü + raporlama.
->   Paralel/sonda: v402 temizlik sayımı (L-1 sonrası) · em-dash · test zinciri.
+>   2) ~~**Paket 1 — Ledger**~~ → ✅ **CANLIDA (21 Eki 18:30, `35cad76`, KAPI-1 geçti)**; belge kapanışı
+>   `KB @ <hash>` bekliyor (YON-03) →
+>   3) **★ Paket 2 — kullanıcı yönetimi** (davet, aktif/pasif, yetki matrisi çekirdeği) — **KAPI-2** (auth);
+>   **Sentez kriter turu bekleniyor**, kriter gelmeden inşa yok. Sentez'de açık karar: karşı taraf
+>   (tedarikçi/venue) tablosu Paket 1b mi Paket 3 mü (Suer notu 1) · Zoho tam gider tipi listesi (Suer notu 2,
+>   LED-17). Sonrası (sıra Sentez'de): katalog/quote (LIFFY aktivasyon) · Zoho göçü + raporlama.
+>   Paralel/sonda: v402 temizlik sayımı (L-1 sonrası) · em-dash · test zinciri · `PRE_MIGRATION_CURRENCIES`
+>   yedeğinin kaldırılması (040 canlıda).
 >   **Faz B kuyruğu:** Anthropic API anahtarı iptal/yenileme (LIFFY `settings.local.json`'dan
 >   sızdı) · 3 izlenen `.env.backup` · LIFFY `JWT_SECRET` (K-E) · staging DB inbound
->   `0.0.0.0/0` daraltma · sırlı ölü izin kuralları · NOLOGIN kalan eski roller + tablo sahipliği (Sentez sorusu).
+>   `0.0.0.0/0` daraltma · sırlı ölü izin kuralları · NOLOGIN kalan eski roller + tablo sahipliği (Sentez sorusu) ·
+>   auto-deploy'un `35cad76`'da tetiklenmeme sebebi (ölçülmedi) · Render CLI oturumu (2026-06-17'de düştü;
+>   worker logları okunamıyor).
 >   Takvim: eski `/login.html` emekliliği en erken 2026-11-20 (SEM-05).
 > - **TEK YOL HARİTASI (2026-10-19) — TARİHSEL:** 1) Faz A ✅ (21 Eki) · 2) dilim 2 ✅ (21 Eki CANLIDA).
 >   1) Faz A (export + DB şifresi + LIFFY DB + JWT; A4 yok) → 2) dilim 2 (merge, push, 033 + 034 +
