@@ -2903,12 +2903,104 @@
 
 > **Meta not (2026-10-21, defter kaydı değil):** LEENA `CLAUDE.md` 217,581 → 84,841 karakter (Claude Code dosya başı eşiği 150k) — versiyon geçmişi + 4 "✅ FIXED" bloğu `docs/CLAUDE_ARCHIVE.md`'ye AYNEN taşındı; kural metinleri yerinde, değişmedi · LEENA `eliza-next` `ee13814` · PUSH YOK.
 
+> ## ✅ 2026-10-21 — STAGING CANLI
+>
+> - **Ne:** Render'da `leena-staging` web servisi açıldı (Suer, panel): **leena-staging.onrender.com**, dal
+>   `eliza-next` auto-deploy, DB `leena-staging-db`. Staging DB'de 033–035 uygulandı + Owner şifresi
+>   verildi (Suer, Shell). Env'de `CORS_EXTRA_ORIGINS` · `EXPECTED_DB_NAME` · `BASE_BADGE_URL` (Suer
+>   beyanı; değerler deftere YAZILMAZ). Worker servisi yok (karar 21 Eki).
+> - **Ölçülenler (CC, 21 Eki; staging salt-okunur oturum, `default_transaction_read_only=on`):**
+>   - curl: `/login.html` 200 · `/ui2/login.html` 200 · `/health` 200.
+>   - `schema_migrations` **37** kayıt, son `035_users_display_name`; 033/034/035 `applied_at` 12:22:32 UTC
+>     (üçü aynı saniye). Trigger'lar `trg_min_one_active_owner` + `_truncate` + `trg_contract_line_items_immutable` VAR.
+>   - Owner: aktif 1 · hash dolu · `password_must_change = false` · `display_name` dolu (değer basılmadı).
+>   - **CORS_EXTRA_ORIGINS etkili:** staging origin'iyle `POST /api/user-auth/login` (sahte e-posta) → **401**
+>     (CORS geçti, kimlik reddi); yabancı origin → **500 "CORS not allowed"** (canlı davranışı korunuyor).
+>   - Sunucu: PostgreSQL **17.11** (canlı **17.9** — iki ortam aynı majör, farklı minör).
+>   - TABAN contract 4 sr earned **342.00** (7 dilim) — SLICE_CTES'ten.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** `EXPECTED_DB_NAME`'in boot logundaki etkisi ve `BASE_BADGE_URL`'in link
+>   üretimindeki etkisi (Render logu / e-posta yok) · staging'de gerçek tarayıcı oturumu · Render paneli.
+> - **Bilinçle yapılmayanlar:** staging DB'ye yazma · env değerlerini okuma/yazma.
+> - **Commit:** ell-docs defter. PUSH YOK.
+
+> ## ✅ 2026-10-21 — PAKET 1: STAGING'E HAZIR
+>
+> - **Ne yapıldı (dal `eliza-next`, tek merge / tek revert):** ledger L-1…L-6 + migration runner.
+>   - **Ön iş (ayrı commit `37d6f9a`):** `docs/CLAUDE_ARCHIVE.md`'den 4 kural notu (Two-phase migration ·
+>     42703 fallback · EXPLAIN before optimizing · Attribution honesty) CLAUDE.md "Versiyon Geçmişinden
+>     Ayrılıp Burada Kalanlar"a AYNEN taşındı; arşivde `↪` işaret satırı (ee13814 deseni). Metin
+>     karşılaştırması: 4/4 birebir, arşivde kalan 0.
+>   - **P1-0 runner** `scripts/migrate.js`: kayıtsız dosyaları TEK transaction'da uygular + kaydeder;
+>     `--dry-run` = uygula + ROLLBACK + liste; yalnız PG* env (URL argümanı reddedilir); `EXPECTED_DB_NAME`
+>     varsa uyuşmazlıkta DUR; DUR koşulları LED-16. `*_rollback.sql` atlanır (013 notu).
+>   - **Migration'lar (yazıldı, ÇALIŞTIRILMADI):** 036 hesaplar + para birimleri + gider kategori/tip + gelir
+>     kategorisi · 037 tohum (ayrı dosya) · 038 `payments.account_id` + `payer` (KAPI-2) · 039 transfers +
+>     expenses + ledger_entries + `ledger_lines` view + değişmezlik/iki-bacak/tutarlılık trigger'ları ·
+>     040 expo bütçesi. Hepsi `ell.migration_runner` korumalı, kendi kaydını yazmaz.
+>   - **API** `/api/ledger/*` (para birimi, referans, hesap, ekstre, transfer, gider, bütçe, özet) ·
+>     ödeme/payout/ters kayıt/kontrat devri ledger'a bağlandı (`utils/ledger.js` tek kural) · migration
+>     ÖNCESİ şemada kod eski davranışla çalışır (ledger uçları 503, para birimi listesi eski 6'ya düşer).
+>   - **Ekran (iskelet):** ui2 Summary · Accounts · hesap ekstresi · Transfers · Expenses · Expo budget
+>     (subnav'a 5 öğe) · klasik `contract-detail.html` ödeme formuna Account + Payer + Account kolonu ·
+>     `agent-statement.html` payout formuna Account · sabit para birimi listeleri (3 kopya) tablodan okur.
+> - **Commit:** LEENA `eliza-next` `37d6f9a` (ön iş) + **`c15ac1f`** (paket). PUSH YOK.
+> - **Kütük taraması (pakete değen):** LED-01…09 · D2 · SEM-01/02/05 · TAH-01/03/04 · ODE-01/03 · MOT-01 ·
+>   PLN-05 · OFS-01 (S-16r)/03/05 · RAP-01/02/03 · YON-01/05/06/07/09/11 · B9 · B10 · B25 · AD-01.
+>   **Yeni:** LED-10…LED-17 (🔶 olanlar Sentez teyidinde).
+> - **Ölçülenler:**
+>   - **ADIM 0 (canlı `claude_readonly` + staging salt-okunur):** şema kataloğu iki tarafta 1.328 satır; fark
+>     YALNIZ 7 satırda ve hepsi aynı ifadenin farklı yazımı (varchar ARRAY cast deparse: 6 CHECK —
+>     callcenter_leads ×3, expo_partners ×1, expos ×2 — + `idx_callcenter_leads_pool` yüklemi) → anlamsal
+>     fark 0. `schema_migrations` iki tarafta 37 = 37 dosya (kayıtlı-dosyasız 0, kayıtsız dosya 0). 029–035
+>     iki tarafta kayıtlı. Ledger tablosu iki tarafta 0. `payments` 14 kolon / 15 satır (6 ters) ·
+>     `commission_payouts` 14 kolon / 8 satır (3 ters) · contracts 3 · offices 6 (TEST OFFICE pasif) ·
+>     organizers 2 (org 2: 1 expo, finans 0) · users 1. Kullanılan para birimleri: ödeme EUR/TRY/USD ·
+>     payout EUR/MAD · kontrat EUR/USD (hepsi REQ'nin 8'i içinde).
+>   - Dilim 2 ÖLÇÜLMEDİ üçlüsü: klasik `leena.app/login.html` **200** (+ `/ui2/login.html` 200, `/health` 200) ·
+>     **eski JWT:** yerel/test sırrıyla imzalı token canlıda ve staging'de **403** (contracts + `/me`), token'sız 401 ·
+>     **worker logları: ÖLÇÜLEMEDİ** — Render CLI kurulu ama oturum belirteci **2026-06-17'de süresi dolmuş**
+>     (`render login` etkileşimli, Suer).
+>   - **Testler:** taban **197/197** (CLAUDE.md "67/67" bayattı — YON-05) → **269/269** (+ledger 43 ·
+>     premig 7 · runner 16 · ui2 pages 6). PG 14.18'de 3 koşu + PG **17.10** geçici kümede 2 koşu, hepsi aynı.
+>     **TABAN 342.00 KAYMADI** (T35 + ledger üzerinden ödemeyle I5).
+>   - **Prova (CC, yerel PG17, staging şeması):** staging'den `pg_dump --schema-only` + finans tabloları
+>     (salt-okunur; organizers/users SENTETİK — kişisel veri alınmadı) → gerçek CLI: `--dry-run` "DRY-RUN OK:
+>     5" · uygula "COMMIT: 5" · tekrar "Nothing to apply". NOTICE: `037: organizer 1 → currencies +8 (REQ)
+>     +0 (in use) · expense categories +6 · expense types +4 · income categories +4` · `038: payments 15 rows`.
+>     Uygulama sonrası app: eski form gövdesi hesap/varsayılan yokken **201 + uyarı**, varsayılan hesapla 201 +
+>     hareket · TABAN 342.00 (SQL + API) · özet komisyonu = 152 agent ekstresinin toplamı (ödenecek 0.00 ·
+>     bize borçlu 1 agent 48.00) · ledger dışı 16 ödeme (15 + prova) / 8 payout. Prova DB'si silindi.
+>   - **Tarayıcı (Playwright, yerel test DB):** ui2 login (Owner) → 6 ekran + klasik ödeme formu; sayfa hatası 0;
+>     konsoldaki 5 adet 500'ün HEPSİ `/api/expos` (test DB'deki `expos` stub'ında `country_code` yok — EMS
+>     route'u, YON-09); ledger sayfaları boş expo listesine düşer. Owner kilidi UI'dan atıldı; klasik formda
+>     kasa hesabı seçilip ödeme girildi → `account_id` + 'in' hareketi.
+> - **YON-05 (çürüyen varsayımlar):** (1) CLAUDE.md test beklentisi 67/67 değil 197 idi (düzeltildi → 269).
+>   (2) "Her migration kendi kaydını yazar" — 010/011/012/016/029–032 YAZMAZ; canlıda 016 yine kayıtlı (elle),
+>   test DB'sinde kayıtsız → test DB kaydı canlıdan farklıdır; runner testi canlı şeklini (37) kurar.
+>   (3) leena-fetch 401 **ve 403**'te oturumu siler → yetki reddi 403 olamaz (Owner reddi 409, LED-15).
+>   (4) Test sunucusu PG 14.18, canlı 17.9 / staging 17.11 → suite PG17'de de koşuldu.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** migration'ların staging/canlı DB'de koşumu (Suer) · staging deploy'u ve
+>   staging tarayıcı oturumu · worker logları · eski (rotasyon öncesi) canlı JWT sırrıyla imzalı token'ın reddi
+>   (o sır CC'de yok; ölçülen: yabancı sırla imzalı token reddi) · `EXPECTED_DB_NAME`/`BASE_BADGE_URL` etkisi ·
+>   `/api/expos`'un canlıda ledger açılır listeleri için maliyeti · gerçek Zoho referans listesinin tamamı.
+> - **Bilinçle yapılmayanlar:** push / merge · canlı ve staging DB'ye yazma · migration koşumu · ledger öncesi
+>   satırlara geriye dönük hareket · `payments.currency`'ye FK/doğrulama (davranış değişikliği) ·
+>   `commission_payouts`'a hesap kolonu (hesap hareket satırında) · gelir kategorisinin ödemeye bağlanması ·
+>   iade (`refund`) akışı (tür CHECK'te var, yazan uç yok) · rol/yetki gate (Faz 4) · cila / tasarım.
+> - **🔶 Sentez'e açık sorular:** LED-10…17 teyidi · gelir kategorisi nereye bağlanır (LED-04: ayrı gelir
+>   tablosu yok) · iade + kredi bakiyesi dilimi · yeni ödemede para birimi tablo doğrulaması · kontrat
+>   devrinin ekstrede net-sıfır iki satır görünmesi kabul mü · `PRE_MIGRATION_CURRENCIES` yedeğinin
+>   kaldırılma anı (040 canlıda uygulanınca).
+> - **Teslim (Suer):** push → staging Shell `node scripts/migrate.js --dry-run` → `node scripts/migrate.js` →
+>   6 ekran görsel onayı → "merge" → canlı sırası (export → push main → canlı Shell dry-run → migrate → ui2
+>   contract 4 €342.00 + özet). Ayrıntı teslim metninde.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-21 — bu kazanır; aşağıdakiler tarihsel):**
->   1) **Staging web servisi kurulumu** (hazırlık ✅ 21 Eki, `eliza-next` `fab377d`; kalan: push + panel + Shell) →
->   2) **Paket 1 — Ledger** (L-1…L-6, her biri ui2 ekranıyla; migration runner bu pakette doğar;
->   önce Sentez kriter turu). Sonrası (sıra Sentez'de): Faz 4 kalan (kullanıcı yönetimi: davet,
+>   1) ~~**Staging web servisi kurulumu**~~ → ✅ **STAGING CANLI (21 Eki)** →
+>   2) **Paket 1 — Ledger** → ✅ **STAGING'E HAZIR (21 Eki, `eliza-next` `c15ac1f`)**; kalan: Suer push →
+>   staging Shell migrate (dry-run → gerçek) → 6 ekran görsel onayı → "merge" → canlı sırası (KAPI-1). Sonrası (sıra Sentez'de): Faz 4 kalan (kullanıcı yönetimi: davet,
 >   aktif/pasif, yetki matrisi çekirdeği) · katalog/quote (LIFFY aktivasyon) · Zoho göçü + raporlama.
 >   Paralel/sonda: v402 temizlik sayımı (L-1 sonrası) · em-dash · test zinciri.
 >   **Faz B kuyruğu:** Anthropic API anahtarı iptal/yenileme (LIFFY `settings.local.json`'dan
