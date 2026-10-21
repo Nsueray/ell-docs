@@ -3193,6 +3193,78 @@
 > - **Bilinçle yapılmayanlar:** gelir kategorisi bağlantısının kodu (Paket 1b kapsamında değil) · 037'nin 4 gelir
 >   kategorisine dokunma (hüküm "tek kategori yeter" der, mevcutları silmeyi söylemez).
 
+> ## ✅ 2026-10-21 — PAKET 1b: STAGING'E HAZIR
+>
+> - **Ne yapıldı (dal `eliza-next`, SERBEST bölge, tek merge / tek revert):** Sentez Paket 1b (P1b-1..3).
+>   - **Dal hazırlığı:** `eliza-next` → `main`'e fast-forward (`35cad76`), üzerine tek commit.
+>   - **P1b-1 tedarikçi kaydı — 041:** `suppliers` (tür supplier/venue/contractor/other · ülke `core_countries` FK ·
+>     ofis + vergi no isteğe bağlı · silinmez, pasiflenir · ad tekliği kiracı × normalize ad × ülke) +
+>     `expenses.supplier_id` (nullable, bileşik FK; mevcut satırlar NULL, counterparty metni kalır).
+>     API `/api/ledger/suppliers` (liste + ad araması · seçenekler · ekle · düzenle/pasifle · ödeme geçmişi —
+>     ledger'dan türetilir, tarih aralığı). Gider listesi/ekstre tedarikçi adını taşır; ters gider tedarikçiyi devralır.
+>   - **P1b-2 referans tohumu: BULAMADIM → migration YOK** (aşağıda ölçüm). Zoho dışa aktarım talimatı teslim
+>     metninde (Suer); liste gelince ayrı tohum dilimi (runner ile, ON CONFLICT DO NOTHING, mevcut 6/4/4 korunur).
+>   - **P1b-3 gider taslağı — 042:** `expense_drafts` (expenses alanları + source ai/import/manual + confidence notu +
+>     eksik alan listesi + tedarikçi önerisi + karar). API `/api/expense-drafts` (POST · GET liste eksik/tam süzgeci ·
+>     GET /:id · POST /:id/accept · POST /:id/reject). Kabul = `utils/ledger.js createExpense` — `POST
+>     /api/ledger/expenses` ile TEK doğrulama yolu (gider ucu bu fonksiyona taşındı, davranış ve mesajlar aynı).
+>   - **Ekran (iskelet):** gider formunda karşı taraf artık SEÇMELİ (datalist + "New supplier" kısayolu; listede
+>     olmayan metin reddedilir) · ui2 Suppliers listesi + tedarikçi detayı (geçmiş, tarih süzgeci, kayıt düzenleme) ·
+>     ui2 "Expense drafts" (eksik alanlar kırmızı, öneri seçili ama atanmış değil, Accept/Reject, elle taslak).
+>     Yeni ekranlar Finance > Expenses altında; oraya sayfa içi bağlantıyla gidilir (subnav'a öğe EKLENMEDİ —
+>     Paket 1'in 6'lı subnav testi aynen geçsin diye; subnav'a eklemek ayrı karar).
+> - **Commit:** LEENA `eliza-next` **`8119683`**. PUSH YOK.
+> - **Kütük taraması (pakete değen):** Suer ilkesi (defter, kilitli) · LED-03 · LED-08 · LED-11 · LED-16 · LED-17 ·
+>   LED-19 · YZ-01/02/03 · OFS-05 · OFS-01 (S-16r) · D2 · SEM-01 · RAP-01 · YON-07 · YON-11 (SERBEST) · TABAN.
+>   **Yeni:** LED-18 · LED-20 · LED-21 (🔶 Sentez teyidinde) · LED-16'ya not.
+> - **Ölçülenler:**
+>   - **P1b-2 ön ölçümü:** LIFFY / LEENA ayar dosyalarındaki DB bağlantıları yalnız `liffy` · `leena_v401_db` ·
+>     `leena_staging_db`'ye gider — eliza-db'ye salt-okunur yol **BULAMADIM**. eliza-legacy şema dökümü
+>     (`~/ELL_schema_dumps/eliza_schema_2026-06-02.sql`, tarihsel — YON-01): yalnız `expenses(category text, …)`
+>     — tek seviyeli serbest metin, gider tipi / gelir kategorisi tablosu YOK. eliza kodu: Zoho sync yalnız
+>     `fetchSalesOrders.js`; `ELIZA_CURRENT_STATE.md` "Expense Tracking: Not started … no active writer". → liste
+>     eliza-legacy'de olsa bile tek seviyeli olurdu; kaynak Zoho'nun kendisi. (eliza reposunun kendi `.env`'inde
+>     `DATABASE_URL` adı var — LIFFY/LEENA kapsamı dışında, KULLANILMADI.)
+>   - **Runner planı canlı + staging (salt-okunur oturum, `plan()` yalnız SELECT):** iki tarafta kayıt **42**, bekleyen
+>     TAM `041_suppliers`, `042_expense_drafts`, DUR koşulu **0**.
+>   - **Prova (yerel PG 17.10, staging şeması):** `pg_dump --schema-only` + az veri (schema_migrations, core_countries,
+>     offices, currencies, accounts, expense_categories/types, expenses, ledger_entries; organizers SENTETİK) →
+>     gerçek CLI: "DRY-RUN OK: 2" · "COMMIT: 2" · tekrar "Nothing to apply"; NOTICE `041: expenses 1 rows — supplier_id
+>     NULL on all`. Prova DB'si + dökümler silindi. ⚠️ İlk veri dökümüne `organizers` tablosu girmişti — dosya
+>     açılmadan silindi, `organizers`'sız yeniden alındı.
+>   - **Testler:** **269 → 316/316** — PG 14.18'de 3 koşu + PG 17.10 geçici kümede 1 koşu, hepsi aynı. Yeni:
+>     `test_ledger_p1b` 31 · `test_ledger_p1b_premig` 6 (yeni kod + ≤ 040 şema: gider formu 201, tedarikçi/taslak
+>     uçları 503) · `test_ui2_p1b_pages` 7 · `test_migrate` 16 → 19 (R15-R17 Paket 1b). **TABAN 342.00 KAYMADI**
+>     (T35 + I5 + P1b T35). Test DB'si üçüncü kopya `ell_comm_test_p1` (≤ 040) eklendi.
+>   - **Tarayıcı (Playwright, yerel test DB):** gider formunda listeden tedarikçi → `supplier_id` dolu gider · listede
+>     olmayan metin istemcide reddedildi · "New supplier" kısayolu yazılanı ad olarak aldı, kaydetti, seçti · tedarikçi
+>     listesi/detayı (€120.00, ödeyen hesap) · yapay zeka taslağı: 5 eksik alan kırmızı (renk `--dang`), öneri "Expo
+>     Stand Builders (TR)" seçili → kabul: gider 230.00 + `out` hareketi, taslak accepted · elle taslak → ret ·
+>     ekstrede tedarikçi adı. Sayfa hatası 0; konsoldaki 6 adet 500'ün hepsi `/api/expos` (test DB stub'ı, YON-09).
+> - **YON-05 (çürüyen varsayım):** "Var olan view 036+ dosyasında `CREATE OR REPLACE` ile genişletilebilir" — runner'ın
+>   yarım-iz denetimi (`scripts/migrate.js:95-96`) adı geçen VAR OLAN view'ı iz sayar → staging/canlıda DUR olurdu.
+>   041 view'a dokunmadan yazıldı (join), LED-16'ya not.
+> - **Test kuralı notu:** `test_migrate` R9/R12/R13 Paket 1 dosya kümesini sabit sınıyordu (036-040, "5", 42); 041-042
+>   eklenince kırıldı. Beklentiler DEĞİŞMEDİ — prova girdisi o pakete donduruldu (gerçek dosyaların ≤ 040 kopyası +
+>   runner'ın kopyası); Paket 1b geçişi YENİ testlerde (R15-R17).
+> - **⚠️ Sır olayı (bu oturum, değer YAZILMAZ):** P1b-2 için ayar dosyası taramasında maskeleme LIFFY
+>   `.claude/settings.local.json` satırlarını tam kapsamadı; oturum çıktısına Anthropic API anahtarının ve LIFFY
+>   `JWT_SECRET`'ın birer PARÇASI düştü. İkisi zaten Faz B'de (iptal/yenileme) — öncelik yükselir. Ders (yeniden):
+>   sır dosyasında yalnız `grep -l` / `-c` / ad + satır no; içerik satırı hiç basılmaz.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging/canlı deploy + migration · staging tarayıcı oturumu · eliza-db içeriği
+>   (bağlantı yok) · Zoho'daki gerçek kategori/tip listesi · aksan duyarsız eşleşme (`unaccent` yok: "Société" ↔
+>   "societe" eşleşmez — basit normalize kabul) · worker logları.
+> - **Bilinçle yapılmayanlar:** P1b-2 tohum migration'ı (veri yok) · `expo_partners` bağı · eski `counterparty`
+>   metinlerinin tedarikçiye eşlenmesi · API'de counterparty metninin reddi (mevcut davranış) · taslak düzenleme
+>   (içerik değişmez; düzeltme kabulde) · `requirePermission` / servis kullanıcısı / `is_ai` (Paket 2) · subnav öğesi ·
+>   gelir kategorisi bağlantısı · staging DB tazeleme — **Sentez şartı "her kapı öncesi taze kopya"; bu paket yalnız
+>   ekleme (yeni tablo + nullable kolon), tazeleme GEREKMEZ; Paket 2 öncesi tazelenir.**
+> - **🔶 Sentez'e:** LED-18/20/21 teyidi · Zoho adları ("OFFICE EXPENCES", "SALES COSTS") REQ'nin 6 kategorisine mi
+>   eşlenecek, yoksa Zoho adıyla mı tohumlanacak · gelir hükmü "tek kategori Contract revenue" varken Revenues
+>   modülünün Income Category listesi hâlâ istenecek mi · yeni ekranlar subnav'a eklensin mi (U1 testi 6'lı).
+> - **Teslim (Suer):** push → staging Shell `node scripts/migrate.js --dry-run` → `node scripts/migrate.js` → ekranlar →
+>   "merge" → canlı sırası (export → push main → canlı Shell dry-run → migrate). Ayrıntı teslim metninde.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-21 — bu kazanır; aşağıdakiler tarihsel):**
@@ -3200,7 +3272,9 @@
 >   2) ~~**Paket 1 — Ledger**~~ → ✅ **CANLIDA (21 Eki 18:30, `35cad76`, KAPI-1 geçti)** — **KAPALI kalır**
 >   (yeni kriterler Paket 1b'ye — Sentez EK 21 Eki); ✅ belge kapanışı **KB @ ca2bd5b** →
 >   **Sıra (Sentez EK 21 Eki, değişmedi):** Paket 1b (P1b-1..3) → Paket 2 → Paket 3 (amendment girdi).
->   3) **★ Paket 1b — P1b-1..3** (Sentez paketi 21 Eki, SERBEST bölge; dal `eliza-next`) — **İNŞADA**
+>   3) **★ Paket 1b — P1b-1..3** (Sentez paketi 21 Eki, SERBEST bölge; dal `eliza-next`) — ✅ **STAGING'E HAZIR
+>   (21 Eki, `8119683`)**; kalan: Suer push → staging migrate (dry-run → gerçek) → ekranlar → "merge" → canlı.
+>   **P1b-2 AÇIK:** eliza-db'de liste YOK (BULAMADIM) → Zoho dışa aktarımı (Suer) → ayrı tohum dilimi.
 >   - **P1b-1 tedarikçi kaydı** (`suppliers` + `expenses.supplier_id`; Suer notu 1 → Paket 1b) · **P1b-2 referans
 >     tohumu** (eliza-legacy Zoho aynası ölçülür; Suer notu 2) · **P1b-3 gider taslağı** (aşağıdaki EK metni).
 >   - **P1b-3 GİDER TASLAĞI (bot-yazılabilir giriş) — Sentez EK metni AYNEN:**
