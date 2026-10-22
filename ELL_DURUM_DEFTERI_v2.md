@@ -3542,6 +3542,36 @@
 >   girişi · ziyaretçi listesi · check-in) → **KAPI-2**. Canlıda `INVITE_ECHO` YOK → davet e-postası canlı worker'la gider.
 >   Merge sonrası finans yazmaları (ledger, payout) ui2 girişi ister.
 
+> ## ✅ 2026-10-22 — PAKET 2 CANLIDA (KAPI-1 geçti)
+>
+> - **Ne yapıldı (Suer, rapor 22 Eki 14:01):** export 13:37 ✓ (YON-12 c) · `git push origin main` `613ce8e..b75c87b`,
+>   auto-deploy tetiklendi ✓ · canlı Shell migrate dry-run + gerçek **3/3** (043–045; NOTICE `linked 1`, `18 / 5 / 30`) ·
+>   `admin-users` 200. **Staging P2-5 akışının tamamı Suer tarafından görüldü:** davet → link → şifre → Finance girişi
+>   (yalnız Finance sekmesi) → Admin "no permission" → Deactivate → giriş reddi. KAPI-2 (auth, YON-11) Sentez 22 Eki
+>   GO'suyla açılmıştı; KAPI-1 (merge = deploy) bu push'la geçti.
+> - **Commit:** LEENA canlı = `main` **`b75c87b`** (`origin/main` = `b75c87b`, ölçüldü). Bu kayıt: ell-docs.
+> - **Ölçülenler (CC, 22 Eki 11:06 UTC; DB salt-okunur oturum, HTTP oturumsuz):**
+>   - **Canlı DB:** runner `plan()` kayıt **47**, bekleyen 0, DUR 0 · 043–045 `applied_at` üçü de **11:01:14 UTC** (tek
+>     transaction) · permissions 18 · roles 5 (Owner 0 · Finance 12 · Office Manager 12 · Project 3 · Sales 3 satır;
+>     hepsi sistem, Owner şablonu tek) · role_permissions 30 · users 1, şablonu Owner · bağlı internal temsilci 1 ·
+>     `user_invites` 0 · `user_permissions` 0 · `audit_log` 0 · davet e-postası 0 · ofisli kullanıcı 0 · ledger tarafı
+>     değişmedi (expenses / accounts / ledger_entries / suppliers / expense_drafts hepsi 0).
+>   - **TABAN contract 4 sr earned = 342.00 (7 dilim)** canlı (043–045 SONRASI) ve staging, SLICE_CTES ile.
+>   - **EMS 8 dosya:** canlıda servis edilen sha256 = `main` blob'u **8/8 AYNI** ve merge öncesi tabanla aynı
+>     (`login.html` · `dashboard_new.html` · `main-panel-v2.html` · `visitorlog-paginated.html` · `qrscanner.html` ·
+>     `checkins.html` · `terminals.html` · `leena-fetch.js`), hepsi 200.
+>   - **Paket 2 ui2 dosyaları:** `admin-users` · `admin-user` · `invite` · `admin-ui.js` · `shell.js` · `login` · `whoami` ·
+>     `finance-drafts` → 200, sha256 = `main` **8/8** (yeni kod servis ediliyor).
+>   - **Uçlar:** `/api/users` ve `/api/users/options` token'sız **401** · `/api/user-auth/invite/check` sahte token'la **400**
+>     genel mesaj ("This invitation link is invalid or has expired…") · `/health` 200 · `ui2/finance-accounts.html` TTFB
+>     0.30 / 0.27 / 0.27 s (merge öncesi ADIM 0 medyanı 0.28–0.40).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** **Yaprak'ın eski `/login.html` girişi ve EMS ekranlarının oturumlu davranışı** — Suer'in
+>   raporunda yok; CC'de organizer kimliği yok (yalnız dosya + oturumsuz uç ölçüldü; klasik token'ın DB'ye gitmediği
+>   testte) · canlıda davet / Finance kullanıcısıyla uçtan uca akış (yalnız staging'de) · canlı worker'ın davet e-postasını
+>   gönderdiği (canlıda henüz davet yok) · staging worker durumu (davet satırı `pending`) · deploy ve worker logları.
+> - **Bilinçle yapılmayanlar:** canlıya yazma · deneme daveti · staging deneme izinin temizlenmesi · `eliza-next`'in
+>   `main`'e eşitlenmesi (sonraki dalın ilk adımı) · `audit/sayfa-envanteri` (`9e17f69`, origin'de YOK — push Suer'de).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-22 — bu kazanır; aşağıdakiler tarihsel):**
@@ -3577,11 +3607,14 @@
 >     - Kütük: LED-19 "yapay zeka giderde yalnız taslak yazar; gider insan kabulüyle doğar (YZ-01 +
 >       LED-08 birlikte)".
 >   - **P1b-3 tabanı (ölçüldü):** [defter:2026-10-21 TEKNOLOJİ GÜNCELLEME TURU] → "P1b-3 tabanı" (5 madde).
->   4) **★ Paket 2 — kullanıcı yönetimi** (davet, aktif/pasif, yetki matrisi çekirdeği) — **KAPI-2** (auth);
->   **kriterler geldi (Sentez 21 Eki + EK 21 Eki + 22 Eki GO) → ✅ STAGING'E HAZIR (22 Eki, `ce670ab`) → ✅ staging
->   043–045 + P2-5 izi → ✅ MAIN'E MERGE (22 Eki, `b75c87b`)**; kalan: canlı sırası (export ZORUNLU, YON-12 c) → CC canlı
->   ölçümü + Suer bakışı (Yaprak'ın eski girişi, EMS) → KAPI-2; aynı dalda
->   Suppliers + Drafts alt menüye (K-G kuralıyla). **Eklemeler (Sentez EK 21 Eki):**
+>   4) ~~**Paket 2 — kullanıcı yönetimi**~~ (davet, aktif/pasif, yetki matrisi çekirdeği) — **KAPI-2** (auth);
+>   kriterler (Sentez 21 Eki + EK 21 Eki + 22 Eki GO) → ✅ STAGING'E HAZIR (`ce670ab`) → ✅ staging 043–045 + P2-5 →
+>   ✅ MAIN'E MERGE (`b75c87b`) → ✅ **CANLIDA (22 Eki 14:01, KAPI-1 geçti)**; aynı dalda Suppliers + Drafts alt menüye
+>   (K-G kuralıyla). **Açık:** YET-01..09 🔶 Sentez teyidi (kapanış brief'i 22 Eki) · Yaprak'ın eski girişi ölçülmedi.
+>   **★ SIRA (Suer 22 Eki — bu kazanır):** **UI-0** (Sentez kriter turu bekleniyor; girdi: SAYFA ENVANTERİ
+>   [defter:2026-10-22 SAYFA ENVANTERİ] + UX çıktısı — "UI-0" tanımı ve "UX çıktısı" defterde/kütükte **BULAMADIM**,
+>   kriter turunda gelecek) → **Faz B başı** (Anthropic API anahtarı iptal/yenileme + LIFFY `JWT_SECRET`, K-E) →
+>   **Paket 3**. P1b-2 Zoho CSV gelince araya girer (değişmedi). **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
 >     permissions'a "field" eylemi eklenmez, tablo genişletilebilir kalır.
