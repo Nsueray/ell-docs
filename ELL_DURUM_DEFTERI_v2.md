@@ -3492,6 +3492,56 @@
 >   kopyasındaki değişikliklere dokunma · belgelerdeki terminal anahtarlı URL'leri rapora kopyalama · SIRADAKİ bloğu
 >   güncellenmedi (tek ekleme kuralı).
 
+> ## ✅ 2026-10-22 — PAKET 2: MAIN'E MERGE (canlı sırası Suer'de)
+>
+> - **Ne yapıldı:** Suer "merge" dedi → yerel `main`'e `git merge --no-ff eliza-next` → **`b75c87b`**
+>   (ebeveynler `613ce8e` = origin/main · `ce670ab`). Gelen yalnız `ce670ab` (043–045 + `/api/users` + davet +
+>   `requirePermission` kapıları + audit + 3 yeni ui2 ekranı). **Tek revert:** `git revert -m 1 b75c87b`. Merge ağacı =
+>   `ce670ab` ağacı (birebir, `rev-parse ^{tree}` = `ca652e2`). İlk deneme (`git merge -F -`) "could not read file '-'"
+>   ile merge YAPMADAN durdu (main `613ce8e`'de kaldı); mesaj dosyayla verilip tekrarlandı. Çalışma kopyası ardından
+>   `eliza-next`'e geri alındı (ağaç aynı → dosya değişmedi).
+> - **Commit:** LEENA `main` **`b75c87b`** (yerel; origin/main'in 2 önünde). **PUSH YOK.**
+> - **Ölçülenler (CC, bu tur; DB'ler salt-okunur oturum):**
+>   - `origin/eliza-next` = `ce670ab` (Suer push etti) · `origin/main` = `613ce8e`.
+>   - **Staging:** runner `plan()` kayıt **47**, bekleyen 0, DUR 0 · 043–045 `applied_at` üçü de **2026-10-22 09:57:55 UTC**
+>     (tek transaction) · permissions 18 · roles 5 · role_permissions 30 · users 2 (ikisi de şablonlu) · bağlı internal
+>     temsilci 1 · `user_permissions` 0 · `ui2/admin-users.html` + `invite.html` **200** · `/api/users` token'sız **401**.
+>   - **P2-5 izi (staging `audit_log`, 3 satır, aynı hedef, aktörlü):** `user.invite` 10:02:14 → `user.invite_accept`
+>     10:03:06 → `user.deactivate` 10:04:46 (sebepli; diff `is_active` + `invites_revoked`). Davetli kullanıcı: Finance ·
+>     Turkey · şifreli · **pasif**. Davet satırı: kullanılmış, iptal yok, son geçerlilik 25 Eki 10:02 (72 saat).
+>   - **Staging davet e-postası `email_queue`'da `pending`** (10:02:14'ten beri; 10:21 UTC'de hâlâ, `sent_at` boş) → e-posta
+>     gitmedi; link ekrandan/logdan (INVITE_ECHO) alınmış. Staging'de kuyruğu tüketen worker yok ya da çalışmıyor —
+>     hangisi ÖLÇÜLMEDİ. Satırdaki link kullanılmış token taşır (açılırsa genel hata).
+>   - **Canlı:** runner `plan()` kayıt **44**, bekleyen TAM `043_user_invites`, `044_permissions`, `045_audit_log`, DUR 0 ·
+>     users 1 (aktif Owner 1) · tek internal e-posta eşleşmesi 1, çoklu 0 → beklenen NOTICE `043: … linked 1 …` ·
+>     `leena.app/ui2/admin-users.html` ve `/api/users` **404** (beklenen: push öncesi) · `ui2/finance-drafts.html` 200 ·
+>     `/health` 200.
+>   - **EMS tabanı (push öncesi; canlı sonrası aynı ölçüm tekrarlanır):** canlıda servis edilen 8 dosyanın sha256'sı =
+>     `main` blob'u (8/8 AYNI): `login.html` · `dashboard_new.html` · `main-panel-v2.html` · `visitorlog-paginated.html` ·
+>     `qrscanner.html` · `checkins.html` · `terminals.html` · `leena-fetch.js`. Merge'ün `public/` değişikliği YALNIZ
+>     `ui2/` (4 yeni + 6 değişen); `dualAuth` · `terminalAuth` · EMS route'ları · `contracts` · `payments` · `routes/auth.js`
+>     değişmedi (git diff). EMS'in yoluna giren tek dosya `middleware/authMiddleware.js` (klasik token DB'ye gitmez — test).
+>   - **TABAN contract 4 sr earned = 342.00 (7 dilim)** staging (043–045 SONRASI) ve canlıda, SLICE_CTES ile.
+>   - **Testler `main` üzerinde:** **379/379**, ❌ 0 (tek koşu, 20 suite; T35 ×2 + M01a + I5 342.00).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Suer'in P2-5 ekran gözlemleri (yalnız "merge" geldi) — Finance'ta yalnız Finance
+>   sekmesi, Admin'de "no permission", pasif sonrası oturumun düşmesi ve girişin reddi: DB'de giriş izi tutulmaz
+>   (`users`'ta son giriş kolonu yok), audit yalnız 3 olayı gösterir · staging `INVITE_ECHO` env değeri (panel) · staging
+>   worker durumu · canlı deploy + migration · Yaprak'ın eski girişi (canlı sonrası) · worker logları.
+> - **Bilinçle yapılmayanlar:** push (`main` ve ell-docs) · canlı DB'ye yazma / migration koşumu · staging deneme izinin
+>   (pasif Finance kullanıcısı, `pending` e-posta satırı) temizlenmesi — Suer'in kararı · `eliza-next`'in `main`'e
+>   eşitlenmesi (sonraki dal işinin ilk adımı: `git merge --ff-only main`) · `audit/sayfa-envanteri` dalı (paralel oturum;
+>   dokunulmadı).
+> - **Teslim (Suer, canlı sırası):** **export (Render panel) — ZORUNLU, YON-12 (c)** (DUR: export bitmeden push yok) →
+>   YON-06 (status.render.com + takvim) → `git push origin main` → Live (~60 sn, G43; auto-deploy tetiklenmezse Manual
+>   Deploy). Arada (deploy → migrate penceresi) kapılar eski davranışta, `/api/users` + davet uçları 503 "not migrated",
+>   `/me` eski şekil (`test_users_premig`) → canlı Shell `node scripts/migrate.js --dry-run` (DUR: `database` ≠
+>   `leena_v401_db` / "DUR —" / FAILED / NOTICE farklı; beklenen `043: … users 1, linked 1, ambiguous … 0, no match 0` ·
+>   `044: permissions 18, roles 5, role_permissions 30, users with role 1 …` · "DRY-RUN OK: 3") → `node scripts/migrate.js`
+>   → "COMMIT: 3" → tekrar "Nothing to apply". Shell açıkken deploy yok (G46). Sonra **CC ölçer** (plan 47/0 · TABAN ·
+>   EMS 8 dosya sha256 = `main` · `/api/users` 401 · ui2 sayfaları 200) + **Suer bakar** (Yaprak'ın eski `/login.html`
+>   girişi · ziyaretçi listesi · check-in) → **KAPI-2**. Canlıda `INVITE_ECHO` YOK → davet e-postası canlı worker'la gider.
+>   Merge sonrası finans yazmaları (ledger, payout) ui2 girişi ister.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-22 — bu kazanır; aşağıdakiler tarihsel):**
@@ -3528,8 +3578,9 @@
 >       LED-08 birlikte)".
 >   - **P1b-3 tabanı (ölçüldü):** [defter:2026-10-21 TEKNOLOJİ GÜNCELLEME TURU] → "P1b-3 tabanı" (5 madde).
 >   4) **★ Paket 2 — kullanıcı yönetimi** (davet, aktif/pasif, yetki matrisi çekirdeği) — **KAPI-2** (auth);
->   **kriterler geldi (Sentez 21 Eki + EK 21 Eki + 22 Eki GO) → ✅ STAGING'E HAZIR (22 Eki, `ce670ab`)**; kalan: push →
->   staging migrate → `INVITE_ECHO=1` → P2-5 kapanış ekranı → "merge" → canlı (export ZORUNLU, YON-12 c); aynı dalda
+>   **kriterler geldi (Sentez 21 Eki + EK 21 Eki + 22 Eki GO) → ✅ STAGING'E HAZIR (22 Eki, `ce670ab`) → ✅ staging
+>   043–045 + P2-5 izi → ✅ MAIN'E MERGE (22 Eki, `b75c87b`)**; kalan: canlı sırası (export ZORUNLU, YON-12 c) → CC canlı
+>   ölçümü + Suer bakışı (Yaprak'ın eski girişi, EMS) → KAPI-2; aynı dalda
 >   Suppliers + Drafts alt menüye (K-G kuralıyla). **Eklemeler (Sentez EK 21 Eki):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
