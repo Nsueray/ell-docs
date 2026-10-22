@@ -3339,6 +3339,32 @@
 >   teyidiyle girer; o satıra kadar Paket 1b belge tarafında AÇIK. **P1b-2 AÇIK** (Zoho CSV → ayrı tohum dilimi) ·
 >   LED-18 / LED-20 / LED-21 🔶 Sentez teyidinde.
 
+> ## ✅ 2026-10-22 — PAKET 1b BELGE KAPANIŞI (KB @ d638987) + SENTEZ KARARLARI
+>
+> - **Ne yapıldı:** (1) YON-03 kapanışı: **KB @ d638987** (Orchestrator + Sentez) → Paket 1b belge tarafı KAPALI.
+>   (2) Kütük: LED-18 / LED-20 / LED-21 🔶 kaldırıldı → "Sentez teyitli 22 Eki". (3) Sentez'in Paket 1b kapanış
+>   brief'ine kararları (aşağıda); export kuralı kütüğe **YON-12**; LED-17'ye not. (4) ★SIRADAKİ güncellendi.
+> - **Sentez kararları (22 Eki):**
+>   - **P1b-2 tohumu ZOHO ADIYLA:** büyük harf normalize edilir, yazım hatası düzeltilir ("EXPENCES" → "EXPENSES");
+>     çakışmada Zoho kazanır; mevcut 6 kategori Zoho adlarıyla eşleştirilir, **ID korunur**.
+>   - **Gelir kategorisi tohumlanır (15):** ödemede zorunlu DEĞİL, varsayılan "Contract revenue". (21 Eki'deki
+>     "tek kategori yeter" hükmünü genişletir.)
+>   - **Suppliers + Drafts Finance alt menüsüne girer** — K-G kuralıyla (Sentez 19 Eki: eski davranış değişmez,
+>     ekleme geriye uyumlu ve testli); Paket 2'de aynı dalda (4c).
+>   - **Export kuralı → YON-12:** canlı push öncesi yeni export (a) veri değiştiren/silen migration · (b) son export
+>     >24 saat · (c) KAPI-2 paketlerinde HER ZAMAN; PITR yedek değildir, kanıtlı restore yedektir.
+>   - **Faz B önceliği kabul:** Paket 2 SONRASI, Paket 3 ÖNCESİ.
+>   - **Tasarım fazı kuyruğu:** UI düzeni (sayfa içi bağlantılar menüye — iskelet sonrası) · sayfa geçiş yavaşlığı
+>     (ölçülecek).
+>   - **P1b-2 tohum dilimi** Suer CSV'yi getirince sıraya ARAYA GİRER.
+> - **Commit:** ell-docs bu kayıt (Paket 2 ön işi; ayrı küçük commit). PUSH YOK.
+> - **Ölçülenler:** `origin/main` = `d638987` (`git fetch`) · kütükte 🔶 kalan **0** · YON'da son numara YON-11 → yeni
+>   YON-12.
+> - **⚠️ ÖLÇÜLMEDİ:** KB yüklemesinin kendisi (Suer/Orchestrator beyanı) · Zoho'daki 15 gelir kategorisinin adları
+>   (CSV bekleniyor).
+> - **Bilinçle yapılmayanlar:** tohum migration'ı (CSV yok) · mevcut 6 kategorinin yeniden adlandırılması (tohum
+>   dilimiyle; mevcut satır güncellemesi → YON-11'e göre KAPI-2 değerlendirmesi o dilimde).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-22 — bu kazanır; aşağıdakiler tarihsel):**
@@ -3348,8 +3374,10 @@
 >   **Sıra (Sentez EK 21 Eki, değişmedi):** Paket 1b (P1b-1..3) → Paket 2 → Paket 3 (amendment girdi).
 >   3) ~~**Paket 1b — P1b-1..3**~~ (Sentez paketi 21 Eki, SERBEST bölge; dal `eliza-next`) — ✅ STAGING'E HAZIR
 >   (21 Eki, `8119683`) → ✅ STAGING'DE (22 Eki 07:49 UTC) → ✅ MAIN'E MERGE (`613ce8e`) → ✅ **CANLIDA (22 Eki
->   11:19, KAPI-1 geçti)** — P1b-1 + P1b-3 **KAPALI**; belge kapanışı `KB @ <hash>` bekliyor.
->   **P1b-2 AÇIK:** eliza-db'de liste YOK (BULAMADIM) → Zoho CSV (Suer) → ayrı tohum dilimi (runner ile).
+>   11:19, KAPI-1 geçti)** — P1b-1 + P1b-3 **KAPALI**; ✅ belge kapanışı **KB @ d638987**.
+>   **P1b-2 AÇIK:** eliza-db'de liste YOK (BULAMADIM) → Zoho CSV (Suer) → ayrı tohum dilimi (runner ile); **Suer
+>   CSV'yi getirince sıraya ARAYA GİRER** (Sentez 22 Eki); tohum ZOHO ADIYLA, mevcut 6 kategori ID'si korunur, gelir
+>   kategorisi 15 — [defter:2026-10-22 PAKET 1b BELGE KAPANIŞI].
 >   - **P1b-1 tedarikçi kaydı** (`suppliers` + `expenses.supplier_id`; Suer notu 1 → Paket 1b) · **P1b-2 referans
 >     tohumu** (eliza-legacy Zoho aynası ölçülür; Suer notu 2) · **P1b-3 gider taslağı** (aşağıdaki EK metni).
 >   - **P1b-3 GİDER TASLAĞI (bot-yazılabilir giriş) — Sentez EK metni AYNEN:**
@@ -3373,7 +3401,8 @@
 >       LED-08 birlikte)".
 >   - **P1b-3 tabanı (ölçüldü):** [defter:2026-10-21 TEKNOLOJİ GÜNCELLEME TURU] → "P1b-3 tabanı" (5 madde).
 >   4) **★ Paket 2 — kullanıcı yönetimi** (davet, aktif/pasif, yetki matrisi çekirdeği) — **KAPI-2** (auth);
->   **Sentez kriter turu bekleniyor**, kriter gelmeden inşa yok. **Eklemeler (Sentez EK 21 Eki):**
+>   **kriterler geldi (Sentez 21 Eki + EK 21 Eki + 22 Eki GO) → İNŞADA (22 Eki, dal `eliza-next`)**; aynı dalda
+>   Suppliers + Drafts alt menüye (K-G kuralıyla). **Eklemeler (Sentez EK 21 Eki):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
 >     permissions'a "field" eylemi eklenmez, tablo genişletilebilir kalır.
@@ -3390,13 +3419,15 @@
 >   **Sentez kuyruğu:** olay kaydı (B6) sırası — Faz 4 kalan mı, ayrı paket mi (SAT-03, eşikli uyarılar, Owner
 >   aktivite ekranı buna bağlı) · REQ/YZ-03 "Package 1 criterion" ↔ EK çelişkisi (KB okununca) · gelir
 >   kategorisi → ledger income bağlantısının paketi (hüküm 21 Eki: tek kategori "Contract revenue") · iade +
->   kredi bakiyesi R11 Paket 3 sonrası · **Paket 1b soruları (22 Eki):** LED-18/20/21 teyidi · Zoho kategori
->   adları ("OFFICE EXPENCES", "SALES COSTS") REQ'nin 6 kategorisine mi eşlenir, Zoho adıyla mı tohumlanır ·
->   Revenues / Income Category listesi gerekli mi · yeni ekranlar Finance alt menüsüne eklensin mi ·
->   **export kuralı önerisi** (22 Eki, Suer — [defter:2026-10-22 PAKET 1b CANLIDA]).
+>   kredi bakiyesi R11 Paket 3 sonrası · ~~Paket 1b soruları (22 Eki)~~ → ✅ cevaplandı 22 Eki (LED-18/20/21
+>   teyitli · tohum Zoho adıyla · gelir 15 · alt menü (K-G kuralıyla) · export → YON-12) — [defter:2026-10-22 PAKET 1b BELGE
+>   KAPANIŞI].
+>   **Tasarım fazı kuyruğu (Sentez 22 Eki):** UI düzeni (sayfa içi bağlantılar menüye — iskelet sonrası) · sayfa
+>   geçiş yavaşlığı (ölçülecek).
 >   Paralel/sonda: v402 temizlik sayımı (L-1 sonrası) · em-dash · test zinciri · `PRE_MIGRATION_CURRENCIES`
 >   yedeğinin kaldırılması (040 canlıda).
->   **Faz B kuyruğu:** **ÖNCELİKLİ (21 Eki oturumunda parçaları çıktıya düştü):** Anthropic API anahtarı
+>   **Faz B kuyruğu (zaman: Paket 2 SONRASI, Paket 3 ÖNCESİ — Sentez 22 Eki):** **ÖNCELİKLİ (21 Eki oturumunda
+>   parçaları çıktıya düştü):** Anthropic API anahtarı
 >   iptal/yenileme (LIFFY `settings.local.json`'dan sızdı) · LIFFY `JWT_SECRET` (K-E) → sonra: 3 izlenen
 >   `.env.backup` · staging DB inbound
 >   `0.0.0.0/0` daraltma · sırlı ölü izin kuralları · NOLOGIN kalan eski roller + tablo sahipliği (Sentez sorusu) ·
