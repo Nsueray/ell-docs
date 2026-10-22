@@ -3302,17 +3302,54 @@
 > - **Kapanış (YON-03):** canlı koşum sonrası CC salt-okunur teyit kaydı (`schema_migrations` 44, TABAN, sayfa 200)
 >   ayrı kayıt olarak girer; o kayda kadar Paket 1b AÇIK. P1b-2 ayrıca AÇIK.
 
+> ## ✅ 2026-10-22 — PAKET 1b CANLIDA (KAPI-1 geçti)
+>
+> - **Ne yapıldı (Suer, 22 Eki):** `git push origin main` (`35cad76..613ce8e`) → auto-deploy **tetiklendi**
+>   (`35cad76`'nın aksine), `finance-drafts.html` 200. Canlı Shell `node scripts/migrate.js --dry-run` + gerçek:
+>   **2/2 (041, 042)**. Staging'de taslak **Kabul** → gider #3 doğdu (Suer gördü). **Export ATLANDI — Suer kararı:**
+>   21 Eki 17:54 export + PITR 7 gün var; migration yalnız ekleme (yeni tablo + nullable kolon).
+> - **Commit:** LEENA'da yeni commit YOK (`main` = `origin/main` = `613ce8e`) · ell-docs bu kayıt.
+> - **Ölçülenler (CC salt-okunur teyit, 22 Eki; canlı `claude_readonly`, staging salt-okunur oturum):**
+>   - `origin/main` = `613ce8e` (yerel reflog: push 2026-10-22 11:16:41 +0300).
+>   - **Canlı:** runner `plan()` kayıt **44**, bekleyen 0, DUR 0 · 041–042 `applied_at` ikisi de **08:19:31 UTC**
+>     (tek transaction). Nesneler staging'le aynı: `suppliers` + `expense_drafts` üzerinde 4 trigger ·
+>     `expenses.supplier_id` VAR · 4 indeks · `core_countries` 230.
+>   - Canlı veri: tedarikçi 0 · gider 0 · taslak 0 · hareket 0 · hesap 0 (canlıda deneme girişi yok).
+>   - **TABAN contract 4 sr earned = 342.00 (7 dilim)** canlı + staging, SLICE_CTES ile.
+>   - HTTP (leena.app): `ui2/finance-drafts.html` · `finance-suppliers.html` · `finance-supplier.html` ·
+>     `finance-expenses.html` (`sup-list` VAR — seçmeli form servis ediliyor) · `finance-summary.html` · `/health`
+>     **200** · `/api/expense-drafts` ve `/api/ledger/suppliers` token'sız **401**.
+>   - **Staging Kabul izi:** taslak 1 (manual) `accepted`, `expense_id` = 3, `reviewed_at` 08:12 UTC → gider 3
+>     tedarikçili + `out` hareketi (aynı dakika). Staging toplam: tedarikçi 1 · gider 3 (2'si tedarikçili) · hareket 3.
+> - **🔶 Export kuralı önerisi (Suer → Sentez; KURAL DEĞİL, karar bekliyor):** canlı push öncesi yeni export yalnız
+>   (a) veri değiştiren / silen migration varsa ya da (b) son export 24 saatten eskiyse. Bugüne kadarki teslim
+>   metni "DUR: export bitmeden push yok" diyordu. Bu tur öneriye uyuyor: 041–042 yalnız ekleme; 21 Eki 17:54
+>   → 22 Eki 11:16 +0300 push arası 24 saatten kısa (17:54 hangi saat diliminde olursa olsun).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** export zamanı ve PITR süresi (Suer beyanı; Render paneli CC'ye kapalı) ·
+>   canlı dry-run çıktısının metni (rapor "2/2"; Target satırı / NOTICE görülmedi) · auto-deploy'un bu kez
+>   tetiklenip `35cad76`'da tetiklenmeme sebebi (Faz B, Render event log) · staging'de taslak **Ret** akışı
+>   (rejected 0; yerelde tarayıcıyla geçti, 21 Eki kaydı) · canlı tarayıcıda yeni ekranlar ve ui2 contract 4
+>   €342.00 görünümü (TABAN DB'den ölçüldü) · worker logları.
+> - **Bilinçle yapılmayanlar:** canlıda tedarikçi / gider / taslak girişi (Suer) · staging deneme verisinin
+>   temizliği (tedarikçi pasiflenir, taslak reddedilir — silinmez) · `eliza-next`'in `main`'e eşitlenmesi (sonraki
+>   dal işinin ilk adımı: `git merge --ff-only main`) · P1b-2 tohumu (Zoho CSV bekleniyor).
+> - **Geri dönüş (YON-11):** `git revert -m 1 613ce8e` yalnız kodu geri alır; 041–042 şeması kalır. Restore
+>   kanıtlanmadı.
+> - **Kapanış (YON-03):** ell-docs push → KB yeniden yükleme (Sentez + Orchestrator) → `KB @ <hash>` satırı Suer
+>   teyidiyle girer; o satıra kadar Paket 1b belge tarafında AÇIK. **P1b-2 AÇIK** (Zoho CSV → ayrı tohum dilimi) ·
+>   LED-18 / LED-20 / LED-21 🔶 Sentez teyidinde.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
-> - **★ SIRADAKİ (2026-10-21 — bu kazanır; aşağıdakiler tarihsel):**
+> - **★ SIRADAKİ (2026-10-22 — bu kazanır; aşağıdakiler tarihsel):**
 >   1) ~~**Staging web servisi kurulumu**~~ → ✅ **STAGING CANLI (21 Eki)** →
 >   2) ~~**Paket 1 — Ledger**~~ → ✅ **CANLIDA (21 Eki 18:30, `35cad76`, KAPI-1 geçti)** — **KAPALI kalır**
 >   (yeni kriterler Paket 1b'ye — Sentez EK 21 Eki); ✅ belge kapanışı **KB @ ca2bd5b** →
 >   **Sıra (Sentez EK 21 Eki, değişmedi):** Paket 1b (P1b-1..3) → Paket 2 → Paket 3 (amendment girdi).
->   3) **★ Paket 1b — P1b-1..3** (Sentez paketi 21 Eki, SERBEST bölge; dal `eliza-next`) — ✅ **STAGING'E HAZIR
->   (21 Eki, `8119683`)** → ✅ **STAGING'DE (041–042, 22 Eki 07:49 UTC)** → ✅ **MAIN'E MERGE (22 Eki, `613ce8e`)**;
->   kalan: canlı sırası (Suer: export → push main → canlı migrate) → CC canlı teyit kaydı.
->   **P1b-2 AÇIK:** eliza-db'de liste YOK (BULAMADIM) → Zoho dışa aktarımı (Suer) → ayrı tohum dilimi.
+>   3) ~~**Paket 1b — P1b-1..3**~~ (Sentez paketi 21 Eki, SERBEST bölge; dal `eliza-next`) — ✅ STAGING'E HAZIR
+>   (21 Eki, `8119683`) → ✅ STAGING'DE (22 Eki 07:49 UTC) → ✅ MAIN'E MERGE (`613ce8e`) → ✅ **CANLIDA (22 Eki
+>   11:19, KAPI-1 geçti)** — P1b-1 + P1b-3 **KAPALI**; belge kapanışı `KB @ <hash>` bekliyor.
+>   **P1b-2 AÇIK:** eliza-db'de liste YOK (BULAMADIM) → Zoho CSV (Suer) → ayrı tohum dilimi (runner ile).
 >   - **P1b-1 tedarikçi kaydı** (`suppliers` + `expenses.supplier_id`; Suer notu 1 → Paket 1b) · **P1b-2 referans
 >     tohumu** (eliza-legacy Zoho aynası ölçülür; Suer notu 2) · **P1b-3 gider taslağı** (aşağıdaki EK metni).
 >   - **P1b-3 GİDER TASLAĞI (bot-yazılabilir giriş) — Sentez EK metni AYNEN:**
@@ -3335,7 +3372,7 @@
 >     - Kütük: LED-19 "yapay zeka giderde yalnız taslak yazar; gider insan kabulüyle doğar (YZ-01 +
 >       LED-08 birlikte)".
 >   - **P1b-3 tabanı (ölçüldü):** [defter:2026-10-21 TEKNOLOJİ GÜNCELLEME TURU] → "P1b-3 tabanı" (5 madde).
->   4) **Paket 2 — kullanıcı yönetimi** (davet, aktif/pasif, yetki matrisi çekirdeği) — **KAPI-2** (auth);
+>   4) **★ Paket 2 — kullanıcı yönetimi** (davet, aktif/pasif, yetki matrisi çekirdeği) — **KAPI-2** (auth);
 >   **Sentez kriter turu bekleniyor**, kriter gelmeden inşa yok. **Eklemeler (Sentez EK 21 Eki):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
@@ -3353,13 +3390,18 @@
 >   **Sentez kuyruğu:** olay kaydı (B6) sırası — Faz 4 kalan mı, ayrı paket mi (SAT-03, eşikli uyarılar, Owner
 >   aktivite ekranı buna bağlı) · REQ/YZ-03 "Package 1 criterion" ↔ EK çelişkisi (KB okununca) · gelir
 >   kategorisi → ledger income bağlantısının paketi (hüküm 21 Eki: tek kategori "Contract revenue") · iade +
->   kredi bakiyesi R11 Paket 3 sonrası.
+>   kredi bakiyesi R11 Paket 3 sonrası · **Paket 1b soruları (22 Eki):** LED-18/20/21 teyidi · Zoho kategori
+>   adları ("OFFICE EXPENCES", "SALES COSTS") REQ'nin 6 kategorisine mi eşlenir, Zoho adıyla mı tohumlanır ·
+>   Revenues / Income Category listesi gerekli mi · yeni ekranlar Finance alt menüsüne eklensin mi ·
+>   **export kuralı önerisi** (22 Eki, Suer — [defter:2026-10-22 PAKET 1b CANLIDA]).
 >   Paralel/sonda: v402 temizlik sayımı (L-1 sonrası) · em-dash · test zinciri · `PRE_MIGRATION_CURRENCIES`
 >   yedeğinin kaldırılması (040 canlıda).
->   **Faz B kuyruğu:** Anthropic API anahtarı iptal/yenileme (LIFFY `settings.local.json`'dan
->   sızdı) · 3 izlenen `.env.backup` · LIFFY `JWT_SECRET` (K-E) · staging DB inbound
+>   **Faz B kuyruğu:** **ÖNCELİKLİ (21 Eki oturumunda parçaları çıktıya düştü):** Anthropic API anahtarı
+>   iptal/yenileme (LIFFY `settings.local.json`'dan sızdı) · LIFFY `JWT_SECRET` (K-E) → sonra: 3 izlenen
+>   `.env.backup` · staging DB inbound
 >   `0.0.0.0/0` daraltma · sırlı ölü izin kuralları · NOLOGIN kalan eski roller + tablo sahipliği (Sentez sorusu) ·
->   auto-deploy'un `35cad76`'da tetiklenmeme sebebi (Render event log'dan ölçülecek; Sentez 21 Eki) ·
+>   auto-deploy'un `35cad76`'da tetiklenmeme sebebi (Render event log'dan ölçülecek; Sentez 21 Eki; `613ce8e`'de
+>   tetiklendi, 22 Eki) ·
 >   Render CLI yenileme (oturum 2026-06-17'de düştü; worker logları okunamıyor; Sentez 21 Eki).
 >   Takvim: eski `/login.html` emekliliği en erken 2026-11-20 (SEM-05).
 > - **TEK YOL HARİTASI (2026-10-19) — TARİHSEL:** 1) Faz A ✅ (21 Eki) · 2) dilim 2 ✅ (21 Eki CANLIDA).
