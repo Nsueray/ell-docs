@@ -3265,6 +3265,43 @@
 > - **Teslim (Suer):** push → staging Shell `node scripts/migrate.js --dry-run` → `node scripts/migrate.js` → ekranlar →
 >   "merge" → canlı sırası (export → push main → canlı Shell dry-run → migrate). Ayrıntı teslim metninde.
 
+> ## ✅ 2026-10-22 — PAKET 1b: MAIN'E MERGE (canlı sırası Suer'de)
+>
+> - **Ne yapıldı:** Suer "merge" dedi → yerel `main`'e `git merge --no-ff eliza-next` → **`613ce8e`**
+>   (ebeveynler `35cad76` = origin/main · `8119683`). Gelen yalnız `8119683` (041–042 + tedarikçi / taslak API +
+>   seçmeli tedarikçi + 3 ui2 ekranı). **Tek revert:** `git revert -m 1 613ce8e`. Merge ağacı = `8119683` ağacı
+>   (birebir, `rev-parse ^{tree}` = `b02e501`).
+> - **Commit:** LEENA `main` **`613ce8e`** (yerel; origin/main'in 2 önünde). **PUSH YOK.**
+> - **Ölçülenler (CC, bu tur; DB'ler salt-okunur oturum):**
+>   - `origin/eliza-next` = `8119683` (Suer push etti) · `origin/main` = `35cad76`.
+>   - **Staging:** runner `plan()` kayıt **44**, bekleyen 0, DUR 0 · 041–042 `applied_at` ikisi de
+>     **2026-10-22 07:49:23 UTC** (tek transaction). Suer'in deneme izi: 1 tedarikçi (venue, NG, 07:51 UTC) ·
+>     1 tedarikçili gider + `out` hareketi (07:52) · 1 elle taslak (07:55, 2 eksik alan) **pending** — kabul 0, ret 0 ·
+>     21 Eki'deki eski gider `supplier_id` NULL (beklenen). `ui2/finance-drafts|suppliers|supplier.html` **200** ·
+>     `/api/expense-drafts` ve `/api/ledger/suppliers` token'sız **401** (route bağlı) · `finance-expenses.html`
+>     `sup-list` taşıyor (yeni kod servis ediliyor).
+>   - **Canlı:** runner `plan()` kayıt **42**, bekleyen TAM `041_suppliers`, `042_expense_drafts`, DUR 0 ·
+>     `expenses` 0 · `accounts` 0 · `ledger_entries` 0 · `leena.app/ui2/finance-drafts.html` **404**,
+>     `finance-expenses.html` 200 ama `sup-list` YOK (beklenen: push öncesi) · `/health` 200.
+>   - **TABAN contract 4 sr earned = 342.00 (7 dilim)** staging (041–042 SONRASI) ve canlıda, SLICE_CTES ile.
+>   - **Testler `main` üzerinde:** **316/316**, ❌ 0 (tek koşu; T35 + M01a + I5 342.00).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Suer'in staging görsel onay raporu (yalnız "merge" geldi) · **staging'de taslak
+>   Kabul ve Ret akışı** — DB izi yalnız oluşturmayı gösteriyor; kabul denenip 400 aldıysa taslak tasarım gereği
+>   pending kalır, DB'den ayırt edilemez (yerelde tarayıcıyla geçti, 21 Eki kaydı) · tedarikçi detay ekranının ve
+>   "+ New supplier" kısayolunun açıldığı · canlı deploy + migration · worker logları.
+> - **Bilinçle yapılmayanlar:** push (`main` ve ell-docs) · canlı DB'ye yazma / migration koşumu · staging deneme
+>   verisinin silinmesi (tedarikçi silinmez, pasiflenir; taslak silinmez, reddedilir — Suer'in kararı) ·
+>   `eliza-next`'in `main`'e eşitlenmesi (sonraki dal işinin ilk adımı: `git merge --ff-only main`) · P1b-2 tohumu
+>   (Zoho dışa aktarımı bekleniyor).
+> - **Teslim (Suer, canlı sırası):** export (Render panel) → YON-06 (status.render.com + takvim) →
+>   `git push origin main` → Live (~60 sn, G43; auto-deploy tetiklenmezse Manual Deploy — `35cad76`'da öyle oldu;
+>   arada gider formu tedarikçisiz çalışır, tedarikçi / taslak uçları 503 "not migrated yet" — `test_ledger_p1b_premig`) →
+>   canlı Shell `node scripts/migrate.js --dry-run` (DUR: `database` ≠ `leena_v401_db` / "DUR —" / FAILED; beklenen
+>   NOTICE `041: expenses 0 rows`, "DRY-RUN OK: 2") → `node scripts/migrate.js` → "COMMIT: 2" → tekrar "Nothing to
+>   apply" → ui2 contract 4 €342.00 + `finance-drafts.html` açılıyor. Shell açıkken deploy yok (G46).
+> - **Kapanış (YON-03):** canlı koşum sonrası CC salt-okunur teyit kaydı (`schema_migrations` 44, TABAN, sayfa 200)
+>   ayrı kayıt olarak girer; o kayda kadar Paket 1b AÇIK. P1b-2 ayrıca AÇIK.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-21 — bu kazanır; aşağıdakiler tarihsel):**
@@ -3273,7 +3310,8 @@
 >   (yeni kriterler Paket 1b'ye — Sentez EK 21 Eki); ✅ belge kapanışı **KB @ ca2bd5b** →
 >   **Sıra (Sentez EK 21 Eki, değişmedi):** Paket 1b (P1b-1..3) → Paket 2 → Paket 3 (amendment girdi).
 >   3) **★ Paket 1b — P1b-1..3** (Sentez paketi 21 Eki, SERBEST bölge; dal `eliza-next`) — ✅ **STAGING'E HAZIR
->   (21 Eki, `8119683`)**; kalan: Suer push → staging migrate (dry-run → gerçek) → ekranlar → "merge" → canlı.
+>   (21 Eki, `8119683`)** → ✅ **STAGING'DE (041–042, 22 Eki 07:49 UTC)** → ✅ **MAIN'E MERGE (22 Eki, `613ce8e`)**;
+>   kalan: canlı sırası (Suer: export → push main → canlı migrate) → CC canlı teyit kaydı.
 >   **P1b-2 AÇIK:** eliza-db'de liste YOK (BULAMADIM) → Zoho dışa aktarımı (Suer) → ayrı tohum dilimi.
 >   - **P1b-1 tedarikçi kaydı** (`suppliers` + `expenses.supplier_id`; Suer notu 1 → Paket 1b) · **P1b-2 referans
 >     tohumu** (eliza-legacy Zoho aynası ölçülür; Suer notu 2) · **P1b-3 gider taslağı** (aşağıdaki EK metni).
