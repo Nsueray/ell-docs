@@ -3460,6 +3460,38 @@
 > - **Teslim (Suer):** push → staging Shell migrate (dry-run → gerçek) → staging env `INVITE_ECHO=1` + deploy → P2-5
 >   kapanış ekranı → "merge" → canlı sırası (**export ZORUNLU, YON-12 (c)**). Ayrıntı teslim metninde.
 
+> ## ✅ 2026-10-22 — SAYFA ENVANTERİ (teslimat ölçümü, salt-okunur; Sentez 22 Eki, YON-11 istisnası)
+>
+> - **Ne yapıldı:** LEENA `public/` altındaki tüm HTML'in sayfa başı envanteri — alan · fuar yüzeyi · menü/link/akış izi ·
+>   son commit · ui2 ikizi · API uçları · fuar no gömülü · ölü aday — + ui2 sayfa geçişi canlı ölçümü (TTFB, yükleme
+>   sırası, istek sayısı). Taban `origin/main` = `613ce8e` (canlı); ölçüm ayrı worktree'de (`/tmp/ell-envanter`, ölçüm
+>   sonrası kaldırıldı). `eliza-next` çalışma kopyasına (paralel Paket 2 oturumu) dokunulmadı, stash yok.
+> - **Commit:** LEENA dal `audit/sayfa-envanteri` (main'den) **`9e17f69`** — tek dosya
+>   `docs/audits/SAYFA_ENVANTERI_2026-10-22.md` (918 satır). PUSH YOK. Kod/DB değişmedi.
+> - **Ölçülenler:**
+>   - **Toplam 81** HTML (kök 61 · ui2 16 · callcenter 3 · email_templates 1; 7'si `*.backup.html`). Alan: EMS 49 ·
+>     finance 18 (eski 7 + ui2 11) · auth 6 · ops 4 · ui2 kabuk 3 · admin 1 · **sales 0** (`ui2/sales.html` boş kabuk).
+>   - **Ulaşılamayan 22** (kökler: `login.html` zinciri / backend'in ürettiği URL / `/ui2/` girişi; yorum dışı link):
+>     **ölü aday 14** (7 yedek + admin-dashboard · checkin-import · dashboard · main-panel · login_new · register ·
+>     email_templates/modern-default) · İZSİZ-FUAR 7 (bulk-badge-print · conference-scanner · lead-scan · hostess-guide ·
+>     callcenter ×3 — kod linki yok, URL yalnız belge izinde) · İZSİZ-YENİ 1 (expo-create, son commit 2026-09-09).
+>     Hüküm "kod izinde kullanıcı yok"; KALSIN/TAŞI/SİL Sentez'de, Suer onayıyla.
+>   - **Fuar yüzeyi 18.** **Fuar no gömülü:** sayısal expo id 2 sayfa (`certificate.html:523-541` expo 7/13/9/10
+>     yönlendirmesi · `lead-scan.html:185` `EXPO_ID = 3`) · tek-fuar içeriği 9 · yerel varsayılan 3 (Nigeria/Lagos).
+>   - **ui2 ikizi:** var 0 · kısmi 3 (contract-list, contract-detail, login) · EMS'in 49 sayfasının hiçbirinin ui2
+>     karşılığı yok. **ui2 adası:** eski arayüzden ui2'ye kod içi link 0; giriş yalnız `/ui2/` URL'i.
+>   - **ui2 geçiş (canlı, curl, oturumsuz, 3 örnek medyanı):** tam sayfa yükleme; statik istek 3/5/7 + on-load API 0–6
+>     (kod sayımı; en çok expenses 13) · TTFB HTML 0.234–0.323 s, varlık 0.230–0.249 s · `Cache-Control: public,
+>     max-age=0` + ETag. 16/16 ui2 HTML'in canlı sha256'sı = `613ce8e`.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** canlı kullanım (log/analytics — kural gereği) · DB'deki e-posta şablonlarının taşıdığı
+>   sayfa URL'leri · elden dağıtılan URL'ler · uçların backend'de varlığı / HTTP metodu · ui2 on-load API'nin canlı sayısı,
+>   Google Fonts, tarayıcı render süresi · Paket 2 sayfaları (`ce670ab`: +3 ui2 sayfası → merge sonrası 84) · v402
+>   "fuar numarası gömülü 10 dosya" (`:3557`) kaynak listesi **BULAMADIM** → karşılaştırılamadı · backend'de gömülü
+>   expo/form id'leri.
+> - **Bilinçle yapılmayanlar:** KALSIN/TAŞI/SİL hükmü · kod/DB/CLAUDE.md değişikliği · push · `eliza-next`'e ve çalışma
+>   kopyasındaki değişikliklere dokunma · belgelerdeki terminal anahtarlı URL'leri rapora kopyalama · SIRADAKİ bloğu
+>   güncellenmedi (tek ekleme kuralı).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-22 — bu kazanır; aşağıdakiler tarihsel):**
