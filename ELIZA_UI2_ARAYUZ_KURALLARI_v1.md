@@ -88,3 +88,22 @@ buraya yazıldı; brief ell-docs'a girdiğinde başına aynı not eklenir:
 > ⚠️ Sapma (2026-10-22, Sentez UI-05): §8'deki React/Next yönü ERTELENDİ — ui2 düz HTML/JS, derleme
 > yok. Yeniden tartı tetiği: Sales alanının (LIFFY) ui2'ye taşınma kararı. Kaynak:
 > `ELIZA_UI2_ARAYUZ_KURALLARI_v1.md` UI-05.
+
+---
+
+## 5. Uygulama notu (UI-0 inşası, LEENA `1ad8456` — kural DEĞİL, eşleme)
+
+- **nav.json alan adları** (kod İngilizce): id · domain · `group` (grup) · `label` (etiket) · `path` (yol) ·
+  `status` = `live` | `placeholder` (canlı | yer-tutucu) · `permission` (Paket 2 kodu, 044 kayıt defteri).
+  Ek alanlar: `parent` (alt sayfa — menüde ayrı satır değil, ebeveyni etkin yapar: ekstre → Accounts) ·
+  `legacy` (yer-tutucunun bugünkü klasik ekranı) · üst düzey `landing` (giriş alanı = finance) · domain `userOnly`
+  (Admin). `domain: "shell"` = menüde görünmeyen kabuk / giriş / şablon sayfaları (iki yönlü testin "her sayfa nav'da" ayağı).
+- **Dosyalar:** `public/ui2/styles/tokens.css` (tek token dosyası; sabit renk yalnız burada) · `styles/signal.css`
+  (bileşen stilleri; ledger.css birleşti, themes.css tokens.css'e girdi) · `components.js` (bileşenler) · `nav.json` ·
+  `shell.js` (yalnız okur; üst çubuk + alt menü işaretlemesi) · `placeholder.html` · `_sablon/` (dizin + 4 şablon).
+- **Sabit hex ölçümü** (kabul 4), repo kökünden:
+  `find backend/leena-v401-backend/public/ui2 -type f ! -name tokens.css -exec grep -oE '#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?([0-9a-fA-F]{2})?\b' {} + | wc -l` → 0.
+- **Testler:** `tests/test_ui2_ui0.js` (iki yönlü nav · bileşen-kopya · hex · token · şablonlar · para çifti · giriş) ·
+  `tests/test_ui2_ui0_render.js` (API rakamı = ekran rakamı, TABAN) · `tests/ui0_compare.js` (tarayıcı, önce/sonra; zincir dışı).
+- **Para çifti istisnası:** EUR karşılığı API'de OLMAYAN tutar tek birimli `money` ile gösterilir (kalem birim fiyatı ·
+  ekstre dönem giriş/çıkış toplamı · taslak tutarı); yürüyen bakiye hesap biriminde (LED-11). Liste testte sabit.

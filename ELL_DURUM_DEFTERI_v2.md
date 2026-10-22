@@ -3600,6 +3600,85 @@
 > - **Bilinçle yapılmayanlar:** brief'in ell-docs'a kopyalanması · v3 dosyasına dokunma · YET 🔶'larının kaldırılması ·
 >   çalışma kopyasındaki `leena/CLAUDE.md` + `leena/todo.md` değişikliklerine dokunma (bu turun değil, commit'e girmedi).
 
+> ## ✅ 2026-10-22 — PAKET UI-0: STAGING'E HAZIR
+>
+> - **Ne yapıldı (dal `eliza-next`, SERBEST, tek merge / tek revert; Sentez 22 Eki UI-0, kütük UI-01..06):** dal hazırlığı
+>   `eliza-next` → `main`'e fast-forward (`b75c87b`), üzerine tek commit.
+>   - **tokens.css** (UI-04): tek token dosyası — renk · yazı (font + ölçek) · boşluk · köşe/gölge; tema `html[data-theme]`
+>     (vermillion varsayılan = `:root` · cobalt · eski `:root` paleti `signal` adıyla korundu — K-G). Kaynak: tasarım setinin
+>     `styles/signal.css` + `themes.css`'i (repo kopyasıyla sha256 AYNI). signal.css'teki 4 sabit renk (#fff ×2, hover, çerçeve)
+>     token oldu. **ui2'de tokens.css dışında sabit renk 0.**
+>   - **components.js** (UI-03): Liste (her hücre `data-label`, satır → detay) · Detay (başlık + bölüm + anahtar/değer) · Form
+>     (satır içi / yığılı; eksik alan kırmızı) · Özet kartı (tek stat-card; `href` → kayda iner, D2) · **para çifti**
+>     (işlem birimi + sunucunun EUR'u; EUR yoksa "—") · boş / yükleniyor / hata. Sayfa işaretleme YAZMAZ.
+>   - **nav.json** (UI-02): tek kaynak; `shell.js` yalnız okur (`/ui2/nav.json`), `ui2CanSee` aynen (Paket 2 /me özeti).
+>     Finance alt menüsü 4 grup (UI-01): Executive (Summary) · Contracts (Contracts · Commissions · Agents) · Money (Accounts
+>     [+ ekstre alt sayfa] · Transfers · Expenses · Suppliers [+ detay] · Drafts) · Expo Finance (Expo budget). Commissions /
+>     Agents **yer-tutucu** ("soon" → `placeholder.html`, bugünkü klasik ekrana bağlantı: `/commissions.html`,
+>     `/sales-agents.html`). Intelligence yok.
+>   - **Giriş → Finance özet** (UI-06): Finance sekmesi `finance-summary.html`; `/ui2/` ve ui2 login sonrası nav.json `landing`'e
+>     gider (Finance'ı göremeyen kullanıcı ilk görünen alanına). **Sales / Operations:** boş-durum ekranı (ölü link değil).
+>   - **/ui2/_sablon/**: dizin + 4 şablon (list · detail · form · summary), sahte veri, `?state=empty|loading|error`.
+>   - **Taşıma:** mevcut 19 ui2 sayfasının HEPSİ (Paket 2'ninkiler dahil) şablon + tokens'a; API çağrıları ve iş kodu aynen,
+>     yalnız işaretleme bileşenden. ledger-ui.js / admin-ui.js veri yardımcısına indi (görsel kod components.js'e).
+> - **Commit:** LEENA `eliza-next` **`1ad8456`** (üstünde `b75c87b` ff). ell-docs: `92bb1c9` (ön iş A) + bu kayıt. PUSH YOK.
+> - **Ölçülenler:**
+>   - **ÖN İŞ B:** "45 HTML tasarım seti" repoda ve ell-docs'ta **YOK**; repo DIŞINDA `~/Downloads/Eliza Platform new ui design/`:
+>     45 HTML (kök 30 · `themes/` 12 · `warm/` 3) + 4 CSS; `var(--` kullanımı **3268**, sabit hex 802 (çoğu tema/palet tanımı:
+>     `themes/` 12×34, Directions 126, Settings-Appearance 72). Setin `styles/signal.css` + `themes.css`'i = repo `ui2/styles`
+>     kopyaları (sha256 aynı) → tokens.css oradan türetildi (elle çıkarma gerekmedi).
+>   - **Sabit hex (aynı grep, dosya başına):** önce (`ce670ab`) **103** = signal.css 39 · themes.css 64 · sayfalar 0 →
+>     sonra tokens.css **100**, tokens.css dışı **0** (32 dosya).
+>   - **ui2 sayfa:** önce 19 HTML (Paket 2 dahil) / 25 dosya → sonra 25 HTML / 32 dosya (+ placeholder · `_sablon/` 5 ·
+>     components.js · nav.json · tokens.css; − themes.css · ledger.css).
+>   - **Eski nav yapısı (önce):** `shell.js` içinde sabit `UI2_DOMAINS` (4 sekme, Admin `userOnly`) + `UI2_SUBNAV.finance` düz
+>     8 öğe (Contracts → `finance-contract.html` = c4 detayı; liste menüde yoktu); sales/operations boş. signal.css 251 satır
+>     (39 hex `:root` + bileşenler; ui2'de kullanımı 0 ölçülen yardımcılar — row/col/gap/divider/kbd/live-dot/bar/delta/
+>     input-group/stat/btn-lg/btn-icon/chip-outline — taşınmadı) · themes.css 80 satır · ledger.css 27 satır (`lg-*` düzen → `ui-*`).
+>   - **Backend / API:** `git diff ce670ab 1ad8456` yalnız `public/ui2` + `tests` + `package.json` (test zinciri) — route,
+>     middleware, migration, EMS sayfası DEĞİŞMEDİ.
+>   - **Testler (PG 14.18, 2 koşu):** **379 → 416/416**, ❌ 0. Yeni: `test_ui2_ui0` 21 (N1–N8 nav + iki yönlü · G1–G2 giriş /
+>     boş-durum · K1–K7 **bileşen-kopya** + para çifti + özet kartı + durumlar + liste · H1–H3 hex / token · T1 şablonlar) ·
+>     `test_ui2_ui0_render` 16 (gerçek uçlar + tohum → 14 ekran tarayıcısız çizildi → API'nin her rakamı ekranda AYNEN;
+>     **R1 sr earned €342.00 ekranda**). Mutasyon denemesi: sayfaya `<table>` / sabit hex / nav dışı sayfa / ölü nav yolu →
+>     ilgili test KIRMIZI, geri alındı. **TABAN 342.00 KAYMADI** (T35 ×3 + M01a + I5 + ekranda R1/R4).
+>   - **Tarayıcı karşılaştırması** (`tests/ui0_compare.js`, Playwright 1.63 + Chrome for Testing 145, aynı tohum, `1ad8456`
+>     üstünde): 18 sayfa taşıma öncesi (`ce670ab` ağacı) / sonrası — `<main>` ondalıklı sayılar **eksik 0**, ek 4 (kontrat
+>     listesinde gelirin EUR'u ×3 — API'de vardı, ekranda yoktu · eşit EUR bacağının tekrarı ×1); TABAN kontratında €342.00
+>     önce ✓ sonra ✓ · 390 px'te yatay taşma **0** (18 sayfa + `_sablon` 4 şablon × 4 durum + dizin + yer-tutucu = 36) · sayfa
+>     hatası 0 · **kabul 1 uçtan uca:** şifreli Finance kullanıcısı `/ui2/login.html` → `finance-summary.html`, sekme yalnız
+>     Finance, gruplar Executive · Contracts · Money · Expo Finance; `/ui2/` → `finance-summary.html`. 79 ekran görüntüsü
+>     (repoya konmadı, oturum karalamasında).
+> - **Test kuralı notu (assertion değişimleri — gerekçeli, Sentez UI-02 "sayı testi silinir" + UI-03 taşıma):**
+>   - `test_ui2_ledger_pages` U1: 8-öğe sayı/sıra testi SİLİNDİ → yerine 4 grup sırası + Paket 1 ekranlarının grubunda olması +
+>     aktif öğe; U4: `keys.length === 8` sayı parçası silindi (bağlantı varlığı U2'de, iki yönlü test yeni suite'te).
+>   - `test_ui2_p2_pages` S1–S3: sabit 8 → nav.json'dan türetilen Finance menü sayısı; S4: sabit 7 → türetilmiş + yer-tutucuların
+>     izinsiz gizlendiği (commissions.read yok). Mantık aynı (klasik: hepsi · izin: süzülür).
+>   - `test_ui2_p1b_pages` P5: `styles/ledger.css` → `signal.css` (birleşti); `lg-miss/lg-missing` → `C.missing()` + `missing:`
+>     seçeneği (`ui-miss/ui-missing`, `--dang`) — ölçülen şey aynı (eksik alan kırmızı).
+>   - **Fixture (assertion aynı):** vm'de koşan shell.js'e nav.json verisi hazır verilir (`ui2NavData`) — tarayıcıda fetch eder.
+> - **Davranış farkları (Sentez kriteri gereği; K-G "eski davranış değişmez" değerlendirmesi için liste):** Finance sekmesi c4
+>   detayı → özet · alt menü düz → 4 grup, "Contracts" → liste · ui2 login sonrası whoami → giriş (özet) · `/ui2/` bağlantı
+>   sayfası → yönlendirme · avatar → whoami, marka → giriş · ayrı "EUR" sütunları → para çifti · dar ekranda liste kart olur, alt
+>   menü kendi içinde kayar · negatif tutar tablo hücresinde kırmızı (önce `.table .num` eziyordu — hata düzeltmesi) ·
+>   Sales/Operations metni İngilizce (dil kuralı) · kontrat "not found" metni listeye bağlantı verir.
+> - **🔶 Sentez'e:** (1) yer-tutucu → klasik ekran bağlantısı ui2'den eski arayüze İLK kod içi köprü (envanter "ui2 adası": 0) —
+>   kabul mü · (2) para çifti istisnaları (EUR'u API'de olmayan: kalem birim fiyatı · ekstre giriş/çıkış toplamı · taslak) ·
+>   (3) nav.json alan adları İngilizce + ek alanlar (parent · legacy · landing · userOnly) · (4) `signal` teması korunsun mu ·
+>   (5) ui2 bağlantı rengi vermillion (tasarım fazı).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging (push yok) ve 8 kabul maddesinin staging'de görünümü · staging/canlı GERÇEK
+>   verisiyle ekran (yalnız test DB; contract 4 kimliği değil TABAN kurgusu) · Safari / Firefox / gerçek telefon (yalnız
+>   Chromium 390×844 emülasyonu) · nav.json'un sayfa başına +1 isteğinin geçiş süresine etkisi (tasarım kuyruğu "sayfa geçiş
+>   yavaşlığı") · Google Fonts'un tokens.css'ten yüklenmesi (aynı URL) · cobalt / signal temalarının görünümü (yalnız token
+>   tutarlılığı H2) · erişilebilirlik (kontrast, klavye) · test DB'de tarih alanları ISO zaman damgası görünüyor
+>   (`2025-12-31T21:00:00.000Z`, yerel TZ) — önce/sonra aynı, canlıdaki görünümü bu turda ölçülmedi.
+> - **Bilinçle yapılmayanlar:** tema değiştirici · yeni Finance ekranı (Commissions/Agents yalnız yer-tutucu) · organizer paneli
+>   (UI-06 → UI-1) · rol/yetki mantığı · EMS · backend / migration · `ui0_compare.js`'in npm zincirine alınması (tarayıcı
+>   bağımlılığı repoda yok) · ekran görüntülerinin repoya konması · brief'in ell-docs'a alınması · main'e merge · push.
+> - **Teslim (Suer):** `git push origin eliza-next` (LEENA, `ce670ab..1ad8456`) → staging auto-deploy (~60 sn, G43; migration
+>   YOK) → 8 kabul maddesi `leena-staging.onrender.com` üzerinde (adresler teslim metninde) → "merge" → main'e tek merge.
+>   ell-docs push ayrıca. Geri dönüş: merge sonrası `git revert -m 1 <merge>` (yalnız statik dosya + test; şema yok).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-22 — bu kazanır; aşağıdakiler tarihsel):**
@@ -3640,7 +3719,8 @@
 >   ✅ MAIN'E MERGE (`b75c87b`) → ✅ **CANLIDA (22 Eki 14:01, KAPI-1 geçti)**; aynı dalda Suppliers + Drafts alt menüye
 >   (K-G kuralıyla); ✅ belge kapanışı **KB @ 7a2d9fd**. **Açık:** YET-01..09 🔶 Sentez teyidi (kapanış brief'i 22 Eki) ·
 >   Yaprak'ın eski girişi ölçülmedi.
->   **★ SIRA (Suer 22 Eki — bu kazanır):** **UI-0** (✅ kriterler geldi — Sentez 22 Eki, SERBEST, dal `eliza-next`;
+>   **★ SIRA (Suer 22 Eki — bu kazanır):** **UI-0** (✅ **STAGING'E HAZIR** — LEENA `1ad8456`, [defter:2026-10-22 PAKET UI-0];
+>   ✅ kriterler geldi — Sentez 22 Eki, SERBEST, dal `eliza-next`;
 >   kütük UI-01..06 + `ELIZA_UI2_ARAYUZ_KURALLARI_v1.md` — [defter:2026-10-22 UI-0 KRİTERLERİ]; girdi: SAYFA ENVANTERİ
 >   [defter:2026-10-22 SAYFA ENVANTERİ] + UX çıktısı) → **Faz B başı** (Anthropic API anahtarı iptal/yenileme + LIFFY `JWT_SECRET`, K-E) →
 >   **Paket 3**. P1b-2 Zoho CSV gelince araya girer (değişmedi). **Eklemeler (Sentez EK 21 Eki — tarihsel):**
