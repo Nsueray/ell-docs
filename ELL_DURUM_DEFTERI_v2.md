@@ -3365,6 +3365,101 @@
 > - **Bilinçle yapılmayanlar:** tohum migration'ı (CSV yok) · mevcut 6 kategorinin yeniden adlandırılması (tohum
 >   dilimiyle; mevcut satır güncellemesi → YON-11'e göre KAPI-2 değerlendirmesi o dilimde).
 
+> ## ✅ 2026-10-22 — PAKET 2: STAGING'E HAZIR
+>
+> - **Ne yapıldı (dal `eliza-next`, KAPI-2, tek merge / tek revert):** Sentez Paket 2 (P2-1..P2-4) + Suppliers/Drafts
+>   alt menüye (4c, K-G kuralıyla). Dal hazırlığı: `eliza-next` → `main`'e fast-forward (`613ce8e`), üzerine tek commit.
+>   - **P2-1 (043 + `/api/users` + davet):** `users.office_id` · `user_invites` (token SHA-256, 72 saat, tek kullanım,
+>     yeniden davet/pasifleştirme iptal eder) · internal temsilci bağı backfill (tek e-posta eşleşmesi; çoklu boş) ·
+>     liste / davet / yeniden davet / profil (ad · ofis · temsilci bağı) / aktif-pasif (sebep zorunlu) ·
+>     `/api/user-auth/invite/check|accept` (kimlik doğrulamasız, token POST gövdesinde) · e-posta `email_queue`
+>     transactional (campaign_id NULL) · `INVITE_ECHO=1` yalnız staging.
+>   - **P2-2 (044 + `utils/permissions.js`):** kayıt defteri 18 kod · 5 sistem şablonu (Owner 0 · Finance 12 · Project 3 ·
+>     Office Manager 12 · Sales 3 satır; değişmez, DB trigger) · `user_permissions` (grant + kapsam | revoke) ·
+>     `users.role_id` (Owner'lar Owner şablonunda) · tek çözümleme yeri + kapsam + boş `regionFilter` yuvası (SAT-04).
+>   - **P2-3 (KAPI):** `requirePermission` — ledger yazma (referans veri, hesap, transfer, gider, tedarikçi, bütçe
+>     revizyonu) · gider taslakları (okuma/yazma/kabul-ret) · payout yazma · `/api/users`. EMS / contracts / payments
+>     DOKUNULMADI. `authMiddleware`: user_id taşıyan token'da `is_active` denetimi (klasik token DB'ye gitmez).
+>     `/me` etkin yetki özetini döner; `ui2CanSee` / `ui2RenderSubnav` onu okur (menü UX).
+>   - **P2-4 (045):** `audit_log` yalnız eklenir; davet / kabul / aktif-pasif / profil / şablon / kişi başı yetki /
+>     bütçe kilidi (LED-15) yazılır.
+>   - **Ekran (iskelet):** ui2 Admin > Users (liste + davet; e-posta eşleşen temsilci önerilir) · kullanıcı detayı
+>     (profil · durum · davet · şablon + kişi başı ezme tablosu · geçmiş [Owner]) · `ui2/invite.html` (şifre belirleme) ·
+>     ui2 login davetten dönüşte e-posta dolu · "Who is signed in" Role/Office/Access · Finance subnav'a Suppliers + Drafts.
+> - **Commit:** LEENA `eliza-next` **`ce670ab`**. PUSH YOK.
+> - **Kütük taraması (pakete değen):** B9 · B10 · B12 · B20 · B21 · B22/B23 · B24 · B25 · B27/B28 · B30 · B32 · B33
+>   (reports_to — bu pakette YOK) · B40 · B42 (alan kapısı — bu pakette YOK) · SEM-03/04/05 · K-A · K-G · LED-09/15 ·
+>   OFS-05 · YZ-02 (servis kullanıcısı — karar yok) · SAT-04 · YON-07/09/11/12 · G45 · TABAN. **Yeni:** YET-01..09
+>   (🔶 Sentez teyidinde).
+> - **Ölçülenler (ADIM 0, salt-okunur):**
+>   - `authMiddleware` bugün yalnız `decoded.organizer_id` okur (`middleware/authMiddleware.js:17`, eski hali); require
+>     eden: **33 route dosyası + `index.js`** (inline `/api/templates`). `dualAuth` / `terminalAuth` DOKUNULMADI.
+>     Eski `/login.html` organizers'ta kalır (SEM-05 takvimi, en erken 20 Kas).
+>   - **sales_agents ↔ users (canlı):** users 1 · temsilci 152 (internal 128 — e-postalı 126; external_freelance 19;
+>     external_agency 5) · e-postası users'la eşleşen internal **1** (Suer) · aynı e-postayı paylaşan internal grup **11**
+>     (bunlara sahip kullanıcı olursa bağ boş kalır) · kiracı 1. → 043 canlıda beklenen: **bağ 1, belirsiz 0, eşsiz 0**.
+>   - **SendGrid transactional yolu:** `email_queue.campaign_id` nullable; canlıda campaign_id NULL satırlar var (sent);
+>     worker 1. öncelik kuyruğu `campaign_id IS NULL` (`email_worker.js:60`), Mode 1 = `html_content` + `recipient_email`
+>     (`:212`); `organizer_id` / `expo_id` / `visitor_id` nullable → davet satırı bu yoldan gider.
+>   - **TTFB (3 ölçüm medyanı, s):** canlı contract 0.40 · expenses 0.39 · summary 0.28 — staging 0.29 · 0.28 · 0.28.
+>   - **Runner `plan()` canlı + staging (salt-okunur):** iki tarafta kayıt **44**, bekleyen TAM 043–045, DUR **0**.
+>     Canlıda `organizers` **2** satır; aktif Owner yalnız kiracı 1'de → şablon tohumu yalnız kiracı 1'e (LED-17 deseni).
+>   - **Prova (yerel PG 17.10, staging ŞEMASI — `pg_dump --schema-only`, veri YOK; schema_migrations / offices /
+>     core_countries verisi + SENTETİK organizer/user/temsilci):** gerçek CLI "DRY-RUN OK: 3" · "COMMIT: 3" · tekrar
+>     "Nothing to apply"; NOTICE `043: … users 1, linked 1, ambiguous 0, no match 0` · `044: permissions 18, roles 5,
+>     role_permissions 30, users with role 1`. Küme + dökümler silindi.
+>   - **Testler:** **316 → 379/379** — PG 14.18'de 4 koşu (ilk ikisi A3 testi eklenmeden 378/378, son ikisi 379/379) +
+>     PG 17.10 geçici kümede 1 koşu (379/379). Yeni: `test_users_admin` 39 · `test_users_premig` 6 (yeni kod + ≤ 042 şema: kapılar eski davranış, users/davet
+>     503, /me eski şekil) · `test_ui2_p2_pages` 14 · `test_migrate` 19 → 23 (R18–R21; R21 043'ün veri değiştiren bağ
+>     adımı: tek eşleşme bağlanır, çoklu boş, external yok). **TABAN 342.00 KAYMADI** (T35 + I5 + P1b T35 + P2 T35).
+>     Test DB'si dördüncü kopya `ell_comm_test_p1b` (≤ 042) + `email_queue` stub'ı (YON-09: test edilen kod yazar).
+>   - **Tarayıcı (Playwright, yerel test DB, `INVITE_ECHO=1`):** Owner 4 sekme (Admin dahil) → davet (Finance, Turkey) →
+>     link ekranda + sunucu logunda → ayrı oturumda link → şifre → login'e e-posta dolu döner → Finance girişi: tek sekme
+>     (Finance), subnav 8 öğe, `admin-users.html` "You do not have permission (users.read)" · Owner detayda 12 etkin yetki →
+>     sebepsiz pasifleştirme engellendi → sebepli pasif → davetlinin eldeki oturumu sonraki sayfada 401 → çıkış → giriş
+>     "Invalid email or password" · denetim: invite → invite_accept → deactivate. Sayfa hatası 0 (konsoldaki 409/401'ler
+>     reddedilmesi beklenen istekler).
+> - **Test kuralı notu (assertion değişimleri — gerekçeli):**
+>   - `test_ui2_ledger_pages` U1/U4 (subnav 6 → 8) ve `test_ui2_p1b_pages` P1 (aktif öğe `expenses` → `suppliers`/`drafts`):
+>     Sentez 22 Eki kararı (Suppliers + Drafts alt menüye) bu beklentileri doğrudan değiştirir; U1 artık Paket 1'in 6
+>     öğesinin AYNI sırada yerinde olduğunu da ölçer (K-G: eski davranış değişmez, ekleme sonda).
+>   - **Fixture (assertion aynı):** kapılı uçlarda eski token 409 köprüsü aldığı için `test_ledger` / `test_ledger_p1b` /
+>     `test_payouts`'un varsayılan aktörü Owner kullanıcı oturumu; `test_ledger` klasik oturum kilit satırı (B2) açıkça
+>     klasik token'la koşar, STAFF'a Finance şablonu verildi (B3 OWNER_REQUIRED'ı ölçmeye devam etsin).
+>   - `test_users` T1: geri alınan transaction'a `ell.allow_user_admin_reset` (034 / Paket 1 emsali; CASCADE yeni
+>     tablolara iner). `test_migrate` R15–R17 girdisi ≤ 042'ye donduruldu (R9–R14 emsali), beklentiler aynı.
+> - **🔶 Sentez'e (karar / teyit):**
+>   - **`authMiddleware`'e dokunuldu (KAPI-2):** yalnız user token'ında tek PK sorgusu, klasik token birebir (A3 testi: 0
+>     sorgu). Alternatifi (kontrol yalnız kapılı uçlarda) pasif kullanıcıya 30 gün EMS/contracts/payments erişimi bırakırdı.
+>   - **Açık kalan:** `dualAuth` JWT yolu (toplu yaka kartı) DOKUNULMAZ olduğu için pasif kullanıcının token'ı orada
+>     çalışmaya devam eder.
+>   - **Davet linki `email_queue.html_content`'te düz metin** (worker Mode 1 gereği): DB okuyabilen görür; tek kullanımlık
+>     + 72 saat. Worker değişikliği (KAPI-2) olmadan kapanmaz.
+>   - **Şablon içerikleri** (Finance / Project / Office Manager / Sales — 044) varsayılandır; özellikle Project'e
+>     `budget.write`, Office Manager'a `office` kapsamı, `reference.write`'ın hiçbir şablonda olmaması (REQ: Owner).
+>   - **Şablon canlı bağ** (YET-04) · **yetki verme tavanı** (YET-07) · **kayıt defterinde `organizer_id` yok** (YET-01).
+>   - **"commission yazma":** `routes/commissions.js`'te yazma ucu YOK (ölçüldü) → kapı payout'a; `/api/sales-agents`
+>     yazmaları (B11) kapısız kaldı.
+>   - **Şifre ≥ 6** korundu ("yetki diliminde SaaS ölçüsü" kuyruğu bu pakette yapılmadı) · davet e-postası küçük harfle
+>     saklanır, login büyük/küçük harf duyarlı (mevcut davranış).
+>   - **Merge sonrası:** klasik `/login.html` oturumuyla ledger yazma / payout (agent-statement) 409 + "ui2 ile giriş yap"
+>     mesajı alır — finans yazmaları için ui2 girişi gerekir.
+>   - Her ui2 sayfası açılışta bir kez `/me` çağırır (menü tazeleme; çizimi bekletmez) — "sayfa geçiş yavaşlığı" kuyruğuna not.
+> - **Staging DB tazeleme (Sentez şartı: KAPI-2 öncesi taze kopya) — ÖLÇÜM + ÖNERİ, karar Suer'in:** canlı ↔ staging (salt-
+>   okunur, sayı + parmak izi): fark YALNIZ Paket 1/1b deneme verisi (hesap 1 · gider 3 · hareket 3 · tedarikçi 1 ·
+>   taslak 1). `users` · `sales_agents` · `organizers` · `offices` · `contracts` · `payments` parmak izleri ve
+>   `schema_migrations` 44, `commission_payouts` 8, `payment_schedule_items` 14 AYNI. Paket 2'nin yazdığı/okuduğu
+>   tablolar canlıyla birebir → **tazeleme atlanabilir (öneri)**. EMS tabloları karşılaştırılmadı (Paket 2 dokunmaz).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging/canlı deploy + migration · staging'de `INVITE_ECHO` · staging'de e-posta
+>   worker'ı ve SendGrid gönderimi (davet satırı kuyrukta kalır mı, gider mi) · staging tarayıcı oturumu (P2-5) · EMS
+>   ekranlarının user token'ıyla canlı davranışı (test DB'de EMS tabloları yok; yalnız middleware birim testi) ·
+>   kiracı 2'nin kim olduğu (şablon almaz) · worker logları.
+> - **Bilinçle yapılmayanlar:** organizers → users taşıma (20 Kas+) · şifre sıfırlama e-postası · rate limit · LIFFY↔LEENA
+>   tek giriş · genel audit · alan gizleme (B42) · `reports_to` hiyerarşisi (team = own) · özel şablon ekranı/API'si ·
+>   `is_owner` verme/alma · servis kullanıcısı (YZ-02) · `dualAuth` · sales-agents kapısı · şifre kuralı · P1b-2 tohumu.
+> - **Teslim (Suer):** push → staging Shell migrate (dry-run → gerçek) → staging env `INVITE_ECHO=1` + deploy → P2-5
+>   kapanış ekranı → "merge" → canlı sırası (**export ZORUNLU, YON-12 (c)**). Ayrıntı teslim metninde.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-22 — bu kazanır; aşağıdakiler tarihsel):**
@@ -3401,7 +3496,8 @@
 >       LED-08 birlikte)".
 >   - **P1b-3 tabanı (ölçüldü):** [defter:2026-10-21 TEKNOLOJİ GÜNCELLEME TURU] → "P1b-3 tabanı" (5 madde).
 >   4) **★ Paket 2 — kullanıcı yönetimi** (davet, aktif/pasif, yetki matrisi çekirdeği) — **KAPI-2** (auth);
->   **kriterler geldi (Sentez 21 Eki + EK 21 Eki + 22 Eki GO) → İNŞADA (22 Eki, dal `eliza-next`)**; aynı dalda
+>   **kriterler geldi (Sentez 21 Eki + EK 21 Eki + 22 Eki GO) → ✅ STAGING'E HAZIR (22 Eki, `ce670ab`)**; kalan: push →
+>   staging migrate → `INVITE_ECHO=1` → P2-5 kapanış ekranı → "merge" → canlı (export ZORUNLU, YON-12 c); aynı dalda
 >   Suppliers + Drafts alt menüye (K-G kuralıyla). **Eklemeler (Sentez EK 21 Eki):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
