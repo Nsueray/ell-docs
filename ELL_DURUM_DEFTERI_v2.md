@@ -3572,6 +3572,34 @@
 > - **Bilinçle yapılmayanlar:** canlıya yazma · deneme daveti · staging deneme izinin temizlenmesi · `eliza-next`'in
 >   `main`'e eşitlenmesi (sonraki dalın ilk adımı) · `audit/sayfa-envanteri` (`9e17f69`, origin'de YOK — push Suer'de).
 
+> ## ✅ 2026-10-22 — PAKET 2 BELGE KAPANIŞI (KB @ 7a2d9fd) + UI-0 KRİTERLERİ (Sentez)
+>
+> - **Ne yapıldı (UI-0 ÖN İŞ A — belge, ayrı commit; inşadan ÖNCE):**
+>   (1) YON-03 kapanışı: **KB @ 7a2d9fd** → Paket 2 belge tarafı KAPALI (Sentez UI-0 paketinin bildirimi).
+>   (2) Kütük: **YET-01..09 🔶 KALIR** — Sentez teyidi gelmedi.
+>   (3) Kütük yeni grup **UI — arayüz: UI-01..06** + "AÇIK SORULAR — KAPANDI" satırı; metin Sentez hükümlerinden
+>   AYNEN (satır kırılımları birleştirildi, kelime değişmedi).
+>   (4) Yeni belge **`ELIZA_UI2_ARAYUZ_KURALLARI_v1.md`**: UI-01..06 + UI-0 kapsamı (İNŞA / KAPSAM DIŞI / ORTAK) +
+>   8 kabul ölçütü (Sentez metni aynen) + brief sapma notunun metni (§4).
+>   (5) **`ELL_BILGI_MIMARISI_v4.md`** (v3 KALIR, değiştirilmedi): yalnız §4'e **§4.1 ui2 alt menü eşlemesi** —
+>   Executive · Contracts (kontratlar, komisyonlar, agent'lar) · Money (… gider taslakları dahil) · Expo Finance;
+>   Intelligence ui2'de YOK; Commissions & Agents Contracts grubunda. Başına v4 yama notu. README canlı belge
+>   satırı v3 → v4; referans listesine arayüz kuralları belgesi.
+>   (6) **`ELIZA_DESIGN_BRIEF_v1.md` ell-docs'ta BULAMADIM** (`grep -rln "DESIGN_BRIEF"` + dosya adı araması: 0)
+>   → sapma notu brief'e yazılamadı; metni arayüz kuralları §4'te bekliyor. **Suer'den istenir; UI-0 onsuz
+>   devam.** Repo DIŞINDA ölçülen 4 kopya (sha256 dördü de `b61895f9f841…`): `~/Downloads/` ·
+>   `~/Desktop/UX_KB/` · `~/Desktop/Eliza_Audit_KB/` · `~/Downloads/Eliza Platform new ui design/uploads/` —
+>   ell-docs'a ALINMADI (talimat yok); §8 başlığı "Technical constraints" (`:139`).
+>   (7) Bu kayıt + ★SIRADAKİ'de UI-0 satırı (kriterler geldi) ve Paket 2 satırı (KB).
+> - **Commit:** ell-docs (bu kayıt). PUSH YOK.
+> - **Ölçülenler:** ell-docs `origin/main` = `7a2d9fd` = HEAD (`git fetch`, bu tur) · kütükte 🔶 satırı **9**
+>   (YET-01..09; değişmedi) · kütükte `UI-0x` deseni önce **0** → **6** + kapanış satırı · BM v3 ↔ v4 farkı yalnız
+>   başlık + yama notu + §4.1 (`diff`).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** KB yüklemesinin kendisi (Sentez/Orchestrator beyanı) · repo dışı brief
+>   kopyalarından hangisinin Sentez'in kastettiği sürüm olduğu (dördü aynı içerik).
+> - **Bilinçle yapılmayanlar:** brief'in ell-docs'a kopyalanması · v3 dosyasına dokunma · YET 🔶'larının kaldırılması ·
+>   çalışma kopyasındaki `leena/CLAUDE.md` + `leena/todo.md` değişikliklerine dokunma (bu turun değil, commit'e girmedi).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-22 — bu kazanır; aşağıdakiler tarihsel):**
@@ -3610,10 +3638,11 @@
 >   4) ~~**Paket 2 — kullanıcı yönetimi**~~ (davet, aktif/pasif, yetki matrisi çekirdeği) — **KAPI-2** (auth);
 >   kriterler (Sentez 21 Eki + EK 21 Eki + 22 Eki GO) → ✅ STAGING'E HAZIR (`ce670ab`) → ✅ staging 043–045 + P2-5 →
 >   ✅ MAIN'E MERGE (`b75c87b`) → ✅ **CANLIDA (22 Eki 14:01, KAPI-1 geçti)**; aynı dalda Suppliers + Drafts alt menüye
->   (K-G kuralıyla). **Açık:** YET-01..09 🔶 Sentez teyidi (kapanış brief'i 22 Eki) · Yaprak'ın eski girişi ölçülmedi.
->   **★ SIRA (Suer 22 Eki — bu kazanır):** **UI-0** (Sentez kriter turu bekleniyor; girdi: SAYFA ENVANTERİ
->   [defter:2026-10-22 SAYFA ENVANTERİ] + UX çıktısı — "UI-0" tanımı ve "UX çıktısı" defterde/kütükte **BULAMADIM**,
->   kriter turunda gelecek) → **Faz B başı** (Anthropic API anahtarı iptal/yenileme + LIFFY `JWT_SECRET`, K-E) →
+>   (K-G kuralıyla); ✅ belge kapanışı **KB @ 7a2d9fd**. **Açık:** YET-01..09 🔶 Sentez teyidi (kapanış brief'i 22 Eki) ·
+>   Yaprak'ın eski girişi ölçülmedi.
+>   **★ SIRA (Suer 22 Eki — bu kazanır):** **UI-0** (✅ kriterler geldi — Sentez 22 Eki, SERBEST, dal `eliza-next`;
+>   kütük UI-01..06 + `ELIZA_UI2_ARAYUZ_KURALLARI_v1.md` — [defter:2026-10-22 UI-0 KRİTERLERİ]; girdi: SAYFA ENVANTERİ
+>   [defter:2026-10-22 SAYFA ENVANTERİ] + UX çıktısı) → **Faz B başı** (Anthropic API anahtarı iptal/yenileme + LIFFY `JWT_SECRET`, K-E) →
 >   **Paket 3**. P1b-2 Zoho CSV gelince araya girer (değişmedi). **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
