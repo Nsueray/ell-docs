@@ -119,4 +119,8 @@ değer.** b0 `UNSUBSCRIBE_SECRET`'ın zaten tanımlı olduğunu gösterirse b1 a
 
 - `liffyv1/.claude/settings.local.json` temizliği: 16 satırda (iptal edilecek) anahtar + 31 satırda şifreli LIFFY DB
   bağlantı dizesi ("sırlı ölü izin kuralları"); LIFFY DB şifresinin yenilenmesi ayrı karar (Sentez).
+- **CC oturum dökümü (23 Eki):** iki ölçüm komutu iki değeri maskesiz yazdırdı — `settings.local.json`'daki LIFFY DB
+  bağlantı dizesi (şifreli) ve yerel `liffyv1/backend/.env`'deki `JWT_SECRET`. Sohbete / belgeye / commit'e girmedi; yerel
+  oturum dökümünde (`~/.claude/projects/-Users-nsa-Desktop-Leena-Projesi-Leena-v401-monorepo/e184f817-….jsonl`) var. Yerel
+  JWT değeri canlıyla aynıysa b3 onu geçersiz kılar; LIFFY DB şifresi yenilenince o satır da geçersiz olur.
 - Faz B'nin geri kalanı (deftere bak: 3 izlenen `.env.backup` · staging DB inbound · NOLOGIN roller · Render CLI …).

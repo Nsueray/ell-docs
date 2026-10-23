@@ -3975,6 +3975,9 @@
 >   `settings.local.json` temizliği ve LIFFY DB şifresi (runbook §3, Faz B kuyruğu).
 > - **🔶 Sentez'e:** b1 — `UNSUBSCRIBE_SECRET` = eski JWT değeri (öneri: çıkış linkleri çalışır, eski değer yalnız çıkış
 >   imzasında yaşar) mı, yeni değer (eski linkler kırılır) mı?
+> - **CC hatası (kayıt):** iki ölçüm komutu maskesiz çıktı verdi → LIFFY DB bağlantı dizesi (şifreli) ve yerel
+>   `liffyv1/backend/.env` `JWT_SECRET` değeri CC'nin yerel oturum dökümüne düştü (sohbete / belgeye / commit'e değil).
+>   Sonuç: LIFFY DB şifresi yenilemesinin (Faz B kuyruğu) önemi arttı; yerel JWT canlıyla aynıysa b3 kapatır. Runbook §3.
 > - **Teslim (Suer):** runbook §2A (a1 → a6) tek iş; (b) (a) bittikten sonra, b2 kodu CC'de.
 
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
