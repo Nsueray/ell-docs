@@ -4099,6 +4099,26 @@
 > - **🔶 Sentez'e (FAZ B kapanış brief'i 23 Eki):** b3 yalnız api ↔ ELL R8 "Same JWT_SECRET across services" · K4'e
 >   "allowlist" · Paket 3 kriter turu isteği.
 
+> ## ✅ 2026-10-24 — PAKET 3 ÖN-ÖLÇÜM (teslimat ölçümü, YON-11; salt okuma, İNŞA YOK)
+>
+> - **Rapor:** LEENA `docs/audits/PAKET3_ON_OLCUM_2026-10-24.md` — dal `audit/paket3-on-olcum` (`main` @ `2463259`'ten)
+>   **`fa85a92`**, PUSH YOK. Tabanlar: liffyv1 `0e4b8a7` · liffy-ui `7b15ced` · LEENA `2463259` · LIFFY DB canlı, `BEGIN READ
+>   ONLY` (2026-10-23 19:38 UTC; bağlantı dizesi panodan, basılmadı — K4 allowlist).
+> - **Ölçülenler:** `products` **1** (test ürünü; 242 SKU GİRMEDİ) · `product_prices` **0** · `quotes` **2** (signed 1 ·
+>   sent 1; **ATR-100000 + QMA-100001 duruyor**) · `expos` 1, `canonical_expo_id` **0/1** · `users.office_id` **0/3** ·
+>   LIFFY → LEENA transport **0** · LEENA convert **L3 `contracts.js:100-140` + L4 `:142-153` main'de** (`line_items`
+>   OPSİYONEL; "ZORUNLU" yok) · REQ amendment `:30-106` (SAT-02 `:38-43` · SAT-01 `:44-47` · SAT-03/04 `:48-52` · 2.4
+>   katalog `:58-64`) · liffy-ui **401'de login'e yönlendirme YOK** (`sidebar.tsx:219/241/262` yalnız yoklama durdurur).
+> - **YON-05 — çürüyen varsayım:** görev "convert payload'ı bugün `line_items` taşıyor mu (`routes/quotes.js`)" diye
+>   sordu → LIFFY'de **convert payload'ı / kurucusu YOK**; `sign` (`quotes.js:1020-1069`) yalnız durum + log. En yakın
+>   şekil `enrichQuote` (`:103-116`): `line_items[]` var ama `product_code` / `is_registration_fee` (L2a) yok, satır
+>   toplamı vergi DAHİL (LEENA L4 vergi hariç).
+> - **Yan bulgu:** LIFFY oturumunda URL kullanıcısı `liffy_app_2026b`, `current_user = liffy_user` (açıklama ÖLÇÜLMEDİ —
+>   rapor §1.5) · liffyv1 `backend/node_modules` git'te izleniyor (1290 dosya; dokunulmadı).
+> - **⚠️ ÖLÇÜLMEDİ:** LEENA DB · `session_user` / `rolcanlogin` · LEENA convert testleri (koşulmadı) · canlı deploy
+>   commit'leri · 242 SKU kaynağı — rapor §7.
+> - **🔶 Sentez'e:** Paket 3 kriter turu girdisi rapor §6 (7 soru).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -4150,7 +4170,8 @@
 >   geçti)** — [defter:2026-10-23 PAKET UI-0b CANLIDA]. **Açık:** 4 🔶 Sentez sorusu (UI-0b kapanış brief'i 23 Eki).
 >   **★ SIRA (Suer 23 Eki kapanış — bu kazanır):** ~~**Faz B başı**~~ → ✅ **FAZ B TAMAMLANDI** (b1 · b2 `532d173` ·
 >   b3 yalnız liffy-api · b4 · c1–c3; **(a) Anthropic ERTELENDİ**) — [defter:2026-10-23 FAZ B TAMAMLANDI] →
->   **★SIRADAKİ = Paket 3 kriter turu (Sentez) ∥ P1b-2 Zoho CSV** (Suer CSV'yi getirince; paralel). **Eklemeler (Sentez EK 21 Eki — tarihsel):**
+>   **★SIRADAKİ = Paket 3 kriter turu (Sentez) ∥ P1b-2 Zoho CSV** (Suer CSV'yi getirince; paralel) — ön-ölçüm ✅
+>   [defter:2026-10-24 PAKET 3 ÖN-ÖLÇÜM]. **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
 >     permissions'a "field" eylemi eklenmez, tablo genişletilebilir kalır.
