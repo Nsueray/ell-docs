@@ -3885,6 +3885,40 @@
 >   → CC ölçer: EMS 8 dosya (`main-panel-v2` yalnız link satırı farkıyla) + silinen 11 → 404 + TABAN. ell-docs push ayrıca
 >   (`eb6cc39` + bu kayıt). Geri dönüş: `git revert -m 1 <merge>` (yalnız statik dosya + test; şema yok).
 
+> ## ✅ 2026-10-23 — PAKET UI-0b: MAIN'E MERGE (canlı sırası Suer'de)
+>
+> - **Ne yapıldı:** Suer "merge" dedi → yerel `main`'e `git merge --no-ff eliza-next` → **`2463259`** (ebeveynler
+>   `cb37f24` = origin/main · `50b3938`). Gelen: `312bc2d` (inşa) + `50b3938` (envanter raporları). **Tek revert:**
+>   `git revert -m 1 2463259`. Merge ağacı = `eliza-next` ağacı (birebir, `rev-parse ^{tree}` = `32b9b1c`).
+>   `cb37f24..2463259` farkı: 20 dosya; `public/` · `tests/` · `docs/audits/` dışında yalnız `CLAUDE.md`. Backend route /
+>   migration YOK. Çalışma kopyası ardından `eliza-next`'e geri alındı.
+> - **Commit:** LEENA `main` **`2463259`** (yerel; origin/main'in 3 önünde) · `eliza-next` = origin/eliza-next = `50b3938`.
+>   **PUSH YOK.**
+> - **Ölçülenler (CC, 23 Eki 11:04–11:15 UTC; DB'ler salt-okunur oturum `transaction_read_only=on`, HTTP oturumsuz):**
+>   - `origin/eliza-next` = `50b3938` (Suer push etti) · `origin/main` = `cb37f24` · ell-docs `origin/main` = `92c3ac9`
+>     (`eb6cc39` + `7f7251b` henüz push EDİLMEDİ).
+>   - **Staging (`50b3938`):** ui2 **32/32** + EMS 8 dosya **8/8** (main-panel-v2 yeni satırıyla) 200 ve sha256 = git blob ·
+>     silinen 11 sayfa **11/11 → 404** · kalan `dashboard.html` · `main-panel.html` · `expo-create.html` ·
+>     `checkin-import.html` 200 · `main-panel-v2.html`'de `/ui2/` "ELIZA Finance (new)" satırı 1 · `/ui2/`,
+>     `/commissions.html`, `/sales-agents.html`, `/health` 200.
+>   - **Canlı (push öncesi taban):** EMS 8 dosya **8/8** = `cb37f24` blob'u · silinen 11 sayfa **11/11 → 200** (push sonrası
+>     404 beklenir).
+>   - **DB (her iki tarafta `schema_migrations` 47, son `045_audit_log`; UI-0b migration getirmez):** **TABAN contract 4 sr
+>     earned = 342.00 (7 dilim)** canlı (`claude_readonly`) ve staging, SLICE_CTES ile.
+>   - **Testler `main` üzerinde:** **418/418**, ❌ 0 (tek koşu; TABAN satırları 342.00).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Suer'in staging kabul gözlemi (yalnız "merge" geldi) — oturumlu `main-panel-v2` sidebar
+>   görünümü ve yeni linkle `/ui2/` → Finance özeti inişi CC'de görülmedi (dosya eşliği + HTTP ölçüldü) · canlı
+>   `INVITE_ECHO` (panel) · canlı deploy · Render event log.
+> - **Bilinçle yapılmayanlar:** push (`main`, ell-docs) · canlıya yazma · 🔶 dört Sentez sorusu (common.js · yürüyen bakiye ·
+>   "(new)" etiketi · kurgusal adlı 4 tasarım sayfası) açık kalır.
+> - **Teslim (Suer, canlı sırası):** migration YOK · SERBEST + tek KAPI-1 satırı (KAPI-2 değil) → **YON-12:** (a) yok · (c) yok
+>   · (b) son export 23 Eki 12:50 (+03) → push **24 Eki 12:50 (+03)'ten sonraysa YENİ export** → YON-06 (status.render.com
+>   + kampanya/fuar takvimi; G42) → Render → Leena_v401 → Environment'ta `INVITE_ECHO` YOK (bakış) → `git push origin
+>   main` (`cb37f24..2463259`) → Live (~60 sn, G43; auto-deploy tetiklenmezse Manual Deploy). Render Shell'de iş yok. Sonra
+>   **CC ölçer** (EMS 8 dosya = `main` — `main-panel-v2` yalnız `:968` farkıyla · silinen 11 → 404 · ui2 32/32 · TABAN ·
+>   `/health`) + **Suer bakar** (Yaprak'ın `/login.html` → `main-panel-v2` · Finance bölümündeki yeni link). Geri dönüş:
+>   `git revert -m 1 2463259` + push (şema yok).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -3932,8 +3966,9 @@
 >   45 HTML setinin ell-docs'a alınması (Sentez'e soruldu) · YET-01..09 🔶. → ✅ hepsi Sentez 23 Eki'de cevaplandı, KB @
 >   92c3ac9 — [defter:2026-10-23 UI-0b HÜKÜMLERİ].
 >   **★ SIRA (Sentez 23 Eki — bu kazanır):** **UI-0b** (envanter uygulaması + belge kapanışı; SERBEST + tek KAPI-1
->   satırı; dal `eliza-next`, tek merge) — ✅ **STAGING'E HAZIR** (LEENA `312bc2d` + `50b3938`,
->   [defter:2026-10-23 PAKET UI-0b]) → **Faz B başı** (Anthropic API anahtarı iptal/yenileme + LIFFY `JWT_SECRET`,
+>   satırı; dal `eliza-next`, tek merge) — ✅ STAGING'E HAZIR (LEENA `312bc2d` + `50b3938`,
+>   [defter:2026-10-23 PAKET UI-0b]) → ✅ **MAIN'E MERGE** (`2463259`, canlı sırası Suer'de) — [defter:2026-10-23 PAKET
+>   UI-0b MERGE] → **Faz B başı** (Anthropic API anahtarı iptal/yenileme + LIFFY `JWT_SECRET`,
 >   K-E; **KAPI-2**; Sentez "go"su bekleniyor) → **Paket 3** (Sentez kriter turu). P1b-2 Zoho CSV gelince araya girer
 >   (değişmedi). **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
