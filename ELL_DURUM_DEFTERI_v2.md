@@ -3679,6 +3679,46 @@
 >   YOK) → 8 kabul maddesi `leena-staging.onrender.com` üzerinde (adresler teslim metninde) → "merge" → main'e tek merge.
 >   ell-docs push ayrıca. Geri dönüş: merge sonrası `git revert -m 1 <merge>` (yalnız statik dosya + test; şema yok).
 
+> ## ✅ 2026-10-23 — PAKET UI-0: MAIN'E MERGE (canlı sırası Suer'de)
+>
+> - **Ne yapıldı:** Suer "merge" dedi → önce `eliza-next`'e **`48789c5`** (yalnız CLAUDE.md: beklenen test sayısı
+>   379 → 416; `1ad8456` bu satırı güncellememişti — Paket 1b/2'de inşa commit'i güncelliyordu) → yerel `main`'e
+>   `git merge --no-ff eliza-next` → **`cb37f24`** (ebeveynler `b75c87b` = origin/main · `48789c5`). Gelen: `1ad8456` +
+>   `48789c5`. **Tek revert:** `git revert -m 1 cb37f24`. Merge ağacı = `eliza-next` ağacı (birebir, `rev-parse ^{tree}` =
+>   `1946d09`). `b75c87b..cb37f24` farkı: 45 dosya; `public/ui2/` ve `tests/` dışında yalnız `package.json` (test zinciri) +
+>   `CLAUDE.md`. Backend route / migration / EMS sayfası YOK. Çalışma kopyası ardından `eliza-next`'e geri alındı.
+> - **Commit:** LEENA `main` **`cb37f24`** (yerel; origin/main'in 3 önünde) · `eliza-next` **`48789c5`** (origin'in 1 önünde).
+>   **PUSH YOK.**
+> - **Ölçülenler (CC, 23 Eki 09:28–09:45 UTC; DB'ler salt-okunur oturum, `transaction_read_only=on`; HTTP oturumsuz):**
+>   - `origin/eliza-next` = `1ad8456` (Suer push etti) · `origin/main` = `b75c87b` · ell-docs `origin/main` = `7a2d9fd`
+>     (UI-0 belge commit'leri `92bb1c9` + `bc28b11` henüz push EDİLMEDİ).
+>   - **Staging (`leena-staging.onrender.com`):** `1ad8456`'daki 32 ui2 dosyasının **32/32**'si 200 ve sha256 = git blob
+>     (nav.json, tokens.css, components.js, `_sablon/` dahil) · klasik köprüler `/commissions.html` + `/sales-agents.html`
+>     200 · `/health` 200.
+>   - **Canlı (`leena.app`, push öncesi taban):** `b75c87b`'deki 25 ui2 dosyası **25/25** = blob · EMS 8 dosya
+>     (`login.html` · `dashboard_new.html` · `main-panel-v2.html` · `visitorlog-paginated.html` · `qrscanner.html` ·
+>     `checkins.html` · `terminals.html` · `leena-fetch.js`) **8/8** = `main` blob'u · `ui2/nav.json` ve
+>     `ui2/styles/tokens.css` **404** (beklenen: push öncesi) · `/health` 200.
+>   - **EMS'ten ui2'ye kod içi referans** (`1ad8456`, `public/` ui2 dışı + `index.js` + `routes/`): **0** → silinen
+>     `themes.css` / `ledger.css`'i ui2 dışında yükleyen yok.
+>   - **DB (her iki tarafta `schema_migrations` 47, son `045_audit_log`; UI-0 migration getirmez):** **TABAN contract 4 sr
+>     earned = 342.00 (7 dilim)** canlı (`leena_v401_db`, `claude_readonly`) ve staging (`leena_staging_db`), SLICE_CTES ile.
+>   - **Testler `main` üzerinde:** **416/416**, ❌ 0 (tek koşu; T35 ×3 + M01a + I5 + R1 342.00, R4 özet birebir).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Suer'in staging'deki 8 kabul maddesi gözlemi (yalnız "merge" geldi) — giriş → Finance
+>   özeti, alt menü tıklamaları, şablonların üç durumu, telefonda 390 px, Sales/Operations ekranı oturumlu olarak CC'de
+>   görülmedi (staging için CC'de kullanıcı kimliği yok; dosya eşliği ve sayfaların 200 dönmesi ölçüldü) · staging'in gerçek
+>   verisiyle ekran rakamları (yalnız test DB'de ölçüldü, `1ad8456` kaydı) · canlı deploy · Render event log.
+> - **Bilinçle yapılmayanlar:** push (`main`, `eliza-next`, ell-docs) · canlıya yazma · `ui0_compare.js`'in staging'e karşı
+>   koşulması (oturum gerekir) · Sentez 🔶 soruları (klasik köprü · tek birimli tutar istisnaları · nav.json ek alanları) —
+>   açık kalır.
+> - **Teslim (Suer, canlı sırası):** migration YOK, KAPI-2 değil (SERBEST) → **YON-12:** (a) yok · (c) yok · (b) son export
+>   22 Eki 13:37 (+03) → push **23 Eki 13:37 (+03)'ten sonraysa YENİ export ZORUNLU** → YON-06 (status.render.com +
+>   kampanya/fuar takvimi; G42) → `git push origin main` (`b75c87b..cb37f24`) → Live (~60 sn, G43; auto-deploy tetiklenmezse
+>   Manual Deploy). Render Shell'de iş yok. Sonra **CC ölçer** (canlı ui2 32 dosya sha256 = `main` · eski `themes.css` /
+>   `ledger.css` 404 · EMS 8 dosya = `main` ve push öncesiyle aynı · TABAN · `/health`) + **Suer bakar** (`leena.app/ui2/` →
+>   giriş → Finance özeti; gerçek veriyle rakamlar). `eliza-next` push'u (`48789c5`, yalnız CLAUDE.md) staging'i yeniden
+>   deploy eder, ekranı değiştirmez. Geri dönüş: `git revert -m 1 cb37f24` + push (şema yok).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-22 — bu kazanır; aşağıdakiler tarihsel):**
@@ -3719,7 +3759,8 @@
 >   ✅ MAIN'E MERGE (`b75c87b`) → ✅ **CANLIDA (22 Eki 14:01, KAPI-1 geçti)**; aynı dalda Suppliers + Drafts alt menüye
 >   (K-G kuralıyla); ✅ belge kapanışı **KB @ 7a2d9fd**. **Açık:** YET-01..09 🔶 Sentez teyidi (kapanış brief'i 22 Eki) ·
 >   Yaprak'ın eski girişi ölçülmedi.
->   **★ SIRA (Suer 22 Eki — bu kazanır):** **UI-0** (✅ **STAGING'E HAZIR** — LEENA `1ad8456`, [defter:2026-10-22 PAKET UI-0];
+>   **★ SIRA (Suer 22 Eki — bu kazanır):** **UI-0** (✅ STAGING'E HAZIR — LEENA `1ad8456`, [defter:2026-10-22 PAKET UI-0] → ✅ **MAIN'E MERGE** (`cb37f24`,
+>   canlı sırası Suer'de) — [defter:2026-10-23 PAKET UI-0 MERGE];
 >   ✅ kriterler geldi — Sentez 22 Eki, SERBEST, dal `eliza-next`;
 >   kütük UI-01..06 + `ELIZA_UI2_ARAYUZ_KURALLARI_v1.md` — [defter:2026-10-22 UI-0 KRİTERLERİ]; girdi: SAYFA ENVANTERİ
 >   [defter:2026-10-22 SAYFA ENVANTERİ] + UX çıktısı) → **Faz B başı** (Anthropic API anahtarı iptal/yenileme + LIFFY `JWT_SECRET`, K-E) →
