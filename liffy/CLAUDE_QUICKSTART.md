@@ -52,17 +52,7 @@
 
 ## DB Erisimi
 
-```bash
-PGPASSWORD=qefNejbasKyxmRomREYaL6CkrAfeE5pU psql -h dpg-d39adoemcj7s738stkqg-a.oregon-postgres.render.com -U liffy_user liffy
-```
-
-## Kullanicilar
-
-| Kullanici | ID | Email | Role | PW |
-|-----------|----|-------|------|----|
-| Suer | cfb66f28 | suer@elan-expo.com | owner | Becks2021 |
-| Elif | 1798e4e3 | elif@elan-expo.com | manager | Liffy2026 |
-| Bengu | c845b557 | bengu@elan-expo.com | sales_rep | Liffy2026 |
+Baglanti dizesi yalniz Render env'de (`DATABASE_URL`, liffy-api + liffy-worker-docker) ve parola yoneticisinde; bu dosyaya yazilmaz (K4 — Faz B, 23 Eki).
 
 **Organizer ID:** `63b52d61-ae2c-4dad-b429-48151b1b16d6`
 

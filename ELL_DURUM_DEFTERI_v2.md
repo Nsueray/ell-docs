@@ -4044,6 +4044,61 @@
 > - **Teslim (Suer):** b2 push/merge bloğu (CC cevabı) → iki servis deploy + doğrulama → b3 → b4. Runbook §2B'deki `git push
 >   origin main` satırı bu kayıtla değişti (dal `faz-b-jwt`).
 
+> ## ⚠️ 2026-10-23 — K4 İHLAL #3 (CC): maskeli okumada şifre tablosu maskelenmedi → DURMA işletildi
+>
+> - **Ne oldu:** FAZ B kapanış ön-ölçümünde CC `liffyv1/CLAUDE_QUICKSTART.md` 46–66'yı "maskeli" bastı. Maske uzunluk
+>   sezgisiydi (≥24 karakter) → `:56` DB şifresi maskelendi, **`:63–65` "Kullanicilar" tablosunun PW sütunu maskelenmedi**
+>   → 3 LIFFY giriş şifresi (owner dahil) CC tool çıktısına düz metin düştü: bu oturumun yerel dökümü
+>   (`~/.claude/projects/-Users-nsa-Projects-liffyv1/1c9ac7d6-….jsonl`) + model bağlamı. Sohbete / belgeye / commit'e
+>   yazılmadı.
+> - **Sebep:** satır aralığı içindeki sırlar sınıflanmadan seçildi; maske izin listesi (allowlist) değil desen/uzunluk
+>   sezgisiydi. İlk iki ihlal ([defter:2026-10-23 FAZ B RUNBOOK v1] "CC hatası") de maskesiz komut çıktısıydı.
+> - **Durma (K4 "3. tekrar = dur"):** CC başka dosyaya dokunmadan durdu, Suer'e raporladı. **Suer kararı (23 Eki):** giriş
+>   şifreleri ŞİMDİ değiştirilmez → Zoho göçü / ekip açılışında toplu rotasyon (Faz B kuyruğu, Paket 4 öncesi) ·
+>   `liffy_user` Faz A'da kapatıldı (NOLOGIN), panelde yok · devam.
+> - **Etki (ölçüldü):** değerler zaten public geçmişte (liffyv1 + ell-docs, ikisi de PUBLIC — [defter:2026-10-23 FAZ B
+>   TAMAMLANDI]); ihlal yeni dış açıklık yaratmadı, yerel döküm + model bağlamı ekledi. `~/.claude/projects`'te giriş
+>   şifreleri yalnız bu oturumun dökümünde.
+> - **Önlem:** maskeli okuma = ALLOWLIST — yalnız yol · satır no · kategori · sayı · uzunluk + ilk 2 · CC'nin kendi yazdığı
+>   satırlar; bilinmeyen satır yalnız şekille yoklanır (kelime sayısı, uzunluk, ilk 2, karakter sınıfı); sır taşıyan
+>   silme diff'i yalnız `--numstat`. CC hafızasına kural (`memory/k4-masked-read-allowlist.md`). 🔶 K4 metnine "allowlist"
+>   eklensin mi — Sentez.
+
+> ## ✅ 2026-10-23 — FAZ B TAMAMLANDI (b1–b4 + c1–c3 canlıda; (a) Anthropic ERTELENDİ) + sır temizliği
+>
+> - **Suer raporu (CC ölçümü değil):** b2 `main`'e fast-forward `9954054..d260f83` → iki servis deploy, health 200, loglar
+>   temiz ("Database connected successfully") · **b3** liffy-api `JWT_SECRET` yenilendi — **yalnız api** (worker JWT
+>   okumuyor) · **b4** health 200; eski oturum "invalid signature" verdi, **otomatik çıkış YOK** → çıkış-giriş sonrası 22
+>   liste açıldı · **c1–c3** liffy-db yeni varsayılan kullanıcı `liffy_app_2026b`; liffy-api + worker `DATABASE_URL`
+>   yenilendi; listeler açık; eski `liffy_app_2026` bağlantı 0 → silindi · **(a) Anthropic:** Suer kararıyla ERTELENDİ
+>   (anahtar Mac dışına çıkmadı) · `liffy_user`: Faz A'da NOLOGIN, panelde yok.
+> - **YON-05 — çürüyen varsayım:** runbook b4 "mevcut oturum düşer (eski token 401) → yeniden giriş". Gözlem (Suer): token
+>   reddediliyor ama UI login'e ATMIYOR; kullanıcı elle çıkış-giriş yaptı → **Paket 3 notu: 401'de login'e at.**
+> - **Ne yapıldı (CC, kapanış temizliği):** (1) CC hafızası `MEMORY.md` `:15` / `:17` → "değer Render env'de" (DB şifresi,
+>   bağlantı dizesi, yerel JWT satırları gitti) · (2) `liffyv1/.claude/settings.local.json` (git dışı): **184 izin
+>   kuralından 52 sırlı kural silindi** → 132, JSON geçerli. Kategori sayımı (bir kural birden çok taşır): eski DB şifresi
+>   34 · Anthropic anahtarı 16 · JWT token (`eyJ…`) 20 · yerel JWT 2 · diğer env-sır 21 · Bearer 1 → Faz B kuyruğundaki
+>   "sırlı ölü izin kuralları" KAPANDI · (3) `CLAUDE_QUICKSTART.md` `:56` PGPASSWORD satırı → işaretçi cümle ("Render
+>   env'de / parola yöneticisinde; yazılmaz"); `:59–66` "Kullanicilar" tablosu (PW sütunu) silindi — liffyv1 + ell-docs
+>   kopyası `liffy/CLAUDE_QUICKSTART.md` (iki dosya birebir aynı şekildeydi) · `backend/.env`'e DOKUNULMADI (Suer, yerel).
+> - **Commit:** liffyv1 `main` **`0e4b8a7`** (origin'in 1 önünde) · ell-docs bu kayıt + QUICKSTART kopyası + runbook §3
+>   notu. **PUSH YOK** (Suer).
+> - **Ölçülenler (CC, 23 Eki; K4 allowlist — değer basılmadı):** temizlik sonrası bilinen eski değerler (DB şifresi · giriş
+>   şifreleri · yerel JWT) + genel sır desenleri: iki QUICKSTART · `MEMORY.md` · `settings.local.json` → **0 satır** ·
+>   temizlik öncesi liffyv1 (1552 dosya) ve ell-docs (152 dosya) izlenen + izlenmeyen ağaçta tek yer QUICKSTART `:56`,
+>   `:63–65` · **🔴 ell-docs da GitHub'da PUBLIC** (`gh repo view`) · geçmiş: DB şifresi + giriş şifreleri liffyv1 ve
+>   ell-docs'ta birer commit'te (HEAD temizliği geçmişi temizlemez) · yerel JWT iki reponun geçmişinde 0 · `backend/.env`:
+>   `DATABASE_URL` ve `UNSUBSCRIBE_SECRET` YOK, `JWT_SECRET` değişmedi (len 64).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** b2–c3 canlı sonuçları (yalnız Suer raporu; CC log / health okumadı) · giriş şifrelerinin
+>   bugün geçerli olduğu · DB / giriş şifrelerinin kötüye kullanılıp kullanılmadığı · yerel JWT'nin eski canlı JWT (= bugünkü
+>   `UNSUBSCRIBE_SECRET`) ile aynı olup olmadığı · `.env` `MINING_API_TOKEN`'ın b3 sonrası geçersizliği (liffy-local-miner) ·
+>   oturum dökümleri: eski DB şifresi + yerel JWT 2 dökümde (bu oturum dahil), temizlenmedi.
+> - **Bilinçle yapılmayanlar:** giriş şifresi rotasyonu (Suer: toplu, Paket 4 öncesi) · git geçmişini yeniden yazma ·
+>   `.env` · oturum dökümü silme · ELL R8 (`liffyv1/docs/ELL_RULES.md:238`) düzeltmesi (🔶 Sentez) · runbook b-satırlarının
+>   yeniden yazımı (bu kayıt kazanır).
+> - **🔶 Sentez'e (FAZ B kapanış brief'i 23 Eki):** b3 yalnız api ↔ ELL R8 "Same JWT_SECRET across services" · K4'e
+>   "allowlist" · Paket 3 kriter turu isteği.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -4093,10 +4148,9 @@
 >   ~~**UI-0b**~~ (envanter uygulaması + belge kapanışı; SERBEST + tek KAPI-1 satırı; dal `eliza-next`, tek merge) —
 >   ✅ STAGING'E HAZIR (LEENA `312bc2d` + `50b3938`) → ✅ MAIN'E MERGE (`2463259`) → ✅ **CANLIDA (23 Eki 14:27, KAPI-1
 >   geçti)** — [defter:2026-10-23 PAKET UI-0b CANLIDA]. **Açık:** 4 🔶 Sentez sorusu (UI-0b kapanış brief'i 23 Eki).
->   **★ SIRA (Suer 23 Eki — bu kazanır):** **Faz B başı** (Anthropic API anahtarı iptal/yenileme + LIFFY `JWT_SECRET`,
->   K-E; **KAPI-2**; **Sentez GO VAR**) [(a) ertelendi · b1 ✅ · b2 kod `532d173` dal `faz-b-jwt`, push Suer'de ·
->   🔴 DB şifresi public repoda → (c) sırası Sentez'de — [defter:2026-10-23 FAZ B (b2)]] → **Paket 3** (Sentez kriter turu). P1b-2 Zoho CSV gelince araya girer
->   (değişmedi). **Eklemeler (Sentez EK 21 Eki — tarihsel):**
+>   **★ SIRA (Suer 23 Eki kapanış — bu kazanır):** ~~**Faz B başı**~~ → ✅ **FAZ B TAMAMLANDI** (b1 · b2 `532d173` ·
+>   b3 yalnız liffy-api · b4 · c1–c3; **(a) Anthropic ERTELENDİ**) — [defter:2026-10-23 FAZ B TAMAMLANDI] →
+>   **★SIRADAKİ = Paket 3 kriter turu (Sentez) ∥ P1b-2 Zoho CSV** (Suer CSV'yi getirince; paralel). **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
 >     permissions'a "field" eylemi eklenmez, tablo genişletilebilir kalır.
@@ -4120,11 +4174,13 @@
 >   geçiş yavaşlığı (ölçülecek).
 >   Paralel/sonda: v402 temizlik sayımı (L-1 sonrası) · em-dash · test zinciri · `PRE_MIGRATION_CURRENCIES`
 >   yedeğinin kaldırılması (040 canlıda).
->   **Faz B kuyruğu (zaman: Paket 2 SONRASI, Paket 3 ÖNCESİ — Sentez 22 Eki):** **ÖNCELİKLİ (21 Eki oturumunda
->   parçaları çıktıya düştü):** Anthropic API anahtarı
->   iptal/yenileme (LIFFY `settings.local.json`'dan sızdı) · LIFFY `JWT_SECRET` (K-E) → sonra: 3 izlenen
->   `.env.backup` · staging DB inbound
->   `0.0.0.0/0` daraltma · sırlı ölü izin kuralları · NOLOGIN kalan eski roller + tablo sahipliği (Sentez sorusu) ·
+>   **Faz B kuyruğu (zaman: Paket 2 SONRASI, Paket 3 ÖNCESİ — Sentez 22 Eki; 23 Eki: (b) JWT + (c) LIFFY DB ✅ KAPANDI —
+>   [defter:2026-10-23 FAZ B TAMAMLANDI]):** **ÖNCELİKLİ (21 Eki oturumunda parçaları çıktıya düştü):** Anthropic API anahtarı
+>   iptal/yenileme (LIFFY `settings.local.json`'dan sızdı) — **ERTELENDİ** (Suer 23 Eki; anahtar Mac dışına çıkmadı;
+>   `settings.local.json`'daki 16 kopyası silindi) · ~~LIFFY `JWT_SECRET` (K-E)~~ ✅ 23 Eki · **LIFFY kullanıcı şifreleri
+>   toplu rotasyon — Paket 4 öncesi** (Suer 23 Eki; Zoho göçü / ekip açılışında; değerler public geçmişte —
+>   [defter:2026-10-23 K4 İHLAL #3]) → sonra: 3 izlenen `.env.backup` · staging DB inbound
+>   `0.0.0.0/0` daraltma · ~~sırlı ölü izin kuralları~~ ✅ 23 Eki (52 kural) · NOLOGIN kalan eski roller + tablo sahipliği (Sentez sorusu) ·
 >   auto-deploy'un `35cad76`'da tetiklenmeme sebebi (Render event log'dan ölçülecek; Sentez 21 Eki; `613ce8e`'de
 >   tetiklendi, 22 Eki) ·
 >   Render CLI yenileme (oturum 2026-06-17'de düştü; worker logları okunamıyor; Sentez 21 Eki).

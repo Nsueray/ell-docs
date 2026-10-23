@@ -128,3 +128,7 @@ değer.** b0 `UNSUBSCRIBE_SECRET`'ın zaten tanımlı olduğunu gösterirse b1 a
   oturum dökümünde (`~/.claude/projects/-Users-nsa-Desktop-Leena-Projesi-Leena-v401-monorepo/e184f817-….jsonl`) var. Yerel
   JWT değeri canlıyla aynıysa b3 onu geçersiz kılar; LIFFY DB şifresi yenilenince o satır da geçersiz olur.
 - Faz B'nin geri kalanı (deftere bak: 3 izlenen `.env.backup` · staging DB inbound · NOLOGIN roller · Render CLI …).
+- **Güncelleme (23 Eki kapanış — [defter:2026-10-23 FAZ B TAMAMLANDI]):** (b) + (c) canlıda, (a) ERTELENDİ ·
+  `settings.local.json`'dan 52 sırlı kural silindi (anahtarın 16 kopyası dahil; anahtar iptali ertelendi) · LIFFY DB
+  kullanıcısı değişti → yukarıdaki döküm satırındaki dize geçersiz · b4'te otomatik çıkış YOK (Paket 3 notu) · K4 ihlal #3
+  [defter:2026-10-23 K4 İHLAL #3].
