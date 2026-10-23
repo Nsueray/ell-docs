@@ -3719,9 +3719,40 @@
 >   giriş → Finance özeti; gerçek veriyle rakamlar). `eliza-next` push'u (`48789c5`, yalnız CLAUDE.md) staging'i yeniden
 >   deploy eder, ekranı değiştirmez. Geri dönüş: `git revert -m 1 cb37f24` + push (şema yok).
 
+> ## ✅ 2026-10-23 — PAKET UI-0 CANLIDA (KAPI-1 geçti)
+>
+> - **Ne yapıldı (Suer, rapor 23 Eki 13:12 +03):** export 12:50 ✓ (YON-12) · `git push origin main` `b75c87b..cb37f24`,
+>   auto-deploy tetiklendi ✓ · `ui2/nav.json` 200. **Staging'de 8 kabul maddesi Suer tarafından görüldü** (raporda sayılan:
+>   giriş → Finance özeti · 4 grup alt menü · `_sablon` 4 şablon × 3 durum · Sales boş-durum · contract 4 €342.00).
+>   **Canlıda (Suer):** ui2 girişi → Finance özeti · 4 grup alt menü · gerçek rakamlar (açık alacak **€24945.20**).
+>   KAPI-1 (merge = deploy) bu push'la geçti. Migration yok.
+> - **Commit:** LEENA canlı = `main` **`cb37f24`** (`origin/main` = `cb37f24`, ölçüldü) · `origin/eliza-next` = `48789c5` ·
+>   ell-docs `origin/main` = `3b4e12d` (UI-0 belge commit'leri push edildi). Bu kayıt: ell-docs.
+> - **Ölçülenler (CC, 23 Eki 10:14 UTC; DB salt-okunur oturum `transaction_read_only=on`, HTTP oturumsuz):**
+>   - **ui2 (canlı):** `cb37f24`'teki 32 dosyanın **32/32**'si 200 ve sha256 = `main` blob'u (yeni kod servis ediliyor) ·
+>     silinen `styles/themes.css` + `styles/ledger.css` **404** · canlıda servis edilen ui2 dosyalarında `tokens.css` dışı
+>     sabit hex **0** (kabul 4, canlı karşılığı).
+>   - **EMS 8 dosya** (`login.html` · `dashboard_new.html` · `main-panel-v2.html` · `visitorlog-paginated.html` ·
+>     `qrscanner.html` · `checkins.html` · `terminals.html` · `leena-fetch.js`): canlı sha256 = `main` **8/8 AYNI**, hepsi
+>     200; bu 8 dosyada `b75c87b` ↔ `cb37f24` farkı 0 → push öncesi tabanla aynı.
+>   - Klasik köprüler `/commissions.html` + `/sales-agents.html` 200 · `/health` 200 · `ui2/finance-summary.html` TTFB
+>     0.242 / 0.244 / 0.247 s.
+>   - **Canlı DB:** `schema_migrations` 47, son `045_audit_log` (değişmedi) · **TABAN contract 4 sr earned = 342.00
+>     (7 dilim)**, SLICE_CTES ile.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** açık alacak €24945.20'nin API/DB karşılığı (Suer'in ekran gözlemi; CC'de ui2 kimliği
+>   yok) · gerçek telefonda 390 px (raporda adı geçmiyor; CC'de yalnız Chromium emülasyonu, `1ad8456` kaydı) · Safari /
+>   Firefox · EMS ekranlarının oturumlu davranışı (yalnız dosya eşliği ölçüldü) · deploy logu / Render event log.
+> - **Bilinçle yapılmayanlar:** canlıya yazma · YON-03 belge kapanışı (KB yüklemesi Sentez/Orchestrator'da; KB @ sonraki
+>   turda) · brief + 45 HTML setinin ell-docs'a alınması ve 🔶 soruların kütüğe işlenmesi (Sentez cevabı bekleniyor) ·
+>   `eliza-next`'in `main`'e eşitlenmesi (sonraki dalın ilk adımı: `git merge --ff-only main`).
+> - **Sentez'e:** UI-0 KAPANIŞ BRIEF'i (23 Eki, ≤15 satır) — sonuç · hex 103 → 0 · 416 test · 3 🔶 (yer tutucu → klasik
+>   köprü · tek birimli tutarlar · nav.json alanları) · davranış farkları (iniş sayfası: giriş `whoami.html` ve Finance
+>   sekmesi `finance-contract.html` → ikisi de `finance-summary.html` · para çifti sütunları · negatif kırmızı) · design
+>   brief + 45 HTML seti ell-docs dışında · YET-01..09 teyit bekliyor · Faz B "go" isteği.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
-> - **★ SIRADAKİ (2026-10-22 — bu kazanır; aşağıdakiler tarihsel):**
+> - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
 >   1) ~~**Staging web servisi kurulumu**~~ → ✅ **STAGING CANLI (21 Eki)** →
 >   2) ~~**Paket 1 — Ledger**~~ → ✅ **CANLIDA (21 Eki 18:30, `35cad76`, KAPI-1 geçti)** — **KAPALI kalır**
 >   (yeni kriterler Paket 1b'ye — Sentez EK 21 Eki); ✅ belge kapanışı **KB @ ca2bd5b** →
@@ -3759,12 +3790,14 @@
 >   ✅ MAIN'E MERGE (`b75c87b`) → ✅ **CANLIDA (22 Eki 14:01, KAPI-1 geçti)**; aynı dalda Suppliers + Drafts alt menüye
 >   (K-G kuralıyla); ✅ belge kapanışı **KB @ 7a2d9fd**. **Açık:** YET-01..09 🔶 Sentez teyidi (kapanış brief'i 22 Eki) ·
 >   Yaprak'ın eski girişi ölçülmedi.
->   **★ SIRA (Suer 22 Eki — bu kazanır):** **UI-0** (✅ STAGING'E HAZIR — LEENA `1ad8456`, [defter:2026-10-22 PAKET UI-0] → ✅ **MAIN'E MERGE** (`cb37f24`,
->   canlı sırası Suer'de) — [defter:2026-10-23 PAKET UI-0 MERGE];
->   ✅ kriterler geldi — Sentez 22 Eki, SERBEST, dal `eliza-next`;
->   kütük UI-01..06 + `ELIZA_UI2_ARAYUZ_KURALLARI_v1.md` — [defter:2026-10-22 UI-0 KRİTERLERİ]; girdi: SAYFA ENVANTERİ
->   [defter:2026-10-22 SAYFA ENVANTERİ] + UX çıktısı) → **Faz B başı** (Anthropic API anahtarı iptal/yenileme + LIFFY `JWT_SECRET`, K-E) →
->   **Paket 3**. P1b-2 Zoho CSV gelince araya girer (değişmedi). **Eklemeler (Sentez EK 21 Eki — tarihsel):**
+>   ~~**UI-0**~~ (Sentez 22 Eki, SERBEST, dal `eliza-next`; kütük UI-01..06 + `ELIZA_UI2_ARAYUZ_KURALLARI_v1.md` —
+>   [defter:2026-10-22 UI-0 KRİTERLERİ]; girdi: SAYFA ENVANTERİ [defter:2026-10-22 SAYFA ENVANTERİ] + UX çıktısı) →
+>   ✅ STAGING'E HAZIR (`1ad8456`) → ✅ MAIN'E MERGE (`cb37f24`) → ✅ **CANLIDA (23 Eki 13:12, KAPI-1 geçti)** —
+>   [defter:2026-10-23 PAKET UI-0 CANLIDA]. **Açık:** 3 🔶 Sentez sorusu (UI-0 kapanış brief'i 23 Eki) · design brief +
+>   45 HTML setinin ell-docs'a alınması (Sentez'e soruldu) · YET-01..09 🔶.
+>   **★ SIRA (Suer 23 Eki — bu kazanır):** **Faz B başı** (Anthropic API anahtarı iptal/yenileme + LIFFY `JWT_SECRET`,
+>   K-E; **KAPI-2**; Sentez "go"su bekleniyor) → **Paket 3** (Sentez kriter turu). P1b-2 Zoho CSV gelince araya girer
+>   (değişmedi). **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
 >     permissions'a "field" eylemi eklenmez, tablo genişletilebilir kalır.
