@@ -18,6 +18,7 @@ ELL Platformu'nun tek-ev (source-of-truth) dokümantasyon repo'su.
 | [ELAN_EXPO_REQUIREMENTS_v1_0.md](./ELAN_EXPO_REQUIREMENTS_v1_0.md) | Kanonik ihtiyaç dokümanı (ne lazım) |
 | [ELL_LOCKED_KARARLAR_OZET.md](./ELL_LOCKED_KARARLAR_OZET.md) | Kilitli mimari kararlar — uyum kontrol listesi |
 | [ELIZA_UI2_ARAYUZ_KURALLARI_v1.md](./ELIZA_UI2_ARAYUZ_KURALLARI_v1.md) | ui2 arayüz kuralları (UI-01..06) + UI-0 kabul ölçütleri |
+| [ELL_FAZ_B_RUNBOOK_v1.md](./ELL_FAZ_B_RUNBOOK_v1.md) | Faz B başı adım tarifi: Anthropic anahtarı + LIFFY JWT_SECRET (ölçüm + adımlar, sır değeri yok) |
 | [ELIZA_DESIGN_BRIEF_v1.md](./ELIZA_DESIGN_BRIEF_v1.md) | Ürün tasarım brief'i (Claude Design için, Eyl 2026); başında §8 sapma notu (UI-05) |
 | [ELL_TEK_KAYNAK_KILIT.md](./ELL_TEK_KAYNAK_KILIT.md) | Tek-kaynak ilkesi (kilitli, 2026-06-20) |
 | [ELL_MIMARI_v1.0_KONSOLIDE.md](./ELL_MIMARI_v1.0_KONSOLIDE.md) | Konsolide mimari (mimari fazı çıktısı) |

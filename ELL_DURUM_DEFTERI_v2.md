@@ -3942,6 +3942,41 @@
 > - **Bilinçle yapılmayanlar:** canlıya yazma · 🔶 dört Sentez sorusu (`js/common.js` · yürüyen bakiye · "(new)" etiketi ·
 >   kurgusal adlı 4 tasarım sayfası) açık · `eliza-next`'in `main`'e eşitlenmesi (sonraki dalın ilk adımı).
 
+> ## ✅ 2026-10-23 — FAZ B RUNBOOK v1 (ölçüm + adım tarifi; Sentez E bölümü, GO)
+>
+> - **Ne yapıldı:** Faz B başının iki işi için salt-okunur ölçüm + Suer adım tarifi → **`ELL_FAZ_B_RUNBOOK_v1.md`** (ell-docs
+>   kökü; README'ye satır). Kod / env / DB değişikliği YOK; LIFFY'de commit YOK (b2 kodu ayrı turda, CC).
+> - **Commit:** ell-docs (bu kayıt + runbook). PUSH YOK.
+> - **Ölçülenler (liffyv1 `main` @ `9954054` = origin/main; değerler basılmadı, yalnız dosya:satır / sayı):**
+>   - **Anthropic anahtarı:** env `ANTHROPIC_API_KEY` (`aiMinerGenerator.js:751`, `:1276`). liffy-api `POST
+>     /api/admin/ai-miner/generate` (`adminAIMiner.js:68`, mount `server.js:93`) → `generateMiner` (`:1090`) → Claude
+>     (`:765`, `:1272`). liffy-worker-docker yalnız `AI_MINER_GENERATOR_ENABLED === 'true'` + 0 kişi durumunda
+>     (`flowOrchestrator.js:966` → `:1018`). Yerel CLI `scripts/testAIMinerGenerator.js` (`:1846`). Sızıntı:
+>     `liffyv1/.claude/settings.local.json` (git'te izlenmiyor) — anahtar **16 satırda** (`:45-60`), **tek** anahtar; aynı
+>     dosyada **31 satırda** şifreli LIFFY DB bağlantı dizesi (ayrı Faz B maddesi).
+>   - **JWT_SECRET:** **30 dosyada** `process.env.JWT_SECRET || '<sabit>'`, **3 farklı sabit** (25 route · 4 dosya —
+>     `middleware/auth.js:23` dahil · `utils/unsubscribeHelper.js:27` zinciri). Token üreten `routes/auth.js:88/:151`
+>     ile doğrulayan `middleware/auth.js` farklı sabit taşır → env yoksa giriş kırık olurdu (canlıda env tanımlı olduğuna
+>     dolaylı işaret, ölçüm değil). **Abonelikten çıkma HMAC'i `UNSUBSCRIBE_SECRET` yoksa JWT_SECRET'ı kullanır**
+>     (`unsubscribeHelper.js:27`, `:31-41`; doğrulama `webhooks.js:934` GET onay sayfası, işlem `:959` POST) → JWT
+>     değişirse gönderilmiş e-postalardaki çıkış linkleri kırılır → runbook b1 (🔶 karar). `backend/.env` git'te izlenmiyor,
+>     hiç commitlenmemiş. `liffy-ui`'de JWT sırrı/doğrulaması yok (token `localStorage.liffy_token`); `liffy-local-miner`
+>     kullanıcı token'ı `--token` ile (`mine.js:13`, `:30`) → rotasyonda yeniden giriş. LEENA'da LIFFY token doğrulayan kod
+>     yok (`routes/contracts.js` yalnız yorum).
+>   - **Emsal:** LEENA `utils/bootGuards.js` (saf fonksiyon, fail-closed, `index.js` durdurur) · LEENA `routes/auth.js:43`
+>     (JWT_SECRET yoksa hata, yedek yok).
+>   - **Deploy / sağlık:** liffyv1 `main` push → iki servis auto-deploy (`LIFFY_OPERATIONS.md:12`; worker ~3-5, api ~2 dk) ·
+>     test zinciri yok · `api.liffy.app/api/health` 200 · `liffy.app` 200 (23 Eki 11:3x UTC).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Render'da `ANTHROPIC_API_KEY` · `AI_MINER_GENERATOR_ENABLED` · `JWT_SECRET` ·
+>   `UNSUBSCRIBE_SECRET`'ın hangi serviste tanımlı olduğu (panel → runbook a1 / b0) · Anthropic Console'daki anahtar
+>   sayısı · LIFFY'de çalışan iş / kampanya (pencere) · canlı JWT değerinin yerel `.env` ile aynı olup olmadığı (yerel değer
+>   okunmadı/karşılaştırılmadı).
+> - **Bilinçle yapılmayanlar:** LIFFY kod değişikliği (b2 — runbook adımı, ayrı tur) · env / panel / Console işlemi ·
+>   `settings.local.json` temizliği ve LIFFY DB şifresi (runbook §3, Faz B kuyruğu).
+> - **🔶 Sentez'e:** b1 — `UNSUBSCRIBE_SECRET` = eski JWT değeri (öneri: çıkış linkleri çalışır, eski değer yalnız çıkış
+>   imzasında yaşar) mı, yeni değer (eski linkler kırılır) mı?
+> - **Teslim (Suer):** runbook §2A (a1 → a6) tek iş; (b) (a) bittikten sonra, b2 kodu CC'de.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
