@@ -3919,6 +3919,29 @@
 >   `/health`) + **Suer bakar** (Yaprak'ın `/login.html` → `main-panel-v2` · Finance bölümündeki yeni link). Geri dönüş:
 >   `git revert -m 1 2463259` + push (şema yok).
 
+> ## ✅ 2026-10-23 — PAKET UI-0b CANLIDA (KAPI-1 geçti)
+>
+> - **Ne yapıldı (Suer, rapor 23 Eki 14:27 +03):** `git push origin main` `cb37f24..2463259`, auto-deploy **46 sn** ✓ ·
+>   `login_new.html` 404 ✓ · **canlı env'de `INVITE_ECHO` YOK** (Suer panelde baktı) · ell-docs `538894d` push edildi.
+>   **Staging'de Suer gördü:** eski giriş (`/login.html`) → `main-panel-v2` · Finance bölümünde 5 eski öğe + "ELIZA Finance
+>   (new)" → Finance özeti · `login_new.html` 404. KAPI-1 (merge = deploy) bu push'la geçti. Migration yok; YON-12 (b):
+>   son export 23 Eki 12:50, push 14:27 → 24 saat içinde, yeni export şartı yoktu (Suer raporu export anmıyor).
+> - **Commit:** LEENA canlı = `main` **`2463259`** (`origin/main` = `2463259`, ölçüldü). Bu kayıt: ell-docs.
+> - **Ölçülenler (CC, 23 Eki 11:29 UTC; DB salt-okunur `claude_readonly`, HTTP oturumsuz):**
+>   - **ui2 (canlı):** `2463259`'teki 32 dosyanın **32/32**'si 200 ve sha256 = `main` blob'u.
+>   - **EMS 8 dosya:** canlı sha256 = `main` **8/8**, hepsi 200. `cb37f24` ↔ `2463259` arasında bu 8 dosyada tek fark
+>     `main-panel-v2.html` `@@ -967,0 +968 @@` (1 / 0 satır); canlı `main-panel-v2`'den `:968` çıkarılınca `cb37f24` blob'u
+>     ile **AYNI** — EMS'te yalnız link satırı değişti.
+>   - **Silinen 11 sayfa canlıda 11/11 → 404** (push öncesi 11/11 → 200) · kalan `dashboard.html` · `main-panel.html` ·
+>     `expo-create.html` · `checkin-import.html` 200 · `/ui2/` · `/commissions.html` · `/sales-agents.html` · `/health` 200.
+>   - **Canlı DB:** `schema_migrations` 47, son `045_audit_log` (değişmedi) · **TABAN contract 4 sr earned = 342.00
+>     (7 dilim)**, SLICE_CTES ile.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** canlıda oturumlu `main-panel-v2` görünümü ve yeni linkle iniş (Suer staging'de gördü;
+>   canlı dosya eşliği ölçüldü) · Yaprak'ın canlı girişi · silinen sayfalara canlıda gelen istek (log okunmadı) · Render
+>   event log.
+> - **Bilinçle yapılmayanlar:** canlıya yazma · 🔶 dört Sentez sorusu (`js/common.js` · yürüyen bakiye · "(new)" etiketi ·
+>   kurgusal adlı 4 tasarım sayfası) açık · `eliza-next`'in `main`'e eşitlenmesi (sonraki dalın ilk adımı).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -3965,11 +3988,11 @@
 >   [defter:2026-10-23 PAKET UI-0 CANLIDA]. **Açık:** 3 🔶 Sentez sorusu (UI-0 kapanış brief'i 23 Eki) · design brief +
 >   45 HTML setinin ell-docs'a alınması (Sentez'e soruldu) · YET-01..09 🔶. → ✅ hepsi Sentez 23 Eki'de cevaplandı, KB @
 >   92c3ac9 — [defter:2026-10-23 UI-0b HÜKÜMLERİ].
->   **★ SIRA (Sentez 23 Eki — bu kazanır):** **UI-0b** (envanter uygulaması + belge kapanışı; SERBEST + tek KAPI-1
->   satırı; dal `eliza-next`, tek merge) — ✅ STAGING'E HAZIR (LEENA `312bc2d` + `50b3938`,
->   [defter:2026-10-23 PAKET UI-0b]) → ✅ **MAIN'E MERGE** (`2463259`, canlı sırası Suer'de) — [defter:2026-10-23 PAKET
->   UI-0b MERGE] → **Faz B başı** (Anthropic API anahtarı iptal/yenileme + LIFFY `JWT_SECRET`,
->   K-E; **KAPI-2**; Sentez "go"su bekleniyor) → **Paket 3** (Sentez kriter turu). P1b-2 Zoho CSV gelince araya girer
+>   ~~**UI-0b**~~ (envanter uygulaması + belge kapanışı; SERBEST + tek KAPI-1 satırı; dal `eliza-next`, tek merge) —
+>   ✅ STAGING'E HAZIR (LEENA `312bc2d` + `50b3938`) → ✅ MAIN'E MERGE (`2463259`) → ✅ **CANLIDA (23 Eki 14:27, KAPI-1
+>   geçti)** — [defter:2026-10-23 PAKET UI-0b CANLIDA]. **Açık:** 4 🔶 Sentez sorusu (UI-0b kapanış brief'i 23 Eki).
+>   **★ SIRA (Suer 23 Eki — bu kazanır):** **Faz B başı** (Anthropic API anahtarı iptal/yenileme + LIFFY `JWT_SECRET`,
+>   K-E; **KAPI-2**; **Sentez GO VAR**) → **Paket 3** (Sentez kriter turu). P1b-2 Zoho CSV gelince araya girer
 >   (değişmedi). **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
