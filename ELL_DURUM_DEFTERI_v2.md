@@ -3811,6 +3811,80 @@
 > - **Bilinçle yapılmayanlar:** alınmayan dosyaların ad/e-posta silinerek düzeltilip alınması · `uploads/` kopyası · tasarım
 >   setinin LEENA'ya girmesi · kurgusal adların silinmesi (Sentez "kurgusal ad da alınmasın" derse 4 dosya çıkar).
 
+> ## ✅ 2026-10-23 — PAKET UI-0b: STAGING'E HAZIR
+>
+> - **Ne yapıldı (dal `eliza-next`, SERBEST + tek KAPI-1 satırı, tek merge / tek revert; Sentez 23 Eki toplu blok):**
+>   ön iş belgesi ayrı commit'te (ell-docs `eb6cc39`, [defter:2026-10-23 UI-0b HÜKÜMLERİ]) → `git merge --ff-only main`
+>   (`48789c5` → `cb37f24`) → inşa:
+>   - **(a) SİL:** 13 adın her biri için backend + public'te (node_modules / .git hariç) **sınır duyarlı** ad araması
+>     (`(^|[^A-Za-z0-9_.-])<ad>` — düz `grep -F` `admin-dashboard.html`'i `dashboard.html` sanırdı). **11 SİLİNDİ** (silme
+>     öncesi 0, commit anında 0): `admin-dashboard` · `login_new` · `register` · `email_templates/modern-default` ·
+>     `checkins.backup` · `dashboard.backup` · `expo-create.backup` · `main-panel.backup` · `qrscanner.backup` ·
+>     `register.backup` · `reports.backup`. **2 SİLİNMEDİ (grep > 0):** `dashboard.html` — silme öncesi 11 iz, commit anında
+>     7 (`public/js/common.js:126/488/496` · `expo-create.html:333/402` · `main-panel.html:93/145`) · `main-panel.html` —
+>     öncesi 7, commit anında 3 (`js/common.js:452` · `expo-create.html:326/327`). `public/js/common.js`'i yükleyen dosya 0
+>     (adı backend + public'te geçmiyor) — tek dış iz o.
+>   - **(b) `expo-create.html` → KALSIN** (fark): `dashboard_new` modal'ı aynı uca (`POST /api/expos`) `name · location ·
+>     country_code · start_date · end_date` gönderir (`dashboard_new.html:797-809`); `expo-create.html` ayrıca
+>     **`description` + `logo_url`** (`:296-297`) — backend yazar (`routes/expos.js:255/274`), başka ekran (`expo-form.html`
+>     dahil) girmez. Ek farklar: `location` burada zorunlu (`:362`) · başarıda fuarı seçip `main-panel.html`'e gider
+>     (`:321-327`), modal listeyi tazeler. Ayrıca kalan `dashboard.html:233-234` ona link verir (ad araması 0 değil).
+>     `checkin-import.html` KALDI (Suer istisnası).
+>   - **(c) KAPI-1:** `main-panel-v2.html` Finance bölümünün sonuna TEK satır `:968`
+>     `<a class="nav-item" href="/ui2/">… ELIZA Finance (new)</a>` · `git diff --numstat` = 1 / 0 · satır çıkarılınca dosya
+>     `cb37f24` ile bayt bayt aynı (sha256 `6ce948e5a219c560…` iki tarafta) · başka sidebar'a eklenmedi. Etiket "(yeni)"
+>     DEĞİL "(new)": LEENA CLAUDE.md dil kuralı (arayüz metni yalnız İngilizce) — 🔶 aşağıda.
+>   - **(d) INVITE_ECHO testi VAR, eklenmedi:** `test_users_admin.js:302` U3 (bayraksız → yanıtta link yok, logda token
+>     yok) · `:315` U5 (`=1` → link) · `test_ui2_p2_pages.js:115` S13 (yalnız tam "1" açar). Canlı env değeri test
+>     edilemez (render.yaml yok; değer Render panelinde) → Suer bloğunda tek bakış satırı.
+>   - **(e) nav.json köprüsü:** Commissions / Agents `legacy: true` + `status: placeholder` + `path` = klasik ekran
+>     (`/commissions.html`, `/sales-agents.html`); menü yine `placeholder.html?id=<id>`'e gider (yolu nav.json'daki
+>     `placeholder` öğesinden — `shell.js` yol yazmaz); `placeholder.html` klasik bağlantıyı `it.path`'ten okur. Para çifti
+>     "—": kodda zaten var (`components.js:39-46`) ve K4 testinde sabit → değişiklik yok. Tek birimli `C.money` üç yerde
+>     (kalem birim fiyatı · ekstre giriş/çıkış · taslak tutarı; K4 `MONEY_ALLOW`).
+>   - **(f) envanter:** `scan.py` + `report.py` (22 Eki raporu Ek E'den çıkarıldı; diğer oturumun kopyasıyla bayt bayt aynı)
+>     dört dar uyarlamayla (kök parametresi · `<base href>` · dizin bağlantısı `/ui2/` · `nav.json` menü kaynağı) `312bc2d`
+>     worktree'sinde koşuldu → `docs/audits/SAYFA_ENVANTERI_2026-10-23.md`; 22 Eki raporu `9e17f69`'dan bayt bayt aynı
+>     alındı. **Regresyon:** uyarlanmış betik `613ce8e`'de 22 Eki ana tablosunu satırı satırına aynı üretti.
+>   - **(g)** testler + CLAUDE.md (KURAL 4, EMS: dizin ağacı, silinenler notu, main-panel-v2 satırı, test sayısı) +
+>     `tests/README.md`.
+> - **Commit:** LEENA `eliza-next` **`312bc2d`** (inşa) + **`50b3938`** (envanter raporları) — `cb37f24` üstünde;
+>   origin/eliza-next'in 3 önünde. PUSH YOK.
+> - **Ölçülenler:**
+>   - **Testler:** **416 → 418/418**, ❌ 0 (yerel PG, tam zincir; inşa ortasında 416/416, son hâl `312bc2d` tek koşu
+>     418/418; TABAN T35 ×3 + M01a + I5 + R1 342.00).
+>   - **Test değişiklikleri (gerekçeli istisna — Sentez köprü hükmü nav.json şemasını değiştirdi):** N2 (köprü yolu public/
+>     altında aranır) · N7 (`legacy === true` + yol klasik ekran + bağlantı yalnız nav.json'dan) · N8 (menü linki =
+>     nav.json `placeholder` yolu + `?id=`). **Yeni:** E1 (eski arayüzden ui2'ye TEK link, main-panel-v2 Finance bölümü,
+>     mevcut 5 link aynı sırada) · E2 (public/ altında `*.backup.html` yok + `email_templates/` yok). İlk E2 silinen adları
+>     liste olarak taşıyordu → commit anı ad araması her ad için 1 verdi (yalnız `test_ui2_ui0.js:253-254`) → kural testi
+>     de kapsar diye E2 desene çevrildi, commit düzeltildi (push edilmemişti) → commit anı 0.
+>   - **Bozma denemeleri** (kırmızı yandı, geri alındı): legacy'yi metne çevirmek → N2 + N7 · placeholder'a klasik yol
+>     gömmek → N7 · EMS sayfasına ikinci ui2 linki → E1 · silinen sayfayı geri koymak / `*.backup.html` eklemek → E2.
+>   - **ui2 sabit hex** `tokens.css` dışında **0** (değişmedi).
+>   - **Push öncesi taban (canlı + staging, curl):** silinen 11 sayfanın hepsi **200** (iki ortamda) · canlı `main-panel-v2`
+>     = `cb37f24` blob'u, staging = `48789c5` blob'u (dosya o aralıkta değişmedi).
+>   - **Envanter (`312bc2d`):** 79 HTML (kök 51 · ui2 25 · callcenter 3) · ölü aday **14 → 3** (`checkin-import` ·
+>     `dashboard` · `main-panel`) · İZSİZ-YENİ 1 (`expo-create`) · İZSİZ-FUAR 7 · ulaşılamaz **22 → 11** · eski → ui2 kod
+>     içi link **0 → 1** · ui2'ye `login.html` kökünden 25/25 ulaşılır · fuar no gömülü değişmedi (id 2 · içerik 9 · yerel 3).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging / canlı deploy · silinen sayfaların canlı son erişimi (log okunmadı;
+>   `login_new.html` eski yer imleri push sonrası 404) · canlı `INVITE_ECHO` değeri (panel) · main-panel-v2'deki yeni
+>   satırın tarayıcıda görünümü (dar sidebar / mobil) · klasik oturumla `/ui2/` girişi (UI-0'da test edildi, bu turda
+>   yeniden değil) · leena-frontend skill `sidebar.md`'si (Finance bölümü v402'den beri yok — bayat; dokunulmadı).
+> - **Bilinçle yapılmayanlar:** `js/common.js` silinmesi (SİL listesinde yok) · diğer sidebar'lara link · skill dosyaları ·
+>   EMS sayfa içerikleri · fuar no gömülü 2 sayfa · TAŞI (UI-1) · Faz B · push.
+> - **🔶 Sentez'e:** (1) `js/common.js` (yükleyen 0) SİL listesine alınsın mı? Alınırsa `dashboard.html` + `main-panel.html`
+>   ad araması 0'a iner (expo-create kararı ayrı: modal kapsamıyor). (2) Ekstrenin yürüyen bakiyesi hesap biriminde,
+>   çiftsiz (LED-11) — "tek birim üç yer" sayımının dışında mı, LED-11 istisnası mı? (3) Link etiketi "(new)" — dil
+>   kuralı gereği; "(yeni)" istenirse kural istisnası gerekir. (4) Tasarım arşivinde kurgusal adlı 4 sayfa kabul mü?
+> - **Teslim (Suer):** `git push origin eliza-next` (LEENA, `48789c5..50b3938`) → staging auto-deploy (~60 sn, G43;
+>   migration YOK) → staging kabul: eski giriş `/login.html` + `main-panel-v2.html` açılıyor · Finance bölümünün son satırı
+>   "ELIZA Finance (new)" → `/ui2/` Finance özetine iniyor · silinen 11 sayfa 404 · menüde başka fark yok (Contracts ·
+>   Sales Agents · Commissions · Cash Forecast · Offices aynı) → "merge" → main'e tek merge → canlı: export kuralı
+>   (YON-12 b: son export 23 Eki 12:50 (+03); push 24 Eki 12:50'den sonraysa YENİ export) → YON-06 → `git push origin main`
+>   → CC ölçer: EMS 8 dosya (`main-panel-v2` yalnız link satırı farkıyla) + silinen 11 → 404 + TABAN. ell-docs push ayrıca
+>   (`eb6cc39` + bu kayıt). Geri dönüş: `git revert -m 1 <merge>` (yalnız statik dosya + test; şema yok).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -3858,7 +3932,8 @@
 >   45 HTML setinin ell-docs'a alınması (Sentez'e soruldu) · YET-01..09 🔶. → ✅ hepsi Sentez 23 Eki'de cevaplandı, KB @
 >   92c3ac9 — [defter:2026-10-23 UI-0b HÜKÜMLERİ].
 >   **★ SIRA (Sentez 23 Eki — bu kazanır):** **UI-0b** (envanter uygulaması + belge kapanışı; SERBEST + tek KAPI-1
->   satırı; dal `eliza-next`, tek merge) → **Faz B başı** (Anthropic API anahtarı iptal/yenileme + LIFFY `JWT_SECRET`,
+>   satırı; dal `eliza-next`, tek merge) — ✅ **STAGING'E HAZIR** (LEENA `312bc2d` + `50b3938`,
+>   [defter:2026-10-23 PAKET UI-0b]) → **Faz B başı** (Anthropic API anahtarı iptal/yenileme + LIFFY `JWT_SECRET`,
 >   K-E; **KAPI-2**; Sentez "go"su bekleniyor) → **Paket 3** (Sentez kriter turu). P1b-2 Zoho CSV gelince araya girer
 >   (değişmedi). **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
