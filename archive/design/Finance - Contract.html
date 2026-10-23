@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELIZA — Finance · Contract CT-2026-0142</title>
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('eliza-theme')||'vermillion');}catch(e){document.documentElement.setAttribute('data-theme','vermillion');}</script>
+<link rel="stylesheet" href="styles/signal.css">
+<link rel="stylesheet" href="styles/themes.css">
+<style>
+  body { background: var(--bg); }
+  .app { min-height: 100vh; }
+
+  /* context / breadcrumb bar */
+  .context { background: var(--surface); border-bottom: 1px solid var(--line); padding: 13px 24px; display:flex; align-items:center; gap:16px; }
+  .crumb { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--muted); }
+  .crumb a { color:var(--muted); text-decoration:none; }
+  .crumb a:hover { color:var(--ink); }
+  .crumb .sep { color:var(--faint); }
+  .crumb .cur { color:var(--ink); font-weight:600; font-family:var(--font-mono); }
+  .ctx-right { margin-left:auto; display:flex; align-items:center; gap:10px; }
+
+  .subbar { background: var(--surface); border-bottom: 1px solid var(--line); padding: 0 16px; display:flex; align-items:center; gap:10px; }
+  .subbar .subnav { padding: 6px 0; }
+
+  .main { padding: 20px 24px 40px; max-width: 1480px; margin: 0 auto; }
+
+  /* contract header */
+  .chead { display:flex; align-items:flex-start; justify-content:space-between; gap:24px; margin-bottom:18px; }
+  .chead h1 { font-family:var(--font-display); font-weight:600; font-size:24px; margin:0; letter-spacing:-.01em; display:flex; align-items:center; gap:12px; }
+  .chead .sub { margin-top:7px; color:var(--muted); font-size:13px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .chead .sub .mono { color:var(--ink-2); }
+  .hbtns { display:flex; gap:8px; flex:none; }
+
+  .cols { display:grid; grid-template-columns: 1.62fr 1fr; gap:16px; align-items:start; }
+  .stack { display:grid; gap:16px; }
+
+  /* big figure row */
+  .figrow { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:16px; }
+  .fig { background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md); padding:14px 16px; }
+  .fig.accent { border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-l); }
+  .fig .f-l { font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+  .fig .f-v { font-family:var(--font-display); font-weight:600; font-size:26px; margin-top:8px; letter-spacing:-.01em; }
+  .fig .f-eur { font-family:var(--font-mono); font-size:12px; color:var(--muted); margin-top:4px; }
+
+  /* line item table */
+  .li { width:100%; border-collapse:collapse; font-size:13px; }
+  .li thead th { text-align:left; font-family:var(--font-mono); font-size:10px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; padding:9px 14px; border-bottom:1px solid var(--line); background:var(--surface-2); }
+  .li thead th.r { text-align:right; }
+  .li tbody td { padding:11px 14px; border-bottom:1px solid var(--line-2); color:var(--ink-2); }
+  .li tbody td.r { text-align:right; font-family:var(--font-mono); font-variant-numeric:tabular-nums; color:var(--ink); }
+  .li tbody td .desc { font-weight:600; color:var(--ink); font-size:13px; }
+  .li tbody td .dsub { font-size:11.5px; color:var(--muted); margin-top:1px; }
+  .li tbody td .eur { font-size:11px; color:var(--faint); font-family:var(--font-mono); }
+  .li tbody tr:hover { background:var(--surface-2); }
+  .comm-pill { font-family:var(--font-mono); font-size:11px; font-weight:600; color:var(--berry-d); background:var(--berry-l); border-radius:100px; padding:2px 8px; }
+  .comm-zero { color:var(--faint); font-family:var(--font-mono); font-size:11px; }
+
+  /* totals */
+  .totals { padding:14px 16px; display:flex; flex-direction:column; gap:9px; }
+  .trow { display:flex; align-items:baseline; justify-content:space-between; font-size:13px; }
+  .trow .t-k { color:var(--muted); }
+  .trow .t-v { font-family:var(--font-mono); font-variant-numeric:tabular-nums; color:var(--ink); font-weight:500; }
+  .trow .t-eur { color:var(--faint); font-size:11px; margin-left:8px; }
+  .trow.grand .t-k { color:var(--ink); font-weight:600; font-size:14px; }
+  .trow.grand .t-v { font-size:16px; font-weight:600; }
+  .trow.balance { background:var(--primary-l); margin:4px -16px -14px; padding:13px 16px; border-radius:0 0 var(--r-md) var(--r-md); }
+  .trow.balance .t-k { color:var(--primary-d); font-weight:600; font-size:14px; }
+  .trow.balance .t-v { color:var(--primary-d); font-size:18px; font-weight:600; }
+
+  /* right rail rows */
+  .kv { display:flex; justify-content:space-between; align-items:center; padding:10px 16px; border-bottom:1px solid var(--line-2); font-size:13px; }
+  .kv:last-child { border-bottom:0; }
+  .kv .k { color:var(--muted); }
+  .kv .v { color:var(--ink); font-weight:500; text-align:right; }
+  .kv .v .mono { font-family:var(--font-mono); }
+
+  .fx { padding:14px 16px; }
+  .fx-rate { font-family:var(--font-display); font-weight:600; font-size:22px; letter-spacing:-.01em; }
+  .fx-rate small { font-size:13px; color:var(--muted); font-weight:500; }
+  .fx-meta { font-family:var(--font-mono); font-size:11px; color:var(--muted); margin-top:6px; display:flex; align-items:center; gap:7px; }
+
+  .party { display:flex; align-items:center; gap:11px; padding:11px 16px; border-bottom:1px solid var(--line-2); }
+  .party:last-child { border-bottom:0; }
+  .p-av { width:34px; height:34px; border-radius:50%; display:grid; place-items:center; font-size:12px; font-weight:600; color:#fff; font-family:var(--font-display); flex:none; }
+  .p-name { font-weight:600; font-size:13px; color:var(--ink); }
+  .p-role { font-size:11.5px; color:var(--muted); }
+  .p-tag { margin-left:auto; }
+  .icn { width:14px; height:14px; }
+</style>
+</head>
+<body>
+<div class="app" data-screen-label="Finance — Contract detail">
+
+  <!-- TOP NAV (admin → all domains) -->
+  <nav class="topnav">
+    <div class="brand"><div class="eliza-mark"><span class="eliza-glyph"><i></i><i></i><i></i></span><span class="eliza-word on-dark">ELIZA</span></div></div>
+    <div class="domain-tabs">
+      <button class="domain-tab" onclick="location.href='Sales%20-%20My%20Work.html'"><span class="d-main">Sales</span><span class="d-sub">liffy</span></button>
+      <button class="domain-tab" onclick="location.href='Ops%20-%20Dashboard.html'"><span class="d-main">Operations</span><span class="d-sub">leena</span></button>
+      <button class="domain-tab active"><span class="d-main">Finance</span><span class="d-sub">&nbsp;</span></button>
+    </div>
+    <div class="spacer"></div>
+    <div class="nav-right">
+      <button class="btn btn-icon" style="background:var(--cmd-2);color:var(--cmd-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
+      <span class="kbd">⌘K</span>
+      <div class="vdiv" style="height:24px"></div>
+      <button class="btn btn-icon" style="background:var(--cmd-2);color:var(--cmd-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg></button>
+      <div class="avatar" style="background:var(--primary);cursor:pointer" onclick="location.href='Settings%20-%20Appearance.html'" title="Settings">SA</div>
+    </div>
+  </nav>
+
+  <!-- CONTEXT / BREADCRUMB -->
+  <div class="context">
+    <div class="crumb">
+      <a href="#">Finance</a><span class="sep">/</span>
+      <a href="#">Contracts</a><span class="sep">/</span>
+      <a href="#">EXPO-MA-26</a><span class="sep">/</span>
+      <span class="cur">CT-2026-0142</span>
+    </div>
+    <div class="ctx-right">
+      <span class="chip chip-warn"><span class="dot" style="background:var(--warn)"></span>Partially paid · 30%</span>
+      <span class="chip chip-pos">Signed</span>
+    </div>
+  </div>
+
+  <!-- SUBNAV -->
+  <div class="subbar">
+    <nav class="subnav">
+      <a href="Finance%20-%20War%20Room.html">War Room</a>
+      <a href="Finance%20-%20Expo%20Finance.html">Expos</a>
+      <a href="Finance%20-%20Ledger.html">Ledger</a>
+      <a class="active" href="#">Contracts</a>
+      <a href="Finance%20-%20Commissions.html">Commissions</a>
+      <a href="#">Reports</a>
+    </nav>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="chead">
+      <div>
+        <h1>Atlas Stone Co. <span class="chip chip-neutral mono" style="font-size:11px">CT-2026-0142</span></h1>
+        <div class="sub">
+          <span>Morocco Build &amp; Construct Expo 2026</span><span>·</span>
+          <span>Stand A-14 · 54 m² island</span><span>·</span>
+          <span>Signed <span class="mono">28 Feb 2026</span></span><span>·</span>
+          <span>Account: Yousra Benali</span>
+        </div>
+      </div>
+      <div class="hbtns">
+        <button class="btn btn-secondary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>PDF</button>
+        <button class="btn btn-secondary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M4 4h16v12H5.2L4 17.5z"/></svg>Note</button>
+        <button class="btn btn-primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>Record payment</button>
+      </div>
+    </div>
+
+    <!-- BIG FIGURES -->
+    <div class="figrow">
+      <div class="fig">
+        <div class="f-l">Contract value · USD</div>
+        <div class="f-v tnum">$44,280.00</div>
+        <div class="f-eur">≈ €40,737.60 EUR @ 0.9200</div>
+      </div>
+      <div class="fig">
+        <div class="f-l">Paid to date</div>
+        <div class="f-v tnum" style="color:var(--pos)">$13,284.00</div>
+        <div class="f-eur">Deposit · 30% · 02 Mar 2026</div>
+      </div>
+      <div class="fig accent">
+        <div class="f-l">Balance due</div>
+        <div class="f-v tnum" style="color:var(--primary-d)">$30,996.00</div>
+        <div class="f-eur">≈ €28,516.32 · due 14 Apr 2026</div>
+      </div>
+    </div>
+
+    <div class="cols">
+      <!-- LEFT -->
+      <div class="stack">
+        <!-- LINE ITEMS -->
+        <div class="card" style="overflow:hidden">
+          <div class="card-head">
+            <span class="card-title">Line items</span>
+            <span class="card-eyebrow">Transaction currency · USD</span>
+          </div>
+          <div style="overflow-x:auto">
+          <table class="li">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th class="r">Qty</th>
+                <th class="r">Unit (USD)</th>
+                <th class="r">Amount</th>
+                <th class="r">EUR equiv</th>
+                <th class="r">Comm %</th>
+                <th class="r">Commission</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="desc">Raw exhibition space</div><div class="dsub">54 m² island · Hall A · corner</div></td>
+                <td class="r">54 m²</td>
+                <td class="r">$480.00</td>
+                <td class="r">$25,920.00<div class="eur">€23,846.40</div></td>
+                <td class="r">€23,846.40</td>
+                <td class="r"><span class="comm-pill">7.0%</span></td>
+                <td class="r">$1,814.40</td>
+              </tr>
+              <tr>
+                <td><div class="desc">Shell scheme upgrade</div><div class="dsub">Premium walls + fascia + lighting</div></td>
+                <td class="r">1</td>
+                <td class="r">$4,200.00</td>
+                <td class="r">$4,200.00<div class="eur">€3,864.00</div></td>
+                <td class="r">€3,864.00</td>
+                <td class="r"><span class="comm-pill">5.0%</span></td>
+                <td class="r">$210.00</td>
+              </tr>
+              <tr>
+                <td><div class="desc">Premium corner location fee</div><div class="dsub">Two open sides</div></td>
+                <td class="r">1</td>
+                <td class="r">$3,500.00</td>
+                <td class="r">$3,500.00<div class="eur">€3,220.00</div></td>
+                <td class="r">€3,220.00</td>
+                <td class="r"><span class="comm-pill">7.0%</span></td>
+                <td class="r">$245.00</td>
+              </tr>
+              <tr>
+                <td><div class="desc">Electrical supply · 16A</div><div class="dsub">Utility pass-through · non-commissionable</div></td>
+                <td class="r">3</td>
+                <td class="r">$260.00</td>
+                <td class="r">$780.00<div class="eur">€717.60</div></td>
+                <td class="r">€717.60</td>
+                <td class="r"><span class="comm-zero">—</span></td>
+                <td class="r"><span class="comm-zero">$0.00</span></td>
+              </tr>
+              <tr>
+                <td><div class="desc">Co-exhibitor registration</div><div class="dsub">2 partners · badge + listing</div></td>
+                <td class="r">2</td>
+                <td class="r">$650.00</td>
+                <td class="r">$1,300.00<div class="eur">€1,196.00</div></td>
+                <td class="r">€1,196.00</td>
+                <td class="r"><span class="comm-pill">4.0%</span></td>
+                <td class="r">$52.00</td>
+              </tr>
+              <tr>
+                <td><div class="desc">Catalogue premium listing</div><div class="dsub">Marketing · logo + 200 words</div></td>
+                <td class="r">1</td>
+                <td class="r">$1,200.00</td>
+                <td class="r">$1,200.00<div class="eur">€1,104.00</div></td>
+                <td class="r">€1,104.00</td>
+                <td class="r"><span class="comm-pill">5.0%</span></td>
+                <td class="r">$60.00</td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+          <div class="totals">
+            <div class="trow"><span class="t-k">Subtotal</span><span class="t-v">$36,900.00 <span class="t-eur">€33,948.00</span></span></div>
+            <div class="trow"><span class="t-k">VAT · 20%</span><span class="t-v">$7,380.00 <span class="t-eur">€6,789.60</span></span></div>
+            <div class="trow grand"><span class="t-k">Total · USD</span><span class="t-v">$44,280.00 <span class="t-eur">€40,737.60</span></span></div>
+            <div class="trow"><span class="t-k">Less paid (deposit)</span><span class="t-v" style="color:var(--pos)">−$13,284.00</span></div>
+            <div class="trow balance"><span class="t-k">Balance due</span><span class="t-v">$30,996.00 <span class="t-eur" style="color:var(--primary-d)">€28,516.32</span></span></div>
+          </div>
+        </div>
+
+        <!-- TRANSACTIONS -->
+        <div class="card" style="overflow:hidden">
+          <div class="card-head"><span class="card-title">Transactions</span><span class="card-eyebrow">FX captured at settlement</span></div>
+          <div style="overflow-x:auto">
+          <table class="li">
+            <thead>
+              <tr>
+                <th>Date</th><th>Type</th><th>Method</th>
+                <th class="r">Amount (USD)</th><th class="r">FX rate</th><th class="r">EUR booked</th><th class="r">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="r" style="text-align:left">02 Mar 2026</td>
+                <td>Deposit · 30%</td>
+                <td>Wire · CIH Bank</td>
+                <td class="r">$13,284.00</td>
+                <td class="r">0.9185</td>
+                <td class="r">€12,201.35</td>
+                <td class="r"><span class="chip chip-pos" style="font-size:10.5px">Cleared</span></td>
+              </tr>
+              <tr>
+                <td class="r" style="text-align:left">14 Apr 2026</td>
+                <td>Balance · 70%</td>
+                <td>Wire · pending</td>
+                <td class="r">$30,996.00</td>
+                <td class="r">0.9200*</td>
+                <td class="r">€28,516.32</td>
+                <td class="r"><span class="chip chip-warn" style="font-size:10.5px">Scheduled</span></td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+          <div style="padding:10px 16px;font-family:var(--font-mono);font-size:11px;color:var(--muted);border-top:1px solid var(--line-2)">* Forward estimate at today's rate — EUR re-booked on clearance.</div>
+        </div>
+      </div>
+
+      <!-- RIGHT RAIL -->
+      <div class="stack">
+        <!-- FX snapshot -->
+        <div class="card">
+          <div class="card-head"><span class="card-title">FX snapshot</span><span class="chip chip-info" style="font-size:10.5px">USD → EUR</span></div>
+          <div class="fx">
+            <div class="fx-rate">1 USD = 0.9200 <small>EUR</small></div>
+            <div class="fx-meta"><span class="live-dot"></span>As of 10 Jun 2026 · 09:00 · ECB ref</div>
+            <div class="divider" style="margin:13px 0"></div>
+            <div class="trow" style="display:flex;justify-content:space-between;font-size:12.5px"><span class="t-k" style="color:var(--muted)">Value (txn)</span><span class="mono" style="color:var(--ink)">$44,280.00</span></div>
+            <div class="trow" style="display:flex;justify-content:space-between;font-size:12.5px;margin-top:7px"><span class="t-k" style="color:var(--muted)">Value (reporting)</span><span class="mono" style="color:var(--ink)">€40,737.60</span></div>
+          </div>
+        </div>
+
+        <!-- Commission -->
+        <div class="card">
+          <div class="card-head"><span class="card-title">Commission</span><span class="chip chip-warn" style="font-size:10.5px">Accrued</span></div>
+          <div class="party" style="border-bottom:1px solid var(--line-2)">
+            <div class="p-av" style="background:var(--berry)">YB</div>
+            <div><div class="p-name">Yousra Benali</div><div class="p-role">Sales — Stand space</div></div>
+            <span class="p-tag mono" style="font-size:12px;color:var(--ink)">6.6% blended</span>
+          </div>
+          <div class="kv"><span class="k">Commissionable base</span><span class="v"><span class="mono">$36,120.00</span></span></div>
+          <div class="kv"><span class="k">Non-commissionable</span><span class="v"><span class="mono" style="color:var(--muted)">$780.00</span></span></div>
+          <div class="kv"><span class="k">Commission earned</span><span class="v"><span class="mono" style="color:var(--berry-d);font-weight:600">$2,381.40</span></span></div>
+          <div class="kv"><span class="k">EUR equiv</span><span class="v"><span class="mono" style="color:var(--muted)">€2,190.89</span></span></div>
+          <div class="kv" style="background:var(--surface-2)"><span class="k" style="color:var(--ink-2)">Payout trigger</span><span class="v" style="font-weight:500;color:var(--ink-2)">On balance settled</span></div>
+        </div>
+
+        <!-- Parties -->
+        <div class="card">
+          <div class="card-head"><span class="card-title">Parties</span></div>
+          <div class="party">
+            <div class="p-av" style="background:var(--primary)">AS</div>
+            <div><div class="p-name">Atlas Stone Co.</div><div class="p-role">Omar Khalil · Managing Director</div></div>
+            <span class="p-tag"><span class="chip chip-neutral" style="font-size:10px">Exhibitor</span></span>
+          </div>
+          <div class="party">
+            <div class="p-av" style="background:var(--berry)">YB</div>
+            <div><div class="p-name">Yousra Benali</div><div class="p-role">Account manager</div></div>
+            <span class="p-tag"><span class="chip chip-neutral" style="font-size:10px">Sales</span></span>
+          </div>
+          <div class="party">
+            <div class="p-av" style="background:var(--ink-2)">SA</div>
+            <div><div class="p-name">Selma Aziz</div><div class="p-role">Finance owner</div></div>
+            <span class="p-tag"><span class="chip chip-neutral" style="font-size:10px">Finance</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

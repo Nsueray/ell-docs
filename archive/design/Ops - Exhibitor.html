@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELIZA — Operations · Exhibitor</title>
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('eliza-theme')||'vermillion');}catch(e){document.documentElement.setAttribute('data-theme','vermillion');}</script>
+<link rel="stylesheet" href="styles/signal.css">
+<link rel="stylesheet" href="styles/themes.css">
+<style>
+  body { background: var(--bg); }
+  .app { min-height: 100vh; }
+
+  .context { background: var(--surface); border-bottom: 1px solid var(--line); padding: 14px 24px; display: flex; align-items: center; gap: 22px; }
+  .expo-switch { display:flex; align-items:center; gap:12px; cursor:pointer; padding:7px 12px 7px 7px; border:1px solid var(--line); border-radius:var(--r-md); background:var(--surface-2); }
+  .expo-flag { width:38px; height:38px; border-radius:var(--r-sm); background:linear-gradient(135deg,var(--primary),var(--signal)); display:grid; place-items:center; color:#fff; font-family:var(--font-display); font-weight:600; font-size:13px; }
+  .expo-meta .e-name { font-family:var(--font-display); font-weight:600; font-size:16px; letter-spacing:-.01em; display:flex; align-items:center; gap:9px; }
+  .expo-meta .e-line { font-size:12px; color:var(--muted); margin-top:2px; display:flex; gap:10px; }
+  .caret { color:var(--faint); }
+  .countdown { margin-left:auto; display:flex; align-items:center; gap:16px; }
+  .cd-block { text-align:center; }
+  .cd-num { font-family:var(--font-display); font-weight:600; font-size:26px; line-height:1; color:var(--ink); }
+  .cd-lbl { font-family:var(--font-mono); font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-top:4px; }
+  .cd-sep { color:var(--line); font-size:22px; }
+  .cd-badge { padding:9px 14px; border-radius:var(--r-md); background:var(--berry); color:#fff; }
+  .cd-badge .cd-num { color:#fff; } .cd-badge .cd-lbl { color:#bfe6d8; }
+
+  .subbar { background: var(--surface); border-bottom: 1px solid var(--line); padding: 0 16px; display:flex; align-items:center; gap:10px; }
+  .subbar .subnav { padding: 6px 0; }
+
+  .main { padding: 18px 24px 36px; max-width: 1480px; margin: 0 auto; }
+  .page-head { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:14px; }
+  .page-head h1 { font-family:var(--font-display); font-weight:600; font-size:22px; margin:0; letter-spacing:-.01em; display:flex; align-items:center; gap:11px; }
+  .page-head .count { font-family:var(--font-mono); font-size:12px; color:var(--muted); font-weight:500; }
+  .page-head p { margin:5px 0 0; color:var(--muted); font-size:13px; }
+  .seg { display:flex; background:var(--bg-2); border-radius:var(--r-sm); padding:3px; gap:2px; }
+  .seg button { border:0; background:transparent; font-family:var(--font-ui); font-size:12.5px; font-weight:500; color:var(--muted); padding:7px 14px; border-radius:5px; cursor:pointer; }
+  .seg button.on { background:var(--surface); color:var(--ink); box-shadow:var(--shadow-sm); }
+
+  .strip { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:14px; }
+  .ms { background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md); padding:12px 14px; }
+  .ms .m-l { font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); display:flex; align-items:center; gap:6px; }
+  .ms .m-v { font-family:var(--font-display); font-weight:600; font-size:24px; margin-top:7px; letter-spacing:-.01em; }
+  .ms .m-v small { font-size:12px; color:var(--muted); font-weight:500; }
+
+  .toolbar { display:flex; align-items:center; gap:10px; padding:12px; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  .search { position:relative; display:flex; align-items:center; flex:1; min-width:220px; max-width:320px; }
+  .search svg { position:absolute; left:11px; width:15px; height:15px; color:var(--faint); }
+  .search input { font-family:var(--font-ui); font-size:13px; color:var(--ink); padding:8px 12px 8px 34px; border:1px solid var(--line); border-radius:var(--r-sm); background:var(--surface); width:100%; }
+  .search input:focus { outline:none; border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-l); }
+  .fdrop { display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-weight:500; color:var(--ink-2); border:1px solid var(--line); background:var(--surface); border-radius:var(--r-sm); padding:8px 11px; cursor:pointer; }
+  .fdrop svg { width:13px; height:13px; color:var(--muted); } .fdrop b { color:var(--ink); }
+  .tb-right { margin-left:auto; display:flex; align-items:center; gap:8px; }
+
+  .ttable { width:100%; border-collapse:collapse; font-size:12.5px; }
+  .ttable thead th { text-align:left; font-family:var(--font-mono); font-size:10px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; padding:9px 12px; border-bottom:1px solid var(--line); background:var(--surface-2); white-space:nowrap; }
+  .ttable tbody td { padding:10px 12px; border-bottom:1px solid var(--line-2); color:var(--ink-2); vertical-align:middle; }
+  .ttable tbody tr:hover { background:var(--surface-2); cursor:pointer; }
+  .ttable .num { text-align:right; font-family:var(--font-mono); color:var(--ink); }
+  .v-cell { display:flex; align-items:center; gap:10px; }
+  .v-av { width:30px; height:30px; border-radius:var(--r-sm); display:grid; place-items:center; font-size:10.5px; font-weight:600; color:#fff; font-family:var(--font-display); flex:none; }
+  .v-name { font-weight:600; color:var(--ink); font-size:13px; }
+  .v-sub { font-size:11.5px; color:var(--muted); }
+  .mono { font-family:var(--font-mono); }
+  .stand { font-family:var(--font-mono); font-size:12px; color:var(--ink); font-weight:600; }
+
+  /* onboarding mini steps */
+  .steps { display:flex; align-items:center; gap:5px; }
+  .step { width:8px; height:8px; border-radius:50%; background:var(--bg-2); }
+  .step.done { background:var(--pos); }
+  .step.act { background:var(--signal); }
+  .step.warn { background:var(--warn); }
+  .ob-pct { font-family:var(--font-mono); font-size:11px; color:var(--muted); margin-left:7px; }
+  .leadcell { display:inline-flex; align-items:center; gap:6px; }
+  .leadcell svg { width:13px; height:13px; color:var(--muted); }
+  .rowact { color:var(--faint); display:inline-flex; padding:4px; border-radius:4px; }
+  .rowact:hover { background:var(--bg-2); color:var(--ink); }
+
+  .tfoot { display:flex; align-items:center; justify-content:space-between; padding:12px 14px; }
+  .pager { display:flex; gap:4px; }
+  .pager button { border:1px solid var(--line); background:var(--surface); border-radius:var(--r-sm); min-width:30px; height:30px; font-family:var(--font-mono); font-size:12px; color:var(--ink-2); cursor:pointer; padding:0 8px; }
+  .pager button.on { background:var(--primary); border-color:var(--primary); color:#fff; }
+  .icn { width:14px; height:14px; }
+</style>
+</head>
+<body>
+<div class="app" data-screen-label="Operations — Exhibitor">
+
+  <!-- TOP NAV -->
+  <nav class="topnav">
+    <div class="brand"><div class="eliza-mark"><span class="eliza-glyph"><i></i><i></i><i></i></span><span class="eliza-word on-dark">ELIZA</span></div></div>
+    <div class="domain-tabs">
+      <button class="domain-tab" onclick="location.href='Sales%20-%20My%20Work.html'"><span class="d-main">Sales</span><span class="d-sub">liffy</span></button>
+      <button class="domain-tab active"><span class="d-main">Operations</span><span class="d-sub">leena</span></button>
+      <button class="domain-tab" onclick="location.href='Finance%20-%20War%20Room.html'"><span class="d-main">Finance</span><span class="d-sub">&nbsp;</span></button>
+    </div>
+    <div class="spacer"></div>
+    <div class="nav-right">
+      <button class="btn btn-icon" style="background:var(--cmd-2);color:var(--cmd-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
+      <span class="kbd">⌘K</span>
+      <div class="vdiv" style="height:24px"></div>
+      <button class="btn btn-icon" style="background:var(--cmd-2);color:var(--cmd-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg></button>
+      <div class="avatar" style="background:var(--primary);cursor:pointer" onclick="location.href='Settings%20-%20Appearance.html'" title="Settings">SA</div>
+    </div>
+  </nav>
+
+  <!-- CONTEXT -->
+  <div class="context">
+    <div class="expo-switch" onclick="location.href='Ops%20-%20Dashboard.html'">
+      <div class="expo-flag">MA</div>
+      <div class="expo-meta">
+        <div class="e-name">Morocco Build &amp; Construct Expo 2026 <span class="chip chip-signal" style="font-size:10.5px"><span class="dot" style="background:var(--signal-d)"></span>CLUSTER · 2</span></div>
+        <div class="e-line"><span>OFEC, Casablanca</span><span>·</span><span>14–17 May 2026</span><span>·</span><span class="mono">EXPO-MA-26</span></div>
+      </div>
+      <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="m6 9 6 6 6-6"/></svg>
+    </div>
+    <div class="countdown">
+      <div class="row gap-3">
+        <div class="cd-block"><div class="cd-num tnum">66</div><div class="cd-lbl">Days</div></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-block"><div class="cd-num tnum">14</div><div class="cd-lbl">Hrs</div></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-block"><div class="cd-num tnum">52</div><div class="cd-lbl">Min</div></div>
+      </div>
+      <div class="cd-badge"><div class="cd-num tnum" style="font-size:15px;text-align:center">14 MAY</div><div class="cd-lbl" style="margin-top:3px">Doors open</div></div>
+    </div>
+  </div>
+
+  <!-- SUBNAV -->
+  <div class="subbar">
+    <nav class="subnav">
+      <a href="Ops%20-%20Dashboard.html">Dashboard</a>
+      <a class="active" href="#">Exhibitor</a>
+      <a href="Ops%20-%20Floor%20plan.html">Floor plan</a>
+      <a href="Ops%20-%20Visitor%20%26%20Access.html">Visitor &amp; Access</a>
+      <a href="Ops%20-%20Communications.html">Communications</a>
+      <a href="Ops%20-%20Reports.html">Reports</a>
+    </nav>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="page-head">
+      <div>
+        <h1>Exhibitor <span class="count">168 signed · 142 onboarded</span></h1>
+        <p>Post-signature onboarding — catalogue, stand design, build-up and badges through to the floor.</p>
+      </div>
+      <div class="seg">
+        <button class="on">All</button>
+        <button>Onboarding</button>
+        <button>Ready</button>
+        <button>Blocked</button>
+      </div>
+    </div>
+
+    <div class="strip">
+      <div class="ms"><div class="m-l">Signed exhibitors</div><div class="m-v tnum">168</div></div>
+      <div class="ms"><div class="m-l">Fully onboarded</div><div class="m-v tnum">142 <small>· 85%</small></div></div>
+      <div class="ms"><div class="m-l">Catalogue complete</div><div class="m-v tnum">139 <small>· 83%</small></div></div>
+      <div class="ms"><div class="m-l"><span class="dot" style="width:7px;height:7px;border-radius:50%;background:var(--dang);display:inline-block"></span>Blocked / at risk</div><div class="m-v tnum" style="color:var(--dang)">7</div></div>
+    </div>
+
+    <div class="card" style="overflow:hidden">
+      <div class="toolbar">
+        <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input placeholder="Search exhibitor, stand, contract…"></div>
+        <button class="fdrop">Hall: <b>All</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
+        <button class="fdrop">Stage: <b>All</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="tb-right">
+          <button class="btn btn-secondary" style="padding:7px 11px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Export</button>
+          <button class="btn btn-primary" style="padding:7px 11px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M12 5v14M5 12h14"/></svg>Add exhibitor</button>
+        </div>
+      </div>
+
+      <div style="overflow-x:auto">
+      <table class="ttable">
+        <thead>
+          <tr><th>Exhibitor</th><th>Stand</th><th>Contract</th><th>Onboarding</th><th>Lead scanner</th><th>Status</th><th style="width:36px"></th></tr>
+        </thead>
+        <tbody>
+          <tr onclick="location.href='Ops%20-%20Exhibitor%20Detail.html'">
+            <td><div class="v-cell"><div class="v-av" style="background:var(--primary)">AS</div><div><div class="v-name">Atlas Stone Co.</div><div class="v-sub">Natural stone &amp; cladding</div></div></div></td>
+            <td><div class="stand">A-14</div><div class="v-sub">54 m² · Hall A</div></td>
+            <td><div class="mono" style="color:var(--ink)">CT-2026-0142</div><div class="v-sub">$44,280 · 30% paid</div></td>
+            <td><div class="steps"><span class="step done"></span><span class="step done"></span><span class="step act"></span><span class="step"></span><span class="ob-pct">68%</span></div></td>
+            <td><span class="leadcell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h4M7 13h2"/></svg>3 scanners</span></td>
+            <td><span class="chip chip-warn" style="font-size:10.5px">Onboarding</span></td>
+            <td><span class="rowact"><svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg></span></td>
+          </tr>
+          <tr>
+            <td><div class="v-cell"><div class="v-av" style="background:var(--berry)">MM</div><div><div class="v-name">Marrakech Marble</div><div class="v-sub">Marble &amp; surfaces</div></div></div></td>
+            <td><div class="stand">A-22</div><div class="v-sub">54 m² · Hall A</div></td>
+            <td><div class="mono" style="color:var(--ink)">CT-2026-0149</div><div class="v-sub">$58,000 · paid</div></td>
+            <td><div class="steps"><span class="step done"></span><span class="step done"></span><span class="step done"></span><span class="step done"></span><span class="ob-pct" style="color:var(--pos)">100%</span></div></td>
+            <td><span class="leadcell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h4M7 13h2"/></svg>5 scanners</span></td>
+            <td><span class="chip chip-pos" style="font-size:10.5px">Ready</span></td>
+            <td><span class="rowact"><svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg></span></td>
+          </tr>
+          <tr>
+            <td><div class="v-cell"><div class="v-av" style="background:var(--signal)">SB</div><div><div class="v-name">Sahel Build Group</div><div class="v-sub">Modular construction</div></div></div></td>
+            <td><div class="stand">B-08</div><div class="v-sub">90 m² · Hall B</div></td>
+            <td><div class="mono" style="color:var(--ink)">CT-2026-0151</div><div class="v-sub">$48,500 · 30% paid</div></td>
+            <td><div class="steps"><span class="step done"></span><span class="step act"></span><span class="step"></span><span class="step"></span><span class="ob-pct">42%</span></div></td>
+            <td><span class="leadcell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h4M7 13h2"/></svg>2 scanners</span></td>
+            <td><span class="chip chip-warn" style="font-size:10.5px">Onboarding</span></td>
+            <td><span class="rowact"><svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg></span></td>
+          </tr>
+          <tr>
+            <td><div class="v-cell"><div class="v-av" style="background:var(--dang)">GF</div><div><div class="v-name">Gulf Façade Systems</div><div class="v-sub">Façade &amp; glazing</div></div></div></td>
+            <td><div class="stand">A-31</div><div class="v-sub">36 m² · Hall A</div></td>
+            <td><div class="mono" style="color:var(--ink)">CT-2026-0144</div><div class="v-sub">$31,000 · <span style="color:var(--dang)">unpaid</span></div></td>
+            <td><div class="steps"><span class="step done"></span><span class="step warn"></span><span class="step"></span><span class="step"></span><span class="ob-pct" style="color:var(--dang)">31%</span></div></td>
+            <td><span class="leadcell" style="color:var(--faint)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/></svg>None</span></td>
+            <td><span class="chip chip-dang" style="font-size:10.5px">Blocked · payment</span></td>
+            <td><span class="rowact"><svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg></span></td>
+          </tr>
+          <tr>
+            <td><div class="v-cell"><div class="v-av" style="background:var(--primary)">NC</div><div><div class="v-name">Numa Ceramics</div><div class="v-sub">Ceramic tiles</div></div></div></td>
+            <td><div class="stand">A-09</div><div class="v-sub">36 m² · Hall A</div></td>
+            <td><div class="mono" style="color:var(--ink)">CT-2026-0138</div><div class="v-sub">$19,500 · paid</div></td>
+            <td><div class="steps"><span class="step done"></span><span class="step done"></span><span class="step done"></span><span class="step act"></span><span class="ob-pct">88%</span></div></td>
+            <td><span class="leadcell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h4M7 13h2"/></svg>4 scanners</span></td>
+            <td><span class="chip chip-warn" style="font-size:10.5px">Onboarding</span></td>
+            <td><span class="rowact"><svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg></span></td>
+          </tr>
+          <tr>
+            <td><div class="v-cell"><div class="v-av" style="background:var(--berry)">CG</div><div><div class="v-name">Casa Glassworks</div><div class="v-sub">Architectural glass</div></div></div></td>
+            <td><div class="stand">B-15</div><div class="v-sub">30 m² · Hall B</div></td>
+            <td><div class="mono" style="color:var(--ink)">CT-2026-0133</div><div class="v-sub">$14,800 · paid</div></td>
+            <td><div class="steps"><span class="step done"></span><span class="step done"></span><span class="step done"></span><span class="step done"></span><span class="ob-pct" style="color:var(--pos)">100%</span></div></td>
+            <td><span class="leadcell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h4M7 13h2"/></svg>2 scanners</span></td>
+            <td><span class="chip chip-pos" style="font-size:10.5px">Ready</span></td>
+            <td><span class="rowact"><svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg></span></td>
+          </tr>
+          <tr>
+            <td><div class="v-cell"><div class="v-av" style="background:var(--signal)">SO</div><div><div class="v-name">Sonadec Industries</div><div class="v-sub">Cement &amp; aggregates</div></div></div></td>
+            <td><div class="stand">B-21</div><div class="v-sub">48 m² · Hall B</div></td>
+            <td><div class="mono" style="color:var(--ink)">CT-2026-0129</div><div class="v-sub">$22,500 · paid</div></td>
+            <td><div class="steps"><span class="step done"></span><span class="step done"></span><span class="step act"></span><span class="step"></span><span class="ob-pct">65%</span></div></td>
+            <td><span class="leadcell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h4M7 13h2"/></svg>3 scanners</span></td>
+            <td><span class="chip chip-warn" style="font-size:10.5px">Onboarding</span></td>
+            <td><span class="rowact"><svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg></span></td>
+          </tr>
+          <tr>
+            <td><div class="v-cell"><div class="v-av" style="background:var(--ink-2)">DI</div><div><div class="v-name">Doha Interiors</div><div class="v-sub">Fit-out &amp; interiors</div></div></div></td>
+            <td><div class="stand">A-44</div><div class="v-sub">44 m² · Hall A</div></td>
+            <td><div class="mono" style="color:var(--ink)">CT-2026-0156</div><div class="v-sub">$27,000 · 30% paid</div></td>
+            <td><div class="steps"><span class="step done"></span><span class="step act"></span><span class="step"></span><span class="step"></span><span class="ob-pct">40%</span></div></td>
+            <td><span class="leadcell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h4M7 13h2"/></svg>1 scanner</span></td>
+            <td><span class="chip chip-warn" style="font-size:10.5px">Onboarding</span></td>
+            <td><span class="rowact"><svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg></span></td>
+          </tr>
+          <tr>
+            <td><div class="v-cell"><div class="v-av" style="background:var(--primary)">ZF</div><div><div class="v-name">Zenith Fit-Out</div><div class="v-sub">Stand contractor</div></div></div></td>
+            <td><div class="stand">B-30</div><div class="v-sub">72 m² · Hall B</div></td>
+            <td><div class="mono" style="color:var(--ink)">CT-2026-0161</div><div class="v-sub">$35,600 · paid</div></td>
+            <td><div class="steps"><span class="step done"></span><span class="step done"></span><span class="step done"></span><span class="step act"></span><span class="ob-pct">90%</span></div></td>
+            <td><span class="leadcell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h4M7 13h2"/></svg>6 scanners</span></td>
+            <td><span class="chip chip-pos" style="font-size:10.5px">Ready</span></td>
+            <td><span class="rowact"><svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg></span></td>
+          </tr>
+          <tr>
+            <td><div class="v-cell"><div class="v-av" style="background:var(--berry)">MS</div><div><div class="v-name">Medina Stone Imports</div><div class="v-sub">Stone trading</div></div></div></td>
+            <td><div class="stand">A-18</div><div class="v-sub">60 m² · Hall A</div></td>
+            <td><div class="mono" style="color:var(--ink)">CT-2026-0147</div><div class="v-sub">$31,200 · paid</div></td>
+            <td><div class="steps"><span class="step done"></span><span class="step done"></span><span class="step act"></span><span class="step"></span><span class="ob-pct">70%</span></div></td>
+            <td><span class="leadcell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h4M7 13h2"/></svg>3 scanners</span></td>
+            <td><span class="chip chip-warn" style="font-size:10.5px">Onboarding</span></td>
+            <td><span class="rowact"><svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg></span></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="tfoot">
+        <span style="font-size:12.5px;color:var(--muted)">Showing <b style="color:var(--ink)">1–10</b> of <b style="color:var(--ink)">168</b> exhibitors</span>
+        <div class="pager"><button>‹</button><button class="on">1</button><button>2</button><button>3</button><button>…</button><button>17</button><button>›</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

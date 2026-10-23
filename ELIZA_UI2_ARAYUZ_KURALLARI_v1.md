@@ -82,8 +82,10 @@ kaydı "PAKET UI-0: STAGING'E HAZIR".
 ## 4. Sapma notu — ELIZA_DESIGN_BRIEF_v1.md
 
 Sentez paketi brief'in başına 3 satırlık sapma notu istedi (§8 React/Next ertelendi, UI-05).
-**ell-docs'ta BULAMADIM** (2026-10-22, `grep -rln` + dosya adı araması). Not bu yüzden brief'e değil
-buraya yazıldı; brief ell-docs'a girdiğinde başına aynı not eklenir:
+22 Eki'de ell-docs'ta BULAMADIM; **23 Eki (UI-0b) brief ell-docs köküne alındı** (`ELIZA_DESIGN_BRIEF_v1.md`,
+kaynak `~/Desktop/UX_KB/`, gövde sha256 `b61895f9f841…` değişmedi) ve başına aşağıdaki not eklendi. 45 HTML
+tasarım setinin taramadan geçen kısmı `archive/design/` altında (tarihsel; renk/yazı/boşluk kaynağı artık
+LEENA `public/ui2/styles/tokens.css`). Not metni:
 
 > ⚠️ Sapma (2026-10-22, Sentez UI-05): §8'deki React/Next yönü ERTELENDİ — ui2 düz HTML/JS, derleme
 > yok. Yeniden tartı tetiği: Sales alanının (LIFFY) ui2'ye taşınma kararı. Kaynak:
@@ -97,7 +99,9 @@ buraya yazıldı; brief ell-docs'a girdiğinde başına aynı not eklenir:
   `status` = `live` | `placeholder` (canlı | yer-tutucu) · `permission` (Paket 2 kodu, 044 kayıt defteri).
   Ek alanlar: `parent` (alt sayfa — menüde ayrı satır değil, ebeveyni etkin yapar: ekstre → Accounts) ·
   `legacy` (yer-tutucunun bugünkü klasik ekranı) · üst düzey `landing` (giriş alanı = finance) · domain `userOnly`
-  (Admin). `domain: "shell"` = menüde görünmeyen kabuk / giriş / şablon sayfaları (iki yönlü testin "her sayfa nav'da" ayağı).
+  (Admin). **23 Eki (Sentez, kütük UI-02 güncellemesi):** alan listesi kabul; köprü öğesi `legacy=true` +
+  `status=placeholder`, klasik ekran bağlantısı yalnız nav.json'dan; `userOnly` = yalnız ui2 oturumunda görünür.
+  Uygulama LEENA UI-0b'de (defter). `domain: "shell"` = menüde görünmeyen kabuk / giriş / şablon sayfaları (iki yönlü testin "her sayfa nav'da" ayağı).
 - **Dosyalar:** `public/ui2/styles/tokens.css` (tek token dosyası; sabit renk yalnız burada) · `styles/signal.css`
   (bileşen stilleri; ledger.css birleşti, themes.css tokens.css'e girdi) · `components.js` (bileşenler) · `nav.json` ·
   `shell.js` (yalnız okur; üst çubuk + alt menü işaretlemesi) · `placeholder.html` · `_sablon/` (dizin + 4 şablon).
@@ -107,3 +111,5 @@ buraya yazıldı; brief ell-docs'a girdiğinde başına aynı not eklenir:
   `tests/test_ui2_ui0_render.js` (API rakamı = ekran rakamı, TABAN) · `tests/ui0_compare.js` (tarayıcı, önce/sonra; zincir dışı).
 - **Para çifti istisnası:** EUR karşılığı API'de OLMAYAN tutar tek birimli `money` ile gösterilir (kalem birim fiyatı ·
   ekstre dönem giriş/çıkış toplamı · taslak tutarı); yürüyen bakiye hesap biriminde (LED-11). Liste testte sabit.
+  **23 Eki (Sentez):** tek birim bu ÜÇ yerle sınırlı; çiftte EUR yoksa "—" (boş değil); yeni istisna Sentez kararı
+  (kütük RAP-01 notu).

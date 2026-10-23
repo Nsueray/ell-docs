@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELIZA — Sales · Pipeline</title>
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('eliza-theme')||'vermillion');}catch(e){document.documentElement.setAttribute('data-theme','vermillion');}</script>
+<link rel="stylesheet" href="styles/signal.css">
+<link rel="stylesheet" href="styles/themes.css">
+<style>
+  body { background: var(--bg); }
+  .app { min-height: 100vh; display:flex; flex-direction:column; }
+
+  .context { background: var(--surface); border-bottom: 1px solid var(--line); padding: 13px 24px; display:flex; align-items:center; gap:22px; }
+  .who { display:flex; align-items:center; gap:12px; }
+  .who .av { width:40px; height:40px; border-radius:50%; background:var(--berry); color:#fff; display:grid; place-items:center; font-family:var(--font-display); font-weight:600; font-size:14px; }
+  .who .w-name { font-family:var(--font-display); font-weight:600; font-size:16px; letter-spacing:-.01em; }
+  .who .w-line { font-size:12px; color:var(--muted); margin-top:2px; display:flex; gap:9px; align-items:center; }
+  .gate { display:inline-flex; align-items:center; gap:5px; font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); border:1px solid var(--line); border-radius:100px; padding:3px 9px; }
+  .gate svg { width:11px; height:11px; }
+  .ctx-right { margin-left:auto; display:flex; align-items:center; gap:24px; }
+  .qstat { text-align:right; }
+  .qstat .q-l { font-family:var(--font-mono); font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+  .qstat .q-v { font-family:var(--font-display); font-weight:600; font-size:20px; line-height:1.1; margin-top:3px; }
+  .qstat .q-v small { font-size:12px; color:var(--muted); font-weight:500; }
+
+  .subbar { background: var(--surface); border-bottom: 1px solid var(--line); padding: 0 16px; display:flex; align-items:center; gap:10px; }
+  .subbar .subnav { padding: 6px 0; }
+
+  .pagehd { padding: 16px 24px 0; max-width:1480px; margin:0 auto; width:100%; display:flex; align-items:flex-end; justify-content:space-between; }
+  .pagehd h1 { font-family:var(--font-display); font-weight:600; font-size:22px; margin:0; letter-spacing:-.01em; }
+  .pagehd p { margin:5px 0 0; color:var(--muted); font-size:13px; }
+  .tools { display:flex; align-items:center; gap:8px; }
+  .fdrop { display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-weight:500; color:var(--ink-2); border:1px solid var(--line); background:var(--surface); border-radius:var(--r-sm); padding:8px 11px; cursor:pointer; }
+  .fdrop svg { width:13px; height:13px; color:var(--muted); }
+  .fdrop b { color:var(--ink); }
+
+  /* board */
+  .board-wrap { flex:1; overflow-x:auto; padding: 16px 24px 28px; }
+  .board { display:grid; grid-template-columns:repeat(6, minmax(228px,1fr)); gap:12px; max-width:1480px; margin:0 auto; min-width:1320px; }
+  .col { display:flex; flex-direction:column; min-width:0; }
+  .colh { display:flex; align-items:center; gap:8px; padding:2px 4px 11px; }
+  .colh .st-dot { width:8px; height:8px; border-radius:50%; flex:none; }
+  .colh .st-name { font-family:var(--font-display); font-weight:600; font-size:13px; color:var(--ink); }
+  .colh .st-n { font-family:var(--font-mono); font-size:11px; color:var(--muted); background:var(--bg-2); border-radius:100px; padding:1px 7px; }
+  .colh .st-val { margin-left:auto; font-family:var(--font-mono); font-size:11.5px; color:var(--muted); }
+  .collist { display:flex; flex-direction:column; gap:9px; background:var(--surface-2); border:1px solid var(--line-2); border-radius:var(--r-md); padding:9px; min-height:120px; flex:1; }
+
+  .deal { background:var(--surface); border:1px solid var(--line); border-radius:var(--r-sm); padding:11px 12px; box-shadow:var(--shadow-sm); cursor:pointer; transition:border-color .12s, box-shadow .12s; }
+  .deal:hover { border-color:var(--faint); box-shadow:var(--shadow-md); }
+  .deal .d-top { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+  .deal .d-co { font-weight:600; font-size:13px; color:var(--ink); line-height:1.25; }
+  .deal .d-meta { font-size:11.5px; color:var(--muted); margin-top:3px; display:flex; gap:7px; align-items:center; }
+  .deal .d-val { font-family:var(--font-mono); font-weight:600; font-size:15px; color:var(--ink); margin-top:9px; letter-spacing:-.01em; }
+  .deal .d-foot { display:flex; align-items:center; gap:7px; margin-top:10px; padding-top:9px; border-top:1px solid var(--line-2); }
+  .deal .d-ageb { margin-left:auto; font-family:var(--font-mono); font-size:10.5px; color:var(--faint); }
+  .deal .d-ageb.stale { color:var(--dang); }
+  .mav { width:22px; height:22px; border-radius:50%; display:grid; place-items:center; font-size:9.5px; font-weight:600; color:#fff; font-family:var(--font-display); flex:none; }
+  .next { font-size:11px; color:var(--ink-2); display:inline-flex; align-items:center; gap:4px; }
+  .next svg { width:11px; height:11px; color:var(--muted); }
+  .addcard { display:flex; align-items:center; justify-content:center; gap:6px; font-size:12px; color:var(--muted); border:1px dashed var(--line); border-radius:var(--r-sm); padding:8px; cursor:pointer; background:transparent; }
+  .addcard:hover { color:var(--ink); border-color:var(--faint); }
+  .addcard svg { width:13px; height:13px; }
+</style>
+</head>
+<body>
+<div class="app" data-screen-label="Sales — Pipeline">
+
+  <!-- TOP NAV (Sales-only) -->
+  <nav class="topnav">
+    <div class="brand"><div class="eliza-mark"><span class="eliza-glyph"><i></i><i></i><i></i></span><span class="eliza-word on-dark">ELIZA</span></div></div>
+    <div class="domain-tabs"><button class="domain-tab active"><span class="d-main">Sales</span><span class="d-sub">liffy</span></button></div>
+    <div class="spacer"></div>
+    <div class="nav-right">
+      <button class="btn btn-icon" style="background:var(--cmd-2);color:var(--cmd-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
+      <span class="kbd">⌘K</span>
+      <div class="vdiv" style="height:24px"></div>
+      <button class="btn btn-icon" style="background:var(--cmd-2);color:var(--cmd-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg></button>
+      <div class="avatar" style="background:var(--berry);cursor:pointer" onclick="location.href='Settings%20-%20Appearance.html'" title="Settings">YB</div>
+    </div>
+  </nav>
+
+  <!-- CONTEXT -->
+  <div class="context">
+    <div class="who">
+      <div class="av">YB</div>
+      <div>
+        <div class="w-name">Yousra Benali</div>
+        <div class="w-line"><span>Sales — Stand space</span><span>·</span><span>Build &amp; Stone cluster</span>
+          <span class="gate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Sales access</span>
+        </div>
+      </div>
+    </div>
+    <div class="ctx-right">
+      <div class="qstat"><div class="q-l">Open pipeline</div><div class="q-v tnum">$612K <small>· 21 deals</small></div></div>
+      <div class="qstat"><div class="q-l">Weighted</div><div class="q-v tnum">$268K</div></div>
+      <div class="qstat"><div class="q-l">Win rate</div><div class="q-v tnum">38<small>%</small></div></div>
+    </div>
+  </div>
+
+  <!-- SUBNAV -->
+  <div class="subbar">
+    <nav class="subnav">
+      <a href="Sales%20-%20My%20Work.html">My Work</a>
+      <a class="active" href="#">Pipeline</a>
+      <a href="Sales%20-%20Quotes.html">Quotes</a>
+      <a href="Sales%20-%20Companies.html">Companies</a>
+      <a href="#">Activity</a>
+    </nav>
+  </div>
+
+  <!-- PAGE HEAD -->
+  <div class="pagehd">
+    <div>
+      <h1>Pipeline</h1>
+      <p>21 open deals across six stages · Build &amp; Stone cluster · Q2 2026.</p>
+    </div>
+    <div class="tools">
+      <button class="fdrop">Expo: <b>All</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
+      <button class="fdrop">Sort: <b>Value</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
+      <button class="btn btn-primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M12 5v14M5 12h14"/></svg>New deal</button>
+    </div>
+  </div>
+
+  <!-- BOARD -->
+  <div class="board-wrap">
+    <div class="board">
+
+      <!-- LEAD -->
+      <div class="col">
+        <div class="colh"><span class="st-dot" style="background:var(--faint)"></span><span class="st-name">Lead</span><span class="st-n">5</span><span class="st-val">$54K</span></div>
+        <div class="collist">
+          <div class="deal"><div class="d-top"><div class="d-co">Sahara Cement</div></div><div class="d-meta"><span>24 m²</span><span>·</span><span>Marrakech</span></div><div class="d-val">$11,500</div><div class="d-foot"><span class="mav" style="background:var(--berry)">YB</span><span class="next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg>Intro email</span><span class="d-ageb">1d</span></div></div>
+          <div class="deal"><div class="d-top"><div class="d-co">Tangier Tiles</div></div><div class="d-meta"><span>18 m²</span><span>·</span><span>Tangier</span></div><div class="d-val">$8,600</div><div class="d-foot"><span class="mav" style="background:var(--berry)">YB</span><span class="next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg>Intro email</span><span class="d-ageb">2d</span></div></div>
+          <div class="deal"><div class="d-top"><div class="d-co">Oran Stoneworks</div></div><div class="d-meta"><span>36 m²</span><span>·</span><span>Oran</span></div><div class="d-val">$17,200</div><div class="d-foot"><span class="mav" style="background:var(--berry)">YB</span><span class="next">Qualify fit</span><span class="d-ageb">3d</span></div></div>
+          <div class="deal"><div class="d-top"><div class="d-co">Rabat Roofing</div></div><div class="d-meta"><span>20 m²</span><span>·</span><span>Rabat</span></div><div class="d-val">$9,400</div><div class="d-foot"><span class="mav" style="background:var(--berry)">YB</span><span class="next">Intro email</span><span class="d-ageb">4d</span></div></div>
+          <div class="deal"><div class="d-top"><div class="d-co">Fès Forge</div></div><div class="d-meta"><span>16 m²</span><span>·</span><span>Fès</span></div><div class="d-val">$7,300</div><div class="d-foot"><span class="mav" style="background:var(--berry)">YB</span><span class="next">Intro email</span><span class="d-ageb">6d</span></div></div>
+          <button class="addcard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Add deal</button>
+        </div>
+      </div>
+
+      <!-- CONTACTED -->
+      <div class="col">
+        <div class="colh"><span class="st-dot" style="background:var(--info)"></span><span class="st-name">Contacted</span><span class="st-n">4</span><span class="st-val">$96K</span></div>
+        <div class="collist">
+          <div class="deal"><div class="d-top"><div class="d-co">Casa Glassworks</div></div><div class="d-meta"><span>30 m²</span><span>·</span><span>Casablanca</span></div><div class="d-val">$14,800</div><div class="d-foot"><span class="mav" style="background:var(--berry)">YB</span><span class="next">Awaiting reply</span><span class="d-ageb">2d</span></div></div>
+          <div class="deal"><div class="d-top"><div class="d-co">Sonadec Industries</div></div><div class="d-meta"><span>48 m²</span><span>·</span><span>Casablanca</span></div><div class="d-val">$22,500</div><div class="d-foot"><span class="mav" style="background:var(--berry)">YB</span><span class="next">Follow-up call</span><span class="d-ageb">4d</span></div></div>
+          <div class="deal"><div class="d-top"><div class="d-co">Agadir Aggregates</div></div><div class="d-meta"><span>54 m²</span><span>·</span><span>Agadir</span></div><div class="d-val">$26,400</div><div class="d-foot"><span class="mav" style="background:var(--berry)">YB</span><span class="next">Awaiting reply</span><span class="d-ageb stale">9d</span></div></div>
+          <div class="deal"><div class="d-top"><div class="d-co">Atlas Aluminium</div><span class="chip chip-neutral" style="font-size:9.5px">Snoozed</span></div><div class="d-meta"><span>40 m²</span><span>·</span><span>Casablanca</span></div><div class="d-val">$19,800</div><div class="d-foot"><span class="mav" style="background:var(--berry)">YB</span><span class="next">After Ramadan</span><span class="d-ageb">7d</span></div></div>
+        </div>
+      </div>
+
+      <!-- REPLIED -->
+      <div class="col">
+        <div class="colh"><span class="st-dot" style="background:var(--signal)"></span><span class="st-name">Replied</span><span class="st-n">3</span><span class="st-val">$82K</span></div>
+        <div class="collist">
+          <div class="deal"><div class="d-top"><div class="d-co">Doha Interiors</div><span class="chip chip-signal" style="font-size:9.5px"><span class="dot" style="background:var(--signal-d)"></span>New</span></div><div class="d-meta"><span>44 m²</span><span>·</span><span>Doha</span></div><div class="d-val">$27,000</div><div class="d-foot"><span class="mav" style="background:var(--berry)">YB</span><span class="next">Answer build-up Q</span><span class="d-ageb">5h</span></div></div>
+          <div class="deal"><div class="d-top"><div class="d-co">Numa Ceramics</div></div><div class="d-meta"><span>36 m²</span><span>·</span><span>Safi</span></div><div class="d-val">$19,500</div><div class="d-foot"><span class="mav" style="background:var(--berry)">YB</span><span class="next">Revise quote</span><span class="d-ageb">4h</span></div></div>
+          <div class="deal"><div class="d-top"><div class="d-co">Zenith Fit-Out</div></div><div class="d-meta"><span>72 m²</span><span>·</span><span>Dubai</span></div><div class="d-val">$35,600</div><div class="d-foot"><span class="mav" style="background:var(--berry)">YB</span><span class="next">Send floorplan</span><span class="d-ageb">1d</span></div></div>
+        </div>
+      </div>
+
+      <!-- QUALIFIED -->
+      <div class="col">
+        <div class="colh"><span class="st-dot" style="background:var(--warn)"></span><span class="st-name">Qualified</span><span class="st-n">3</span><span class="st-val">$104K</span></div>
+        <div class="collist">
+          <div class="deal"><div class="d-top"><div class="d-co">Gulf Façade Systems</div></div><div class="d-meta"><span>36 m²</span><span>·</span><span>Abu Dhabi</span></div><div class="d-val">$31,000</div><div class="d-foot"><span class="mav" style="background:var(--berry)">YB</span><span class="next">Build quote</span><span class="d-ageb">2d</span></div></div>
+          <div class="deal"><div class="d-top"><div class="d-co">BuildTech Sahel</div><span class="chip chip-signal" style="font-size:9.5px">Hot</span></div><div class="d-meta"><span>42 m²</span><span>·</span><span>Dakar</span></div><div class="d-val">$42,000</div><div class="d-foot"><span class="mav" style="background:var(--berry)">YB</span><span class="next">Discovery call 10:30</span><span class="d-ageb">1d</span></div></div>
+          <div class="deal"><div class="d-top"><div class="d-co">Medina Stone Imports</div></div><div class="d-meta"><span>60 m²</span><span>·</span><span>Tunis</span></div><div class="d-val">$31,200</div><div class="d-foot"><span class="mav" style="background:var(--berry)">YB</span><span class="next">Confirm budget</span><span class="d-ageb">3d</span></div></div>
+        </div>
+      </div>
+
+      <!-- QUOTE SENT -->
+      <div class="col">
+        <div class="colh"><span class="st-dot" style="background:var(--primary)"></span><span class="st-name">Quote Sent</span><span class="st-n">4</span><span class="st-val">$134K</span></div>
+        <div class="collist">
+          <div class="deal" onclick="location.href='Sales%20-%20Quotes.html'"><div class="d-top"><div class="d-co">Atlas Stone Co.</div><span class="chip chip-info" style="font-size:9.5px">Q-2231</span></div><div class="d-meta"><span>54 m²</span><span>·</span><span>Casablanca</span></div><div class="d-val">$24,000</div><div class="d-foot"><span class="mav" style="background:var(--berry)">YB</span><span class="next">Viewed · chase</span><span class="d-ageb">2d</span></div></div>
+          <div class="deal"><div class="d-top"><div class="d-co">Sahel Build Group</div><span class="chip chip-info" style="font-size:9.5px">Q-2228</span></div><div class="d-meta"><span>90 m²</span><span>·</span><span>Casablanca</span></div><div class="d-val">$48,500</div><div class="d-foot"><span class="mav" style="background:var(--berry)">YB</span><span class="next">Sent · awaiting</span><span class="d-ageb">3d</span></div></div>
+          <div class="deal"><div class="d-top"><div class="d-co">Cadre Architects</div><span class="chip chip-info" style="font-size:9.5px">Q-2235</span></div><div class="d-meta"><span>36 m²</span><span>·</span><span>Rabat</span></div><div class="d-val">$21,000</div><div class="d-foot"><span class="mav" style="background:var(--berry)">YB</span><span class="next">Chase</span><span class="d-ageb stale">8d</span></div></div>
+          <div class="deal"><div class="d-top"><div class="d-co">Lagos Stoneform</div><span class="chip chip-info" style="font-size:9.5px">Q-2240</span></div><div class="d-meta"><span>78 m²</span><span>·</span><span>Lagos</span></div><div class="d-val">$40,800</div><div class="d-foot"><span class="mav" style="background:var(--berry)">YB</span><span class="next">Sent · awaiting</span><span class="d-ageb">1d</span></div></div>
+        </div>
+      </div>
+
+      <!-- QUOTE SIGNED -->
+      <div class="col">
+        <div class="colh"><span class="st-dot" style="background:var(--pos)"></span><span class="st-name">Quote Signed</span><span class="st-n">2</span><span class="st-val">$108K</span></div>
+        <div class="collist">
+          <div class="deal" onclick="location.href='Sales%20-%20Quotes.html'"><div class="d-top"><div class="d-co">Marrakech Marble</div><span class="chip chip-pos" style="font-size:9.5px">Signed</span></div><div class="d-meta"><span>54 m²</span><span>·</span><span>Marrakech</span></div><div class="d-val">$58,000</div><div class="d-foot"><span class="mav" style="background:var(--pos)">OP</span><span class="next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>To Operations</span><span class="d-ageb">2h</span></div></div>
+          <div class="deal"><div class="d-top"><div class="d-co">Nairobi Stone &amp; Co.</div><span class="chip chip-pos" style="font-size:9.5px">Signed</span></div><div class="d-meta"><span>96 m²</span><span>·</span><span>Nairobi</span></div><div class="d-val">$50,000</div><div class="d-foot"><span class="mav" style="background:var(--pos)">OP</span><span class="next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>Converted CT-0151</span><span class="d-ageb">1d</span></div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

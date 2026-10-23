@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELIZA — Finance · War Room</title>
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('eliza-theme')||'vermillion');}catch(e){document.documentElement.setAttribute('data-theme','vermillion');}</script>
+<link rel="stylesheet" href="styles/signal.css">
+<link rel="stylesheet" href="styles/themes.css">
+<style>
+  body { background: var(--bg); }
+  .app { min-height: 100vh; }
+
+  .context { background: var(--surface); border-bottom: 1px solid var(--line); padding: 13px 24px; display:flex; align-items:center; gap:16px; }
+  .scope { display:flex; align-items:center; gap:11px; padding:7px 13px 7px 9px; border:1px solid var(--line); border-radius:var(--r-md); background:var(--surface-2); cursor:pointer; }
+  .scope .si { width:34px; height:34px; border-radius:var(--r-sm); background:var(--berry); color:#fff; display:grid; place-items:center; flex:none; }
+  .scope .si svg { width:17px; height:17px; }
+  .scope .sn { font-family:var(--font-display); font-weight:600; font-size:14.5px; }
+  .scope .ss { font-size:11.5px; color:var(--muted); margin-top:1px; }
+  .ctx-right { margin-left:auto; display:flex; align-items:center; gap:10px; }
+  .pill { display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-weight:500; color:var(--ink-2); border:1px solid var(--line); background:var(--surface); border-radius:var(--r-sm); padding:8px 11px; cursor:pointer; }
+  .pill svg { width:13px; height:13px; color:var(--muted); } .pill b { color:var(--ink); }
+
+  .subbar { background: var(--surface); border-bottom: 1px solid var(--line); padding: 0 16px; display:flex; align-items:center; gap:10px; }
+  .subbar .subnav { padding: 6px 0; }
+
+  .main { padding: 20px 24px 40px; max-width: 1480px; margin: 0 auto; }
+  .page-head { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:16px; }
+  .page-head h1 { font-family:var(--font-display); font-weight:600; font-size:22px; margin:0; letter-spacing:-.01em; }
+  .page-head p { margin:5px 0 0; color:var(--muted); font-size:13px; }
+
+  /* hero KPIs */
+  .kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:16px; }
+  .kpi { background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md); padding:15px 16px; }
+  .kpi .k-l { font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); display:flex; align-items:center; gap:7px; }
+  .kpi .k-v { font-family:var(--font-display); font-weight:600; font-size:30px; margin-top:10px; letter-spacing:-.015em; }
+  .kpi .k-v small { font-size:14px; color:var(--muted); font-weight:500; }
+  .kpi .k-bar { height:6px; border-radius:100px; background:var(--bg-2); overflow:hidden; margin-top:11px; }
+  .kpi .k-bar i { display:block; height:100%; border-radius:100px; }
+  .kpi .k-f { font-size:12px; color:var(--muted); margin-top:9px; display:flex; align-items:center; gap:6px; }
+  .delta { display:inline-flex; align-items:center; gap:3px; font-weight:600; font-family:var(--font-mono); font-size:11.5px; }
+  .delta.up { color:var(--pos); } .delta.down { color:var(--dang); }
+
+  .cols { display:grid; grid-template-columns: 1.55fr 1fr; gap:16px; align-items:start; }
+  .stack { display:grid; gap:16px; }
+
+  .chartpad { padding:14px 16px 16px; }
+  .legend { display:flex; gap:16px; font-size:12px; color:var(--muted); margin-top:10px; }
+  .legend .lg { display:flex; align-items:center; gap:6px; } .legend .sw { width:10px; height:10px; border-radius:3px; }
+
+  /* expo P&L table */
+  .pt { width:100%; border-collapse:collapse; font-size:13px; }
+  .pt thead th { text-align:left; font-family:var(--font-mono); font-size:10px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; padding:9px 14px; border-bottom:1px solid var(--line); background:var(--surface-2); }
+  .pt thead th.r { text-align:right; }
+  .pt tbody td { padding:11px 14px; border-bottom:1px solid var(--line-2); color:var(--ink-2); }
+  .pt tbody td.r { text-align:right; font-family:var(--font-mono); color:var(--ink); }
+  .pt tbody tr:hover { background:var(--surface-2); cursor:pointer; }
+  .pt .en { font-weight:600; color:var(--ink); } .pt .es { font-size:11.5px; color:var(--muted); }
+  .mtag { font-family:var(--font-mono); font-size:11px; font-weight:600; padding:2px 8px; border-radius:100px; }
+
+  /* alerts */
+  .alert { display:flex; gap:11px; padding:12px 16px; border-bottom:1px solid var(--line-2); align-items:flex-start; }
+  .alert:last-child { border-bottom:0; }
+  .al-ic { width:30px; height:30px; border-radius:var(--r-sm); display:grid; place-items:center; flex:none; }
+  .al-ic svg { width:15px; height:15px; }
+  .al-t { font-size:13px; font-weight:600; color:var(--ink); }
+  .al-s { font-size:12px; color:var(--muted); margin-top:1px; }
+  .al-v { margin-left:auto; font-family:var(--font-mono); font-weight:600; font-size:13px; text-align:right; flex:none; }
+
+  /* accounts / AR */
+  .kv { display:flex; justify-content:space-between; align-items:center; padding:10px 16px; border-bottom:1px solid var(--line-2); font-size:12.5px; }
+  .kv:last-child { border-bottom:0; }
+  .kv .k { color:var(--muted); display:flex; align-items:center; gap:8px; } .kv .v { color:var(--ink); font-weight:500; text-align:right; } .kv .v .mono { font-family:var(--font-mono); }
+  .ccy { font-family:var(--font-mono); font-size:9.5px; font-weight:600; color:var(--ink-2); background:var(--bg-2); border-radius:4px; padding:1px 6px; }
+  .aging { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line-2); }
+  .aging .a { background:var(--surface); padding:12px 14px; }
+  .aging .a-v { font-family:var(--font-mono); font-weight:600; font-size:15px; }
+  .aging .a-l { font-family:var(--font-mono); font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-top:3px; }
+  .icn { width:14px; height:14px; }
+</style>
+</head>
+<body>
+<div class="app" data-screen-label="Finance — War Room">
+
+  <!-- TOP NAV -->
+  <nav class="topnav">
+    <div class="brand"><div class="eliza-mark"><span class="eliza-glyph"><i></i><i></i><i></i></span><span class="eliza-word on-dark">ELIZA</span></div></div>
+    <div class="domain-tabs">
+      <button class="domain-tab" onclick="location.href='Sales%20-%20My%20Work.html'"><span class="d-main">Sales</span><span class="d-sub">liffy</span></button>
+      <button class="domain-tab" onclick="location.href='Ops%20-%20Dashboard.html'"><span class="d-main">Operations</span><span class="d-sub">leena</span></button>
+      <button class="domain-tab active"><span class="d-main">Finance</span><span class="d-sub">&nbsp;</span></button>
+    </div>
+    <div class="spacer"></div>
+    <div class="nav-right">
+      <button class="btn btn-icon" style="background:var(--cmd-2);color:var(--cmd-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
+      <span class="kbd">⌘K</span>
+      <div class="vdiv" style="height:24px"></div>
+      <button class="btn btn-icon" style="background:var(--cmd-2);color:var(--cmd-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg></button>
+      <div class="avatar" style="background:var(--ink-2);cursor:pointer" onclick="location.href='Settings%20-%20Appearance.html'" title="Settings">SA</div>
+    </div>
+  </nav>
+
+  <!-- CONTEXT -->
+  <div class="context">
+    <div class="scope">
+      <div class="si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/></svg></div>
+      <div><div class="sn">All active expos</div><div class="ss">6 events · 2 clusters · FY 2026</div></div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;color:var(--faint)"><path d="m6 9 6 6 6-6"/></svg>
+    </div>
+    <div class="ctx-right">
+      <span class="pill">Reporting: <b>EUR</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+      <span class="pill">Period: <b>FY 2026</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+      <span style="font-family:var(--font-mono);font-size:11px;color:var(--muted)">as of 10 Jun · 09:00</span>
+    </div>
+  </div>
+
+  <!-- SUBNAV -->
+  <div class="subbar">
+    <nav class="subnav">
+      <a class="active" href="#">War Room</a>
+      <a href="Finance%20-%20Expo%20Finance.html">Expos</a>
+      <a href="Finance%20-%20Ledger.html">Ledger</a>
+      <a href="Finance%20-%20Contract.html">Contracts</a>
+      <a href="Finance%20-%20Commissions.html">Commissions</a>
+      <a href="#">Reports</a>
+    </nav>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="page-head">
+      <div>
+        <h1>War Room</h1>
+        <p>Consolidated to EUR across all currencies. Frozen FX at settlement; live FX for open balances.</p>
+      </div>
+      <button class="btn btn-secondary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Board pack</button>
+    </div>
+
+    <!-- KPIs -->
+    <div class="kpis">
+      <div class="kpi">
+        <div class="k-l"><svg class="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l3-4 4 3 5-7"/></svg>Revenue · FY26</div>
+        <div class="k-v tnum">€4.82<small>M</small></div>
+        <div class="k-bar"><i style="width:79%;background:var(--primary)"></i></div>
+        <div class="k-f"><span class="delta up">▲ 12%</span><span>79% of €6.10M target</span></div>
+      </div>
+      <div class="kpi">
+        <div class="k-l"><svg class="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>Cash position</div>
+        <div class="k-v tnum">€2.14<small>M</small></div>
+        <div class="k-f" style="margin-top:23px"><span>across 4 accounts · 4 currencies</span></div>
+      </div>
+      <div class="kpi">
+        <div class="k-l"><svg class="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Outstanding (AR)</div>
+        <div class="k-v tnum">€1.36<small>M</small></div>
+        <div class="k-f" style="margin-top:23px"><span class="delta down" style="color:var(--dang)">€214K overdue</span><span>· 124 contracts</span></div>
+      </div>
+      <div class="kpi">
+        <div class="k-l"><svg class="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8M22 21v-2a4 4 0 0 0-3-3.9"/></svg>Commission accrued</div>
+        <div class="k-v tnum">€338<small>K</small></div>
+        <div class="k-f" style="margin-top:23px"><span style="color:var(--warn)">€121K payout due 15 Jun</span></div>
+      </div>
+    </div>
+
+    <div class="cols">
+      <!-- LEFT -->
+      <div class="stack">
+        <!-- revenue trend -->
+        <div class="card">
+          <div class="card-head"><span class="card-title">Revenue vs target · consolidated EUR</span><span class="card-eyebrow">Monthly · FY26</span></div>
+          <div class="chartpad">
+            <svg viewBox="0 0 680 210" width="100%" height="200" preserveAspectRatio="none">
+              <g stroke="var(--line-2)" stroke-width="1"><line x1="0" y1="40" x2="680" y2="40"/><line x1="0" y1="90" x2="680" y2="90"/><line x1="0" y1="140" x2="680" y2="140"/><line x1="0" y1="190" x2="680" y2="190"/></g>
+              <!-- target line -->
+              <path d="M0,150 L680,40" fill="none" stroke="var(--faint)" stroke-width="1.5" stroke-dasharray="5 4"/>
+              <!-- revenue bars -->
+              <g fill="var(--primary)">
+                <rect x="16" y="158" width="40" height="32" rx="2"/>
+                <rect x="72" y="142" width="40" height="48" rx="2"/>
+                <rect x="128" y="150" width="40" height="40" rx="2"/>
+                <rect x="184" y="120" width="40" height="70" rx="2"/>
+                <rect x="240" y="104" width="40" height="86" rx="2"/>
+                <rect x="296" y="118" width="40" height="72" rx="2"/>
+                <rect x="352" y="86" width="40" height="104" rx="2"/>
+                <rect x="408" y="72" width="40" height="118" rx="2"/>
+                <rect x="464" y="92" width="40" height="98" rx="2"/>
+                <rect x="520" y="60" width="40" height="130" rx="2"/>
+                <rect x="576" y="50" width="40" height="140" rx="2"/>
+                <rect x="632" y="64" width="40" height="126" rx="2"/>
+              </g>
+            </svg>
+            <div class="row" style="justify-content:space-between;font-family:var(--font-mono);font-size:10px;color:var(--faint);margin-top:4px"><span>Jul</span><span>Sep</span><span>Nov</span><span>Jan</span><span>Mar</span><span>Jun</span></div>
+            <div class="legend"><span class="lg"><span class="sw" style="background:var(--primary)"></span>Recognised revenue</span><span class="lg"><span class="sw" style="background:var(--faint)"></span>Target run-rate</span><span class="lg" style="margin-left:auto;color:var(--ink)"><b>€4.82M booked · €1.28M to target</b></span></div>
+          </div>
+        </div>
+
+        <!-- top expos P&L -->
+        <div class="card" style="overflow:hidden">
+          <div class="card-head"><span class="card-title">Top expos by P&amp;L</span><a class="link" href="Finance%20-%20Expo%20Finance.html" style="color:var(--primary);text-decoration:none;font-weight:500;font-size:12.5px">All expos →</a></div>
+          <table class="pt">
+            <thead><tr><th>Expo</th><th class="r">Revenue</th><th class="r">Costs</th><th class="r">Margin</th><th class="r">Cash in</th></tr></thead>
+            <tbody>
+              <tr onclick="location.href='Finance%20-%20Expo%20Finance.html'"><td><div class="en">Morocco Build &amp; Construct</div><div class="es">Casablanca · May 26 · Cluster 2</div></td><td class="r">€1.42M</td><td class="r">€880K</td><td class="r"><span class="mtag" style="background:var(--pos-l);color:var(--pos)">38%</span></td><td class="r">€0.46M</td></tr>
+              <tr onclick="location.href='Finance%20-%20Expo%20Finance.html'"><td><div class="en">Stone Expo</div><div class="es">Casablanca · May 26 · Cluster 2</div></td><td class="r">€0.96M</td><td class="r">€566K</td><td class="r"><span class="mtag" style="background:var(--pos-l);color:var(--pos)">41%</span></td><td class="r">€0.38M</td></tr>
+              <tr onclick="location.href='Finance%20-%20Expo%20Finance.html'"><td><div class="en">Lagos Build</div><div class="es">Lagos · Sep 26</div></td><td class="r">€0.78M</td><td class="r">€523K</td><td class="r"><span class="mtag" style="background:var(--pos-l);color:var(--pos)">33%</span></td><td class="r">€0.21M</td></tr>
+              <tr onclick="location.href='Finance%20-%20Expo%20Finance.html'"><td><div class="en">Nairobi Stone</div><div class="es">Nairobi · Oct 26</div></td><td class="r">€0.62M</td><td class="r">€397K</td><td class="r"><span class="mtag" style="background:var(--pos-l);color:var(--pos)">36%</span></td><td class="r">€0.18M</td></tr>
+              <tr onclick="location.href='Finance%20-%20Expo%20Finance.html'"><td><div class="en">Algiers Construct</div><div class="es">Algiers · Nov 26</div></td><td class="r">€0.54M</td><td class="r">€383K</td><td class="r"><span class="mtag" style="background:var(--warn-l);color:var(--warn)">29%</span></td><td class="r">€0.12M</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="stack">
+        <!-- alerts -->
+        <div class="card">
+          <div class="card-head"><span class="card-title">Alerts</span><span class="chip chip-dang">4</span></div>
+          <div>
+            <div class="alert">
+              <div class="al-ic" style="background:var(--dang-l);color:var(--dang)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div>
+              <div style="flex:1"><div class="al-t">14 exhibitors overdue</div><div class="al-s">Balance due before build-up</div></div>
+              <div class="al-v" style="color:var(--dang)">€214K</div>
+            </div>
+            <div class="alert">
+              <div class="al-ic" style="background:var(--dang-l);color:var(--dang)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+              <div style="flex:1"><div class="al-t">Gulf Façade Systems blocked</div><div class="al-s">Unpaid · build-up gated</div></div>
+              <div class="al-v" style="color:var(--dang)">€28.5K</div>
+            </div>
+            <div class="alert">
+              <div class="al-ic" style="background:var(--warn-l);color:var(--warn)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M7 12l3 3 7-7"/></svg></div>
+              <div style="flex:1"><div class="al-t">USD exposure</div><div class="al-s">$1.2M receivables · EUR softening</div></div>
+              <div class="al-v" style="color:var(--warn)">€1.10M</div>
+            </div>
+            <div class="alert">
+              <div class="al-ic" style="background:var(--info-l);color:var(--info)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+              <div style="flex:1"><div class="al-t">Commission payout run</div><div class="al-s">42 agents · due 15 Jun</div></div>
+              <div class="al-v">€121K</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- cash accounts -->
+        <div class="card">
+          <div class="card-head"><span class="card-title">Cash by account</span><span class="chip chip-outline">€2.14M</span></div>
+          <div class="kv"><span class="k"><span class="ccy">MAD</span>CIH Bank · operating</span><span class="v"><span class="mono">€862K</span></span></div>
+          <div class="kv"><span class="k"><span class="ccy">EUR</span>BNP Paribas · reserve</span><span class="v"><span class="mono">€740K</span></span></div>
+          <div class="kv"><span class="k"><span class="ccy">AED</span>Mashreq · Gulf ops</span><span class="v"><span class="mono">€366K</span></span></div>
+          <div class="kv"><span class="k"><span class="ccy">NGN</span>GTBank · Lagos</span><span class="v"><span class="mono">€172K</span></span></div>
+          <div class="kv" style="background:var(--surface-2)"><span class="k" style="color:var(--ink-2)">Petty cash · on-site floats</span><span class="v" style="color:var(--ink-2)"><span class="mono">€8.4K</span></span></div>
+        </div>
+
+        <!-- AR aging -->
+        <div class="card">
+          <div class="card-head"><span class="card-title">Receivables aging</span><a class="link" href="Finance%20-%20Ledger.html" style="color:var(--primary);text-decoration:none;font-weight:500;font-size:12.5px">Ledger →</a></div>
+          <div class="aging">
+            <div class="a"><div class="a-v">€1.01M</div><div class="a-l">Current</div></div>
+            <div class="a"><div class="a-v" style="color:var(--warn)">€137K</div><div class="a-l">31–60</div></div>
+            <div class="a"><div class="a-v" style="color:var(--warn)">€77K</div><div class="a-l">61–90</div></div>
+            <div class="a"><div class="a-v" style="color:var(--dang)">€137K</div><div class="a-l">90+</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

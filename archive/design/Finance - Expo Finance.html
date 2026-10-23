@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELIZA — Finance · Expo Finance</title>
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('eliza-theme')||'vermillion');}catch(e){document.documentElement.setAttribute('data-theme','vermillion');}</script>
+<link rel="stylesheet" href="styles/signal.css">
+<link rel="stylesheet" href="styles/themes.css">
+<style>
+  body { background: var(--bg); }
+  .app { min-height: 100vh; }
+
+  .context { background: var(--surface); border-bottom: 1px solid var(--line); padding: 13px 24px; display:flex; align-items:center; gap:16px; }
+  .scope { display:flex; align-items:center; gap:11px; padding:7px 13px 7px 9px; border:1px solid var(--line); border-radius:var(--r-md); background:var(--surface-2); cursor:pointer; }
+  .scope .si { width:34px; height:34px; border-radius:var(--r-sm); background:linear-gradient(135deg,var(--primary),var(--signal)); color:#fff; display:grid; place-items:center; flex:none; font-family:var(--font-display); font-weight:600; font-size:12px; }
+  .scope .sn { font-family:var(--font-display); font-weight:600; font-size:14.5px; }
+  .scope .ss { font-size:11.5px; color:var(--muted); margin-top:1px; }
+  .ctx-right { margin-left:auto; display:flex; align-items:center; gap:10px; }
+  .pill { display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-weight:500; color:var(--ink-2); border:1px solid var(--line); background:var(--surface); border-radius:var(--r-sm); padding:8px 11px; cursor:pointer; }
+  .pill svg { width:13px; height:13px; color:var(--muted); } .pill b { color:var(--ink); }
+
+  .subbar { background: var(--surface); border-bottom: 1px solid var(--line); padding: 0 16px; display:flex; align-items:center; gap:10px; }
+  .subbar .subnav { padding: 6px 0; }
+
+  .main { padding: 18px 24px 38px; max-width: 1480px; margin: 0 auto; }
+  .page-head { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:14px; }
+  .page-head h1 { font-family:var(--font-display); font-weight:600; font-size:22px; margin:0; letter-spacing:-.01em; }
+  .page-head p { margin:5px 0 0; color:var(--muted); font-size:13px; }
+  .seg { display:flex; background:var(--bg-2); border-radius:var(--r-sm); padding:3px; gap:2px; }
+  .seg button { border:0; background:transparent; font-family:var(--font-ui); font-size:12.5px; font-weight:500; color:var(--muted); padding:7px 14px; border-radius:5px; cursor:pointer; }
+  .seg button.on { background:var(--surface); color:var(--ink); box-shadow:var(--shadow-sm); }
+
+  .kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:16px; }
+  .kpi { background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md); padding:14px 16px; }
+  .kpi .k-l { font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+  .kpi .k-v { font-family:var(--font-display); font-weight:600; font-size:28px; margin-top:9px; letter-spacing:-.015em; }
+  .kpi .k-v small { font-size:13px; color:var(--muted); font-weight:500; }
+  .kpi .k-f { font-size:12px; margin-top:7px; }
+  .delta { display:inline-flex; align-items:center; gap:3px; font-weight:600; font-family:var(--font-mono); font-size:11.5px; }
+  .delta.up { color:var(--pos); } .delta.down { color:var(--dang); }
+
+  .cols { display:grid; grid-template-columns: 1.62fr 1fr; gap:16px; align-items:start; }
+  .stack { display:grid; gap:16px; }
+
+  /* budget vs actual table */
+  .bt { width:100%; border-collapse:collapse; font-size:13px; }
+  .bt thead th { text-align:left; font-family:var(--font-mono); font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:600; padding:9px 14px; border-bottom:1px solid var(--line); background:var(--surface-2); }
+  .bt thead th.r { text-align:right; }
+  .bt tbody td { padding:9px 14px; border-bottom:1px solid var(--line-2); color:var(--ink-2); }
+  .bt tbody td.r { text-align:right; font-family:var(--font-mono); font-variant-numeric:tabular-nums; color:var(--ink); }
+  .bt .sec td { background:var(--surface-2); font-family:var(--font-mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:600; padding:7px 14px; }
+  .bt .tot td { font-weight:600; color:var(--ink); border-top:1px solid var(--line); }
+  .bt .tot td.r { color:var(--ink); }
+  .var.good { color:var(--pos); } .var.bad { color:var(--dang); }
+  .miniprog { height:5px; border-radius:100px; background:var(--bg-2); overflow:hidden; width:80px; display:inline-block; vertical-align:middle; margin-left:8px; }
+  .miniprog i { display:block; height:100%; }
+
+  /* margin donut */
+  .donut-wrap { display:flex; align-items:center; gap:18px; padding:18px 16px; }
+  .donut { width:120px; height:120px; border-radius:50%; flex:none; background:conic-gradient(var(--primary) 0 39%, var(--bg-2) 39% 100%); display:grid; place-items:center; }
+  .donut .hole { width:84px; height:84px; border-radius:50%; background:var(--surface); display:grid; place-items:center; text-align:center; }
+  .donut .hole .v { font-family:var(--font-display); font-weight:600; font-size:24px; line-height:1; }
+  .donut .hole .l { font-family:var(--font-mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-top:3px; }
+  .dleg { display:flex; flex-direction:column; gap:9px; flex:1; }
+  .dleg .row2 { display:flex; align-items:center; gap:9px; font-size:12.5px; } .dleg .sw { width:11px; height:11px; border-radius:3px; flex:none; } .dleg .v { margin-left:auto; font-family:var(--font-mono); font-weight:600; color:var(--ink); }
+
+  /* cluster split */
+  .csplit { padding:6px 0; }
+  .crow { display:flex; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid var(--line-2); }
+  .crow:last-child { border-bottom:0; }
+  .c-flag { width:34px; height:34px; border-radius:var(--r-sm); display:grid; place-items:center; color:#fff; font-family:var(--font-display); font-weight:600; font-size:12px; flex:none; }
+  .c-n { font-weight:600; font-size:13px; color:var(--ink); } .c-s { font-size:11.5px; color:var(--muted); }
+  .c-fig { margin-left:auto; text-align:right; } .c-fig .cf-v { font-family:var(--font-mono); font-weight:600; font-size:14px; color:var(--ink); } .c-fig .cf-m { font-size:11px; color:var(--pos); font-family:var(--font-mono); }
+
+  .kv { display:flex; justify-content:space-between; padding:10px 16px; border-bottom:1px solid var(--line-2); font-size:12.5px; }
+  .kv:last-child { border-bottom:0; }
+  .kv .k { color:var(--muted); } .kv .v { color:var(--ink); font-weight:500; } .kv .v .mono { font-family:var(--font-mono); }
+  .icn { width:14px; height:14px; }
+</style>
+</head>
+<body>
+<div class="app" data-screen-label="Finance — Expo Finance">
+
+  <!-- TOP NAV -->
+  <nav class="topnav">
+    <div class="brand"><div class="eliza-mark"><span class="eliza-glyph"><i></i><i></i><i></i></span><span class="eliza-word on-dark">ELIZA</span></div></div>
+    <div class="domain-tabs">
+      <button class="domain-tab" onclick="location.href='Sales%20-%20My%20Work.html'"><span class="d-main">Sales</span><span class="d-sub">liffy</span></button>
+      <button class="domain-tab" onclick="location.href='Ops%20-%20Dashboard.html'"><span class="d-main">Operations</span><span class="d-sub">leena</span></button>
+      <button class="domain-tab active"><span class="d-main">Finance</span><span class="d-sub">&nbsp;</span></button>
+    </div>
+    <div class="spacer"></div>
+    <div class="nav-right">
+      <button class="btn btn-icon" style="background:var(--cmd-2);color:var(--cmd-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
+      <span class="kbd">⌘K</span>
+      <div class="vdiv" style="height:24px"></div>
+      <button class="btn btn-icon" style="background:var(--cmd-2);color:var(--cmd-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg></button>
+      <div class="avatar" style="background:var(--ink-2);cursor:pointer" onclick="location.href='Settings%20-%20Appearance.html'" title="Settings">SA</div>
+    </div>
+  </nav>
+
+  <!-- CONTEXT -->
+  <div class="context">
+    <div class="scope">
+      <div class="si">C2</div>
+      <div><div class="sn">Cluster 2 · Build + Stone</div><div class="ss">Casablanca · 14–17 May 2026 · co-located</div></div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;color:var(--faint)"><path d="m6 9 6 6 6-6"/></svg>
+    </div>
+    <div class="ctx-right">
+      <span class="pill">Reporting: <b>EUR</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+      <span class="pill">vs <b>Budget</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+    </div>
+  </div>
+
+  <!-- SUBNAV -->
+  <div class="subbar">
+    <nav class="subnav">
+      <a href="Finance%20-%20War%20Room.html">War Room</a>
+      <a class="active" href="#">Expos</a>
+      <a href="Finance%20-%20Ledger.html">Ledger</a>
+      <a href="Finance%20-%20Contract.html">Contracts</a>
+      <a href="Finance%20-%20Commissions.html">Commissions</a>
+      <a href="#">Reports</a>
+    </nav>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="page-head">
+      <div>
+        <h1>Expo Finance</h1>
+        <p>P&amp;L for Cluster 2 — Build &amp; Stone share a venue and overhead but bill separately.</p>
+      </div>
+      <div class="row gap-3">
+        <div class="seg">
+          <button class="on">Combined</button>
+          <button>Build Expo</button>
+          <button>Stone Expo</button>
+        </div>
+        <button class="btn btn-secondary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Export</button>
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <div class="kpis">
+      <div class="kpi"><div class="k-l">Revenue</div><div class="k-v tnum">€2.38<small>M</small></div><div class="k-f"><span class="delta down" style="color:var(--muted)">−0.4%</span> <span style="color:var(--muted)">vs €2.39M budget</span></div></div>
+      <div class="kpi"><div class="k-l">Costs</div><div class="k-v tnum">€1.45<small>M</small></div><div class="k-f"><span class="delta up">▼ 4.2%</span> <span style="color:var(--muted)">under €1.51M budget</span></div></div>
+      <div class="kpi"><div class="k-l">Gross margin</div><div class="k-v tnum">39<small>%</small></div><div class="k-f"><span class="delta up">▲ 2.2pt</span> <span style="color:var(--muted)">vs 37% plan</span></div></div>
+      <div class="kpi"><div class="k-l">Net profit</div><div class="k-v tnum" style="color:var(--pos)">€934<small>K</small></div><div class="k-f"><span class="delta up">▲ €54K</span> <span style="color:var(--muted)">over plan</span></div></div>
+    </div>
+
+    <div class="cols">
+      <!-- BUDGET VS ACTUAL -->
+      <div class="card" style="overflow:hidden">
+        <div class="card-head"><span class="card-title">Budget vs actual</span><span class="card-eyebrow">Cluster 2 · combined · EUR</span></div>
+        <table class="bt">
+          <thead><tr><th>Line</th><th class="r">Budget</th><th class="r">Actual</th><th class="r">Variance</th></tr></thead>
+          <tbody>
+            <tr class="sec"><td colspan="4">Revenue</td></tr>
+            <tr><td>Stand space</td><td class="r">€1,800K</td><td class="r">€1,724K</td><td class="r var bad">−€76K</td></tr>
+            <tr><td>Sponsorship</td><td class="r">€360K</td><td class="r">€402K</td><td class="r var good">+€42K</td></tr>
+            <tr><td>Visitor registration</td><td class="r">€120K</td><td class="r">€138K</td><td class="r var good">+€18K</td></tr>
+            <tr><td>Catalogue &amp; marketing</td><td class="r">€110K</td><td class="r">€116K</td><td class="r var good">+€6K</td></tr>
+            <tr class="tot"><td>Total revenue</td><td class="r">€2,390K</td><td class="r">€2,380K</td><td class="r var bad">−€10K</td></tr>
+
+            <tr class="sec"><td colspan="4">Expenses</td></tr>
+            <tr><td>Venue &amp; halls</td><td class="r">€540K</td><td class="r">€520K</td><td class="r var good">−€20K</td></tr>
+            <tr><td>Build &amp; infrastructure</td><td class="r">€400K</td><td class="r">€430K</td><td class="r var bad">+€30K</td></tr>
+            <tr><td>Marketing</td><td class="r">€220K</td><td class="r">€205K</td><td class="r var good">−€15K</td></tr>
+            <tr><td>Staffing &amp; ops</td><td class="r">€185K</td><td class="r">€175K</td><td class="r var good">−€10K</td></tr>
+            <tr><td>Conferences</td><td class="r">€95K</td><td class="r">€88K</td><td class="r var good">−€7K</td></tr>
+            <tr><td>Contingency</td><td class="r">€70K</td><td class="r">€28K</td><td class="r var good">−€42K</td></tr>
+            <tr class="tot"><td>Total expenses</td><td class="r">€1,510K</td><td class="r">€1,446K</td><td class="r var good">−€64K</td></tr>
+
+            <tr class="tot" style="border-top:2px solid var(--ink)"><td>Net profit</td><td class="r">€880K</td><td class="r" style="color:var(--pos)">€934K</td><td class="r var good">+€54K</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="stack">
+        <!-- margin donut -->
+        <div class="card">
+          <div class="card-head"><span class="card-title">Margin</span><span class="chip chip-pos" style="font-size:10.5px">39%</span></div>
+          <div class="donut-wrap">
+            <div class="donut"><div class="hole"><div><div class="v tnum">39%</div><div class="l">net</div></div></div></div>
+            <div class="dleg">
+              <div class="row2"><span class="sw" style="background:var(--primary)"></span>Net profit<span class="v">€934K</span></div>
+              <div class="row2"><span class="sw" style="background:var(--bg-2)"></span>Costs<span class="v">€1.45M</span></div>
+              <div class="row2" style="padding-top:4px;border-top:1px solid var(--line-2)"><span style="color:var(--muted)">Revenue</span><span class="v">€2.38M</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- cluster split -->
+        <div class="card">
+          <div class="card-head"><span class="card-title">Cluster split</span><span class="card-eyebrow">2 expos · 1 venue</span></div>
+          <div class="csplit">
+            <div class="crow">
+              <div class="c-flag" style="background:var(--primary)">BX</div>
+              <div><div class="c-n">Build Expo 2026</div><div class="c-s">Rev €1.42M · cost €0.88M</div></div>
+              <div class="c-fig"><div class="cf-v">€540K</div><div class="cf-m">38% margin</div></div>
+            </div>
+            <div class="crow">
+              <div class="c-flag" style="background:var(--berry)">SX</div>
+              <div><div class="c-n">Stone Expo 2026</div><div class="c-s">Rev €0.96M · cost €0.57M</div></div>
+              <div class="c-fig"><div class="cf-v">€394K</div><div class="cf-m">41% margin</div></div>
+            </div>
+            <div class="crow" style="background:var(--surface-2)">
+              <div class="c-flag" style="background:var(--ink-2)">C2</div>
+              <div><div class="c-n">Combined</div><div class="c-s">Shared overhead allocated 60/40</div></div>
+              <div class="c-fig"><div class="cf-v">€934K</div><div class="cf-m">39% margin</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- cash collected -->
+        <div class="card">
+          <div class="card-head"><span class="card-title">Cash vs invoiced</span><a class="link" href="Finance%20-%20Ledger.html" style="color:var(--primary);text-decoration:none;font-weight:500;font-size:12.5px">Ledger →</a></div>
+          <div class="kv"><span class="k">Invoiced</span><span class="v"><span class="mono">€2.38M</span></span></div>
+          <div class="kv"><span class="k">Collected</span><span class="v"><span class="mono" style="color:var(--pos)">€1.92M · 81%</span></span></div>
+          <div class="kv"><span class="k">Outstanding</span><span class="v"><span class="mono" style="color:var(--warn)">€460K</span></span></div>
+          <div class="kv" style="background:var(--surface-2)"><span class="k" style="color:var(--ink-2)">Overdue (90+)</span><span class="v" style="color:var(--dang)"><span class="mono">€78K</span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

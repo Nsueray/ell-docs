@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELIZA — Sales · My Work</title>
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('eliza-theme')||'vermillion');}catch(e){document.documentElement.setAttribute('data-theme','vermillion');}</script>
+<link rel="stylesheet" href="styles/signal.css">
+<link rel="stylesheet" href="styles/themes.css">
+<style>
+  body { background: var(--bg); }
+  .app { min-height: 100vh; }
+
+  /* context bar */
+  .context { background: var(--surface); border-bottom: 1px solid var(--line); padding: 13px 24px; display: flex; align-items: center; gap: 22px; }
+  .who { display:flex; align-items:center; gap:12px; }
+  .who .av { width:40px; height:40px; border-radius:50%; background:var(--berry); color:#fff; display:grid; place-items:center; font-family:var(--font-display); font-weight:600; font-size:14px; }
+  .who .w-name { font-family:var(--font-display); font-weight:600; font-size:16px; letter-spacing:-.01em; }
+  .who .w-line { font-size:12px; color:var(--muted); margin-top:2px; display:flex; gap:9px; align-items:center; }
+  .gate { display:inline-flex; align-items:center; gap:5px; font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); border:1px solid var(--line); border-radius:100px; padding:3px 9px; }
+  .gate svg { width:11px; height:11px; }
+
+  .quota { margin-left:auto; display:flex; align-items:center; gap:26px; }
+  .qstat { text-align:right; }
+  .qstat .q-l { font-family:var(--font-mono); font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+  .qstat .q-v { font-family:var(--font-display); font-weight:600; font-size:20px; line-height:1.1; margin-top:3px; }
+  .qstat .q-v small { font-size:12px; color:var(--muted); font-weight:500; }
+  .ring { --p:70; width:54px; height:54px; border-radius:50%; background: conic-gradient(var(--primary) calc(var(--p)*1%), var(--bg-2) 0); display:grid; place-items:center; }
+  .ring .inner { width:42px; height:42px; border-radius:50%; background:var(--surface); display:grid; place-items:center; font-family:var(--font-display); font-weight:600; font-size:13px; }
+
+  /* subnav */
+  .subbar { background: var(--surface); border-bottom: 1px solid var(--line); padding: 0 16px; display:flex; align-items:center; gap:10px; }
+  .subbar .subnav { padding: 6px 0; }
+
+  .main { padding: 20px 24px 40px; max-width: 1480px; margin: 0 auto; }
+  .page-head { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:16px; }
+  .page-head h1 { font-family:var(--font-display); font-weight:600; font-size:22px; margin:0; letter-spacing:-.01em; }
+  .page-head p { margin:5px 0 0; color:var(--muted); font-size:13px; }
+
+  .cols { display:grid; grid-template-columns: 1.62fr 1fr; gap:16px; align-items:start; }
+  .stack { display:grid; gap:16px; }
+
+  /* queue tabs */
+  .qtabs { display:flex; gap:4px; flex-wrap:wrap; }
+  .qtab { display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line); background:var(--surface); border-radius:var(--r-sm); padding:8px 13px; font-size:13px; font-weight:500; color:var(--ink-2); cursor:pointer; }
+  .qtab .n { font-family:var(--font-mono); font-size:11px; font-weight:600; background:var(--bg-2); color:var(--ink-2); border-radius:100px; padding:1px 7px; }
+  .qtab.on { background:var(--primary); border-color:var(--primary); color:#fff; }
+  .qtab.on .n { background:rgba(255,255,255,.22); color:#fff; }
+
+  /* action rows */
+  .arow { display:flex; align-items:center; gap:14px; padding:13px 16px; border-bottom:1px solid var(--line-2); }
+  .arow:last-child { border-bottom:0; }
+  .arow:hover { background:var(--surface-2); }
+  .a-av { width:34px; height:34px; border-radius:8px; display:grid; place-items:center; font-family:var(--font-display); font-weight:600; font-size:12px; color:#fff; flex:none; }
+  .a-mid { flex:1; min-width:0; }
+  .a-top { display:flex; align-items:center; gap:9px; }
+  .a-co { font-weight:600; font-size:13.5px; color:var(--ink); white-space:nowrap; }
+  .a-msg { font-size:12.5px; color:var(--ink-2); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:430px; }
+  .a-msg b { color:var(--ink); font-weight:600; }
+  .a-meta { display:flex; flex-direction:column; align-items:flex-end; gap:5px; flex:none; }
+  .a-val { font-family:var(--font-mono); font-size:12.5px; font-weight:600; color:var(--ink); }
+  .a-age { font-size:11px; color:var(--faint); font-family:var(--font-mono); }
+  .a-act { display:flex; gap:6px; flex:none; }
+  .a-act .btn { padding:6px 11px; font-size:12px; }
+
+  /* right rail */
+  .sched { display:flex; gap:12px; padding:11px 16px; border-bottom:1px solid var(--line-2); align-items:flex-start; }
+  .sched:last-child { border-bottom:0; }
+  .s-time { font-family:var(--font-mono); font-size:12px; font-weight:600; color:var(--primary-d); width:46px; flex:none; padding-top:1px; }
+  .s-body .s-t { font-size:13px; font-weight:500; color:var(--ink); }
+  .s-body .s-s { font-size:12px; color:var(--muted); margin-top:1px; }
+  .s-tag { margin-left:auto; }
+
+  .tgt { padding:14px 16px; display:flex; flex-direction:column; gap:13px; }
+  .tgt-row { display:flex; flex-direction:column; gap:6px; }
+  .tgt-row .t-h { display:flex; justify-content:space-between; align-items:baseline; }
+  .tgt-row .t-n { font-size:12.5px; color:var(--ink-2); font-weight:500; }
+  .tgt-row .t-v { font-family:var(--font-mono); font-size:12px; color:var(--muted); }
+  .icn { width:14px; height:14px; }
+</style>
+</head>
+<body>
+<div class="app" data-screen-label="Sales — My Work">
+
+  <!-- TOP NAV (Sales-only user → single domain tab) -->
+  <nav class="topnav">
+    <div class="brand">
+      <div class="eliza-mark"><span class="eliza-glyph"><i></i><i></i><i></i></span><span class="eliza-word on-dark">ELIZA</span></div>
+    </div>
+    <div class="domain-tabs">
+      <button class="domain-tab active"><span class="d-main">Sales</span><span class="d-sub">liffy</span></button>
+    </div>
+    <div class="spacer"></div>
+    <div class="nav-right">
+      <button class="btn btn-icon" style="background:var(--cmd-2);color:var(--cmd-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
+      <span class="kbd">⌘K</span>
+      <div class="vdiv" style="height:24px"></div>
+      <button class="btn btn-icon" style="background:var(--cmd-2);color:var(--cmd-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg></button>
+      <div class="avatar" style="background:var(--berry);cursor:pointer" onclick="location.href='Settings%20-%20Appearance.html'" title="Settings">YB</div>
+    </div>
+  </nav>
+
+  <!-- CONTEXT: rep identity + quota -->
+  <div class="context">
+    <div class="who">
+      <div class="av">YB</div>
+      <div>
+        <div class="w-name">Yousra Benali</div>
+        <div class="w-line">
+          <span>Sales — Stand space</span><span>·</span><span>Build &amp; Stone cluster</span>
+          <span class="gate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Sales access</span>
+        </div>
+      </div>
+    </div>
+    <div class="quota">
+      <div class="qstat"><div class="q-l">Quotes out</div><div class="q-v tnum">14 <small>· $380K</small></div></div>
+      <div class="qstat"><div class="q-l">Win rate</div><div class="q-v tnum">38<small>%</small></div></div>
+      <div class="qstat"><div class="q-l">Avg response</div><div class="q-v tnum">2.4<small>h</small></div></div>
+      <div class="row gap-3" style="align-items:center">
+        <div class="qstat"><div class="q-l">Quarter quota</div><div class="q-v tnum">$295K <small>/ 420K</small></div></div>
+        <div class="ring"><div class="inner">70%</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBNAV -->
+  <div class="subbar">
+    <nav class="subnav">
+      <a class="active" href="#">My Work</a>
+      <a href="Sales%20-%20Pipeline.html">Pipeline</a>
+      <a href="Sales%20-%20Quotes.html">Quotes</a>
+      <a href="Sales%20-%20Companies.html">Companies</a>
+      <a href="#">Activity</a>
+    </nav>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="page-head">
+      <div>
+        <h1>My Work</h1>
+        <p>Wednesday 10 June · 27 things need you today. Replies first, then chase the warm quotes.</p>
+      </div>
+      <div class="row gap-3">
+        <button class="btn btn-secondary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M3 6h18M3 12h18M3 18h12"/></svg>Filters</button>
+        <button class="btn btn-primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M12 5v14M5 12h14"/></svg>New quote</button>
+      </div>
+    </div>
+
+    <div class="cols">
+      <!-- LEFT: action queue -->
+      <div class="card">
+        <div class="card-head" style="gap:12px;flex-wrap:wrap">
+          <div class="qtabs">
+            <button class="qtab on">Incoming replies <span class="n">8</span></button>
+            <button class="qtab">Follow-ups due <span class="n">12</span></button>
+            <button class="qtab">Quotes to chase <span class="n">5</span></button>
+            <button class="qtab">Approvals <span class="n">2</span></button>
+          </div>
+          <span class="chip chip-signal"><span class="live-dot"></span>LIVE</span>
+        </div>
+
+        <div>
+          <!-- hot -->
+          <div class="arow">
+            <div class="a-av" style="background:var(--berry)">MM</div>
+            <div class="a-mid">
+              <div class="a-top"><span class="a-co">Marrakech Marble</span><span class="chip chip-pos" style="font-size:10px">Ready to sign</span></div>
+              <div class="a-msg">Hicham R.: “<b>We approve the corner stand — please send the contract.</b>”</div>
+            </div>
+            <div class="a-meta"><span class="a-val">$58,000</span><span class="a-age">2h ago</span></div>
+            <div class="a-act"><button class="btn btn-primary">Send contract</button></div>
+          </div>
+
+          <div class="arow">
+            <div class="a-av" style="background:var(--primary)">AS</div>
+            <div class="a-mid">
+              <div class="a-top"><span class="a-co">Atlas Stone Co.</span><span class="chip chip-neutral" style="font-size:10px">Q-2231</span></div>
+              <div class="a-msg">Karim N.: “Can you send the <b>corner stand</b> option with the open second side?”</div>
+            </div>
+            <div class="a-meta"><span class="a-val">$24,000</span><span class="a-age">18m ago</span></div>
+            <div class="a-act"><button class="btn btn-secondary">Open</button><button class="btn btn-primary">Reply</button></div>
+          </div>
+
+          <div class="arow">
+            <div class="a-av" style="background:var(--signal)">BS</div>
+            <div class="a-mid">
+              <div class="a-top"><span class="a-co">BuildTech Sahel</span><span class="chip chip-signal" style="font-size:10px">Wants a call</span></div>
+              <div class="a-msg">Replied to your follow-up — free this afternoon to walk the floorplan.</div>
+            </div>
+            <div class="a-meta"><span class="a-val">$42,000</span><span class="a-age">1h ago</span></div>
+            <div class="a-act"><button class="btn btn-secondary">Open</button><button class="btn btn-primary">Call</button></div>
+          </div>
+
+          <div class="arow">
+            <div class="a-av" style="background:var(--berry)">GF</div>
+            <div class="a-mid">
+              <div class="a-top"><span class="a-co">Gulf Façade Systems</span></div>
+              <div class="a-msg">Question on <b>co-exhibitor pricing</b> for a shared 36 m² stand.</div>
+            </div>
+            <div class="a-meta"><span class="a-val">$31,000</span><span class="a-age">3h ago</span></div>
+            <div class="a-act"><button class="btn btn-secondary">Open</button><button class="btn btn-primary">Reply</button></div>
+          </div>
+
+          <div class="arow">
+            <div class="a-av" style="background:var(--primary)">NC</div>
+            <div class="a-mid">
+              <div class="a-top"><span class="a-co">Numa Ceramics</span></div>
+              <div class="a-msg">Needs a <b>revised quote</b> — dropping from 54 m² to 36 m².</div>
+            </div>
+            <div class="a-meta"><span class="a-val">$19,500</span><span class="a-age">4h ago</span></div>
+            <div class="a-act"><button class="btn btn-secondary">Open</button><button class="btn btn-primary">Revise</button></div>
+          </div>
+
+          <div class="arow">
+            <div class="a-av" style="background:var(--signal)">DI</div>
+            <div class="a-mid">
+              <div class="a-top"><span class="a-co">Doha Interiors</span></div>
+              <div class="a-msg">Asking about <b>build-up dates</b> and rigging access.</div>
+            </div>
+            <div class="a-meta"><span class="a-val">$27,000</span><span class="a-age">5h ago</span></div>
+            <div class="a-act"><button class="btn btn-secondary">Open</button><button class="btn btn-primary">Reply</button></div>
+          </div>
+
+          <div class="arow" style="background:var(--surface-2)">
+            <div class="a-mid" style="margin-left:48px"><a class="link" href="#" style="color:var(--primary);text-decoration:none;font-weight:500;font-size:12.5px">View all 8 replies →</a></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: today + targets -->
+      <div class="stack">
+        <div class="card">
+          <div class="card-head"><span class="card-title">Today</span><span class="card-eyebrow">3 events · Wed 10 Jun</span></div>
+          <div>
+            <div class="sched">
+              <span class="s-time">10:30</span>
+              <div class="s-body"><div class="s-t">Discovery call · BuildTech Sahel</div><div class="s-s">42 m² island — budget confirm</div></div>
+              <span class="s-tag"><span class="chip chip-info" style="font-size:10px">Call</span></span>
+            </div>
+            <div class="sched">
+              <span class="s-time">13:00</span>
+              <div class="s-body"><div class="s-t">Floorplan walk · Marrakech Marble</div><div class="s-s">Corner stand A-14 · close + sign</div></div>
+              <span class="s-tag"><span class="chip chip-pos" style="font-size:10px">Demo</span></span>
+            </div>
+            <div class="sched">
+              <span class="s-time">15:30</span>
+              <div class="s-body"><div class="s-t">Pipeline review · with Leena (Ops)</div><div class="s-s">Hand-off of 6 signed exhibitors</div></div>
+              <span class="s-tag"><span class="chip chip-neutral" style="font-size:10px">Internal</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><span class="card-title">Quarter targets</span><span class="chip chip-warn">70% · on track</span></div>
+          <div class="tgt">
+            <div class="tgt-row">
+              <div class="t-h"><span class="t-n">Build Expo 2026</span><span class="t-v">$182K / 240K</span></div>
+              <div class="bar"><span style="width:76%"></span></div>
+            </div>
+            <div class="tgt-row">
+              <div class="t-h"><span class="t-n">Stone Expo 2026</span><span class="t-v">$113K / 180K</span></div>
+              <div class="bar"><span style="width:63%;background:var(--signal)"></span></div>
+            </div>
+            <div class="divider"></div>
+            <div class="tgt-row">
+              <div class="t-h"><span class="t-n" style="color:var(--ink);font-weight:600">Combined</span><span class="t-v" style="color:var(--ink)">$295K / 420K</span></div>
+              <div class="bar" style="height:9px"><span style="width:70%;background:var(--berry)"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

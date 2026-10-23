@@ -3750,6 +3750,67 @@
 >   sekmesi `finance-contract.html` → ikisi de `finance-summary.html` · para çifti sütunları · negatif kırmızı) · design
 >   brief + 45 HTML seti ell-docs dışında · YET-01..09 teyit bekliyor · Faz B "go" isteği.
 
+> ## ✅ 2026-10-23 — UI-0 BELGE KAPANIŞI (KB @ 92c3ac9) + UI-0b HÜKÜMLERİ (Sentez 23 Eki toplu blok)
+>
+> - **Ne yapıldı (UI-0b ÖN İŞ — belge, ayrı commit; inşadan ÖNCE):**
+>   (1) YON-03: **KB @ 92c3ac9** → UI-0 belge tarafı KAPALI (Sentez bildirimi).
+>   (2) Kütük **YET-01..09 🔶 KALDIRILDI** (Sentez teyidi 23 Eki; satırlar "Sentez teyitli 23 Eki"); YET-04'e not:
+>   "sistem şablonu düzenlenebilir olduğu gün bu hüküm ÖNCE yeniden açılır".
+>   (3) **Paket 2 hükümleri (Sentez 23 Eki, aynen):** şablon içerikleri kabul · B32 tavanı / payout kapısı / sales-agents
+>   kapısız / şifre ≥6 kabul (sales-agents kapısı yetki dilimi 2, 20 Kasım+) · authMiddleware KAPI-2 geçişi kabul ·
+>   dualAuth pasif token AÇIK 20 Kasım'a kadar (kuyruk) · davet linki düz metin kabul; **Faz B notu:** email_queue
+>   html_content saklama süresi ölçülsün · klasik oturum 409 kabul · Yaprak: ekip hazır olana kadar klasik giriş + Owner
+>   oturumu ortak.
+>   (4) **UI-0 hükümleri (Sentez 23 Eki):** 🔶1 köprü kabul GEÇİCİ (nav.json `legacy=true` + `status=placeholder`; legacy
+>   bağlantı yalnız nav.json'dan) · 🔶2 tek birim ÜÇ YERDE sınırlı, para çifti "EUR yok" = "—" (boş değil), RAP-01
+>   istisnası kütüğe not, yeni istisna Sentez kararı · 🔶3 kabul, UI-02 güncelle (alan listesi: group/label/path/status/
+>   permission + parent/legacy/landing/userOnly; userOnly = yalnız ui2 oturumu, klasik oturumda gizli) · davranış farkları
+>   (iniş sayfası · para çifti sütunları · negatif kırmızı) kabul, K-G. Kütük: RAP-01 notu · UI-02 güncellemesi + köprü ·
+>   UI-03 notu. `ELIZA_UI2_ARAYUZ_KURALLARI_v1.md` §4 / §5 güncellendi.
+>   (5) **Envanter hükümleri:** Sentez bloğunun atıf yaptığı "B bölümü" metni bu turun yapıştırmasında YOK →
+>   **BULAMADIM**; hükümler aynı bloğun İNŞA / KAPSAM DIŞI maddelerinden aynen aktarıldı: **SİL 13** — `admin-dashboard` ·
+>   `dashboard` · `dashboard.backup` · `checkins.backup` · `expo-create.backup` · `main-panel.backup` · `qrscanner.backup` ·
+>   `register.backup` · `reports.backup` · `login_new` · `main-panel` · `register` · `email_templates/modern-default`
+>   (silme öncesi her basename backend + public'te grep 0, commit anında tekrar; grep >0 ise SİLİNMEZ, raporlanır) ·
+>   **ŞARTLI** `expo-create.html` — `dashboard_new`'deki Create Expo modal'ının ucu ve alanları (country dahil, `8907612`)
+>   kapsıyorsa SİL (14), eksik varsa KALSIN + fark deftere · `checkin-import.html` **KALSIN** (Suer istisnası) · **KAPI-1
+>   tek satır:** `main-panel-v2` Finance bölümüne "ELIZA Finance (yeni)" → `/ui2/`; EMS menüsüne başka dokunuş yok ·
+>   INVITE_ECHO canlıda kapalı testi · **KAPSAM DIŞI:** EMS sayfalarının içeriği · fuar no gömülü 2 sayfa (v402, Paket 3
+>   sonrası) · TAŞI (UI-1) · Faz B. Kaynak ölçüm: SAYFA ENVANTERİ [defter:2026-10-22 SAYFA ENVANTERİ] (ölü aday 14 = SİL 13 +
+>   `checkin-import`; İZSİZ-YENİ 1 = `expo-create`).
+>   (6) **Tasarım kaynakları ell-docs'a:** `ELIZA_DESIGN_BRIEF_v1.md` → kök (kaynak `~/Desktop/UX_KB/`; başına 3 satır §8
+>   sapma notu, UI-05; gövde sha256 `b61895f9f841…` değişmedi) · tasarım seti → `archive/design/` (tarihsel; tokens.css artık
+>   kaynak; `archive/design/README.md`) — taramadan geçen **42 dosya**. README'ye iki satır.
+> - **Commit:** ell-docs (bu kayıt). PUSH YOK.
+> - **Ölçülenler — sır / kişisel veri taraması (push öncesi; anahtar · şifre · e-posta · telefon · kişi adı):**
+>   - Taranan: 45 HTML + 4 CSS + `design-canvas.jsx` + brief (51 metin dosyası, regex) + HTML'lerin yüklediği 4 PNG (gözle).
+>   - **anahtar / sır: 0** · **şifre: 6 satır, değer DEĞİL** — 3 Login sayfasında "Password" etiketi + `value="passwordvalue"`
+>     yer tutucusu (`A - Login.html:108/111` · `B - Login.html:105/108` · `Login.html:110/113`).
+>   - **e-posta: 22 satır / 6 HTML** — `A - Login.html:103` · `B - Login.html:100` · `Login.html:105` (şirket alan adında,
+>     gerçek kişi adından türemiş adres + `you@…` yer tutucusu) · `Sales - Companies.html:164/170/176/182` ·
+>     `Ops - Visitor & Access.html:202–346` (13) · `Sales - Quotes.html:158/166` · **telefon: 4** —
+>     `Sales - Companies.html:164/170/176/182` → bu **6 dosya ALINMADI**.
+>   - **kişi adı: 29 aday tam ad** (11 HTML + brief). Gerçek kayıtla eşleşme (canlı DB `claude_readonly`,
+>     `transaction_read_only=on`, yalnız sayı): 18 e-posta → ziyaretçi 0 · çalışan / kullanıcı / organizatör 0; bu alan
+>     adlarından ziyaretçilerde yalnız `elanexpo.com` (7 kayıt) · tam ad → çalışan / kullanıcı 0, **ziyaretçi 2 farklı ad**
+>     (5 dosyada: `Finance - Commissions` · `Mobile - Dashboard` · `Mobile - Scan` · `Mobile - Visitor List` ·
+>     `Ops - Visitor & Access`) → bu dosyalar **ALINMADI** (adlar deftere yazılmadı). Brief'teki tek ad (`:4`, Owner)
+>     ell-docs'ta zaten 30 dosyada → yeni ifşa değil, brief ALINDI. Kalan adlar (alınan 4 HTML'de 14 satır:
+>     `Finance - Contract.html:148/322/337/342/347` · `Ops - Exhibitor Detail.html:148/230/235/267/272` ·
+>     `Sales - My Work.html:108/169/179` · `Sales - Pipeline.html:88`) hiçbir kayıtla ve ell-docs'la eşleşmedi →
+>     kurgusal kabul edildi.
+>   - **PNG:** `thumb-a-login` / `thumb-b-login` aynı e-postayı gösteriyor → ALINMADI · `thumb-a-dash` / `thumb-b-dash` yalnız
+>     baş harf → alındı.
+>   - **Sonuç:** 45 HTML'den **35 alındı, 10 alınmadı**; + 4 CSS + jsx + 2 PNG = **42 dosya**, her biri kaynakla sha256 AYNI.
+>     Arşiv kopyasında yeniden tarama: anahtar 0 · şifre 0 · e-posta 0 · telefon 0 · gerçek kayıtla eşleşen ad 0.
+>   - Kütük 🔶 satırı **9 → 0**.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** KB yüklemesinin kendisi (Sentez/Orchestrator beyanı) · "E5 deseni" tanımı ell-docs'ta
+>   **BULAMADIM** (tarama yapıştırmadaki beş kategoriyle yapıldı) · adların kurgusal olduğu (yalnız bizim kayıtlarımızla
+>   eşleşmeme ölçüldü) · PNG'lerde OCR yok (gözle) · hiçbir sayfanın yüklemediği 4 PNG (`hub-*`, `warm-compare`) taranmadı ve
+>   alınmadı.
+> - **Bilinçle yapılmayanlar:** alınmayan dosyaların ad/e-posta silinerek düzeltilip alınması · `uploads/` kopyası · tasarım
+>   setinin LEENA'ya girmesi · kurgusal adların silinmesi (Sentez "kurgusal ad da alınmasın" derse 4 dosya çıkar).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -3794,8 +3855,10 @@
 >   [defter:2026-10-22 UI-0 KRİTERLERİ]; girdi: SAYFA ENVANTERİ [defter:2026-10-22 SAYFA ENVANTERİ] + UX çıktısı) →
 >   ✅ STAGING'E HAZIR (`1ad8456`) → ✅ MAIN'E MERGE (`cb37f24`) → ✅ **CANLIDA (23 Eki 13:12, KAPI-1 geçti)** —
 >   [defter:2026-10-23 PAKET UI-0 CANLIDA]. **Açık:** 3 🔶 Sentez sorusu (UI-0 kapanış brief'i 23 Eki) · design brief +
->   45 HTML setinin ell-docs'a alınması (Sentez'e soruldu) · YET-01..09 🔶.
->   **★ SIRA (Suer 23 Eki — bu kazanır):** **Faz B başı** (Anthropic API anahtarı iptal/yenileme + LIFFY `JWT_SECRET`,
+>   45 HTML setinin ell-docs'a alınması (Sentez'e soruldu) · YET-01..09 🔶. → ✅ hepsi Sentez 23 Eki'de cevaplandı, KB @
+>   92c3ac9 — [defter:2026-10-23 UI-0b HÜKÜMLERİ].
+>   **★ SIRA (Sentez 23 Eki — bu kazanır):** **UI-0b** (envanter uygulaması + belge kapanışı; SERBEST + tek KAPI-1
+>   satırı; dal `eliza-next`, tek merge) → **Faz B başı** (Anthropic API anahtarı iptal/yenileme + LIFFY `JWT_SECRET`,
 >   K-E; **KAPI-2**; Sentez "go"su bekleniyor) → **Paket 3** (Sentez kriter turu). P1b-2 Zoho CSV gelince araya girer
 >   (değişmedi). **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek

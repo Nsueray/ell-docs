@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELIZA — Theme Gallery v2 · Operations</title>
+<link rel="stylesheet" href="styles/signal.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  html, body { margin:0; height:100%; }
+  .ab-frame { width:100%; height:100%; border:0; display:block; background:#fff; }
+  .note-h { font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14px; color:#241c22; }
+  .note-p { font-size:12.5px; color:#5a5158; line-height:1.5; margin-top:5px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel">
+const { DesignCanvas, DCSection, DCArtboard, DCPostIt } = window;
+const W = 1480, H = 1024;
+
+const THEMES = [
+  { id:'ember',        label:'Ember · amber-CRT terminal (dark, retro)',          src:'themes/Ops - Ember.html' },
+  { id:'risograph',    label:'Risograph · print duotone (fluoro pink · blue)',     src:'themes/Ops - Risograph.html' },
+  { id:'blueprint',    label:'Blueprint · cyanotype draft (dark, technical)',      src:'themes/Ops - Blueprint.html' },
+  { id:'hivis',        label:'Hi-Vis · trade-floor industrial (hazard amber)',     src:'themes/Ops - HiVis.html' },
+  { id:'vermillion',   label:'Vermillion · Japanese editorial (ink · vermillion)', src:'themes/Ops - Vermillion.html' },
+  { id:'conservatory', label:'Conservatory · botanical (emerald · orchid · brass)',src:'themes/Ops - Conservatory.html' },
+];
+
+function App() {
+  return (
+    <DesignCanvas>
+      <DCSection id="themes2" title="Operations · Theme Gallery v2" subtitle="Six more characterful directions — each a distinct personality, not a hue swap. Same Signal structure, density, and type; color only. Every theme keeps strong text contrast, intact semantics (success / warning / error / live), and a role structure that inverts for dark mode. Open any one fullscreen to compare.">
+        <DCPostIt>
+          <div className="note-h">Pushed further out</div>
+          <div className="note-p">Retro phosphor, print-shop duotone, blueprint draft, industrial hazard, Japanese editorial, lush botanical. Pick a default + which to keep; I can dial any single one back (calm an accent, shift a hue) once you’ve narrowed it.</div>
+        </DCPostIt>
+        {THEMES.map(t => (
+          <DCArtboard key={t.id} id={t.id} label={t.label} width={W} height={H}>
+            <iframe className="ab-frame" src={t.src} title={t.label}></iframe>
+          </DCArtboard>
+        ))}
+      </DCSection>
+    </DesignCanvas>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

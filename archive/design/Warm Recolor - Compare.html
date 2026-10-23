@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELIZA — Warm Recolor · Compare</title>
+<link rel="stylesheet" href="styles/signal.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  html, body { margin:0; height:100%; }
+  .ab-frame { width:100%; height:100%; border:0; display:block; background:var(--surface); }
+  .sw-row { display:flex; gap:7px; margin-top:9px; }
+  .sw { width:30px; height:30px; border-radius:7px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.08); }
+  .sw-cap { font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.04em; color:#7c6f72; margin-top:6px; }
+  .note-h { font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:14px; color:#241c22; }
+  .note-p { font-size:12.5px; color:#5a5158; line-height:1.5; margin-top:5px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel">
+const { DesignCanvas, DCSection, DCArtboard, DCPostIt } = window;
+
+const AB_W = 1480, AB_H = 1024;
+
+function Swatches({ items }) {
+  return (
+    <div className="sw-row">
+      {items.map((it, i) => (
+        <div key={i} style={{textAlign:'center'}}>
+          <div className="sw" style={{background: it.c}}></div>
+          <div className="sw-cap">{it.l}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function Frame({ src }) {
+  return <iframe className="ab-frame" src={src} title={src}></iframe>;
+}
+
+function App() {
+  return (
+    <DesignCanvas>
+      <DCSection id="warm" title="Operations · Warm Recolor" subtitle="Same Signal structure & density — three warm-led weightings of orange / burgundy / aubergine. Open any one fullscreen to inspect.">
+
+        <DCPostIt>
+          <div className="note-h">Read the weighting, not the polish</div>
+          <div className="note-p">In all three the dark chrome, primary buttons, KPI/progress bars, chart, and floor “sold” cells are OFF blue and onto the warm palette. They differ in which deep warm dominates and how loud orange is. Pick a weighting; I’ll lock it in and expand the full set.</div>
+        </DCPostIt>
+
+        <DCArtboard id="a" label="A · Oxblood — burgundy-dominant" width={AB_W} height={AB_H}>
+          <Frame src="warm/Ops - A Oxblood.html" />
+        </DCArtboard>
+
+        <DCArtboard id="b" label="B · Aubergine + Ember — more orange" width={AB_W} height={AB_H}>
+          <Frame src="warm/Ops - B Aubergine.html" />
+        </DCArtboard>
+
+        <DCArtboard id="c" label="C · Clay — muted, easiest all-day" width={AB_W} height={AB_H}>
+          <Frame src="warm/Ops - C Clay.html" />
+        </DCArtboard>
+
+      </DCSection>
+    </DesignCanvas>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

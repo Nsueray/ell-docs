@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELIZA — Operations · Atlas Stone Co.</title>
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('eliza-theme')||'vermillion');}catch(e){document.documentElement.setAttribute('data-theme','vermillion');}</script>
+<link rel="stylesheet" href="styles/signal.css">
+<link rel="stylesheet" href="styles/themes.css">
+<style>
+  body { background: var(--bg); }
+  .app { min-height: 100vh; }
+
+  .context { background: var(--surface); border-bottom: 1px solid var(--line); padding: 13px 24px; display:flex; align-items:center; gap:14px; }
+  .crumb { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--muted); }
+  .crumb a { color:var(--muted); text-decoration:none; } .crumb a:hover { color:var(--ink); }
+  .crumb .sep { color:var(--faint); } .crumb .cur { color:var(--ink); font-weight:600; }
+  .ctx-right { margin-left:auto; display:flex; align-items:center; gap:10px; }
+
+  .subbar { background: var(--surface); border-bottom: 1px solid var(--line); padding: 0 16px; display:flex; align-items:center; gap:10px; }
+  .subbar .subnav { padding: 6px 0; }
+
+  .main { padding: 20px 24px 44px; max-width: 1320px; margin: 0 auto; }
+
+  .hero { display:flex; align-items:flex-start; gap:18px; background:var(--surface); border:1px solid var(--line); border-radius:var(--r-lg); padding:20px; box-shadow:var(--shadow-sm); margin-bottom:16px; }
+  .hlogo { width:60px; height:60px; border-radius:var(--r-md); background:linear-gradient(135deg,var(--primary),var(--signal)); color:#fff; display:grid; place-items:center; font-family:var(--font-display); font-weight:600; font-size:22px; flex:none; }
+  .hero .h-name { font-family:var(--font-display); font-weight:600; font-size:22px; letter-spacing:-.01em; display:flex; align-items:center; gap:11px; }
+  .hero .h-meta { display:flex; gap:9px; align-items:center; color:var(--muted); font-size:13px; margin-top:6px; flex-wrap:wrap; }
+  .hero .h-meta .mono { color:var(--ink-2); }
+  .hbtns { margin-left:auto; display:flex; gap:8px; flex:none; }
+
+  /* onboarding progress band */
+  .obband { display:flex; align-items:center; gap:14px; margin-top:16px; padding-top:16px; border-top:1px solid var(--line-2); }
+  .obtrack { flex:1; display:flex; gap:8px; }
+  .obstep { flex:1; }
+  .obstep .ob-bar { height:6px; border-radius:100px; background:var(--bg-2); overflow:hidden; }
+  .obstep .ob-bar i { display:block; height:100%; border-radius:100px; }
+  .obstep .ob-l { display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--muted); margin-top:7px; }
+  .obstep .ob-l .dot { width:7px; height:7px; border-radius:50%; }
+  .ob-overall { text-align:right; flex:none; }
+  .ob-overall .o-v { font-family:var(--font-display); font-weight:600; font-size:22px; }
+  .ob-overall .o-l { font-family:var(--font-mono); font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+
+  .cols { display:grid; grid-template-columns: 1.55fr 1fr; gap:16px; align-items:start; }
+  .stack { display:grid; gap:16px; }
+
+  /* stage list */
+  .stage { padding:14px 16px; border-bottom:1px solid var(--line-2); }
+  .stage:last-child { border-bottom:0; }
+  .stage-h { display:flex; align-items:center; gap:11px; }
+  .stg-ic { width:30px; height:30px; border-radius:50%; display:grid; place-items:center; flex:none; }
+  .stg-ic svg { width:15px; height:15px; }
+  .stg-ic.done { background:var(--pos); color:#fff; }
+  .stg-ic.act { background:var(--signal-l); color:var(--signal-d); border:1.5px solid var(--signal); }
+  .stg-ic.wait { background:var(--bg-2); color:var(--muted); }
+  .stg-t { font-weight:600; font-size:14px; color:var(--ink); }
+  .stg-s { font-size:12px; color:var(--muted); margin-top:1px; }
+  .stg-right { margin-left:auto; }
+  .tasks { margin:11px 0 0 41px; display:flex; flex-direction:column; gap:7px; }
+  .task { display:flex; align-items:center; gap:9px; font-size:12.5px; color:var(--ink-2); }
+  .task .tk { width:16px; height:16px; border-radius:4px; border:1.5px solid var(--line); display:grid; place-items:center; flex:none; }
+  .task .tk.on { background:var(--pos); border-color:var(--pos); }
+  .task .tk.on svg { width:10px; height:10px; color:#fff; }
+  .task.todo { color:var(--muted); }
+
+  /* lead scanner */
+  .ls-hd { display:flex; align-items:center; gap:11px; padding:14px 16px; border-bottom:1px solid var(--line-2); }
+  .ls-ic { width:38px; height:38px; border-radius:var(--r-md); background:var(--berry-l); color:var(--berry-d); display:grid; place-items:center; flex:none; }
+  .ls-ic svg { width:19px; height:19px; }
+  .ls-stat { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line-2); border-bottom:1px solid var(--line-2); }
+  .ls-stat .s { background:var(--surface); padding:13px 16px; }
+  .ls-stat .s-v { font-family:var(--font-display); font-weight:600; font-size:22px; }
+  .ls-stat .s-l { font-family:var(--font-mono); font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-top:3px; }
+  .seat { display:flex; align-items:center; gap:11px; padding:10px 16px; border-bottom:1px solid var(--line-2); }
+  .seat:last-child { border-bottom:0; }
+  .seat-av { width:30px; height:30px; border-radius:50%; display:grid; place-items:center; font-size:11px; font-weight:600; color:#fff; font-family:var(--font-display); flex:none; }
+  .seat .n { font-weight:600; font-size:13px; color:var(--ink); }
+  .seat .d { font-size:11.5px; color:var(--muted); font-family:var(--font-mono); }
+
+  /* right rail */
+  .kv { display:flex; justify-content:space-between; align-items:center; padding:10px 16px; border-bottom:1px solid var(--line-2); font-size:12.5px; }
+  .kv:last-child { border-bottom:0; }
+  .kv .k { color:var(--muted); } .kv .v { color:var(--ink); font-weight:500; text-align:right; } .kv .v .mono { font-family:var(--font-mono); }
+  .maplink { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:var(--surface-2); border-top:1px solid var(--line-2); font-size:12.5px; }
+  .maplink a { color:var(--primary); text-decoration:none; font-weight:600; display:inline-flex; align-items:center; gap:5px; }
+  .maplink a svg { width:13px; height:13px; }
+  .doc { display:flex; align-items:center; gap:11px; padding:10px 16px; border-bottom:1px solid var(--line-2); font-size:13px; }
+  .doc:last-child { border-bottom:0; }
+  .doc .di { width:30px; height:30px; border-radius:var(--r-sm); background:var(--bg-2); display:grid; place-items:center; color:var(--ink-2); flex:none; }
+  .doc .di svg { width:15px; height:15px; }
+  .doc .dn { font-weight:500; color:var(--ink); } .doc .ds { font-size:11.5px; color:var(--muted); }
+  .party { display:flex; align-items:center; gap:11px; padding:11px 16px; border-bottom:1px solid var(--line-2); }
+  .party:last-child { border-bottom:0; }
+  .p-av { width:34px; height:34px; border-radius:50%; display:grid; place-items:center; font-size:12px; font-weight:600; color:#fff; font-family:var(--font-display); flex:none; }
+</style>
+</head>
+<body>
+<div class="app" data-screen-label="Operations — Exhibitor detail">
+
+  <!-- TOP NAV -->
+  <nav class="topnav">
+    <div class="brand"><div class="eliza-mark"><span class="eliza-glyph"><i></i><i></i><i></i></span><span class="eliza-word on-dark">ELIZA</span></div></div>
+    <div class="domain-tabs">
+      <button class="domain-tab" onclick="location.href='Sales%20-%20My%20Work.html'"><span class="d-main">Sales</span><span class="d-sub">liffy</span></button>
+      <button class="domain-tab active"><span class="d-main">Operations</span><span class="d-sub">leena</span></button>
+      <button class="domain-tab" onclick="location.href='Finance%20-%20War%20Room.html'"><span class="d-main">Finance</span><span class="d-sub">&nbsp;</span></button>
+    </div>
+    <div class="spacer"></div>
+    <div class="nav-right">
+      <button class="btn btn-icon" style="background:var(--cmd-2);color:var(--cmd-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
+      <span class="kbd">⌘K</span>
+      <div class="vdiv" style="height:24px"></div>
+      <button class="btn btn-icon" style="background:var(--cmd-2);color:var(--cmd-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg></button>
+      <div class="avatar" style="background:var(--primary);cursor:pointer" onclick="location.href='Settings%20-%20Appearance.html'" title="Settings">SA</div>
+    </div>
+  </nav>
+
+  <!-- CONTEXT -->
+  <div class="context">
+    <div class="crumb">
+      <a href="Ops%20-%20Dashboard.html">Operations</a><span class="sep">/</span>
+      <a href="Ops%20-%20Exhibitor.html">Exhibitor</a><span class="sep">/</span>
+      <span class="cur">Atlas Stone Co.</span>
+    </div>
+    <div class="ctx-right"><span class="chip chip-warn"><span class="dot" style="background:var(--warn)"></span>Onboarding · 68%</span></div>
+  </div>
+
+  <!-- SUBNAV -->
+  <div class="subbar">
+    <nav class="subnav">
+      <a href="Ops%20-%20Dashboard.html">Dashboard</a>
+      <a class="active" href="Ops%20-%20Exhibitor.html">Exhibitor</a>
+      <a href="Ops%20-%20Floor%20plan.html">Floor plan</a>
+      <a href="Ops%20-%20Visitor%20%26%20Access.html">Visitor &amp; Access</a>
+      <a href="Ops%20-%20Communications.html">Communications</a>
+      <a href="Ops%20-%20Reports.html">Reports</a>
+    </nav>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <!-- HERO -->
+    <div class="hero">
+      <div style="display:flex;gap:18px;flex:1">
+        <div class="hlogo">AS</div>
+        <div style="flex:1">
+          <div class="h-name">Atlas Stone Co. <span class="chip chip-neutral" style="font-size:10.5px">Stand A-14</span><span class="chip chip-info" style="font-size:10.5px">VIP buyer</span></div>
+          <div class="h-meta"><span>54 m² island · Hall A · corner</span><span>·</span><span>Natural stone &amp; cladding</span><span>·</span><span class="mono">CT-2026-0142</span><span>·</span><span>Account: Yousra B.</span></div>
+          <div class="hbtns" style="margin-left:0;margin-top:14px">
+            <button class="btn btn-primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h4M7 13h2"/></svg>Issue badges</button>
+            <button class="btn btn-secondary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg>Message</button>
+            <button class="btn btn-secondary"><svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- onboarding band -->
+    <div class="card" style="padding:16px;margin-bottom:16px">
+      <div class="obband" style="margin-top:0;padding-top:0;border-top:0">
+        <div class="obtrack">
+          <div class="obstep"><div class="ob-bar"><i style="width:100%;background:var(--pos)"></i></div><div class="ob-l"><span class="dot" style="background:var(--pos)"></span>Catalogue</div></div>
+          <div class="obstep"><div class="ob-bar"><i style="width:100%;background:var(--pos)"></i></div><div class="ob-l"><span class="dot" style="background:var(--pos)"></span>Stand design</div></div>
+          <div class="obstep"><div class="ob-bar"><i style="width:60%;background:var(--signal)"></i></div><div class="ob-l"><span class="dot" style="background:var(--signal)"></span>Build-up · 3/5</div></div>
+          <div class="obstep"><div class="ob-bar"><i style="width:0;background:var(--bg-2)"></i></div><div class="ob-l"><span class="dot" style="background:var(--bg-2)"></span>Badges</div></div>
+        </div>
+        <div class="ob-overall"><div class="o-v tnum">68%</div><div class="o-l">Onboarded</div></div>
+      </div>
+    </div>
+
+    <div class="cols">
+      <!-- LEFT -->
+      <div class="stack">
+        <!-- ONBOARDING STAGES -->
+        <div class="card">
+          <div class="card-head"><span class="card-title">Onboarding checklist</span><span class="card-eyebrow">Build-up opens 11 May</span></div>
+          <div>
+            <div class="stage">
+              <div class="stage-h">
+                <span class="stg-ic done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l4 4 10-10"/></svg></span>
+                <div><div class="stg-t">Catalogue</div><div class="stg-s">Profile, logo &amp; products live in the directory</div></div>
+                <span class="stg-right chip chip-pos" style="font-size:10px">Complete · 12 Apr</span>
+              </div>
+            </div>
+            <div class="stage">
+              <div class="stage-h">
+                <span class="stg-ic done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l4 4 10-10"/></svg></span>
+                <div><div class="stg-t">Stand design</div><div class="stg-s">Layout &amp; rigging plan approved</div></div>
+                <span class="stg-right chip chip-pos" style="font-size:10px">Approved · 28 Apr</span>
+              </div>
+            </div>
+            <div class="stage">
+              <div class="stage-h">
+                <span class="stg-ic act"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></span>
+                <div><div class="stg-t">Build-up</div><div class="stg-s">Contractor Zenith Fit-Out · 3 of 5 tasks done</div></div>
+                <span class="stg-right chip chip-warn" style="font-size:10px">In progress</span>
+              </div>
+              <div class="tasks">
+                <div class="task"><span class="tk on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l4 4 10-10"/></svg></span>Contractor appointed &amp; insured</div>
+                <div class="task"><span class="tk on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l4 4 10-10"/></svg></span>Build schedule submitted</div>
+                <div class="task"><span class="tk on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l4 4 10-10"/></svg></span>Power &amp; rigging ordered</div>
+                <div class="task todo"><span class="tk"></span>Method statement + risk assessment</div>
+                <div class="task todo"><span class="tk"></span>Heavy-item move-in slot booked</div>
+              </div>
+            </div>
+            <div class="stage">
+              <div class="stage-h">
+                <span class="stg-ic wait"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h4M7 13h2"/></svg></span>
+                <div><div class="stg-t">Badges</div><div class="stg-s">12 exhibitor badges requested · awaiting final headcount</div></div>
+                <span class="stg-right chip chip-neutral" style="font-size:10px">Pending</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LEAD SCANNER -->
+        <div class="card">
+          <div class="ls-hd">
+            <div class="ls-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9v6M10 9v6M13 9h1M17 9v6M14 13h3"/></svg></div>
+            <div><div class="stg-t">On-site lead scanner</div><div class="stg-s">Captures appear here live during the show · sync to exhibitor portal</div></div>
+            <div class="stg-right"><span class="chip chip-pos" style="font-size:10.5px">Enabled</span></div>
+          </div>
+          <div class="ls-stat">
+            <div class="s"><div class="s-v tnum">3</div><div class="s-l">Scanner seats</div></div>
+            <div class="s"><div class="s-v tnum">0</div><div class="s-l">Leads captured</div></div>
+            <div class="s"><div class="s-v tnum" style="color:var(--muted)">14 May</div><div class="s-l">Opens</div></div>
+          </div>
+          <div class="seat">
+            <div class="seat-av" style="background:var(--primary)">OK</div>
+            <div style="flex:1"><div class="n">Omar Khalil</div><div class="d">Seat 1 · app · last test 2 May</div></div>
+            <span class="chip chip-pos" style="font-size:10px">Active</span>
+          </div>
+          <div class="seat">
+            <div class="seat-av" style="background:var(--signal)">KN</div>
+            <div style="flex:1"><div class="n">Karim Nasser</div><div class="d">Seat 2 · app · not yet tested</div></div>
+            <span class="chip chip-warn" style="font-size:10px">Invite sent</span>
+          </div>
+          <div class="seat">
+            <div class="seat-av" style="background:var(--bg-2);color:var(--muted)">+</div>
+            <div style="flex:1"><div class="n" style="color:var(--muted)">Seat 3 unassigned</div><div class="d">Assign a team member</div></div>
+            <button class="btn btn-secondary" style="padding:5px 11px;font-size:12px">Assign</button>
+          </div>
+          <div class="maplink"><span style="color:var(--muted)">Leads export as CSV after the show, scored by scan + notes.</span><a href="#">Scanner settings<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="stack">
+        <!-- CONTRACT & STAND -->
+        <div class="card">
+          <div class="card-head"><span class="card-title">Contract &amp; stand</span><span class="chip chip-warn" style="font-size:10.5px">30% paid</span></div>
+          <div class="kv"><span class="k">Contract</span><span class="v"><span class="mono" style="color:var(--primary);font-weight:600">CT-2026-0142</span></span></div>
+          <div class="kv"><span class="k">Value</span><span class="v"><span class="mono">$44,280</span></span></div>
+          <div class="kv"><span class="k">Paid</span><span class="v"><span class="mono" style="color:var(--pos)">$13,284</span></span></div>
+          <div class="kv"><span class="k">Balance</span><span class="v"><span class="mono" style="color:var(--dang)">$30,996</span></span></div>
+          <div class="maplink"><span style="color:var(--muted)">Build-up gated on balance.</span><a href="Finance%20-%20Contract.html">Open in Finance<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+          <div class="kv" style="border-top:1px solid var(--line-2)"><span class="k">Stand</span><span class="v"><span class="mono">A-14</span> · 54 m² · Hall A</span></div>
+          <div class="kv"><span class="k">Type</span><span class="v">Island · corner</span></div>
+          <div class="maplink"><span style="color:var(--muted)">Spatial view.</span><a href="Ops%20-%20Floor%20plan.html">View on floor plan<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+        </div>
+
+        <!-- CONTACTS -->
+        <div class="card">
+          <div class="card-head"><span class="card-title">Key people</span></div>
+          <div class="party">
+            <div class="p-av" style="background:var(--primary)">OK</div>
+            <div style="flex:1"><div class="n" style="font-weight:600;font-size:13px;color:var(--ink)">Omar Khalil</div><div class="d" style="font-size:12px;color:var(--muted)">Managing Director · primary</div></div>
+            <span class="chip chip-neutral" style="font-size:10px">Exhibitor</span>
+          </div>
+          <div class="party">
+            <div class="p-av" style="background:var(--berry)">LM</div>
+            <div style="flex:1"><div class="n" style="font-weight:600;font-size:13px;color:var(--ink)">Leena Mansour</div><div class="d" style="font-size:12px;color:var(--muted)">Ops coordinator · owner</div></div>
+            <span class="chip chip-pos" style="font-size:10px">You</span>
+          </div>
+        </div>
+
+        <!-- DOCUMENTS -->
+        <div class="card">
+          <div class="card-head"><span class="card-title">Documents</span><a class="link" href="#" style="color:var(--primary);text-decoration:none;font-weight:500;font-size:12.5px">+ Upload</a></div>
+          <div class="doc"><div class="di"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div><div style="flex:1"><div class="dn">Signed contract.pdf</div><div class="ds">28 Feb · 240 KB</div></div></div>
+          <div class="doc"><div class="di"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div><div style="flex:1"><div class="dn">Insurance certificate.pdf</div><div class="ds">15 Apr · 180 KB</div></div></div>
+          <div class="doc"><div class="di" style="background:var(--warn-l);color:var(--warn)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div><div style="flex:1"><div class="dn">Method statement</div><div class="ds">Required · not uploaded</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

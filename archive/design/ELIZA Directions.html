@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELIZA — Two Directions</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=Public+Sans:wght@400;500;600;700&display=swap">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Public Sans', system-ui, sans-serif; background: #e9e9ec; color: #1a1c22; -webkit-font-smoothing: antialiased; }
+  .mono { font-family: 'IBM Plex Mono', monospace; }
+
+  .wrap { max-width: 1380px; margin: 0 auto; padding: 0 28px; }
+
+  /* page header */
+  .masthead { padding: 56px 0 36px; }
+  .masthead .eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: #6a6e78; }
+  .masthead h1 { font-family: 'Spectral', serif; font-weight: 600; font-size: 46px; letter-spacing: -.01em; margin: 14px 0 0; }
+  .masthead p { font-size: 16px; line-height: 1.6; color: #4a4e58; max-width: 720px; margin-top: 16px; }
+
+  .note { background: #fff; border: 1px solid #d9dade; border-radius: 14px; padding: 22px 24px; margin-top: 26px; max-width: 920px; }
+  .note h4 { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #6a6e78; font-family: 'IBM Plex Mono', monospace; margin-bottom: 12px; }
+  .note ul { list-style: none; display: grid; gap: 9px; }
+  .note li { font-size: 14px; color: #3a3e48; line-height: 1.5; padding-left: 20px; position: relative; }
+  .note li::before { content: "—"; position: absolute; left: 0; color: #9a9ea8; }
+
+  /* direction section */
+  .dir { background: #fff; border: 1px solid #d9dade; border-radius: 20px; overflow: hidden; margin-bottom: 30px; }
+  .dir-head { padding: 30px 34px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ececef; }
+  .dir-id { display: flex; align-items: baseline; gap: 16px; }
+  .dir-id .tag { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 500; letter-spacing: .1em; padding: 5px 11px; border-radius: 7px; color: #fff; white-space: nowrap; flex: none; }
+  .dir-id h2 { font-size: 27px; letter-spacing: -.01em; }
+  .dir-id .sub { font-size: 14.5px; color: #6a6e78; }
+  .dir-body { padding: 30px 34px; display: grid; grid-template-columns: 300px 1fr; gap: 38px; }
+  .dir-body.b-theme { background: #f6f4ee; }
+
+  .spec-block + .spec-block { margin-top: 28px; }
+  .spec-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #8a8e98; margin-bottom: 14px; }
+
+  /* swatches */
+  .swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .sw { border-radius: 9px; height: 56px; border: 1px solid rgba(0,0,0,.06); display: flex; align-items: flex-end; padding: 7px; }
+  .sw span { font-family: 'IBM Plex Mono', monospace; font-size: 9px; }
+
+  /* live previews */
+  .previews { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .preview { border: 1px solid #e2e3e7; border-radius: 14px; overflow: hidden; background: #fff; }
+  .preview .pv-bar { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid #ececef; }
+  .preview .pv-bar .t { font-size: 13.5px; font-weight: 600; }
+  .preview .pv-bar a { font-size: 12.5px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
+  .frame { position: relative; height: 300px; overflow: hidden; background: #f3f3f5; display:block; }
+  .frame img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; transition: object-position 2.6s ease; }
+  .frame:hover img { object-position: bottom center; }
+  .frame .open-link { position:absolute; inset:0; z-index:2; }
+
+  .type-row { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+  .comp-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+  .footer { padding: 20px 0 70px; color: #6a6e78; font-size: 13.5px; }
+  .footer b { color: #3a3e48; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead" data-screen-label="Directions overview">
+    <div class="eyebrow">ELIZA · Brand &amp; Design Language</div>
+    <h1>Two directions to compare</h1>
+    <p>A fresh brand and visual system for ELIZA — Elan Expo's internal operating platform. Both directions are professional, calm, international, and engineered for dense daily work; they diverge on temperature and personality. Each is applied to the two anchor screens you asked for.</p>
+
+    <div class="note">
+      <h4>How to read this</h4>
+      <ul>
+        <li><b>Direction A — Signal:</b> cool, precise, "control-room." Slate + ink-blue with a live cyan accent; geometric type. Reads as a serious operations console.</li>
+        <li><b>Direction B — Atlas:</b> warm, editorial, premium. Ivory paper + forest green with an amber data accent; serif headlines. Reads as a trustworthy system of record.</li>
+        <li>Both carry the ELIZA wordmark + logomark, the role-gated Sales / Operations / Finance top nav (with the small <span class="mono">liffy / leena</span> sub-labels), and one shared component set.</li>
+        <li>Click any preview to open the full screen.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===================== DIRECTION A ===================== -->
+  <section class="dir">
+    <div class="dir-head" style="background:#0f1a2e;color:#fff;border-bottom-color:#243450">
+      <div class="dir-id">
+        <span class="tag" style="background:#1f49c4">DIR A</span>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:600">Signal</h2>
+        <span class="sub" style="color:#8a96ab">Control-room · cool · precise</span>
+      </div>
+      <!-- wordmark on dark -->
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="display:inline-grid;grid-template-rows:1fr 1fr 1fr;gap:2.5px;width:30px;height:30px;padding:4px;border-radius:6px;background:#1f49c4">
+          <i style="display:block;height:100%;width:100%;background:#fff;border-radius:1px"></i>
+          <i style="display:block;height:100%;width:64%;background:#0bb6d6;border-radius:1px"></i>
+          <i style="display:block;height:100%;width:86%;background:#fff;border-radius:1px"></i>
+        </span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:.26em;font-size:20px;color:#fff;padding-left:.26em">ELIZA</span>
+      </div>
+    </div>
+
+    <div class="dir-body">
+      <!-- left: system specimen -->
+      <div>
+        <div class="spec-block">
+          <div class="spec-label">Logomark</div>
+          <div class="comp-row">
+            <span style="display:inline-grid;grid-template-rows:1fr 1fr 1fr;gap:4px;width:44px;height:44px;padding:6px;border-radius:9px;background:#1f49c4">
+              <i style="display:block;height:100%;width:100%;background:#fff;border-radius:1px"></i><i style="display:block;height:100%;width:64%;background:#0bb6d6;border-radius:1px"></i><i style="display:block;height:100%;width:86%;background:#fff;border-radius:1px"></i>
+            </span>
+            <span style="display:inline-grid;grid-template-rows:1fr 1fr 1fr;gap:4px;width:44px;height:44px;padding:6px;border-radius:9px;background:#0f1a2e">
+              <i style="display:block;height:100%;width:100%;background:#fff;border-radius:1px"></i><i style="display:block;height:100%;width:64%;background:#0bb6d6;border-radius:1px"></i><i style="display:block;height:100%;width:86%;background:#fff;border-radius:1px"></i>
+            </span>
+            <span style="display:inline-grid;grid-template-rows:1fr 1fr 1fr;gap:4px;width:44px;height:44px;padding:6px;border-radius:9px;background:#fff;border:1px solid #e2e3e7">
+              <i style="display:block;height:100%;width:100%;background:#1f49c4;border-radius:1px"></i><i style="display:block;height:100%;width:64%;background:#0bb6d6;border-radius:1px"></i><i style="display:block;height:100%;width:86%;background:#1f49c4;border-radius:1px"></i>
+            </span>
+            <span style="font-size:12px;color:#8a8e98;max-width:120px">Three bars = the three domains.</span>
+          </div>
+        </div>
+
+        <div class="spec-block">
+          <div class="spec-label">Palette</div>
+          <div class="swatches">
+            <div class="sw" style="background:#0f1a2e"><span style="color:#fff">#0F1A2E</span></div>
+            <div class="sw" style="background:#1f49c4"><span style="color:#fff">#1F49C4</span></div>
+            <div class="sw" style="background:#0bb6d6"><span style="color:#fff">#0BB6D6</span></div>
+            <div class="sw" style="background:#eef1f5"><span style="color:#6a6e78">#EEF1F5</span></div>
+            <div class="sw" style="background:#18895a"><span style="color:#fff">#18895A</span></div>
+          </div>
+        </div>
+
+        <div class="spec-block">
+          <div class="spec-label">Type · Space Grotesk / IBM Plex Sans / Mono</div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:30px;letter-spacing:-.01em;line-height:1.1">Operation Command</div>
+          <div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:#4a4e58;margin-top:6px">Legible at density — fast to scan under venue lighting.</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#6a6e78;margin-top:6px;letter-spacing:.04em">18,402 REGISTRATIONS · +214 TODAY</div>
+        </div>
+
+        <div class="spec-block">
+          <div class="spec-label">Components</div>
+          <div class="comp-row">
+            <span style="font-family:'IBM Plex Sans';font-size:13px;font-weight:500;background:#1f49c4;color:#fff;padding:8px 14px;border-radius:6px">Primary</span>
+            <span style="font-family:'IBM Plex Sans';font-size:13px;font-weight:500;background:#fff;color:#0e1726;padding:8px 14px;border-radius:6px;border:1px solid #dde3ea">Secondary</span>
+            <span style="font-size:11.5px;font-weight:600;background:#e2f6fa;color:#0a8aa3;padding:3px 9px;border-radius:100px">● Live</span>
+            <span style="font-size:11.5px;font-weight:600;background:#e4f4ec;color:#18895a;padding:3px 9px;border-radius:100px">Onboarded</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- right: previews -->
+      <div>
+        <div class="spec-label">Anchor screens</div>
+        <div class="previews">
+          <div class="preview">
+            <div class="pv-bar"><span class="t">Login</span><a href="A - Login.html" style="color:#1f49c4">Open ↗</a></div>
+            <a class="frame" href="A - Login.html"><img src="screenshots/thumb-a-login.png" alt="Direction A login"></a>
+          </div>
+          <div class="preview">
+            <div class="pv-bar"><span class="t">Operations · Expo Dashboard</span><a href="A - Ops Dashboard.html" style="color:#1f49c4">Open ↗</a></div>
+            <a class="frame" href="A - Ops Dashboard.html"><img src="screenshots/thumb-a-dash.png" alt="Direction A dashboard"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== DIRECTION B ===================== -->
+  <section class="dir">
+    <div class="dir-head" style="background:#1d5c45;color:#fff;border-bottom-color:#2c6b50">
+      <div class="dir-id">
+        <span class="tag" style="background:#bd7d1e">DIR B</span>
+        <h2 style="font-family:'Spectral',serif;font-weight:600">Atlas</h2>
+        <span class="sub" style="color:#a9c4b6">Editorial · warm · premium</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="width:32px;height:32px;border-radius:50%;background:#fbf9f4;display:grid;place-items:center;position:relative">
+          <span style="width:12px;height:12px;border-radius:50%;background:#1d5c45"></span>
+          <span style="position:absolute;right:4px;bottom:4px;width:9px;height:9px;border-radius:50%;background:#bd7d1e;box-shadow:0 0 0 2px #fbf9f4"></span>
+        </span>
+        <span style="font-family:'Spectral',serif;font-weight:600;letter-spacing:.12em;font-size:23px;color:#fff">ELIZA</span>
+      </div>
+    </div>
+
+    <div class="dir-body b-theme">
+      <div>
+        <div class="spec-block">
+          <div class="spec-label">Logomark</div>
+          <div class="comp-row">
+            <span style="width:44px;height:44px;border-radius:50%;background:#1d5c45;display:grid;place-items:center;position:relative">
+              <span style="width:16px;height:16px;border-radius:50%;background:#fbf9f4"></span>
+              <span style="position:absolute;right:6px;bottom:6px;width:11px;height:11px;border-radius:50%;background:#bd7d1e;box-shadow:0 0 0 3px #1d5c45"></span>
+            </span>
+            <span style="width:44px;height:44px;border-radius:50%;background:#bd7d1e;display:grid;place-items:center;position:relative">
+              <span style="width:16px;height:16px;border-radius:50%;background:#fbf9f4"></span>
+              <span style="position:absolute;right:6px;bottom:6px;width:11px;height:11px;border-radius:50%;background:#1d5c45;box-shadow:0 0 0 3px #bd7d1e"></span>
+            </span>
+            <span style="width:44px;height:44px;border-radius:50%;background:#fff;border:1px solid #e0dac9;display:grid;place-items:center;position:relative">
+              <span style="width:16px;height:16px;border-radius:50%;background:#1d5c45"></span>
+              <span style="position:absolute;right:6px;bottom:6px;width:11px;height:11px;border-radius:50%;background:#bd7d1e;box-shadow:0 0 0 3px #fff"></span>
+            </span>
+            <span style="font-size:12px;color:#8a8e98;max-width:120px">An aperture — ELIZA sees the whole operation.</span>
+          </div>
+        </div>
+
+        <div class="spec-block">
+          <div class="spec-label">Palette</div>
+          <div class="swatches">
+            <div class="sw" style="background:#20201b"><span style="color:#fff">#20201B</span></div>
+            <div class="sw" style="background:#1d5c45"><span style="color:#fff">#1D5C45</span></div>
+            <div class="sw" style="background:#bd7d1e"><span style="color:#fff">#BD7D1E</span></div>
+            <div class="sw" style="background:#efeae0"><span style="color:#76715f">#EFEAE0</span></div>
+            <div class="sw" style="background:#ad3a28"><span style="color:#fff">#AD3A28</span></div>
+          </div>
+        </div>
+
+        <div class="spec-block">
+          <div class="spec-label">Type · Spectral / Public Sans / Mono</div>
+          <div style="font-family:'Spectral',serif;font-weight:600;font-size:32px;letter-spacing:-.01em;line-height:1.1">Operation Command</div>
+          <div style="font-family:'Public Sans',sans-serif;font-size:14px;color:#46443c;margin-top:6px">A trustworthy system of record — calm, warm, and exact.</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#76715f;margin-top:6px;letter-spacing:.04em">18,402 REGISTRATIONS · +214 TODAY</div>
+        </div>
+
+        <div class="spec-block">
+          <div class="spec-label">Components</div>
+          <div class="comp-row">
+            <span style="font-family:'Public Sans';font-size:13px;font-weight:600;background:#1d5c45;color:#fbf9f4;padding:9px 15px;border-radius:8px">Primary</span>
+            <span style="font-family:'Public Sans';font-size:13px;font-weight:600;background:#fff;color:#20201b;padding:9px 15px;border-radius:8px;border:1px solid #e0dac9">Secondary</span>
+            <span style="font-size:11.5px;font-weight:600;background:#f6ecd7;color:#9a6512;padding:3px 10px;border-radius:100px">● Live</span>
+            <span style="font-size:11.5px;font-weight:600;background:#e6efe6;color:#2c6b42;padding:3px 10px;border-radius:100px">Onboarded</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="spec-label">Anchor screens</div>
+        <div class="previews">
+          <div class="preview">
+            <div class="pv-bar"><span class="t">Login</span><a href="B - Login.html" style="color:#1d5c45">Open ↗</a></div>
+            <a class="frame" href="B - Login.html"><img src="screenshots/thumb-b-login.png" alt="Direction B login"></a>
+          </div>
+          <div class="preview">
+            <div class="pv-bar"><span class="t">Operations · Expo Dashboard</span><a href="B - Ops Dashboard.html" style="color:#1d5c45">Open ↗</a></div>
+            <a class="frame" href="B - Ops Dashboard.html"><img src="screenshots/thumb-b-dash.png" alt="Direction B dashboard"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">
+    <b>Next:</b> tell me which direction (or which parts of each — they're built from one component set, so we can cross-pollinate). Once you pick, I'll expand it into the full system and the remaining anchor screens across Sales, Operations and Finance, plus the mobile Scan flow.
+  </div>
+
+</div>
+</body>
+</html>

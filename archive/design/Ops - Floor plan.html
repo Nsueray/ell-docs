@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELIZA — Operations · Floor plan</title>
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('eliza-theme')||'vermillion');}catch(e){document.documentElement.setAttribute('data-theme','vermillion');}</script>
+<link rel="stylesheet" href="styles/signal.css">
+<link rel="stylesheet" href="styles/themes.css">
+<style>
+  body { background: var(--bg); }
+  .app { min-height: 100vh; }
+
+  .context { background: var(--surface); border-bottom: 1px solid var(--line); padding: 14px 24px; display: flex; align-items: center; gap: 22px; }
+  .expo-switch { display:flex; align-items:center; gap:12px; cursor:pointer; padding:7px 12px 7px 7px; border:1px solid var(--line); border-radius:var(--r-md); background:var(--surface-2); }
+  .expo-flag { width:38px; height:38px; border-radius:var(--r-sm); background:linear-gradient(135deg,var(--primary),var(--signal)); display:grid; place-items:center; color:#fff; font-family:var(--font-display); font-weight:600; font-size:13px; }
+  .expo-meta .e-name { font-family:var(--font-display); font-weight:600; font-size:16px; letter-spacing:-.01em; display:flex; align-items:center; gap:9px; }
+  .expo-meta .e-line { font-size:12px; color:var(--muted); margin-top:2px; display:flex; gap:10px; }
+  .caret { color:var(--faint); }
+  .countdown { margin-left:auto; display:flex; align-items:center; gap:16px; }
+  .cd-block { text-align:center; }
+  .cd-num { font-family:var(--font-display); font-weight:600; font-size:26px; line-height:1; color:var(--ink); }
+  .cd-lbl { font-family:var(--font-mono); font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-top:4px; }
+  .cd-sep { color:var(--line); font-size:22px; }
+  .cd-badge { padding:9px 14px; border-radius:var(--r-md); background:var(--berry); color:#fff; }
+  .cd-badge .cd-num { color:#fff; } .cd-badge .cd-lbl { color:#bfe6d8; }
+
+  .subbar { background: var(--surface); border-bottom: 1px solid var(--line); padding: 0 16px; display:flex; align-items:center; gap:10px; }
+  .subbar .subnav { padding: 6px 0; }
+
+  .main { padding: 18px 24px 36px; max-width: 1480px; margin: 0 auto; }
+  .page-head { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:14px; gap:16px; flex-wrap:wrap; }
+  .page-head h1 { font-family:var(--font-display); font-weight:600; font-size:22px; margin:0; letter-spacing:-.01em; }
+  .page-head p { margin:5px 0 0; color:var(--muted); font-size:13px; }
+  .seg { display:flex; background:var(--bg-2); border-radius:var(--r-sm); padding:3px; gap:2px; }
+  .seg button { border:0; background:transparent; font-family:var(--font-ui); font-size:12.5px; font-weight:500; color:var(--muted); padding:7px 14px; border-radius:5px; cursor:pointer; }
+  .seg button.on { background:var(--surface); color:var(--ink); box-shadow:var(--shadow-sm); }
+
+  .cols { display:grid; grid-template-columns: 1fr 340px; gap:16px; align-items:start; }
+
+  /* canvas frame (stand-in for the Konva editor) */
+  .canvas-card { background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md); overflow:hidden; box-shadow:var(--shadow-sm); }
+  .canvas-tb { display:flex; align-items:center; gap:8px; padding:8px 12px; border-bottom:1px solid var(--line); background:var(--surface-2); }
+  .ctool { width:32px; height:32px; border-radius:var(--r-sm); border:1px solid var(--line); background:var(--surface); display:grid; place-items:center; color:var(--ink-2); cursor:pointer; }
+  .ctool.on { background:var(--primary); border-color:var(--primary); color:#fff; }
+  .ctool svg { width:15px; height:15px; }
+  .canvas-tb .sep { width:1px; height:20px; background:var(--line); margin:0 2px; }
+  .canvas-tb .ed-link { margin-left:auto; }
+
+  .stage { position:relative; background:
+      repeating-linear-gradient(0deg, var(--line-2) 0 1px, transparent 1px 28px),
+      repeating-linear-gradient(90deg, var(--line-2) 0 1px, transparent 1px 28px),
+      var(--surface-2);
+    height:520px; overflow:hidden; }
+  .ribbon { position:absolute; top:12px; left:12px; z-index:3; background:var(--cmd); color:#fff; font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; padding:5px 10px; border-radius:100px; display:flex; align-items:center; gap:7px; }
+  .ribbon .dot { width:6px; height:6px; border-radius:50%; background:var(--signal); }
+  .zoom { position:absolute; right:12px; bottom:12px; z-index:3; display:flex; align-items:center; gap:0; background:var(--surface); border:1px solid var(--line); border-radius:var(--r-sm); box-shadow:var(--shadow-sm); }
+  .zoom button { width:30px; height:30px; border:0; background:transparent; color:var(--ink-2); cursor:pointer; font-size:16px; }
+  .zoom span { font-family:var(--font-mono); font-size:11px; color:var(--muted); padding:0 8px; border-left:1px solid var(--line); border-right:1px solid var(--line); height:30px; display:grid; place-items:center; }
+
+  .hall-lbl { position:absolute; top:14px; left:50%; transform:translateX(-50%); font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); z-index:2; }
+  .entrance { position:absolute; bottom:0; left:50%; transform:translateX(-50%); background:var(--cmd); color:#fff; font-family:var(--font-mono); font-size:9.5px; letter-spacing:.1em; padding:4px 14px; border-radius:6px 6px 0 0; z-index:2; }
+
+  .stand { position:absolute; border-radius:3px; display:grid; place-items:center; font-family:var(--font-mono); font-size:9px; font-weight:600; color:#fff; cursor:pointer; box-shadow:inset 0 0 0 1px rgba(255,255,255,.25); }
+  .stand.sold { background:var(--primary); }
+  .stand.hold { background:var(--signal); }
+  .stand.free { background:var(--bg-2); color:var(--muted); box-shadow:inset 0 0 0 1px var(--line); }
+  .stand:hover { outline:2px solid var(--ink); outline-offset:1px; z-index:4; }
+  .stand.sel { outline:3px solid var(--berry); outline-offset:2px; z-index:5; }
+  .pin { position:absolute; z-index:6; background:var(--surface); border:1px solid var(--line); border-radius:var(--r-sm); box-shadow:var(--shadow-lg); padding:9px 11px; width:172px; }
+  .pin .pn { font-weight:600; font-size:12.5px; color:var(--ink); }
+  .pin .ps { font-size:11px; color:var(--muted); margin-top:2px; }
+  .pin a { display:inline-flex; align-items:center; gap:4px; margin-top:7px; font-size:11.5px; font-weight:600; color:var(--primary); text-decoration:none; }
+  .pin a svg { width:11px; height:11px; }
+
+  /* occupancy + list */
+  .occ { padding:14px 16px; }
+  .occ-big { font-family:var(--font-display); font-weight:600; font-size:34px; letter-spacing:-.02em; }
+  .occ-big small { font-size:14px; color:var(--muted); font-weight:500; }
+  .occ-bar { height:12px; border-radius:100px; overflow:hidden; display:flex; margin:14px 0 12px; }
+  .occ-bar i { height:100%; }
+  .occ-leg { display:flex; flex-direction:column; gap:8px; }
+  .occ-leg .lg { display:flex; align-items:center; gap:9px; font-size:12.5px; }
+  .occ-leg .sw { width:11px; height:11px; border-radius:3px; flex:none; }
+  .occ-leg .v { margin-left:auto; font-family:var(--font-mono); color:var(--ink); font-weight:600; }
+
+  .slist { max-height:360px; overflow-y:auto; }
+  .srow { display:flex; align-items:center; gap:11px; padding:10px 16px; border-bottom:1px solid var(--line-2); cursor:pointer; }
+  .srow:hover { background:var(--surface-2); }
+  .s-id { font-family:var(--font-mono); font-size:12px; font-weight:600; color:var(--ink); width:42px; flex:none; }
+  .s-info { flex:1; min-width:0; } .s-info .n { font-size:12.5px; font-weight:600; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .s-info .m { font-size:11px; color:var(--muted); font-family:var(--font-mono); }
+  .s-dot { width:9px; height:9px; border-radius:50%; flex:none; }
+</style>
+</head>
+<body>
+<div class="app" data-screen-label="Operations — Floor plan">
+
+  <!-- TOP NAV -->
+  <nav class="topnav">
+    <div class="brand"><div class="eliza-mark"><span class="eliza-glyph"><i></i><i></i><i></i></span><span class="eliza-word on-dark">ELIZA</span></div></div>
+    <div class="domain-tabs">
+      <button class="domain-tab" onclick="location.href='Sales%20-%20My%20Work.html'"><span class="d-main">Sales</span><span class="d-sub">liffy</span></button>
+      <button class="domain-tab active"><span class="d-main">Operations</span><span class="d-sub">leena</span></button>
+      <button class="domain-tab" onclick="location.href='Finance%20-%20War%20Room.html'"><span class="d-main">Finance</span><span class="d-sub">&nbsp;</span></button>
+    </div>
+    <div class="spacer"></div>
+    <div class="nav-right">
+      <button class="btn btn-icon" style="background:var(--cmd-2);color:var(--cmd-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
+      <span class="kbd">⌘K</span>
+      <div class="vdiv" style="height:24px"></div>
+      <button class="btn btn-icon" style="background:var(--cmd-2);color:var(--cmd-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg></button>
+      <div class="avatar" style="background:var(--primary);cursor:pointer" onclick="location.href='Settings%20-%20Appearance.html'" title="Settings">SA</div>
+    </div>
+  </nav>
+
+  <!-- CONTEXT -->
+  <div class="context">
+    <div class="expo-switch" onclick="location.href='Ops%20-%20Dashboard.html'">
+      <div class="expo-flag">MA</div>
+      <div class="expo-meta">
+        <div class="e-name">Morocco Build &amp; Construct Expo 2026 <span class="chip chip-signal" style="font-size:10.5px"><span class="dot" style="background:var(--signal-d)"></span>CLUSTER · 2</span></div>
+        <div class="e-line"><span>OFEC, Casablanca</span><span>·</span><span>14–17 May 2026</span><span>·</span><span class="mono">EXPO-MA-26</span></div>
+      </div>
+      <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="m6 9 6 6 6-6"/></svg>
+    </div>
+    <div class="countdown">
+      <div class="row gap-3">
+        <div class="cd-block"><div class="cd-num tnum">66</div><div class="cd-lbl">Days</div></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-block"><div class="cd-num tnum">14</div><div class="cd-lbl">Hrs</div></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-block"><div class="cd-num tnum">52</div><div class="cd-lbl">Min</div></div>
+      </div>
+      <div class="cd-badge"><div class="cd-num tnum" style="font-size:15px;text-align:center">14 MAY</div><div class="cd-lbl" style="margin-top:3px">Doors open</div></div>
+    </div>
+  </div>
+
+  <!-- SUBNAV -->
+  <div class="subbar">
+    <nav class="subnav">
+      <a href="Ops%20-%20Dashboard.html">Dashboard</a>
+      <a href="Ops%20-%20Exhibitor.html">Exhibitor</a>
+      <a class="active" href="#">Floor plan</a>
+      <a href="Ops%20-%20Visitor%20%26%20Access.html">Visitor &amp; Access</a>
+      <a href="Ops%20-%20Communications.html">Communications</a>
+      <a href="Ops%20-%20Reports.html">Reports</a>
+    </nav>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="page-head">
+      <div>
+        <h1>Floor plan</h1>
+        <p>Stand occupancy across the halls. Spatial layout is edited in the floor designer.</p>
+      </div>
+      <div class="row gap-3">
+        <div class="seg">
+          <button class="on">Hall A</button>
+          <button>Hall B</button>
+          <button>Outdoor</button>
+        </div>
+        <button class="btn btn-secondary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Export</button>
+        <button class="btn btn-primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>Open floor designer</button>
+      </div>
+    </div>
+
+    <div class="cols">
+      <!-- CANVAS STAND-IN -->
+      <div class="canvas-card">
+        <div class="canvas-tb">
+          <span class="ctool on" title="Select"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l7 18 2.5-7.5L20 11z"/></svg></span>
+          <span class="ctool" title="Pan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 11V6a2 2 0 0 0-4 0M14 10V4a2 2 0 0 0-4 0v2M10 10.5V6a2 2 0 0 0-4 0v8M18 8a2 2 0 0 1 4 0v6a8 8 0 0 1-8 8h-2a8 8 0 0 1-7-4l-3-5a2 2 0 0 1 3.5-2L10 14"/></svg></span>
+          <span class="ctool" title="Measure"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20M2 9v6M22 9v6M7 10v4M12 10v4M17 10v4"/></svg></span>
+          <span class="sep"></span>
+          <span class="ctool" title="Fit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3"/></svg></span>
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-left:6px">Hall A · 6,000 m²</span>
+          <a class="btn btn-secondary ed-link" href="#" style="padding:6px 11px;font-size:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M15 3h6v6M10 14 21 3M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>Edit layout</a>
+        </div>
+        <div class="stage" id="stage">
+          <span class="ribbon"><span class="dot"></span>Read-only preview</span>
+          <span class="hall-lbl">Hall A</span>
+
+          <!-- Row 1 -->
+          <div class="stand sold" style="left:60px;top:64px;width:78px;height:54px">A-01</div>
+          <div class="stand sold" style="left:146px;top:64px;width:78px;height:54px">A-02</div>
+          <div class="stand sold" style="left:232px;top:64px;width:78px;height:54px">A-03</div>
+          <div class="stand hold" style="left:318px;top:64px;width:78px;height:54px">A-04</div>
+          <div class="stand sold" style="left:404px;top:64px;width:78px;height:54px">A-05</div>
+          <div class="stand sold" style="left:490px;top:64px;width:78px;height:54px">A-06</div>
+          <div class="stand free" style="left:576px;top:64px;width:78px;height:54px">A-07</div>
+          <div class="stand sold" style="left:662px;top:64px;width:78px;height:54px">A-08</div>
+
+          <!-- Row 2 -->
+          <div class="stand sold" style="left:60px;top:150px;width:78px;height:54px">A-09</div>
+          <div class="stand sold" style="left:146px;top:150px;width:78px;height:54px">A-10</div>
+          <div class="stand sold" style="left:232px;top:150px;width:78px;height:54px">A-11</div>
+          <div class="stand sold" style="left:318px;top:150px;width:78px;height:54px">A-12</div>
+          <div class="stand free" style="left:404px;top:150px;width:78px;height:54px">A-13</div>
+          <!-- selected: Atlas Stone A-14 (corner island, double) -->
+          <div class="stand sold sel" id="a14" style="left:490px;top:150px;width:164px;height:54px">A-14</div>
+          <div class="stand sold" style="left:662px;top:150px;width:78px;height:54px">A-16</div>
+
+          <!-- aisle label -->
+          <div style="position:absolute;left:60px;top:228px;font-family:var(--font-mono);font-size:9px;letter-spacing:.2em;color:var(--faint)">— — — AISLE 2 — — —</div>
+
+          <!-- Row 3 -->
+          <div class="stand sold" style="left:60px;top:256px;width:78px;height:54px">A-17</div>
+          <div class="stand sold" style="left:146px;top:256px;width:120px;height:54px">A-18</div>
+          <div class="stand hold" style="left:274px;top:256px;width:78px;height:54px">A-20</div>
+          <div class="stand sold" style="left:360px;top:256px;width:78px;height:54px">A-21</div>
+          <div class="stand sold" style="left:446px;top:256px;width:120px;height:54px">A-22</div>
+          <div class="stand sold" style="left:574px;top:256px;width:78px;height:54px">A-24</div>
+          <div class="stand free" style="left:660px;top:256px;width:78px;height:54px">A-25</div>
+
+          <!-- Row 4 -->
+          <div class="stand sold" style="left:60px;top:342px;width:78px;height:54px">A-26</div>
+          <div class="stand sold" style="left:146px;top:342px;width:78px;height:54px">A-27</div>
+          <div class="stand sold" style="left:232px;top:342px;width:78px;height:54px">A-28</div>
+          <div class="stand sold" style="left:318px;top:342px;width:78px;height:54px">A-29</div>
+          <div class="stand sold" style="left:404px;top:342px;width:78px;height:54px">A-30</div>
+          <div class="stand hold" style="left:490px;top:342px;width:78px;height:54px">A-31</div>
+          <div class="stand sold" style="left:576px;top:342px;width:78px;height:54px">A-32</div>
+          <div class="stand sold" style="left:662px;top:342px;width:78px;height:54px">A-33</div>
+
+          <!-- Atlas pin -->
+          <div class="pin" style="left:540px;top:212px">
+            <div class="pn">A-14 · Atlas Stone Co.</div>
+            <div class="ps">54 m² island · corner · onboarding 68%</div>
+            <a href="Ops%20-%20Exhibitor%20Detail.html">Open exhibitor<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+
+          <span class="entrance">▲ MAIN ENTRANCE</span>
+          <div class="zoom"><button>−</button><span>72%</span><button>+</button></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: occupancy + stand list -->
+      <div style="display:grid;gap:16px;align-items:start">
+        <div class="card">
+          <div class="card-head"><span class="card-title">Occupancy · Hall A</span><span class="chip chip-outline">6,000 m²</span></div>
+          <div class="occ">
+            <div class="occ-big tnum">81<small>% sold</small></div>
+            <div class="occ-bar"><i style="width:81%;background:var(--primary)"></i><i style="width:8%;background:var(--signal)"></i><i style="width:11%;background:var(--bg-2)"></i></div>
+            <div class="occ-leg">
+              <div class="lg"><span class="sw" style="background:var(--primary)"></span>Sold<span class="v">4,860 m²</span></div>
+              <div class="lg"><span class="sw" style="background:var(--signal)"></span>On hold<span class="v">480 m²</span></div>
+              <div class="lg"><span class="sw" style="background:var(--bg-2)"></span>Available<span class="v">660 m²</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="overflow:hidden">
+          <div class="card-head"><span class="card-title">Stands</span><span class="card-eyebrow">33 in Hall A</span></div>
+          <div class="slist">
+            <div class="srow" onclick="location.href='Ops%20-%20Exhibitor%20Detail.html'"><span class="s-id">A-14</span><div class="s-info"><div class="n">Atlas Stone Co.</div><div class="m">54 m² · island</div></div><span class="s-dot" style="background:var(--primary)"></span></div>
+            <div class="srow" onclick="location.href='Ops%20-%20Exhibitor.html'"><span class="s-id">A-22</span><div class="s-info"><div class="n">Marrakech Marble</div><div class="m">54 m² · corner</div></div><span class="s-dot" style="background:var(--primary)"></span></div>
+            <div class="srow" onclick="location.href='Ops%20-%20Exhibitor.html'"><span class="s-id">A-09</span><div class="s-info"><div class="n">Numa Ceramics</div><div class="m">36 m² · inline</div></div><span class="s-dot" style="background:var(--primary)"></span></div>
+            <div class="srow" onclick="location.href='Ops%20-%20Exhibitor.html'"><span class="s-id">A-18</span><div class="s-info"><div class="n">Medina Stone Imports</div><div class="m">60 m² · inline</div></div><span class="s-dot" style="background:var(--primary)"></span></div>
+            <div class="srow" onclick="location.href='Ops%20-%20Exhibitor.html'"><span class="s-id">A-31</span><div class="s-info"><div class="n">Gulf Façade Systems</div><div class="m">36 m² · on hold</div></div><span class="s-dot" style="background:var(--signal)"></span></div>
+            <div class="srow"><span class="s-id">A-04</span><div class="s-info"><div class="n" style="color:var(--signal-d)">On hold · Tangier Tiles</div><div class="m">18 m² · reserved 48h</div></div><span class="s-dot" style="background:var(--signal)"></span></div>
+            <div class="srow"><span class="s-id">A-07</span><div class="s-info"><div class="n" style="color:var(--muted)">Available</div><div class="m">24 m² · inline</div></div><span class="s-dot" style="background:var(--bg-2)"></span></div>
+            <div class="srow"><span class="s-id">A-13</span><div class="s-info"><div class="n" style="color:var(--muted)">Available</div><div class="m">18 m² · inline</div></div><span class="s-dot" style="background:var(--bg-2)"></span></div>
+            <div class="srow"><span class="s-id">A-25</span><div class="s-info"><div class="n" style="color:var(--muted)">Available</div><div class="m">24 m² · corner</div></div><span class="s-dot" style="background:var(--bg-2)"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

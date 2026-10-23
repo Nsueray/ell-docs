@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELIZA — Operations · Communications</title>
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('eliza-theme')||'vermillion');}catch(e){document.documentElement.setAttribute('data-theme','vermillion');}</script>
+<link rel="stylesheet" href="styles/signal.css">
+<link rel="stylesheet" href="styles/themes.css">
+<style>
+  body { background: var(--bg); }
+  .app { min-height: 100vh; }
+
+  .context { background: var(--surface); border-bottom: 1px solid var(--line); padding: 14px 24px; display: flex; align-items: center; gap: 22px; }
+  .expo-switch { display:flex; align-items:center; gap:12px; cursor:pointer; padding:7px 12px 7px 7px; border:1px solid var(--line); border-radius:var(--r-md); background:var(--surface-2); }
+  .expo-flag { width:38px; height:38px; border-radius:var(--r-sm); background:linear-gradient(135deg,var(--primary),var(--signal)); display:grid; place-items:center; color:#fff; font-family:var(--font-display); font-weight:600; font-size:13px; }
+  .expo-meta .e-name { font-family:var(--font-display); font-weight:600; font-size:16px; letter-spacing:-.01em; display:flex; align-items:center; gap:9px; }
+  .expo-meta .e-line { font-size:12px; color:var(--muted); margin-top:2px; display:flex; gap:10px; }
+  .caret { color:var(--faint); }
+  .countdown { margin-left:auto; display:flex; align-items:center; gap:16px; }
+  .cd-block { text-align:center; }
+  .cd-num { font-family:var(--font-display); font-weight:600; font-size:26px; line-height:1; color:var(--ink); }
+  .cd-lbl { font-family:var(--font-mono); font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-top:4px; }
+  .cd-sep { color:var(--line); font-size:22px; }
+  .cd-badge { padding:9px 14px; border-radius:var(--r-md); background:var(--berry); color:#fff; }
+  .cd-badge .cd-num { color:#fff; } .cd-badge .cd-lbl { color:#bfe6d8; }
+
+  .subbar { background: var(--surface); border-bottom: 1px solid var(--line); padding: 0 16px; display:flex; align-items:center; gap:10px; }
+  .subbar .subnav { padding: 6px 0; }
+
+  .main { padding: 18px 24px 36px; max-width: 1480px; margin: 0 auto; }
+  .page-head { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:14px; }
+  .page-head h1 { font-family:var(--font-display); font-weight:600; font-size:22px; margin:0; letter-spacing:-.01em; }
+  .page-head p { margin:5px 0 0; color:var(--muted); font-size:13px; }
+  .seg { display:flex; background:var(--bg-2); border-radius:var(--r-sm); padding:3px; gap:2px; }
+  .seg button { border:0; background:transparent; font-family:var(--font-ui); font-size:12.5px; font-weight:500; color:var(--muted); padding:7px 14px; border-radius:5px; cursor:pointer; }
+  .seg button.on { background:var(--surface); color:var(--ink); box-shadow:var(--shadow-sm); }
+
+  /* lanes */
+  .lanes { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:16px; }
+  .lane { border:1px solid var(--line); border-radius:var(--r-md); padding:15px 16px; background:var(--surface); display:flex; gap:13px; align-items:flex-start; }
+  .lane .li { width:40px; height:40px; border-radius:var(--r-md); display:grid; place-items:center; flex:none; }
+  .lane .li svg { width:20px; height:20px; }
+  .lane.ops .li { background:var(--info-l); color:var(--info); }
+  .lane.mkt .li { background:var(--berry-l); color:var(--berry-d); }
+  .lane .l-t { font-family:var(--font-display); font-weight:600; font-size:14.5px; display:flex; align-items:center; gap:8px; }
+  .lane .l-d { font-size:12.5px; color:var(--muted); margin-top:4px; line-height:1.5; }
+  .lane .l-f { display:flex; gap:14px; margin-top:10px; font-size:11.5px; }
+  .lane .l-f b { font-family:var(--font-mono); color:var(--ink); }
+  .lane .l-f span { color:var(--muted); }
+
+  .cols { display:grid; grid-template-columns: 1.62fr 1fr; gap:16px; align-items:start; }
+  .stack { display:grid; gap:16px; }
+
+  /* campaign table */
+  .ct { width:100%; border-collapse:collapse; font-size:12.5px; }
+  .ct thead th { text-align:left; font-family:var(--font-mono); font-size:10px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; padding:9px 12px; border-bottom:1px solid var(--line); background:var(--surface-2); white-space:nowrap; }
+  .ct thead th.r { text-align:right; }
+  .ct tbody td { padding:11px 12px; border-bottom:1px solid var(--line-2); color:var(--ink-2); vertical-align:middle; }
+  .ct tbody tr:hover { background:var(--surface-2); cursor:pointer; }
+  .ct tbody td.r { text-align:right; font-family:var(--font-mono); color:var(--ink); }
+  .cm-name { font-weight:600; color:var(--ink); font-size:13px; }
+  .cm-sub { font-size:11.5px; color:var(--muted); margin-top:1px; }
+  .ttag { font-family:var(--font-mono); font-size:10px; font-weight:600; letter-spacing:.04em; padding:2px 8px; border-radius:100px; }
+  .ttag.ops { background:var(--info-l); color:var(--info); }
+  .ttag.mkt { background:var(--berry-l); color:var(--berry-d); }
+
+  /* segments */
+  .segrow { display:flex; align-items:center; gap:11px; padding:11px 16px; border-bottom:1px solid var(--line-2); }
+  .segrow:last-child { border-bottom:0; }
+  .seg-ic { width:32px; height:32px; border-radius:var(--r-sm); background:var(--bg-2); color:var(--ink-2); display:grid; place-items:center; flex:none; }
+  .seg-ic svg { width:15px; height:15px; }
+  .seg-n { font-weight:600; font-size:13px; color:var(--ink); }
+  .seg-s { font-size:11.5px; color:var(--muted); margin-top:1px; display:flex; align-items:center; gap:6px; }
+  .seg-c { margin-left:auto; text-align:right; }
+  .seg-c .num { font-family:var(--font-mono); font-weight:600; font-size:14px; color:var(--ink); }
+  .seg-c .l { font-family:var(--font-mono); font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--faint); }
+
+  .tmpl { display:flex; align-items:center; gap:11px; padding:10px 16px; border-bottom:1px solid var(--line-2); }
+  .tmpl:last-child { border-bottom:0; }
+  .tmpl .tn { font-weight:500; font-size:13px; color:var(--ink); }
+
+  .compose { padding:16px; }
+  .compose .step { display:flex; align-items:center; gap:10px; font-size:12.5px; color:var(--ink-2); padding:7px 0; }
+  .compose .step .n { width:20px; height:20px; border-radius:50%; background:var(--bg-2); color:var(--muted); display:grid; place-items:center; font-family:var(--font-mono); font-size:11px; font-weight:600; flex:none; }
+  .icn { width:14px; height:14px; }
+</style>
+</head>
+<body>
+<div class="app" data-screen-label="Operations — Communications">
+
+  <!-- TOP NAV -->
+  <nav class="topnav">
+    <div class="brand"><div class="eliza-mark"><span class="eliza-glyph"><i></i><i></i><i></i></span><span class="eliza-word on-dark">ELIZA</span></div></div>
+    <div class="domain-tabs">
+      <button class="domain-tab" onclick="location.href='Sales%20-%20My%20Work.html'"><span class="d-main">Sales</span><span class="d-sub">liffy</span></button>
+      <button class="domain-tab active"><span class="d-main">Operations</span><span class="d-sub">leena</span></button>
+      <button class="domain-tab" onclick="location.href='Finance%20-%20War%20Room.html'"><span class="d-main">Finance</span><span class="d-sub">&nbsp;</span></button>
+    </div>
+    <div class="spacer"></div>
+    <div class="nav-right">
+      <button class="btn btn-icon" style="background:var(--cmd-2);color:var(--cmd-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
+      <span class="kbd">⌘K</span>
+      <div class="vdiv" style="height:24px"></div>
+      <button class="btn btn-icon" style="background:var(--cmd-2);color:var(--cmd-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg></button>
+      <div class="avatar" style="background:var(--primary);cursor:pointer" onclick="location.href='Settings%20-%20Appearance.html'" title="Settings">SA</div>
+    </div>
+  </nav>
+
+  <!-- CONTEXT -->
+  <div class="context">
+    <div class="expo-switch" onclick="location.href='Ops%20-%20Dashboard.html'">
+      <div class="expo-flag">MA</div>
+      <div class="expo-meta">
+        <div class="e-name">Morocco Build &amp; Construct Expo 2026 <span class="chip chip-signal" style="font-size:10.5px"><span class="dot" style="background:var(--signal-d)"></span>CLUSTER · 2</span></div>
+        <div class="e-line"><span>OFEC, Casablanca</span><span>·</span><span>14–17 May 2026</span><span>·</span><span class="mono">EXPO-MA-26</span></div>
+      </div>
+      <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="m6 9 6 6 6-6"/></svg>
+    </div>
+    <div class="countdown">
+      <div class="row gap-3">
+        <div class="cd-block"><div class="cd-num tnum">66</div><div class="cd-lbl">Days</div></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-block"><div class="cd-num tnum">14</div><div class="cd-lbl">Hrs</div></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-block"><div class="cd-num tnum">52</div><div class="cd-lbl">Min</div></div>
+      </div>
+      <div class="cd-badge"><div class="cd-num tnum" style="font-size:15px;text-align:center">14 MAY</div><div class="cd-lbl" style="margin-top:3px">Doors open</div></div>
+    </div>
+  </div>
+
+  <!-- SUBNAV -->
+  <div class="subbar">
+    <nav class="subnav">
+      <a href="Ops%20-%20Dashboard.html">Dashboard</a>
+      <a href="Ops%20-%20Exhibitor.html">Exhibitor</a>
+      <a href="Ops%20-%20Floor%20plan.html">Floor plan</a>
+      <a href="Ops%20-%20Visitor%20%26%20Access.html">Visitor &amp; Access</a>
+      <a class="active" href="#">Communications</a>
+      <a href="Ops%20-%20Reports.html">Reports</a>
+    </nav>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="page-head">
+      <div>
+        <h1>Communications</h1>
+        <p>Operational and marketing mail for this edition — sent on the right rules for each.</p>
+      </div>
+      <div class="row gap-3">
+        <div class="seg">
+          <button class="on">Campaigns</button>
+          <button>Templates</button>
+          <button>Segments</button>
+        </div>
+        <button class="btn btn-primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M12 5v14M5 12h14"/></svg>New message</button>
+      </div>
+    </div>
+
+    <!-- LANES -->
+    <div class="lanes">
+      <div class="lane ops">
+        <div class="li"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.1V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h9M22 7l-10 6L2 7M16 19l2 2 4-4"/></svg></div>
+        <div>
+          <div class="l-t">Operational <span class="ttag ops">ALWAYS SENDS</span></div>
+          <div class="l-d">Transactional mail tied to a contract or registration — payment, badges, build-up, confirmations. Delivered to all recipients; opt-out does not apply.</div>
+          <div class="l-f"><span>Sent (7d) <b>1,284</b></span><span>Queued <b>23</b></span><span>Bounce <b>0.3%</b></span></div>
+        </div>
+      </div>
+      <div class="lane mkt">
+        <div class="li"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l18-8-8 18-2-7-8-3z"/></svg></div>
+        <div>
+          <div class="l-t">Marketing <span class="ttag mkt">OPT-OUT · BULK</span></div>
+          <div class="l-d">Promotional mail — newsletters, ticket pushes, catalogue promos. Reaches only consented contacts, throttled, with an unsubscribe footer required.</div>
+          <div class="l-f"><span>Consented <b>14,905</b></span><span>Opted out <b>612</b></span><span>Avg open <b>34%</b></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cols">
+      <!-- LEFT: campaigns -->
+      <div class="card" style="overflow:hidden">
+        <div class="card-head"><span class="card-title">Recent &amp; scheduled</span><span class="card-eyebrow">Last 30 days</span></div>
+        <div style="overflow-x:auto">
+        <table class="ct">
+          <thead><tr><th>Campaign</th><th>Type</th><th>Segment</th><th class="r">Recipients</th><th>Status</th><th class="r">Open</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="cm-name">Payment reminder · balance due</div><div class="cm-sub">Before build-up · auto</div></td>
+              <td><span class="ttag ops">OPS</span></td>
+              <td>Unpaid balances</td>
+              <td class="r">14</td>
+              <td><span class="chip chip-warn" style="font-size:10px">Queued</span></td>
+              <td class="r">—</td>
+            </tr>
+            <tr>
+              <td><div class="cm-name">Exhibitor badge dispatch</div><div class="cm-sub">Triggered on headcount lock</div></td>
+              <td><span class="ttag ops">OPS</span></td>
+              <td>Ready exhibitors</td>
+              <td class="r">132</td>
+              <td><span class="chip chip-pos" style="font-size:10px">Sent</span></td>
+              <td class="r">96%</td>
+            </tr>
+            <tr>
+              <td><div class="cm-name">Build-up instructions · Hall A &amp; B</div><div class="cm-sub">Move-in slots + rules</div></td>
+              <td><span class="ttag ops">OPS</span></td>
+              <td>All exhibitors</td>
+              <td class="r">168</td>
+              <td><span class="chip chip-pos" style="font-size:10px">Sent</span></td>
+              <td class="r">91%</td>
+            </tr>
+            <tr>
+              <td><div class="cm-name">Visitor confirmation + QR badge</div><div class="cm-sub">On approval · auto</div></td>
+              <td><span class="ttag ops">OPS</span></td>
+              <td>Approved visitors</td>
+              <td class="r">3,402</td>
+              <td><span class="chip chip-info" style="font-size:10px">Sending</span></td>
+              <td class="r">88%</td>
+            </tr>
+            <tr>
+              <td><div class="cm-name">Final week · free ticket push</div><div class="cm-sub">Newsletter · unsubscribe footer</div></td>
+              <td><span class="ttag mkt">MKT</span></td>
+              <td>Visitors · opted-in</td>
+              <td class="r">14,905</td>
+              <td><span class="chip chip-neutral" style="font-size:10px">Scheduled 5 May</span></td>
+              <td class="r">—</td>
+            </tr>
+            <tr>
+              <td><div class="cm-name">Catalogue promo · sponsors</div><div class="cm-sub">Upsell premium listing</div></td>
+              <td><span class="ttag mkt">MKT</span></td>
+              <td>Exhibitors · opted-in</td>
+              <td class="r">121</td>
+              <td><span class="chip chip-pos" style="font-size:10px">Sent</span></td>
+              <td class="r">41%</td>
+            </tr>
+            <tr>
+              <td><div class="cm-name">Conference programme announce</div><div class="cm-sub">Newsletter</div></td>
+              <td><span class="ttag mkt">MKT</span></td>
+              <td>Visitors · opted-in</td>
+              <td class="r">14,210</td>
+              <td><span class="chip chip-pos" style="font-size:10px">Sent</span></td>
+              <td class="r">37%</td>
+            </tr>
+            <tr>
+              <td><div class="cm-name">Stand handover checklist</div><div class="cm-sub">Day-before · auto</div></td>
+              <td><span class="ttag ops">OPS</span></td>
+              <td>Ready exhibitors</td>
+              <td class="r">132</td>
+              <td><span class="chip chip-neutral" style="font-size:10px">Draft</span></td>
+              <td class="r">—</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+
+      <!-- RIGHT: segments + templates + compose -->
+      <div class="stack">
+        <div class="card">
+          <div class="card-head"><span class="card-title">Segments</span><a class="link" href="#" style="color:var(--primary);text-decoration:none;font-weight:500;font-size:12.5px">+ New</a></div>
+          <div>
+            <div class="segrow">
+              <div class="seg-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/></svg></div>
+              <div style="flex:1"><div class="seg-n">All exhibitors</div><div class="seg-s"><span class="ttag ops" style="font-size:9px">OPS reach</span> full list</div></div>
+              <div class="seg-c"><div class="num tnum">168</div><div class="l">contacts</div></div>
+            </div>
+            <div class="segrow">
+              <div class="seg-ic" style="background:var(--dang-l);color:var(--dang)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div>
+              <div style="flex:1"><div class="seg-n">Unpaid balances</div><div class="seg-s"><span class="ttag ops" style="font-size:9px">OPS reach</span> always sends</div></div>
+              <div class="seg-c"><div class="num tnum">14</div><div class="l">contacts</div></div>
+            </div>
+            <div class="segrow">
+              <div class="seg-ic" style="background:var(--info-l);color:var(--info)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7-6.3-4.6L5.7 21l2.3-7-6-4.6h7.6z"/></svg></div>
+              <div style="flex:1"><div class="seg-n">VIP buyers</div><div class="seg-s">High-value visitor list</div></div>
+              <div class="seg-c"><div class="num tnum">486</div><div class="l">contacts</div></div>
+            </div>
+            <div class="segrow">
+              <div class="seg-ic" style="background:var(--berry-l);color:var(--berry-d)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8M22 21v-2a4 4 0 0 0-3-3.9"/></svg></div>
+              <div style="flex:1"><div class="seg-n">Visitors · opted-in</div><div class="seg-s"><span class="ttag mkt" style="font-size:9px">MKT reach</span> consented only</div></div>
+              <div class="seg-c"><div class="num tnum">14,905</div><div class="l">of 18,402</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><span class="card-title">Templates</span><a class="link" href="#" style="color:var(--primary);text-decoration:none;font-weight:500;font-size:12.5px">Manage</a></div>
+          <div>
+            <div class="tmpl"><span class="ttag ops">OPS</span><div style="flex:1"><div class="tn">Payment reminder</div></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;color:var(--faint)"><path d="M9 18l6-6-6-6"/></svg></div>
+            <div class="tmpl"><span class="ttag ops">OPS</span><div style="flex:1"><div class="tn">Badge dispatch</div></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;color:var(--faint)"><path d="M9 18l6-6-6-6"/></svg></div>
+            <div class="tmpl"><span class="ttag mkt">MKT</span><div style="flex:1"><div class="tn">Visitor newsletter</div></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;color:var(--faint)"><path d="M9 18l6-6-6-6"/></svg></div>
+            <div class="tmpl"><span class="ttag mkt">MKT</span><div style="flex:1"><div class="tn">Post-show thank-you</div></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;color:var(--faint)"><path d="M9 18l6-6-6-6"/></svg></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><span class="card-title">Compose &amp; send</span></div>
+          <div class="compose">
+            <div class="step"><span class="n">1</span>Pick a template or start blank</div>
+            <div class="step"><span class="n">2</span>Choose segment <span style="color:var(--muted)">— reach respects type</span></div>
+            <div class="step"><span class="n">3</span>Review · test send · schedule</div>
+            <button class="btn btn-primary btn-block" style="margin-top:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg>Start a message</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

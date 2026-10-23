@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELIZA — Operations · Reports</title>
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('eliza-theme')||'vermillion');}catch(e){document.documentElement.setAttribute('data-theme','vermillion');}</script>
+<link rel="stylesheet" href="styles/signal.css">
+<link rel="stylesheet" href="styles/themes.css">
+<style>
+  body { background: var(--bg); }
+  .app { min-height: 100vh; }
+
+  .context { background: var(--surface); border-bottom: 1px solid var(--line); padding: 14px 24px; display: flex; align-items: center; gap: 22px; }
+  .expo-switch { display:flex; align-items:center; gap:12px; cursor:pointer; padding:7px 12px 7px 7px; border:1px solid var(--line); border-radius:var(--r-md); background:var(--surface-2); }
+  .expo-flag { width:38px; height:38px; border-radius:var(--r-sm); background:linear-gradient(135deg,var(--primary),var(--signal)); display:grid; place-items:center; color:#fff; font-family:var(--font-display); font-weight:600; font-size:13px; }
+  .expo-meta .e-name { font-family:var(--font-display); font-weight:600; font-size:16px; letter-spacing:-.01em; display:flex; align-items:center; gap:9px; }
+  .expo-meta .e-line { font-size:12px; color:var(--muted); margin-top:2px; display:flex; gap:10px; }
+  .caret { color:var(--faint); }
+  .countdown { margin-left:auto; display:flex; align-items:center; gap:16px; }
+  .cd-block { text-align:center; }
+  .cd-num { font-family:var(--font-display); font-weight:600; font-size:26px; line-height:1; color:var(--ink); }
+  .cd-lbl { font-family:var(--font-mono); font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-top:4px; }
+  .cd-sep { color:var(--line); font-size:22px; }
+  .cd-badge { padding:9px 14px; border-radius:var(--r-md); background:var(--berry); color:#fff; }
+  .cd-badge .cd-num { color:#fff; } .cd-badge .cd-lbl { color:#bfe6d8; }
+
+  .subbar { background: var(--surface); border-bottom: 1px solid var(--line); padding: 0 16px; display:flex; align-items:center; gap:10px; }
+  .subbar .subnav { padding: 6px 0; }
+
+  .main { padding: 18px 24px 36px; max-width: 1480px; margin: 0 auto; }
+  .page-head { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:14px; }
+  .page-head h1 { font-family:var(--font-display); font-weight:600; font-size:22px; margin:0; letter-spacing:-.01em; }
+  .page-head p { margin:5px 0 0; color:var(--muted); font-size:13px; }
+  .fdrop { display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-weight:500; color:var(--ink-2); border:1px solid var(--line); background:var(--surface); border-radius:var(--r-sm); padding:8px 11px; cursor:pointer; }
+  .fdrop svg { width:13px; height:13px; color:var(--muted); } .fdrop b { color:var(--ink); }
+
+  .grid4 { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:16px; }
+  .ms { background:var(--surface); border:1px solid var(--line); border-radius:var(--r-md); padding:13px 15px; }
+  .ms .m-l { font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); display:flex; align-items:center; gap:6px; }
+  .ms .m-v { font-family:var(--font-display); font-weight:600; font-size:26px; margin-top:8px; letter-spacing:-.01em; }
+  .ms .m-v small { font-size:12px; color:var(--muted); font-weight:500; }
+  .ms .m-f { font-size:11.5px; color:var(--muted); margin-top:5px; }
+
+  .panels { display:grid; grid-template-columns:1.5fr 1fr; gap:14px; margin-bottom:16px; }
+  .panel-head { display:flex; align-items:center; justify-content:space-between; padding:13px 16px; border-bottom:1px solid var(--line-2); }
+  .panel-head .pt { font-weight:600; font-size:13px; }
+  .panel-head .pe { font-family:var(--font-mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+  .exp { display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:600; color:var(--primary); cursor:pointer; }
+  .exp svg { width:13px; height:13px; }
+
+  .chartpad { padding:16px; }
+  .legend { display:flex; gap:16px; font-size:12px; color:var(--muted); margin-top:12px; }
+  .legend .lg { display:flex; align-items:center; gap:6px; } .legend .sw { width:10px; height:10px; border-radius:3px; }
+
+  /* donut */
+  .donut-wrap { display:flex; align-items:center; gap:20px; padding:18px 16px; }
+  .donut { width:130px; height:130px; border-radius:50%; flex:none;
+    background:conic-gradient(var(--pos) 0 75%, var(--signal) 75% 87%, var(--dang) 87% 100%); display:grid; place-items:center; }
+  .donut .hole { width:88px; height:88px; border-radius:50%; background:var(--surface); display:grid; place-items:center; text-align:center; }
+  .donut .hole .v { font-family:var(--font-display); font-weight:600; font-size:24px; line-height:1; }
+  .donut .hole .l { font-family:var(--font-mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-top:3px; }
+  .dleg { display:flex; flex-direction:column; gap:10px; flex:1; }
+  .dleg .row2 { display:flex; align-items:center; gap:9px; font-size:13px; }
+  .dleg .sw { width:11px; height:11px; border-radius:3px; flex:none; }
+  .dleg .v { margin-left:auto; font-family:var(--font-mono); font-weight:600; color:var(--ink); }
+
+  /* horizontal bars */
+  .hbars { padding:14px 16px; display:flex; flex-direction:column; gap:13px; }
+  .hbar .hb-h { display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:5px; }
+  .hbar .hb-h .k { color:var(--ink-2); font-weight:500; } .hbar .hb-h .v { font-family:var(--font-mono); color:var(--muted); }
+  .hbar .track { height:8px; background:var(--bg-2); border-radius:100px; overflow:hidden; }
+  .hbar .track i { display:block; height:100%; border-radius:100px; }
+
+  /* saved reports table */
+  .rt { width:100%; border-collapse:collapse; font-size:13px; }
+  .rt thead th { text-align:left; font-family:var(--font-mono); font-size:10px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:600; padding:9px 14px; border-bottom:1px solid var(--line); background:var(--surface-2); }
+  .rt thead th.r { text-align:right; }
+  .rt tbody td { padding:11px 14px; border-bottom:1px solid var(--line-2); color:var(--ink-2); }
+  .rt tbody tr:hover { background:var(--surface-2); }
+  .rt .rn { font-weight:600; color:var(--ink); }
+  .rt .rs { font-size:11.5px; color:var(--muted); }
+  .xbtn { display:inline-flex; align-items:center; gap:5px; font-size:12px; font-weight:500; color:var(--ink-2); border:1px solid var(--line); border-radius:var(--r-sm); padding:5px 10px; cursor:pointer; background:var(--surface); }
+  .xbtn:hover { border-color:var(--faint); }
+  .xbtn svg { width:13px; height:13px; }
+</style>
+</head>
+<body>
+<div class="app" data-screen-label="Operations — Reports">
+
+  <!-- TOP NAV -->
+  <nav class="topnav">
+    <div class="brand"><div class="eliza-mark"><span class="eliza-glyph"><i></i><i></i><i></i></span><span class="eliza-word on-dark">ELIZA</span></div></div>
+    <div class="domain-tabs">
+      <button class="domain-tab" onclick="location.href='Sales%20-%20My%20Work.html'"><span class="d-main">Sales</span><span class="d-sub">liffy</span></button>
+      <button class="domain-tab active"><span class="d-main">Operations</span><span class="d-sub">leena</span></button>
+      <button class="domain-tab" onclick="location.href='Finance%20-%20War%20Room.html'"><span class="d-main">Finance</span><span class="d-sub">&nbsp;</span></button>
+    </div>
+    <div class="spacer"></div>
+    <div class="nav-right">
+      <button class="btn btn-icon" style="background:var(--cmd-2);color:var(--cmd-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
+      <span class="kbd">⌘K</span>
+      <div class="vdiv" style="height:24px"></div>
+      <button class="btn btn-icon" style="background:var(--cmd-2);color:var(--cmd-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg></button>
+      <div class="avatar" style="background:var(--primary);cursor:pointer" onclick="location.href='Settings%20-%20Appearance.html'" title="Settings">SA</div>
+    </div>
+  </nav>
+
+  <!-- CONTEXT -->
+  <div class="context">
+    <div class="expo-switch" onclick="location.href='Ops%20-%20Dashboard.html'">
+      <div class="expo-flag">MA</div>
+      <div class="expo-meta">
+        <div class="e-name">Morocco Build &amp; Construct Expo 2026 <span class="chip chip-signal" style="font-size:10.5px"><span class="dot" style="background:var(--signal-d)"></span>CLUSTER · 2</span></div>
+        <div class="e-line"><span>OFEC, Casablanca</span><span>·</span><span>14–17 May 2026</span><span>·</span><span class="mono">EXPO-MA-26</span></div>
+      </div>
+      <svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="m6 9 6 6 6-6"/></svg>
+    </div>
+    <div class="countdown">
+      <div class="row gap-3">
+        <div class="cd-block"><div class="cd-num tnum">66</div><div class="cd-lbl">Days</div></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-block"><div class="cd-num tnum">14</div><div class="cd-lbl">Hrs</div></div>
+        <span class="cd-sep">:</span>
+        <div class="cd-block"><div class="cd-num tnum">52</div><div class="cd-lbl">Min</div></div>
+      </div>
+      <div class="cd-badge"><div class="cd-num tnum" style="font-size:15px;text-align:center">14 MAY</div><div class="cd-lbl" style="margin-top:3px">Doors open</div></div>
+    </div>
+  </div>
+
+  <!-- SUBNAV -->
+  <div class="subbar">
+    <nav class="subnav">
+      <a href="Ops%20-%20Dashboard.html">Dashboard</a>
+      <a href="Ops%20-%20Exhibitor.html">Exhibitor</a>
+      <a href="Ops%20-%20Floor%20plan.html">Floor plan</a>
+      <a href="Ops%20-%20Visitor%20%26%20Access.html">Visitor &amp; Access</a>
+      <a href="Ops%20-%20Communications.html">Communications</a>
+      <a class="active" href="#">Reports</a>
+    </nav>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="page-head">
+      <div>
+        <h1>Reports</h1>
+        <p>Operational reporting — registrations, exhibitor status, occupancy and on-site attendance.</p>
+      </div>
+      <div class="row gap-3">
+        <button class="fdrop">Range: <b>All to date</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
+        <button class="btn btn-secondary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Schedule</button>
+        <button class="btn btn-primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Export all</button>
+      </div>
+    </div>
+
+    <!-- KPI STRIP -->
+    <div class="grid4">
+      <div class="ms"><div class="m-l">Registrations</div><div class="m-v tnum">18,402</div><div class="m-f">77% of 24,000 target</div></div>
+      <div class="ms"><div class="m-l">Exhibitors ready</div><div class="m-v tnum">142 <small>/ 168</small></div><div class="m-f">85% onboarded · 7 blocked</div></div>
+      <div class="ms"><div class="m-l">Floor sold</div><div class="m-v tnum">78<small>%</small></div><div class="m-f">7,840 / 10,000 m²</div></div>
+      <div class="ms"><div class="m-l"><span class="dot" style="width:7px;height:7px;border-radius:50%;background:var(--muted);display:inline-block"></span>Check-in</div><div class="m-v tnum" style="color:var(--muted)">Opens</div><div class="m-f">Live attendance from 14 May</div></div>
+    </div>
+
+    <!-- PANELS ROW 1 -->
+    <div class="panels">
+      <!-- registrations trend -->
+      <div class="card">
+        <div class="panel-head"><div><div class="pt">Registrations over time</div></div><div class="row gap-3"><span class="pe">cumulative</span><span class="exp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>CSV</span></div></div>
+        <div class="chartpad">
+          <svg viewBox="0 0 660 200" width="100%" height="180" preserveAspectRatio="none">
+            <g stroke="var(--line-2)" stroke-width="1"><line x1="0" y1="50" x2="660" y2="50"/><line x1="0" y1="100" x2="660" y2="100"/><line x1="0" y1="150" x2="660" y2="150"/><line x1="0" y1="190" x2="660" y2="190"/></g>
+            <path d="M0,188 C90,180 150,150 230,120 C320,86 410,60 520,40 L660,26 L660,190 L0,190 Z" fill="var(--primary-l)"/>
+            <path d="M0,188 C90,180 150,150 230,120 C320,86 410,60 520,40 L660,26" fill="none" stroke="var(--primary)" stroke-width="2.5"/>
+            <circle cx="660" cy="26" r="4" fill="var(--primary)"/>
+            <circle cx="520" cy="40" r="3" fill="var(--signal)"/>
+          </svg>
+          <div class="row" style="justify-content:space-between;font-family:var(--font-mono);font-size:10px;color:var(--faint);margin-top:4px"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Now</span></div>
+          <div class="legend"><span class="lg"><span class="sw" style="background:var(--primary)"></span>Cumulative registrations</span><span class="lg" style="margin-left:auto;color:var(--ink)"><b>+214 today · 18,402 total</b></span></div>
+        </div>
+      </div>
+
+      <!-- exhibitor status donut -->
+      <div class="card">
+        <div class="panel-head"><div class="pt">Exhibitor status</div><span class="exp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>CSV</span></div>
+        <div class="donut-wrap">
+          <div class="donut"><div class="hole"><div><div class="v tnum">168</div><div class="l">signed</div></div></div></div>
+          <div class="dleg">
+            <div class="row2"><span class="sw" style="background:var(--pos)"></span>Onboarded<span class="v">142</span></div>
+            <div class="row2"><span class="sw" style="background:var(--signal)"></span>In progress<span class="v">19</span></div>
+            <div class="row2"><span class="sw" style="background:var(--dang)"></span>Blocked<span class="v">7</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANELS ROW 2 -->
+    <div class="panels">
+      <!-- occupancy by hall -->
+      <div class="card">
+        <div class="panel-head"><div class="pt">Floor occupancy by hall</div><span class="exp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>CSV</span></div>
+        <div class="hbars">
+          <div class="hbar"><div class="hb-h"><span class="k">Hall A</span><span class="v">81% · 4,860 / 6,000 m²</span></div><div class="track"><i style="width:81%;background:var(--primary)"></i></div></div>
+          <div class="hbar"><div class="hb-h"><span class="k">Hall B</span><span class="v">74% · 2,220 / 3,000 m²</span></div><div class="track"><i style="width:74%;background:var(--primary)"></i></div></div>
+          <div class="hbar"><div class="hb-h"><span class="k">Outdoor</span><span class="v">76% · 760 / 1,000 m²</span></div><div class="track"><i style="width:76%;background:var(--primary)"></i></div></div>
+          <div class="legend" style="margin-top:2px"><span class="lg" style="margin-left:auto;color:var(--ink)"><b>Total 78% sold · 9% on hold</b></span></div>
+        </div>
+      </div>
+
+      <!-- visitor mix -->
+      <div class="card">
+        <div class="panel-head"><div class="pt">Visitor mix by type</div><span class="exp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>CSV</span></div>
+        <div class="hbars">
+          <div class="hbar"><div class="hb-h"><span class="k">Trade</span><span class="v">11,400</span></div><div class="track"><i style="width:62%;background:var(--berry)"></i></div></div>
+          <div class="hbar"><div class="hb-h"><span class="k">Buyer · VIP</span><span class="v">3,310</span></div><div class="track"><i style="width:18%;background:var(--info)"></i></div></div>
+          <div class="hbar"><div class="hb-h"><span class="k">Press</span><span class="v">980</span></div><div class="track"><i style="width:6%;background:var(--warn)"></i></div></div>
+          <div class="hbar"><div class="hb-h"><span class="k">Contractor</span><span class="v">1,840</span></div><div class="track"><i style="width:10%;background:var(--signal)"></i></div></div>
+          <div class="hbar"><div class="hb-h"><span class="k">Speaker</span><span class="v">872</span></div><div class="track"><i style="width:4%;background:var(--pos)"></i></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SAVED REPORTS -->
+    <div class="card" style="overflow:hidden">
+      <div class="card-head"><span class="card-title">Saved &amp; scheduled reports</span><a class="link" href="#" style="color:var(--primary);text-decoration:none;font-weight:500;font-size:12.5px">+ New report</a></div>
+      <table class="rt">
+        <thead><tr><th>Report</th><th>Cadence</th><th>Last run</th><th>Format</th><th class="r">Export</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="rn">Daily attendance &amp; check-in</div><div class="rs">Per hall · hourly during show</div></td>
+            <td><span class="chip chip-info" style="font-size:10px">Daily · from 14 May</span></td>
+            <td><span style="color:var(--muted)">Not yet run</span></td>
+            <td><span class="mono" style="font-size:12px">CSV · PDF</span></td>
+            <td class="r"><button class="xbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Export</button></td>
+          </tr>
+          <tr>
+            <td><div class="rn">Weekly exhibitor status</div><div class="rs">Onboarding + blocked list</div></td>
+            <td><span class="chip chip-pos" style="font-size:10px">Weekly · Mon</span></td>
+            <td>09 Jun · 08:00</td>
+            <td><span class="mono" style="font-size:12px">PDF</span></td>
+            <td class="r"><button class="xbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Export</button></td>
+          </tr>
+          <tr>
+            <td><div class="rn">Occupancy &amp; hold expiry</div><div class="rs">Sold / on-hold / available by stand</div></td>
+            <td><span class="chip chip-neutral" style="font-size:10px">On demand</span></td>
+            <td>10 Jun · 07:30</td>
+            <td><span class="mono" style="font-size:12px">CSV · XLSX</span></td>
+            <td class="r"><button class="xbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Export</button></td>
+          </tr>
+          <tr>
+            <td><div class="rn">Post-show summary</div><div class="rs">Attendance, leads, exhibitor satisfaction</div></td>
+            <td><span class="chip chip-neutral" style="font-size:10px">After close</span></td>
+            <td><span style="color:var(--muted)">Scheduled 18 May</span></td>
+            <td><span class="mono" style="font-size:12px">PDF</span></td>
+            <td class="r"><button class="xbtn" style="opacity:.55"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Pending</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>

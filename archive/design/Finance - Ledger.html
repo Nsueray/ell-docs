@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELIZA — Finance · Ledger</title>
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('eliza-theme')||'vermillion');}catch(e){document.documentElement.setAttribute('data-theme','vermillion');}</script>
+<link rel="stylesheet" href="styles/signal.css">
+<link rel="stylesheet" href="styles/themes.css">
+<style>
+  body { background: var(--bg); }
+  .app { min-height: 100vh; }
+
+  .context { background: var(--surface); border-bottom: 1px solid var(--line); padding: 13px 24px; display:flex; align-items:center; gap:16px; }
+  .crumb { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--muted); }
+  .crumb a { color:var(--muted); text-decoration:none; } .crumb a:hover { color:var(--ink); }
+  .crumb .sep { color:var(--faint); } .crumb .cur { color:var(--ink); font-weight:600; }
+  .ctx-right { margin-left:auto; display:flex; align-items:center; gap:10px; }
+  .pill { display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-weight:500; color:var(--ink-2); border:1px solid var(--line); background:var(--surface); border-radius:var(--r-sm); padding:8px 11px; cursor:pointer; }
+  .pill svg { width:13px; height:13px; color:var(--muted); } .pill b { color:var(--ink); }
+
+  .subbar { background: var(--surface); border-bottom: 1px solid var(--line); padding: 0 16px; display:flex; align-items:center; gap:10px; }
+  .subbar .subnav { padding: 6px 0; }
+
+  .main { padding: 18px 24px 36px; max-width: 1480px; margin: 0 auto; }
+  .page-head { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:14px; }
+  .page-head h1 { font-family:var(--font-display); font-weight:600; font-size:22px; margin:0; letter-spacing:-.01em; }
+  .page-head p { margin:5px 0 0; color:var(--muted); font-size:13px; }
+
+  /* account tabs */
+  .accts { display:flex; gap:8px; margin-bottom:14px; overflow-x:auto; padding-bottom:2px; }
+  .acct { border:1px solid var(--line); border-radius:var(--r-md); background:var(--surface); padding:11px 14px; cursor:pointer; min-width:150px; flex:none; }
+  .acct.on { border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-l); }
+  .acct .a-top { display:flex; align-items:center; gap:7px; }
+  .ccy { font-family:var(--font-mono); font-size:9.5px; font-weight:600; color:var(--ink-2); background:var(--bg-2); border-radius:4px; padding:1px 6px; }
+  .acct .a-n { font-size:12px; color:var(--muted); }
+  .acct .a-v { font-family:var(--font-display); font-weight:600; font-size:18px; margin-top:7px; letter-spacing:-.01em; }
+
+  /* summary strip */
+  .sumrow { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line-2); border:1px solid var(--line); border-radius:var(--r-md); overflow:hidden; margin-bottom:14px; }
+  .sum { background:var(--surface); padding:13px 16px; }
+  .sum .s-l { font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+  .sum .s-v { font-family:var(--font-display); font-weight:600; font-size:22px; margin-top:7px; letter-spacing:-.01em; }
+  .sum.in .s-v { color:var(--pos); } .sum.out .s-v { color:var(--dang); }
+
+  .toolbar { display:flex; align-items:center; gap:10px; padding:12px; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  .search { position:relative; display:flex; align-items:center; flex:1; min-width:200px; max-width:300px; }
+  .search svg { position:absolute; left:11px; width:15px; height:15px; color:var(--faint); }
+  .search input { font-family:var(--font-ui); font-size:13px; color:var(--ink); padding:8px 12px 8px 34px; border:1px solid var(--line); border-radius:var(--r-sm); background:var(--surface); width:100%; }
+  .search input:focus { outline:none; border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-l); }
+  .fdrop { display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-weight:500; color:var(--ink-2); border:1px solid var(--line); background:var(--surface); border-radius:var(--r-sm); padding:8px 11px; cursor:pointer; }
+  .fdrop svg { width:13px; height:13px; color:var(--muted); } .fdrop b { color:var(--ink); }
+  .tb-right { margin-left:auto; display:flex; align-items:center; gap:8px; }
+
+  /* ledger table */
+  .lt { width:100%; border-collapse:collapse; font-size:12.5px; }
+  .lt thead th { text-align:left; font-family:var(--font-mono); font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:600; padding:9px 12px; border-bottom:1px solid var(--line); background:var(--surface-2); white-space:nowrap; }
+  .lt thead th.r { text-align:right; }
+  .lt tbody td { padding:9px 12px; border-bottom:1px solid var(--line-2); color:var(--ink-2); vertical-align:middle; white-space:nowrap; }
+  .lt tbody tr:hover { background:var(--surface-2); cursor:pointer; }
+  .lt td.r { text-align:right; font-family:var(--font-mono); font-variant-numeric:tabular-nums; }
+  .lt .ref { font-family:var(--font-mono); font-size:11px; color:var(--primary); font-weight:600; }
+  .lt .desc { font-weight:600; color:var(--ink); }
+  .lt .in { color:var(--pos); font-weight:600; }
+  .lt .out { color:var(--dang); font-weight:600; }
+  .lt .eur { color:var(--ink); }
+  .lt .bal { color:var(--ink); font-weight:600; }
+  .lt .fx { color:var(--muted); font-size:11px; }
+  .mtag { font-family:var(--font-mono); font-size:9.5px; font-weight:600; padding:2px 7px; border-radius:100px; background:var(--bg-2); color:var(--ink-2); }
+  .mtag.cash { background:var(--warn-l); color:var(--warn); }
+  .frozen { display:inline-flex; align-items:center; gap:3px; }
+  .frozen svg { width:10px; height:10px; color:var(--info); }
+
+  .tfoot { display:flex; align-items:center; justify-content:space-between; padding:12px 14px; font-size:12.5px; color:var(--muted); }
+  .drill { display:inline-flex; align-items:center; gap:5px; color:var(--primary); font-weight:600; }
+  .drill svg { width:12px; height:12px; }
+  .icn { width:14px; height:14px; }
+</style>
+</head>
+<body>
+<div class="app" data-screen-label="Finance — Ledger">
+
+  <!-- TOP NAV -->
+  <nav class="topnav">
+    <div class="brand"><div class="eliza-mark"><span class="eliza-glyph"><i></i><i></i><i></i></span><span class="eliza-word on-dark">ELIZA</span></div></div>
+    <div class="domain-tabs">
+      <button class="domain-tab" onclick="location.href='Sales%20-%20My%20Work.html'"><span class="d-main">Sales</span><span class="d-sub">liffy</span></button>
+      <button class="domain-tab" onclick="location.href='Ops%20-%20Dashboard.html'"><span class="d-main">Operations</span><span class="d-sub">leena</span></button>
+      <button class="domain-tab active"><span class="d-main">Finance</span><span class="d-sub">&nbsp;</span></button>
+    </div>
+    <div class="spacer"></div>
+    <div class="nav-right">
+      <button class="btn btn-icon" style="background:var(--cmd-2);color:var(--cmd-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
+      <span class="kbd">⌘K</span>
+      <div class="vdiv" style="height:24px"></div>
+      <button class="btn btn-icon" style="background:var(--cmd-2);color:var(--cmd-ink)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg></button>
+      <div class="avatar" style="background:var(--ink-2);cursor:pointer" onclick="location.href='Settings%20-%20Appearance.html'" title="Settings">SA</div>
+    </div>
+  </nav>
+
+  <!-- CONTEXT -->
+  <div class="context">
+    <div class="crumb"><a href="Finance%20-%20War%20Room.html">Finance</a><span class="sep">/</span><span class="cur">Ledger</span></div>
+    <div class="ctx-right">
+      <span class="pill">Reporting: <b>EUR</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+      <span class="pill">Period: <b>Last 30 days</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+    </div>
+  </div>
+
+  <!-- SUBNAV -->
+  <div class="subbar">
+    <nav class="subnav">
+      <a href="Finance%20-%20War%20Room.html">War Room</a>
+      <a href="Finance%20-%20Expo%20Finance.html">Expos</a>
+      <a class="active" href="#">Ledger</a>
+      <a href="Finance%20-%20Contract.html">Contracts</a>
+      <a href="Finance%20-%20Commissions.html">Commissions</a>
+      <a href="#">Reports</a>
+    </nav>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="page-head">
+      <div>
+        <h1>Ledger</h1>
+        <p>Two-sided across every account. Each line carries its transaction currency and the EUR value at frozen FX.</p>
+      </div>
+      <div class="row gap-3">
+        <button class="btn btn-secondary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Export</button>
+        <button class="btn btn-primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M12 5v14M5 12h14"/></svg>New entry</button>
+      </div>
+    </div>
+
+    <!-- ACCOUNT TABS -->
+    <div class="accts">
+      <div class="acct on"><div class="a-top"><span class="ccy">ALL</span><span class="a-n">Consolidated</span></div><div class="a-v tnum">€2.14M</div></div>
+      <div class="acct"><div class="a-top"><span class="ccy">MAD</span><span class="a-n">CIH · operating</span></div><div class="a-v tnum">€862K</div></div>
+      <div class="acct"><div class="a-top"><span class="ccy">EUR</span><span class="a-n">BNP · reserve</span></div><div class="a-v tnum">€740K</div></div>
+      <div class="acct"><div class="a-top"><span class="ccy">AED</span><span class="a-n">Mashreq · Gulf</span></div><div class="a-v tnum">€366K</div></div>
+      <div class="acct"><div class="a-top"><span class="ccy">NGN</span><span class="a-n">GTBank · Lagos</span></div><div class="a-v tnum">€172K</div></div>
+      <div class="acct"><div class="a-top"><span class="ccy">CASH</span><span class="a-n">Petty · floats</span></div><div class="a-v tnum">€8.4K</div></div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="sumrow">
+      <div class="sum"><div class="s-l">Opening balance</div><div class="s-v tnum">€1.92M</div></div>
+      <div class="sum in"><div class="s-l">Money in</div><div class="s-v tnum">+€486K</div></div>
+      <div class="sum out"><div class="s-l">Money out</div><div class="s-v tnum">−€266K</div></div>
+      <div class="sum"><div class="s-l">Closing balance</div><div class="s-v tnum">€2.14M</div></div>
+    </div>
+
+    <!-- LEDGER -->
+    <div class="card" style="overflow:hidden">
+      <div class="toolbar">
+        <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input placeholder="Search ref, description, contract…"></div>
+        <button class="fdrop">Type: <b>All</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
+        <button class="fdrop">Method: <b>All</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="tb-right"><span class="drill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>Click any line to drill into the entry</span></div>
+      </div>
+
+      <div style="overflow-x:auto">
+      <table class="lt">
+        <thead>
+          <tr>
+            <th>Date</th><th>Ref</th><th>Description</th><th>Account</th><th>Method</th>
+            <th class="r">In (txn)</th><th class="r">Out (txn)</th><th class="r">FX</th><th class="r">EUR</th><th class="r">Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>10 Jun</td><td><span class="ref">EXP-2210</span></td><td><span class="desc">Venue deposit · OFEC hall hire</span></td><td><span class="ccy">MAD</span> CIH</td><td><span class="mtag">Wire</span></td>
+            <td class="r"></td><td class="r out">MAD 480,000</td><td class="r fx"><span class="frozen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>0.0920</span></td><td class="r out">−€44,160</td><td class="r bal">€2.14M</td>
+          </tr>
+          <tr onclick="location.href='Finance%20-%20Contract.html'">
+            <td>09 Jun</td><td><span class="ref">PMT-0151</span></td><td><span class="desc">Nairobi Stone · balance 70%</span></td><td><span class="ccy">NGN</span> GTBank</td><td><span class="mtag">Wire</span></td>
+            <td class="r in">$50,000</td><td class="r"></td><td class="r fx"><span class="frozen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>0.9200</span></td><td class="r in">+€46,000</td><td class="r bal">€2.19M</td>
+          </tr>
+          <tr>
+            <td>08 Jun</td><td><span class="ref">EXP-2208</span></td><td><span class="desc">Stand contractor · Zenith Fit-Out</span></td><td><span class="ccy">MAD</span> CIH</td><td><span class="mtag">Wire</span></td>
+            <td class="r"></td><td class="r out">MAD 210,000</td><td class="r fx">0.0920</td><td class="r out">−€19,320</td><td class="r bal">€2.14M</td>
+          </tr>
+          <tr onclick="location.href='Finance%20-%20Contract.html'">
+            <td>06 Jun</td><td><span class="ref">PMT-0149</span></td><td><span class="desc">Marrakech Marble · paid in full</span></td><td><span class="ccy">EUR</span> BNP</td><td><span class="mtag">Wire</span></td>
+            <td class="r in">€58,000</td><td class="r"></td><td class="r fx">1.0000</td><td class="r in">+€58,000</td><td class="r bal">€2.16M</td>
+          </tr>
+          <tr>
+            <td>05 Jun</td><td><span class="ref">EXP-2205</span></td><td><span class="desc">Marketing spend · Meta ads</span></td><td><span class="ccy">EUR</span> BNP</td><td><span class="mtag">Card</span></td>
+            <td class="r"></td><td class="r out">€6,400</td><td class="r fx">1.0000</td><td class="r out">−€6,400</td><td class="r bal">€2.10M</td>
+          </tr>
+          <tr onclick="location.href='Finance%20-%20Contract.html'">
+            <td>04 Jun</td><td><span class="ref">PMT-0144</span></td><td><span class="desc">Gulf Façade · deposit 30%</span></td><td><span class="ccy">AED</span> Mashreq</td><td><span class="mtag">Wire</span></td>
+            <td class="r in">AED 41,000</td><td class="r"></td><td class="r fx">0.2490</td><td class="r in">+€10,209</td><td class="r bal">€2.11M</td>
+          </tr>
+          <tr>
+            <td>03 Jun</td><td><span class="ref">CASH-118</span></td><td><span class="desc">On-site badge sales · float top-up</span></td><td><span class="ccy">MAD</span> Petty</td><td><span class="mtag cash">Cash</span></td>
+            <td class="r in">MAD 12,400</td><td class="r"></td><td class="r fx">0.0920</td><td class="r in">+€1,141</td><td class="r bal">€2.10M</td>
+          </tr>
+          <tr>
+            <td>02 Jun</td><td><span class="ref">EXP-2201</span></td><td><span class="desc">Security staffing · build-up</span></td><td><span class="ccy">MAD</span> CIH</td><td><span class="mtag">Wire</span></td>
+            <td class="r"></td><td class="r out">MAD 86,000</td><td class="r fx">0.0920</td><td class="r out">−€7,912</td><td class="r bal">€2.10M</td>
+          </tr>
+          <tr onclick="location.href='Finance%20-%20Contract.html'">
+            <td>30 May</td><td><span class="ref">PMT-0142</span></td><td><span class="desc">Atlas Stone · deposit 30%</span></td><td><span class="ccy">USD</span> CIH</td><td><span class="mtag">Wire</span></td>
+            <td class="r in">$13,284</td><td class="r"></td><td class="r fx"><span class="frozen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>0.9185</span></td><td class="r in">+€12,201</td><td class="r bal">€2.11M</td>
+          </tr>
+          <tr>
+            <td>28 May</td><td><span class="ref">EXP-2198</span></td><td><span class="desc">Print &amp; signage · hall graphics</span></td><td><span class="ccy">MAD</span> CIH</td><td><span class="mtag">Cheque</span></td>
+            <td class="r"></td><td class="r out">MAD 54,000</td><td class="r fx">0.0920</td><td class="r out">−€4,968</td><td class="r bal">€2.10M</td>
+          </tr>
+          <tr>
+            <td>26 May</td><td><span class="ref">PMT-0138</span></td><td><span class="desc">Numa Ceramics · paid in full</span></td><td><span class="ccy">MAD</span> Petty</td><td><span class="mtag cash">Cash</span></td>
+            <td class="r in">MAD 195,000</td><td class="r"></td><td class="r fx">0.0920</td><td class="r in">+€17,940</td><td class="r bal">€2.08M</td>
+          </tr>
+          <tr>
+            <td>24 May</td><td><span class="ref">EXP-2195</span></td><td><span class="desc">Hall A rigging &amp; power</span></td><td><span class="ccy">MAD</span> CIH</td><td><span class="mtag">Wire</span></td>
+            <td class="r"></td><td class="r out">MAD 120,000</td><td class="r fx">0.0920</td><td class="r out">−€11,040</td><td class="r bal">€2.06M</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="tfoot">
+        <span>Showing <b style="color:var(--ink)">12</b> of <b style="color:var(--ink)">486</b> entries · 30 days · all accounts</span>
+        <span class="frozen" style="color:var(--info);font-weight:600"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> = FX frozen at settlement</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
