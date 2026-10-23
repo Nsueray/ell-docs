@@ -110,6 +110,10 @@ devam eder; bedeli: eski değer yalnız çıkış imzasında yaşar (onunla otur
 Alternatif: yeni bir değer → eski e-postalardaki çıkış linkleri kırılır (yasal çıkış yükümlülüğü riski). **Öneri: eski
 değer.** b0 `UNSUBSCRIBE_SECRET`'ın zaten tanımlı olduğunu gösterirse b1 atlanır.
 
+- **Güncelleme (23 Eki, b2 yazıldı — [defter:2026-10-23 FAZ B (b2)]):** b2 kodu dal `faz-b-jwt` (`532d173`), `main`'e
+  doğrudan değil. JWT'ye düşme zinciri KALDIRILDI (SEM-07): worker yalnız `UNSUBSCRIBE_SECRET` ister (JWT okumaz), api ikisini
+  de ister. b2 satırındaki "`worker.js` ikisi de yoksa" ve "`git push origin main`" bu notla geçersiz; adımlar CC teslim
+  bloğunda. (a) ertelendi.
 - Bitti mi: b4 geçti → CC deftere "FAZ B (b) K-E KAPANDI" · parola yöneticisindeki eski JWT değeri silinebilir (b1'de
   çıkış imzası olarak paneldeyse orada kalır).
 

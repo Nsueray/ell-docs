@@ -3980,6 +3980,70 @@
 >   Sonuç: LIFFY DB şifresi yenilemesinin (Faz B kuyruğu) önemi arttı; yerel JWT canlıyla aynıysa b3 kapatır. Runbook §3.
 > - **Teslim (Suer):** runbook §2A (a1 → a6) tek iş; (b) (a) bittikten sonra, b2 kodu CC'de.
 
+> ## ✅ 2026-10-23 — FAZ B (b2): LIFFY JWT FALLBACK KALDIRILDI + BOOT-GUARD (dal `faz-b-jwt`; push/merge Suer'de)
+>
+> - **Sentez kararları (23 Eki):** **(a) Anthropic ATLANDI** — Suer: anahtar Mac dışına çıkmadı → ertelendi (Faz B
+>   kuyruğu) · **b1 UYGULANDI** (Suer) — `UNSUBSCRIBE_SECRET` = eski `JWT_SECRET` değeri, liffy-api + liffy-worker-docker,
+>   Live · **(c) LIFFY DB şifresi** (b)'den sonra · **K4** (CC hatası ×2 → maskeli okuma zorunlu; 3. tekrar = dur).
+> - **Ne yapıldı (b2, CC):** liffyv1 `main` @ `9954054` → dal `faz-b-jwt` → **`532d173`**: 30 canlı dosya + 3 izlenen yedek
+>   (`campaignSend.js.backup` · `miningResults.js.backup` · `webhooks.js.backup_unsub_v21`) `process.env.JWT_SECRET ||
+>   '<sabit>'` → `require('../config')`. Tek okuma noktası `backend/config.js` (`JWT_SECRET`, `UNSUBSCRIBE_SECRET`, yedek
+>   değer yok). Yeni `backend/utils/bootGuards.js` (`missingSecrets`, saf — LEENA emsali) → `server.js` (liffy-api)
+>   `JWT_SECRET` veya `UNSUBSCRIBE_SECRET` yoksa `FATAL: <AD> missing` + `exit(1)`, router yüklenmeden · `worker.js`
+>   (liffy-worker-docker) `UNSUBSCRIBE_SECRET` yoksa aynı. `unsubscribeHelper.js`: HMAC sırrı YALNIZ `UNSUBSCRIBE_SECRET`
+>   (JWT'ye düşme kaldırıldı; yoksa hata fırlatır) → **SEM-07**. `.env.example` boş yer tutucu; LIFFY `CLAUDE.md` yasak
+>   desen satırı. **Sır değeri değişmedi** → oturumlar düşmez. Ek: **K4** satırı LIFFY `CLAUDE.md` (`d260f83`) + LEENA
+>   `CLAUDE.md` (`1a1f252`, `eliza-next`).
+> - **Commit:** liffyv1 `faz-b-jwt` = `532d173` (b2 — tek revert hedefi) + `d260f83` (K4), origin'de YOK · LEENA
+>   `eliza-next` `1a1f252` (origin'in 1 önünde) · ell-docs bu kayıt + kütük SEM-07 + runbook notu. **PUSH YOK.**
+> - **Ölçülenler (CC, 23 Eki, son ölçüm 13:2x UTC; değer basılmadı — K4: yalnız ad · uzunluk · ilk 2 karakter · sha256 öneki):**
+>   - **Fallback 0:** `git grep -E '(JWT_SECRET|UNSUBSCRIBE_SECRET)[[:space:]]*\|\|'` tüm izlenen ağaçta (.md dahil) **0** ·
+>     `main`'deki sabit DEĞERLERİ çalışma ağacının 262 dosyasında (node_modules hariç) **0**.
+>   - **YON-05 — çürüyen varsayım:** runbook §0.2 "3 farklı sabit; üreten (`routes/auth.js`) ile doğrulayan
+>     (`middleware/auth.js`) farklı sabit → env yoksa giriş kırık olurdu → canlıda env tanımlı (dolaylı işaret)". Ölçüm:
+>     **2 farklı DEĞER, 3 farklı YAZIM** (tek/çift tırnak) — 31 satır tek değer (üreten + doğrulayan dahil), 3 satır ikinci
+>     değer (`unsubscribeHelper.js:27` + yedek `:217/:230`). → env olmadan giriş ÇALIŞIRDI; koddan "env tanımlı" işareti
+>     YOK. (b1'de Suer'in panelden değeri kopyalaması liffy-api'de değişkenin varlığına işaret — CC ölçümü değil.)
+>   - **Worker JWT okumuyor:** `worker.js` statik require kapanışı 83 dosya, sır okuyan tek dosya `unsubscribeHelper.js`
+>     (yalnız JWT'ye düşme zinciri için) → b2 sonrası worker `JWT_SECRET` okumaz, guard'ı yalnız `UNSUBSCRIBE_SECRET`.
+>     `server.js` kapanışı 68 dosya, 29 sır okuyucu.
+>   - **Açılış testleri (yerel, `env -i`, `DATABASE_URL` → `127.0.0.1:1` erişilemez — gerçek DB'ye bağlanılmadı):** api
+>     env'siz / yalnız JWT / yalnız UNSUB / JWT boşluk → **exit 1** + doğru `FATAL` satırları · worker env'siz / yalnız JWT
+>     → **exit 1** `FATAL: UNSUBSCRIBE_SECRET missing` · api iki sırla → `Liffy server running`, FATAL 0;
+>     `/api/campaigns` (route içi kopya) + `/api/quotes` (`middleware/auth`): token yok 401 · başka sırla imzalı 401 ·
+>     config sırrıyla imzalı 500 (JWT geçti, DB yok) · worker UNSUB ile → banner, FATAL 0; DB'siz çıkışı `main` worktree'sinde
+>     de birebir aynı (`[Verification]` ECONNREFUSED — önceden var olan davranış).
+>   - **SEM-07 kanıtı:** aynı `UNSUBSCRIBE_SECRET` + DÖNDÜRÜLMÜŞ `JWT_SECRET` → token **geçerli** · `JWT_SECRET` hiç yok →
+>     geçerli · başka UNSUB → geçersiz · UNSUB yok, JWT = imza anahtarı → **geçersiz** (eski zincir geçerli derdi) · UNSUB
+>     yokken üretim → `FATAL: UNSUBSCRIBE_SECRET missing` fırlatır. `node --check` değişen `.js` ✓ · CRLF 0. LIFFY'de test
+>     zinciri yok.
+>   - **🔴 liffyv1 GitHub'da PUBLIC** (`gh repo view`: `visibility: PUBLIC`) → eski sabitler herkese açık geçmişte. **LIFFY
+>     canlı DB şifresi izlenen `CLAUDE_QUICKSTART.md:56`'da** (`PGPASSWORD=… psql`), `fa3f00c` (2026-04-20) ile girdi,
+>     `origin/main`'de → **bugün herkese açık** (değer basılmadı; eşitlik ölçüldü; push tarihi ve repo'nun ne zamandan beri
+>     public olduğu ÖLÇÜLMEDİ). Yerel `backend/.env`
+>     `JWT_SECRET` ağaçta 0, tüm git geçmişinde 0 commit (pickaxe `-S`). Eski sabitler yerel JWT'ye eşit DEĞİL.
+>   - **Yeni sızıntı yeri:** CC otomatik hafızası `~/.claude/projects/-Users-nsa-Projects-liffyv1/memory/MEMORY.md` DB
+>     şifresini (`:15`, `:17`) ve `JWT_SECRET`'ı (`:17`, len 64 — yerel `.env` ile EŞİT) düz metin taşıyor; **her liffyv1 CC
+>     oturumunun bağlamına otomatik yükleniyor**. Runbook §3'te yoktu.
+>   - **🔶 ELL R8:** `liffyv1/docs/ELL_RULES.md:238` "Same JWT_SECRET across services" (+ `LIFFY_ARCHITECTURE_BLUEPRINT.md:244`)
+>     b3'ün yeni rastgele değeriyle çelişir. Ölçüm: LEENA backend'de ve `~/Projects/eliza`'da LIFFY token'ı doğrulayan kod
+>     YOK (grep; tek iz yorum `apps/dashboard/lib/api.js:6`).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Render'da `JWT_SECRET` / `UNSUBSCRIBE_SECRET`'ın hangi serviste tanımlı olduğu (b0 —
+>   panel) · canlı `UNSUBSCRIBE_SECRET`'ın (= eski canlı JWT) koddaki public sabitlerden FARKLI olduğu · yerel JWT'nin
+>   canlıyla aynı olup olmadığı · DB şifresinin kötüye kullanılıp kullanılmadığı (Render DB erişim logu okunmadı; IP kısıtı
+>   bilinmiyor) · canlı deploy · Render boot logu · b1 sonrası eski e-posta çıkış linki (Suer raporu dışında).
+> - **Bilinçle yapılmayanlar:** push / merge (Suer) · Render env / deploy · (a) Anthropic (ertelendi) ·
+>   `CLAUDE_QUICKSTART.md:56` temizliği (ayrı dilim; HEAD'den silmek geçmişi temizlemez — çare (c) rotasyon) · `MEMORY.md`
+>   temizliği (Suer onayı) · `settings.local.json` + (c) DB şifresi (Faz B kuyruğu) · git geçmişini yeniden yazma ·
+>   `ell-docs/leena/CLAUDE.md` aynası (çalışma kopyasında başkasının commitlenmemiş değişikliği var — dokunulmadı) · YON-10
+>   atfına K4 eklenmesi (kilitli kayıt — Sentez).
+> - **🔶 Sentez'e:** (1) **(c) öne alınsın mı?** — canlı DB şifresi public repoda (commit 2026-04-20); (b)'den sonra sırası bu ölçümle
+>   yeniden tartılmalı. (2) b3 "JWT_SECRET iki serviste": worker JWT okumuyor — yalnız liffy-api yeter (worker'a koymak
+>   zararsız, sır bir yerde daha yaşar). (3) ELL R8 güncel mi? (b3'ten önce). (4) Kütük grubu SEM-07 seçildi (teknik
+>   değişmez; YON süreçtir) — uygun değilse yeni ID, numara yeniden kullanılmaz.
+> - **Teslim (Suer):** b2 push/merge bloğu (CC cevabı) → iki servis deploy + doğrulama → b3 → b4. Runbook §2B'deki `git push
+>   origin main` satırı bu kayıtla değişti (dal `faz-b-jwt`).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -4030,7 +4094,8 @@
 >   ✅ STAGING'E HAZIR (LEENA `312bc2d` + `50b3938`) → ✅ MAIN'E MERGE (`2463259`) → ✅ **CANLIDA (23 Eki 14:27, KAPI-1
 >   geçti)** — [defter:2026-10-23 PAKET UI-0b CANLIDA]. **Açık:** 4 🔶 Sentez sorusu (UI-0b kapanış brief'i 23 Eki).
 >   **★ SIRA (Suer 23 Eki — bu kazanır):** **Faz B başı** (Anthropic API anahtarı iptal/yenileme + LIFFY `JWT_SECRET`,
->   K-E; **KAPI-2**; **Sentez GO VAR**) → **Paket 3** (Sentez kriter turu). P1b-2 Zoho CSV gelince araya girer
+>   K-E; **KAPI-2**; **Sentez GO VAR**) [(a) ertelendi · b1 ✅ · b2 kod `532d173` dal `faz-b-jwt`, push Suer'de ·
+>   🔴 DB şifresi public repoda → (c) sırası Sentez'de — [defter:2026-10-23 FAZ B (b2)]] → **Paket 3** (Sentez kriter turu). P1b-2 Zoho CSV gelince araya girer
 >   (değişmedi). **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
