@@ -4222,6 +4222,80 @@
 > - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** bu kayıt ölçüm taşımaz (kriter kaydı); ölçümler P3-1 kaydında.
 > - **Bilinçle yapılmayanlar:** hükümlerin yorumu / kısaltılması · P3-2..5 (ayrı oturumlar).
 
+> ## ✅ 2026-10-24 — PAKET 3 P3-1: STAGING'E HAZIR (LEENA alıcı — convert v1 + vergi/L4 brüt + servis kimliği + bölge tablosu + convert kuyruğu; KAPI-2)
+>
+> - **Ne yapıldı (dal `eliza-next`, tek merge):** `eliza-next` önce `main`'e eşitlendi (`eaa51b1`, ağaç değişmedi — ff-only
+>   olamazdı: `1a1f252` K4 commit'i main'de yoktu). İnşa **`34f3e4c`**: migration **046** (`contract_line_items.tax_percent`
+>   + `tax_amount`, nullable, NULL = 0; tablo değiştirilemez kaldı) · **047** (`users.is_service` + `users_service_check`
+>   [şifre NULL, Owner değil] + `service_request_nonces` + aktif Owner'lı kiracıya tek servis kullanıcısı) · **048**
+>   (`sellable_territories` + `territories.read` / `territories.write`) · **049** (`convert_requests`, yalnız eklenir) —
+>   hepsi runner'lı (LED-16). Convert **v1** (`docs/API_CONVERT_v1.md`): `source_quote_id` · `canonical_expo_id` ZORUNLU
+>   (gerçek expo FK) · `signed_at` → `contract_date` · `line_items` ZORUNLU (L3 kapandı) — satırda `tax_percent` +
+>   `is_registration_fee` ZORUNLU (varsayılan yok, KAT-02) · vergi tutarını SUNUCU hesaplar · L4 = BRÜT(satırlar) ↔ revenue
+>   ±0.01 · `revenue` = BRÜT · `converted_by/at` dolar · her istek `convert_requests`'e. Servis kimliği (`middleware/
+>   serviceAuth.js`, authMiddleware dalı): `X-ELL-*` başlıkları, HMAC-SHA256(sır, timestamp + ham gövde), 5 dk pencere,
+>   tekrar deposu, YALNIZ `POST /api/contracts/convert` (diğer uçlar 403); sır yoksa yol kapalı (log satırı, FATAL yok);
+>   servis kullanıcısına davet / şablon / kişi yetkisi 409 `SERVICE_USER`, girişi yok; pasifleştirmek = kill switch.
+>   Kontrat liste/detay: `revenue_net` (+EUR) · `tax_total` (+EUR) türetilir (D2); `commissionable_base` DEĞİŞMEDİ.
+>   `regionFilter` yuvası tabloyu okur (`resolved.countries`), süzgeç değişmez. ui2: Sales › Handoff › **Convert queue**
+>   (`sales.html` kalktı) · Admin › Organization › **Territories** · kontrat detay + liste ciro **brüt + net** (+ vergi
+>   çifti). BM v4 §4.2 yaması ÖN İŞ'te (`3d4aa4a`).
+> - **Commit:** LEENA `eliza-next` `eaa51b1` + **`34f3e4c`** (origin'in 3 önünde) · ell-docs `3d4aa4a` (ÖN İŞ) + bu kayıt.
+>   **PUSH YOK** (Suer).
+> - **Ölçülenler (CC, 23–24 Eki; K4 allowlist — değer basılmadı):**
+>   - **ADIM 0 canlı (`claude_readonly`) + staging (salt-okunur oturum, `default_transaction_read_only=on`):** iki tarafta
+>     `schema_migrations` **47**, son `045_audit_log` · `contracts` 34 kolon / `contract_line_items` 11 kolon (vergi kolonu
+>     YOK) · `expos.id` integer · `contracts.expo_id → expos(id)` FK VAR (012) · `trg_contract_line_items_immutable` VAR.
+>   - **Staging ↔ canlı parmak izi (md5):** `contracts` 3 · `contract_line_items` 2 · `payments` 15 · `sales_agents` 152 ·
+>     `offices` 6 · `expos` 23 · `commission_payouts` 8 → **BİREBİR AYNI**. Fark yalnız Paket 2 deneme verisi: `users` 2/1 ·
+>     `audit_log` 3/0 · `user_invites` 1/0.
+>   - **TABAN vergisiz (kanıt):** canlı ve staging contract 4 → 2 satır (RF 1), base 17100.00, net (tüm satır) 18600.00 =
+>     revenue, paid_eur 7440.00, sr %5 → earned 342.00; vergi kolonu şemada yok (vergili satır olamaz). Test T35 / B1 satır
+>     INSERT'leri vergi kolonu taşımaz (`tests/test_cash_forecast.js:460`).
+>   - **L4 / matrah (değişiklik öncesi):** L4 `contracts.js:142-153` (satır toplamı vergisiz `:136`) · matrah
+>     `COMMISSIONABLE_BASE_EXPR` (`:303-305`, RF hariç) — değişmedi.
+>   - **Token türleri (authMiddleware ve kardeşleri):** klasik organizer JWT (DB'ye gidilmez) · users JWT (`user_id` +
+>     `is_active` denetimi, `authMiddleware.js:18-31`) · `dualAuth` (JWT | `x-terminal-key`, tür izinli) · `terminalAuth`
+>     (`x-terminal-key`) · callcenter agent/supervisor · `auth.js` (`req.user`). Servis kimliği yalnız authMiddleware'de.
+>   - **Canlı şema dayanakları:** `expos.organizer_id` VAR (23 expo, 22'si kiracı 1) · `core_countries.code` character(2) ·
+>     `users_email_key` VAR · aktif Owner'lı kiracı 1 → 047 canlıda **1** servis kullanıcısı yaratır.
+>   - **Testler:** `npm run test:setup && npm test` **461/461** (önce 418) — iki kez setup+test aynı sonuç. Yeni:
+>     `test_p3_convert` **31** (HMAC doğru / yanlış sır / gövde oynanmış / eski-ileri timestamp / replay / 3 uç 403 / sır yok /
+>     kill switch · v1 alanları · L4 brüt-net + ±0.01 sınırı · indirim + vergi · istemci vergi tutarı yok sayılır ·
+>     idempotency 409 · istek kaydı · TABAN B1 · territories + kapsam + regionFilter · kuyruk + kapsam · servis kullanıcısı
+>     giriş/davet yok) · `test_p3_premig` **6** (≤ 045 şemada liste/detay çalışır, yeni uçlar 503, servis yolu 401) ·
+>     runner **R22–R25** (046–049 dry-run → CLI COMMIT 4 → tekrar boş; 2. kiracıya servis kullanıcısı yok; 046 öncesi satır
+>     NULL + K-D sağlam) · render R14b/R14c.
+> - **YON-05 — çürüyen varsayımlar:** (1) talimat izin kodu "admin.territories.write" dedi → 044 `permissions_code_check`
+>   (`code = module.action`, modülde nokta yok) buna izin vermez → `territories.write` (alan admin). (2) Sentez hüküm 6
+>   "LEENA'da signed-ve-convert-edilmemiş liste (türetilmiş)" → LEENA signed quote'u BİLEMEZ (quote LIFFY'de) → ekran
+>   LEENA'ya ULAŞAN isteklerin kaydı (`convert_requests`); asıl kuyruk LIFFY outbox'ı (P3-4). (3) LIFFY
+>   `expos.canonical_expo_id` **UUID** (liffyv1 `050:90`) ↔ ELIZA `expos.id` **INTEGER** (ölçüldü) → P3-3 tip/eşleme
+>   değiştirmeli. (4) Mevcut nav/sayı iddiaları bugünkü menüyü sabitliyordu → gereksinim değişince güncellendi (aşağıda).
+> - **Test iddiası güncellemeleri (gereksinim değişti, mantık aynı):** G2 (Sales artık canlı, Operations boş-durum) · S5
+>   (Owner Admin alt menüsü + Territories) · U3 (Sales alt menüsü tek öğe) · N1 (kayıt defteri 044 + 048) · R1 (Owner kısa
+>   devre "tüm kodlar" = canlı sayı, bugün 20) · R14 (Sales ekranı) · R18–R21 Paket 2 kümesine (≤ 045) donduruldu (R15–R17
+>   emsali).
+> - **Staging tazeleme önerisi: ATLANABİLİR** — P3-1'in okuduğu/yazdığı finans tabloları canlıyla birebir; fark yalnız
+>   Paket 2 deneme kullanıcısı/daveti (zararsız; servis kullanıcısı tohumu iki tarafta aynı). Karar Suer'in.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging/canlı migration koşumu (046–049) · staging deploy · `LIFFY_HMAC_SECRET` hiçbir
+>   ortamda yok · gerçek LIFFY çağrısı (P3-4) · ui2 görsel tur (Suer) · staging şemasında `expos.organizer_id` (yalnız canlıda
+>   ölçüldü) · setup'sız art arda iki `npm test` (ikincide `test_ledger` A2/A8/E1 referans verisi yüzünden düştü — taban
+>   davranışı ölçülmedi; belgeli yol setup+test, o yeşil) · `ui0_compare.js` (elle araç) hâlâ `sales.html`'e bakıyor.
+> - **Bilinçle yapılmayanlar:** LIFFY tarafı (P3-2..4) · servis kimliğine `GET /api/expos` (P3-3 — izin listesi tek satır)
+>   + `published_to_liffy` bayrağı · imzaya method + path bağlama (v2, API doc §8) · bölge yasağının uygulanması (Paket 4) ·
+>   kontrata ofis kolonu (şemada yok — payload'da da yok) · vergi tutarının istemciden alınması · staging tazeleme · push /
+>   merge.
+> - **🔶 Sentez'e:** (1) Convert kuyruğu sapması (hüküm 6 "signed-ve-convert-edilmemiş" → LEENA alındı kaydı) kabul mü?
+>   (2) P3-3 için servis kimliğine GET açılmadan imzaya method + path bağlansın mı (v2)? (3) Convert kuyruğu Sales
+>   sekmesinde (`sales.read` ister) — Project şablonunda `sales.read` yok, BM §6 † "Proje ekibi convert kuyruğunu görür" →
+>   Finance › Contracts'a da bağ mı, şablona `sales.read` mı? (4) `territories.*` kodları şablonlara verilmedi (yalnız Owner)
+>   — doğru mu? (5) L4 yuvarlaması satır bazlı (API doc §4); LIFFY `computeTotals` sonda yuvarlar → P3-4 payload'ı LEENA
+>   kuralıyla kurar — onay. (6) LIFFY `canonical_expo_id` UUID ↔ ELIZA integer → P3-3'te kolon tipi değişimi.
+> - **Teslim (Suer):** push → staging Shell migrate (dry-run → gerçek) → staging env `LIFFY_HMAC_SECRET` (openssl) + deploy →
+>   görsel: Admin › Territories · Sales › Convert queue (boş) · kontrat 4 brüt/net + €342.00 → "merge" → canlı sırası
+>   (**export ZORUNLU, YON-12 (a)+(c)**). Ayrıntı teslim metninde.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -4274,7 +4348,8 @@
 >   **★ SIRA (Suer 23 Eki kapanış — bu kazanır):** ~~**Faz B başı**~~ → ✅ **FAZ B TAMAMLANDI** (b1 · b2 `532d173` ·
 >   b3 yalnız liffy-api · b4 · c1–c3; **(a) Anthropic ERTELENDİ**) — [defter:2026-10-23 FAZ B TAMAMLANDI] →
 >   ~~Paket 3 kriter turu~~ ✅ [defter:2026-10-24 PAKET 3 KRİTER TURU] → **★SIRADAKİ = Paket 3 (P3-1 inşa — LEENA alıcı,
->   KAPI-2; P3-2..4 LIFFY ayrı oturum) ∥ UI-1 (taşındı) ∥ P1b-2 Zoho CSV** (Suer CSV'yi getirince; paralel). **Eklemeler (Sentez EK 21 Eki — tarihsel):**
+>   KAPI-2; P3-2..4 LIFFY ayrı oturum) ∥ UI-1 (taşındı) ∥ P1b-2 Zoho CSV** (Suer CSV'yi getirince; paralel).
+>   P3-1 → ✅ **STAGING'E HAZIR** (`34f3e4c`, push Suer'de) — [defter:2026-10-24 PAKET 3 P3-1]; P3-2 Zoho Products CSV'si bekler. **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
 >     permissions'a "field" eylemi eklenmez, tablo genişletilebilir kalır.
