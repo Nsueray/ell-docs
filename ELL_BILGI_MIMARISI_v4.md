@@ -206,6 +206,17 @@ ui2'de Finance alt menüsü yukarıdaki bölümlerden türetilir ve **dört grup
 - **Intelligence** ui2 alt menüsünde YOKTUR (bölüm hedef IA'da kalır).
 - Bölümde yeri olmayan ekran = IA değişikliği → önce bu belgeye yama, sonra ekran (UI-01).
 
+### 4.2 ui2 Sales ve Admin alt menüsü (yama — Paket 3 P3-1, 24 Eki; UI-01)
+
+| ui2 alanı · grubu | dayandığı bölüm | ekran |
+|---|---|---|
+| **Sales** · Handoff | §3 "Convert burada biter: signed quote → Proje ekibinin kuyruğuna düşer" + §6 † (convert review) | **Convert queue** — LEENA'ya ULAŞAN convert isteklerinin durum listesi (alındı / başarılı / hata) |
+| **Admin** · Organization | §6 Admin "ofis atamaları" + SAT-04 / KAT-06 | **Territories** — ofis → satabileceği ülkeler (`sellable_territories`) |
+
+- Convert queue LIFFY'deki "signed ama gönderilmemiş" quote'ları GÖSTEREMEZ (LEENA signed'ı bilmez); asıl kuyruk LIFFY
+  outbox'ıdır (KAT-04, P3-4). Ekran LEENA tarafı alındı-kaydıdır.
+- Admin'e servis kullanıcısı (KAT-05, `users.is_service`) eklenir: listede görünür, giriş/davet yolu yoktur.
+
 ---
 
 ## 5. "Sales agent nerede?" — net cevap

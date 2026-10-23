@@ -4119,6 +4119,109 @@
 >   commit'leri · 242 SKU kaynağı — rapor §7.
 > - **🔶 Sentez'e:** Paket 3 kriter turu girdisi rapor §6 (7 soru).
 
+> ## ✅ 2026-10-24 — PAKET 3 KRİTER TURU (Sentez 24 Eki) — hükümler AYNEN + KB @ 61cdcc0
+>
+> - **YON-03: KB @ 61cdcc0** (Sentez bildirimi 24 Eki) → PAKET 3 ÖN-ÖLÇÜM belge tarafı KAPALI.
+> - **Ne yapıldı:** Sentez kriter metni (girdi: ön-ölçüm `fa85a92` + amendment 21 Eki) aşağıya AYNEN (Suer yapıştırdı; yalnız
+>   satır sonları geri kondu, kelime değişmedi) · kütük: **TAH-05** (hüküm 3) + yeni **KAT** grubu **KAT-01..06** (hüküm 1 · 2 ·
+>   4 · 6 · 6 · 5) · ★SIRADAKİ güncellendi · BM v4'e §4.2 yaması (UI-01: Sales "Convert queue" + Admin "Territories" yeri).
+>   Kod / migration YOK (P3-1 inşası ayrı commit, LEENA `eliza-next`).
+> - **Commit:** ell-docs (bu kayıt + kütük + BM yaması). PUSH YOK.
+> - **Sentez metni AYNEN:**
+>
+>   ```
+>   SENTEZ → ORCHESTRATOR — PAKET 3 KRİTER TURU (24 Eki; girdi: ön-ölçüm fa85a92, amendment 21 Eki)
+>   KB @ 61cdcc0. Paket 3 = KATALOG + QUOTE → KONTRAT KÖPRÜSÜ (inşa; "aktivasyon"
+>   değil — katalog boş, transport yok). Satışçıya açılış Paket 3 + Paket 4'ten
+>   sonra; bu paket Suer tek kullanıcıyla uçtan uca çalışır.
+>   SUER KARARLARI (23 Eki): S1 katalog Zoho'dan dışa aktarım (CSV, normalize,
+>   seed) · S2 komisyon NET satırlardan, gelir/bakiye/ciro BRÜT (vergi dahil) ·
+>   S3 ofis/bölge tablosunu Suer ui2 admin ekranından doldurur.
+>   7 SORUNUN HÜKMÜ
+>   1 Katalog: Zoho Products dışa aktarımı (Suer CSV; alanlar: ürün adı/kodu,
+>     kategori, pazar/ofis, para birimi, birim fiyat, m²/adet). CC normalize:
+>     pazar-kopyası ürünler TEK ürün + product_prices (ürün × ofis × para
+>     birimi — 050 şeması). Seed AYRI dosya, runner ile (LIFFY'de runner yok →
+>     LIFFY için aynı runner kopyalanmaz, LIFFY migration'ları mevcut yoluyla;
+>     seed script idempotent, ON CONFLICT DO NOTHING). Test ürünü + 2 test
+>     quote KALIR (S8 E2E çapası), seed sonrası sayım deftere.
+>   2 RF bayrağı ÜRÜN kaydında: products.is_registration_fee (boolean, default
+>     false); quote satırına convert anında kopyalanır (L2a: donmuş kopya).
+>     Kod önekiyle türetme YOK (sessiz hata). product_code = products.code.
+>   3 VERGİ (S2): quote_line_items'ta tax_percent zaten var; LEENA
+>     contract_line_items'a tax_percent + tax_amount (nullable, eski satırlar
+>     NULL = 0) eklenir. Tanımlar: net = Σ(q×p×(1−d)) · vergi = Σ(net_satır×
+>     tax%) · BRÜT = net + vergi. contracts.revenue = BRÜT (müşterinin borcu;
+>     paid/balance brüte karşı). commissionable_base DEĞİŞMEZ (net, RF hariç —
+>     K7b; TABAN 342.00 korunur: vergili test kalemi yok). L4 yeniden:
+>     BRÜT(satırlar) ↔ revenue ±0.01. Raporlarda ciro iki sütun: brüt + net
+>     (RAP-02: biri gizlenmez). contracts'a revenue_net saklanmaz (D2,
+>     türetilir). Kütük: TAH/MOT grubuna "gelir brüt, matrah net" hükmü.
+>   4 Expo eşlemesi: LIFFY expos → LEENA canonical expo, canonical_expo_id
+>     ZORUNLU olur (quote açılırken LIFFY expo listesi LEENA'dan okunur —
+>     tek kaynak kilidi §2; LIFFY'de expo YARATILMAZ, read-only senkron:
+>     LEENA'dan çekilen kopya, published_to_liffy bayrağı). Convert payload'ı
+>     canonical_expo_id taşır → contracts.expo_id gerçek FK. Bugünkü 1 LIFFY
+>     expo'su elle eşlenir ya da silinir (test).
+>   5 Ofis/bölge: LEENA'da sellable_territories tablosu (office_id ×
+>     country_code; S-16r, koda gömülmez) + users.office_id Paket 2'de var.
+>     LIFFY users.office_id: LIFFY kullanıcıları henüz LEENA users'a
+>     bağlı değil (SSO Paket 4) → bu pakette LIFFY tarafında yalnız
+>     office_id doldurma ekranı; bölge yasağı LEENA'da tablo + ui2 admin
+>     ekranı (Suer doldurur), LIFFY'de UYGULAMA Paket 4 (tek giriş sonrası).
+>   6 Transport: LIFFY PUSH → LEENA POST /api/contracts/convert, SERVİS
+>     KİMLİĞİ ile: LEENA'da users'ta "servis kullanıcısı" (is_service=true,
+>     şifre NULL, giriş yolu yok; token uzun ömürlü değil — imzalı istek:
+>     paylaşılan sır HMAC, env'den, LIFFY→LEENA tek yön; SEM-07 ilkesi:
+>     JWT'den bağımsız). Idempotency source_quote_id (mevcut). Outbox: LIFFY
+>     quotes.convert_status (pending|sent|acked|failed) + retry; manuel
+>     "yeniden gönder" düğmesi. line_items ZORUNLU bu paketle (L3 kapanır;
+>     satırsız payload 400). Sign anında otomatik gönderim; review-queue =
+>     LEENA'da signed-ve-convert-edilmemiş liste (6/18 kararı, türetilmiş).
+>     authMiddleware'e servis kimliği dalı = KAPI-2 (Sentez onaylı, bu
+>     hükümle); diğer uçlar servis kimliğini REDDEDER (yalnız convert).
+>   7 UI 401 → login: liffy-ui'de 401'de token sil + /login (LEENA leena-fetch
+>     deseni). Küçük, pakete girer.
+>   KESİTLER (tek dal liffyv1 + tek dal LEENA eliza-next; iki repo, iki merge,
+>   sıra: LEENA önce (alıcı), LIFFY sonra (gönderici))
+>   P3-1 LEENA alıcı: line_items vergi kolonları + L4 brüt + revenue brüt
+>     + servis kimliği + sellable_territories + ui2 admin (ofis-bölge) +
+>     ui2 Sales/Contracts "convert kuyruğu" ekranı (signed-bekleyen liste,
+>     türetilmiş) · migration'lar runner ile · testler (L4 brüt, matrah net,
+>     TABAN, servis kimliği yalnız convert, idempotency).
+>   P3-2 LIFFY katalog: seed (S1 CSV) + products.is_registration_fee +
+>     ürün/fiyat yönetim ekranı mevcut (Products & Pricing) → RF alanı
+>     eklenir · test ürünü korunur.
+>   P3-3 LIFFY expo senkronu: LEENA'dan read-only çekim (GET /api/expos,
+>     servis kimliği ters yönde DEĞİL — LIFFY, LEENA'nın public olmayan
+>     ucunu aynı HMAC ile okur; tek sır iki yön) · LIFFY expo yaratma
+>     kapanır · canonical_expo_id zorunlu.
+>   P3-4 LIFFY gönderici: convert payload kurucusu (enrichQuote tabanlı:
+>     kalemler + RF + vergi + canonical_expo_id + signed_at + scan) ·
+>     outbox + retry + yeniden gönder · sign → otomatik gönderim · 401 UI.
+>   P3-5 Uçtan uca (staging ikisi için de — LIFFY staging YOK: LIFFY tarafı
+>     yerel + canlı; LIFFY kullanıcısı yok, kabul): Suer gerçek katalogdan
+>     quote açar (gerçek expo, 2+ kalem, 1 RF, vergili) → Sent → Sign (scan)
+>     → LEENA'da contract doğar: expo FK dolu, kalemler RF/vergi ile, revenue
+>     BRÜT, commissionable_base NET, L4 geçer, ui2 kontrat detayında görünür;
+>     aynı quote ikinci gönderim 409; TABAN 342.00 değişmemiş.
+>   KAPSAM DIŞI: LIFFY↔LEENA tek giriş (Paket 4) · bölge yasağının LIFFY'de
+>     uygulanması (Paket 4) · katalog üretimi (2.4 amendment; ayrı paket) ·
+>     leads/contacts qualification zinciri (Paket 5 ile) · Zoho kontrat
+>     göçü (Paket 4/6) · iade/kredi.
+>   Kütük: KAT grubu (katalog/quote) KAT-01+; kapılar: LEENA tarafı KAPI-2
+>   (authMiddleware + L4 değişikliği), LIFFY tarafı SERBEST (kullanıcı yok).
+>   Export YON-12c. ★SIRADAKİ: Paket 3 ∥ UI-1 (TAŞI) ∥ P1b-2 CSV.
+>   Ön koşul: Suer Zoho Products CSV'sini CC'ye verir (P3-2 bununla başlar;
+>   P3-1 beklemez).
+>   ```
+>
+> - **Kütük tahsisi (bu kayıt):** TAH-05 (hüküm 3) · KAT-01 katalog kaynağı (h1) · KAT-02 RF ürün kaydında (h2) · KAT-03 expo
+>   tek kaynağı LEENA (h4) · KAT-04 convert sözleşmesi + transport (h6) · KAT-05 servis kimliği (h6) · KAT-06 bölge tablosu
+>   (h5; SAT-04'ün tablo karşılığı). Hüküm 7 (UI 401) kütüğe girmez — LIFFY uygulama ayrıntısı (P3-4).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** bu kayıt ölçüm taşımaz (kriter kaydı); ölçümler P3-1 kaydında.
+> - **Bilinçle yapılmayanlar:** hükümlerin yorumu / kısaltılması · P3-2..5 (ayrı oturumlar).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -4170,8 +4273,8 @@
 >   geçti)** — [defter:2026-10-23 PAKET UI-0b CANLIDA]. **Açık:** 4 🔶 Sentez sorusu (UI-0b kapanış brief'i 23 Eki).
 >   **★ SIRA (Suer 23 Eki kapanış — bu kazanır):** ~~**Faz B başı**~~ → ✅ **FAZ B TAMAMLANDI** (b1 · b2 `532d173` ·
 >   b3 yalnız liffy-api · b4 · c1–c3; **(a) Anthropic ERTELENDİ**) — [defter:2026-10-23 FAZ B TAMAMLANDI] →
->   **★SIRADAKİ = Paket 3 kriter turu (Sentez) ∥ P1b-2 Zoho CSV** (Suer CSV'yi getirince; paralel) — ön-ölçüm ✅
->   [defter:2026-10-24 PAKET 3 ÖN-ÖLÇÜM]. **Eklemeler (Sentez EK 21 Eki — tarihsel):**
+>   ~~Paket 3 kriter turu~~ ✅ [defter:2026-10-24 PAKET 3 KRİTER TURU] → **★SIRADAKİ = Paket 3 (P3-1 inşa — LEENA alıcı,
+>   KAPI-2; P3-2..4 LIFFY ayrı oturum) ∥ UI-1 (taşındı) ∥ P1b-2 Zoho CSV** (Suer CSV'yi getirince; paralel). **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
 >     permissions'a "field" eylemi eklenmez, tablo genişletilebilir kalır.

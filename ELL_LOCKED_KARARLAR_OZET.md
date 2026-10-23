@@ -123,6 +123,7 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 - **TAH-02** (eski W-9) — Add-payment tarihi bugünle ön-doldurulur; sunucuda tarih zorlaması yoktur. [defter:2026-07-28 PS2 CANLIDA]
 - **TAH-03** (eski W-10) — Tek ödeme formu vardır (`contract-detail.html`); satır içi hızlı form açılmaz. [defter:2026-07-28 PS2 CANLIDA]
 - **TAH-04** (eski S-6) — `payments.schedule_item_id` kolonu vardır ama ödeme↔kalem eşleştirme mantığı bilinçli olarak YOKTUR. [defter:2026-07-28 PAYMENT SCHEDULE PS1] Bu yüzden PLN-10'un ay dağılımı bir VARSAYIMDIR (satır eşleştirme yapılamıyor). [defter:2026-07-30 PS3-B CANLIDA]
+- **TAH-05** (Paket 3 hüküm 3 — Suer S2, Sentez 24 Eki) — Gelir BRÜTTÜR (vergi dahil), komisyon matrahı NETTİR (RF hariç — K7b; MOT-01 formülü değişmez). `contracts.revenue` = BRÜT (müşterinin borcu; paid/balance brüte karşı). net = Σ(q×p×(1−d)) · vergi = Σ(net_satır × tax%) · BRÜT = net + vergi; L4 = BRÜT(satırlar) ↔ revenue ±0.01. `revenue_net` saklanmaz (D2, türetilir); raporda ciro iki sütun brüt + net (RAP-02). [defter:2026-10-24 PAKET 3 KRİTER TURU]
 
 ### ODE — payout / cari hesap
 
@@ -253,3 +254,15 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 - **UI-05** (Sentez 22 Eki) — NİHAİ ARAYÜZ: giydirme ŞİMDİ, düz HTML/JS, derleme yok (K-G). React/Next (brief §8) ERTELENDİ; yeniden tartı tetiği: Sales alanının (LIFFY) ui2'ye taşınma kararı. [defter:2026-10-22 UI-0 KRİTERLERİ]
 - **UI-06** (Sentez 22 Eki) — ORGANIZER ANA PANELİ: ui2'de YENİ sayfa olacak — UI-0 DIŞINDA (UI-1 adayı). UI-0 asgarisi: ui2 girişi → Finance özet; Sales/Operations sekmeleri boş-durum ekranı, ölü link değil. [defter:2026-10-22 UI-0 KRİTERLERİ]
 - **AÇIK SORULAR — KAPANDI** (Sentez 22 Eki): taslaklar = gider taslakları → Money · Intelligence ui2'de YOK · Commissions & Agents → Contracts grubu, ui2 ikizi yok (UI-1 adayı). [defter:2026-10-22 UI-0 KRİTERLERİ]
+
+### KAT — katalog / quote → kontrat köprüsü (yeni grup, 2026-10-24, Paket 3)
+
+> Sentez Paket 3 kriter turunun (24 Eki) bu pakette doğan hükümleri. Gelir brüt / matrah net hükmü TAH-05'te.
+> Kapılar: LEENA tarafı KAPI-2 (authMiddleware + L4), LIFFY tarafı SERBEST.
+
+- **KAT-01** (Paket 3 hüküm 1 — Suer S1, Sentez 24 Eki) — Katalog kaynağı Zoho Products dışa aktarımıdır (Suer CSV); pazar-kopyası ürünler TEK ürün + `product_prices` (ürün × ofis × para birimi — LIFFY 050 şeması) olarak normalize edilir. Tohum AYRI ve idempotent dosyadır (`ON CONFLICT DO NOTHING`); test ürünü + 2 test quote KALIR (S8 E2E çapası), tohum sonrası sayım deftere. [defter:2026-10-24 PAKET 3 KRİTER TURU]
+- **KAT-02** (Paket 3 hüküm 2, Sentez 24 Eki) — RF bayrağı ÜRÜN kaydındadır (`products.is_registration_fee`, varsayılan false); convert anında satıra DONMUŞ kopya olarak geçer (L2a). Kod önekiyle türetme YOKTUR (sessiz hata). `product_code` = `products.code`. [defter:2026-10-24 PAKET 3 KRİTER TURU]
+- **KAT-03** (Paket 3 hüküm 4, Sentez 24 Eki) — Expo'nun tek kaynağı LEENA'dır: LIFFY expo YARATMAZ, LEENA'dan salt-okunur kopya çeker (`published_to_liffy`); quote'ta `canonical_expo_id` ZORUNLUDUR, convert onunla `contracts.expo_id` gerçek FK'sını doldurur. [defter:2026-10-24 PAKET 3 KRİTER TURU]
+- **KAT-04** (Paket 3 hüküm 6, Sentez 24 Eki) — Convert = LIFFY PUSH → LEENA `POST /api/contracts/convert`; idempotency anahtarı `source_quote_id` (ikinci gönderim 409); `line_items` ZORUNLU (L3 kapanır — satırsız 400). Gönderici tarafı outbox'tır (`quotes.convert_status` pending|sent|acked|failed + retry + elle yeniden gönder); sign anında otomatik gönderim. [defter:2026-10-24 PAKET 3 KRİTER TURU]
+- **KAT-05** (Paket 3 hüküm 6, Sentez 24 Eki — KAPI-2) — Sistemler arası çağrı SERVİS KİMLİĞİYLE yapılır: LEENA `users` satırı `is_service = true` (şifre NULL, giriş yolu yok, davet yok); istek HMAC imzalıdır, paylaşılan sır env'den, JWT'den BAĞIMSIZ (SEM-07 ilkesi); token uzun ömürlü değildir. Servis kimliği YALNIZ izinli uçlarda geçer (P3-1: yalnız convert), diğer her uç reddeder. [defter:2026-10-24 PAKET 3 KRİTER TURU]
+- **KAT-06** (Paket 3 hüküm 5 — Suer S3, Sentez 24 Eki) — Bölge yasağı LEENA'da TABLODUR (`sellable_territories`: ofis × ülke; koda gömülmez — OFS-01/S-16r); Owner ui2 admin ekranından doldurur. LIFFY'de UYGULAMA Paket 4'tedir (tek giriş sonrası). SAT-04'ün tablo karşılığı. [defter:2026-10-24 PAKET 3 KRİTER TURU]
