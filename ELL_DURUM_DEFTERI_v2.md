@@ -4296,6 +4296,26 @@
 >   görsel: Admin › Territories · Sales › Convert queue (boş) · kontrat 4 brüt/net + €342.00 → "merge" → canlı sırası
 >   (**export ZORUNLU, YON-12 (a)+(c)**). Ayrıntı teslim metninde.
 
+> ## ✅ 2026-10-25 — PAKET 3 P3-1: MAIN'E MERGE (`028582a`; push + canlı migration Suer'de, KAPI-2)
+>
+> - **Ne yapıldı:** Suer "merge" dedi → `eliza-next` (`34f3e4c`) `main`'e `--no-ff` merge: **`028582a`** (ebeveynler
+>   `2463259` + `34f3e4c`). Ayrı worktree'de yapıldı; ana çalışma kopyası (`eliza-next`, başkasının `.DS_Store`'u) dokunulmadı.
+> - **Commit:** LEENA `main` **`028582a`** (origin/main'in 4 önünde: `1a1f252` K4 · `eaa51b1` · `34f3e4c` · `028582a`) ·
+>   ell-docs bu kayıt. **PUSH YOK** (Suer).
+> - **Ölçülenler (CC, 25 Eki):** `origin/eliza-next` = `34f3e4c` (Suer push'u) · staging yeni kodu sunuyor:
+>   `/ui2/sales-convert-queue.html` 200 · `/ui2/admin-territories.html` 200 · `/ui2/sales.html` 404 · `/health` 200 ·
+>   canlı `leena.app/health` 200, `/ui2/sales-convert-queue.html` 404 (canlı eski kodda — beklenen) · merge ağacı ↔ `34f3e4c`
+>   fark **0 dosya** (461/461 bu ağaçta koştu) · **geri alma kanıtı:** `git revert -m 1 028582a` geçici worktree'de temiz;
+>   ağaç `2463259` (bugünkü canlı main) ile birebir — K4 satırı da (`1a1f252`, merge'le geldi) geri gider. Şema geri
+>   alınmaz: 046–049 eklemeli, kod olmadan zararsız.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging'de 046–049 koşumu, `LIFFY_HMAC_SECRET` ve görsel tur (Suer raporu gelmedi; "merge"
+>   staging kabulü sayıldı) · canlı export · canlı deploy + migration · canlı ekranlar.
+> - **Bilinçle yapılmayanlar:** push · canlı migration · canlıya `LIFFY_HMAC_SECRET` (P3-4 hazır olunca; o zamana dek servis
+>   yolu kapalı — FATAL değil).
+> - **Teslim (Suer, canlı sırası):** YON-06 iki ölçüm → **export (YON-12 a+c)** → `git push origin main` → deploy logu →
+>   canlı Shell `node scripts/migrate.js --dry-run` → gerçek → görsel (Territories · Convert queue · kontrat 4 €342.00) →
+>   CC'ye rapor → "CANLIDA" kaydı.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -4349,7 +4369,8 @@
 >   b3 yalnız liffy-api · b4 · c1–c3; **(a) Anthropic ERTELENDİ**) — [defter:2026-10-23 FAZ B TAMAMLANDI] →
 >   ~~Paket 3 kriter turu~~ ✅ [defter:2026-10-24 PAKET 3 KRİTER TURU] → **★SIRADAKİ = Paket 3 (P3-1 inşa — LEENA alıcı,
 >   KAPI-2; P3-2..4 LIFFY ayrı oturum) ∥ UI-1 (taşındı) ∥ P1b-2 Zoho CSV** (Suer CSV'yi getirince; paralel).
->   P3-1 → ✅ **STAGING'E HAZIR** (`34f3e4c`, push Suer'de) — [defter:2026-10-24 PAKET 3 P3-1]; P3-2 Zoho Products CSV'si bekler. **Eklemeler (Sentez EK 21 Eki — tarihsel):**
+>   P3-1 → ✅ **STAGING'E HAZIR** (`34f3e4c`, push Suer'de) — [defter:2026-10-24 PAKET 3 P3-1] → ✅ **MAIN'E MERGE (`028582a`)**,
+>   canlı sırası Suer'de — [defter:2026-10-25 PAKET 3 P3-1: MAIN'E MERGE]; P3-2 Zoho Products CSV'si bekler. **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
 >     permissions'a "field" eylemi eklenmez, tablo genişletilebilir kalır.
