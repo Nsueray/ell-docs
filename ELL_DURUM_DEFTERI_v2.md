@@ -4347,6 +4347,198 @@
 > - **Bilinçle yapılmayanlar:** kod değişikliği (kapsam dışı) · canlıya `LIFFY_HMAC_SECRET` (P3-4'e kadar kapalı — Suer
 >   bilinçli) · staging deneme satırının silinmesi.
 
+> ## ✅ 2026-10-25 — SENTEZ: P3-1 KAPANIŞ ONAYI + 7 HÜKÜM + ZOHO DIŞA AKTARIMLARI — hükümler AYNEN + KB @ 2fd770d
+>
+> - **YON-03: KB @ 2fd770d** (Sentez bildirimi 25 Eki) → PAKET 3 P3-1 belge tarafı KAPALI.
+> - **Ne yapıldı:** Sentez metni (Suer, P3-2 + P1b-2 dilim promptunun içinde yapıştırdı) aşağıya AYNEN · kütük: KAT-01
+>   düzeltmesi · KAT-02 uygulama notu · KAT-04 notu (A.1 + A.3) · KAT-05 imza v2 notu (A.2) · SEM-01 altına ödeme yöntemi
+>   eşleme tablosu (Paket 4 göç dosyası — şimdi YALNIZ kayıt) · LED-17 notu + REQ amendment 2026-10-25 ("~75 → 60").
+>   A.4–A.7 + Gözlem metinde AYNEN; kütük karşılığı P3-3a / P3-4 kayıtlarında (bu turda tahsis YOK).
+> - **Commit:** ell-docs (bu kayıt + P3-2/P1b-2 kaydı + kütük + REQ, tek commit). PUSH YOK.
+> - **Sentez metni AYNEN:**
+>
+>   ```
+>   SENTEZ → ORCHESTRATOR — P3-1 KAPANIŞ ONAYI + 7 HÜKÜM + ZOHO DIŞA AKTARIMLARI (25 Eki)
+>
+>   ══ A. P3-1 KAPANIŞ ══
+>   P3-1 KABUL, KAPI-2 geçti. KB @ 2fd770d. Servis yolu canlıda kapalı
+>   (sır yok) → P3-4'e kadar doğru durum.
+>   1 Convert kuyruğu: KABUL. Hüküm 6 düzeltilir: "signed-ama-convert-
+>     edilmemiş" bilgisi LIFFY'dedir → asıl kuyruk LIFFY outbox (P3-4);
+>     LEENA convert_requests = ulaşan isteklerin ekleme-only kaydı
+>     (başarılı + reddedilen, sebep koduyla). ui2 "Convert queue" ekranı
+>     LEENA kaydını gösterir; LIFFY outbox'taki bekleyenler P3-4'te ayrı
+>     sayaç olarak eklenir (RAP-02). KAT-04 notu.
+>   2 İmza kapsamı: EVET — HMAC(timestamp + method + path + rawBody),
+>     P3-3a'da (tek seferde, GET açılmadan önce). API_CONVERT_v1 §imza
+>     v2; LIFFY gönderici P3-4 doğrudan v2 ile; v1 canlıya çıkmaz.
+>   3 Kuyruğun yeri: a — Project şablonuna sales.read; tek yer. Finance ›
+>     Contracts'a bağ YOK (UI-01).
+>   4 territories.read/write, yalnız Owner: KABUL.
+>   5 L4 yuvarlama: ONAY — API_CONVERT_v1 §hesaplama BAĞLAYICI; LIFFY
+>     computeTotals P3-4'te LEENA kuralına çekilir; LIFFY ekranı aynı
+>     sayıyı gösterir (iki sistem farklı toplam gösteremez). Test: aynı
+>     payload iki tarafta aynı brüt.
+>   6 canonical_expo_id UUID → integer (LIFFY SERBEST): KABUL (kaynak
+>     sistemin tipi LEENA integer). Eski 1 satır silinir (test).
+>   7 P3-3a (LEENA, KAPI-2) AÇILSIN: GET /api/expos servis kimliğine
+>     (yalnız published_to_liffy=true, salt okuma; başka GET'e açılmaz) +
+>     published_to_liffy bayrağı (expos'a nullable boolean default false;
+>     EMS yüzeyine dokunulmaz; anahtar Owner'ın ui2 admin sayfasında) +
+>     imza v2. Export YON-12c. Kapanış: staging'de HMAC'li GET 200;
+>     imzasız 401; eski imza 401.
+>   Gözlem: servis kullanıcısında "Resend invitation" → UI-1 kuyruğu
+>   (is_service satırlarda davet/şifre düğmeleri gizlenir). Faz B worker
+>   JWT_SECRET kaldırma → P3-4 deploy'u ile.
+>
+>   ══ B. ZOHO DIŞA AKTARIMLARI (Suer, 25 Eki) ══
+>   Altı CSV yerelde: ~/Downloads/zoho_export_2026-10-25/ — Products (251)
+>   · Expenses (1592) · Revenues (1043) · Expos (208) · Sales_Agents (154)
+>   · Sales_Contracts (3927, 108 kolon, 2019–2026). Kişisel veri + tutar
+>   içerirler: REPOYA GİRMEZ; CC yoldan okur, yalnız türetilmiş seed
+>   commit edilir (B4/B5). Sentez dosyaları ölçtü (başlık/doluluk/
+>   dağılım; değer basılmadı).
+>
+>   HÜKÜMLER:
+>   - P3-2 girdisi = Products. 251'den "Expense" kategorili 17'si katalog
+>     değil (dışla); kalan 234. Zone 228 "International", yalnız 23 satır
+>     ofis/pazar bölgeli → KAT-01 DÜZELTME: tek liste fiyatı varsayılan
+>     (product_prices tek satır, ofis NULL); ofis fiyatı yalnız Zone dolu
+>     ürünlerde. Fiyatsız 22 katalog ürünü fiyatsız yüklenir (quote'ta
+>     seçilemez, uyarı). RF: 3 ürün ("Registration Fee", "Local Company
+>     Registration Fee", "Kenyan Registration Fee") → is_registration_fee
+>     (KAT-02). Product Code 18/251 → boşsa CC üretir (kategori öneki +
+>     sıra), Zoho adı korunur. Tax 5 üründe (KDV 5.4 / VAT 20 / VAT 0) →
+>     ürün varsayılan tax_percent (satırda ezilir). Usage Unit → unit_type:
+>     M2→m2, gerisi unit (M3/Page/PAX/Kg/Meters → unit, deftere not).
+>     Kategori 12 değer (Extra Equipment 157, Space Sales 22, …) →
+>     products.category olduğu gibi.
+>   - P1b-2 girdisi = Expenses + Revenues'tan YALNIZ taksonomi: 6 gider
+>     kategorisi ("OFFICE EXPENCES" → "OFFICE EXPENSES", not) × 60 tip
+>     (kategori-tip çiftleri dosyadan; REQ "~75" → 60, amendment notu),
+>     10 gelir kategorisi. Seed runner ile; mevcut 6/4/4 korunur.
+>   - Payment Method eşleme (Paket 4 göç dosyası, şimdi yalnız kayıt):
+>     Revenues 6 değer + Sales_Contracts çoklu değerler ("Bank
+>     Transfer;Cheque", "Barter", "Free", "Senet") → SEM-01: bank_transfer
+>     / cheque / credit_card / cash / other; çoklu → ilk değer + not;
+>     Barter/Free/Senet → other + not. Mobile Payment → other.
+>   - Sales_Contracts: PAKET 4 ÇEKİRDEK GİRDİSİ, şimdi dokunulmaz.
+>     Sentez ölçüm notları (Paket 4 kriter turuna): Sub Total / Tax /
+>     Grand Total ayrı (S2 brüt/net kararıyla uyumlu) · SR % / SD % /
+>     Registration Fee / Net Total / Agent % alanları = K7 formülünün
+>     Zoho hâli (göç testi: Zoho SR Comission ↔ LEENA earned eşleşmeli) ·
+>     Status Valid 3331 / Cancelled 527 / Transferred Out 41 / In 18 /
+>     On Hold 10 (Ç6 teyit; göçte Out→Transferred + transferred_from) ·
+>     Currency EUR 3178 / MAD 326 / NGN 304 / USD 87 / KES 32 · ödeme
+>     alanları serbest metin (1st/2nd Payment Details, 1–5 Date/Amount/
+>     Type) → ödeme göçü elle/yarı otomatik, ayrı karar · Quote Name
+>     2386/3927 dolu (Zoho quote bağı) · Scan Link 3857 dolu.
+>   - Expos (92 kolon, 30'u kişisel veri) / Revenues / Sales_Agents (150
+>     zaten import, delta 4) → Paket 4 girdisi; şimdi dokunulmaz.
+>
+>   İSTENEN: P3-2 + P1b-2 tek dilim CC promptu (Products seed + RF +
+>   unit eşleme + fiyat yapısı; taksonomi seed; LIFFY + LEENA; runner).
+>   Suer'e: klasör yolu teyidi + tek blok. Sıra: P3-2/P1b-2 (seed,
+>   SERBEST) → P3-3a (KAPI-2) → P3-3 → P3-4 · UI-1 paralel.
+>   ```
+>
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** bu kayıt ölçüm taşımaz (kriter kaydı); Zoho dosya ölçümleri ve Sentez sayılarıyla farkları
+>   P3-2 + P1b-2 kaydında. Sales_Contracts / Expos / Sales_Agents sayıları Sentez'in ölçümüdür — CC bu dosyaları AÇMADI.
+> - **Bilinçle yapılmayanlar:** hükümlerin yorumu / kısaltılması · P3-3a / P3-3 / P3-4 · Paket 4 göçü.
+
+> ## ✅ 2026-10-25 — PAKET 3 P3-2 + P1b-2: COMMIT'TE (LIFFY `73e69fc` + liffy-ui `31b9a6f` + LEENA `72d712f`; push + migration + tohum Suer'de)
+>
+> - **Ne yapıldı (Sentez 25 Eki, iki taraf SERBEST; ölçüm + inşa aynı oturum, ADIM 0 sonunda karar turu):**
+>   - **Ön koşul:** liffyv1 ilk ölçümde **PUBLIC** (`gh` PUBLIC + kimliksiz API 200) → tohum commit'lenmedi, DUR, raporlandı →
+>     Suer private yaptı → yeniden ölçüldü **PRIVATE** (kimliksiz 404) → devam.
+>   - **P3-2 LIFFY (`73e69fc`, main):** migration **053** (elle `psql -f`, idempotent): `products` += `is_registration_fee` ·
+>     `default_tax_percent` · `zoho_product_id` (kiracıda tekil) · `product_prices.office_id` NULL olabilir (= varsayılan liste
+>     fiyatı) + `source` · tekillik (ürün, ofis|varsayılan, para birimi) · `quote_line_items` += `is_registration_fee` (donmuş
+>     kopya, L2a). Üretici `backend/scripts/zoho/build_products_seed.js` → `backend/seeds/products_zoho_2026-10-25.json`
+>     (deterministik; kişisel alan yok; kural dışı her durum hata). Uygulayıcı `apply_products_seed.js` (`--dry-run` / gerçek,
+>     tek transaction; yalnız eksiği ekler — ON CONFLICT DO NOTHING, KAT-01; var olan satır ezilmez, fark "drift" sayılır; kod
+>     çakışmasında hiçbir şey yazılmaz). Quote satırı (`routes/quotes.js` `resolveCatalogLine`): fiyat (quote ofisi + para birimi)
+>     → (varsayılan + para birimi) → 400 `NO_PRICE`; kur çevirmesi YOK; fiyatsız ürün elle fiyatla da eklenemez; RF + varsayılan
+>     vergi satıra kopyalanır (vergi satırda ezilir); `POST /api/quotes` kalemleri quote'u yazmadan önce doğrular. `GET
+>     /products` `prices[]` taşır · fiyat `PUT …/prices/default` = office NULL · fiyat satırı silme ucu.
+>   - **liffy-ui (`31b9a6f`, main — ayrı repo):** Products & Prices: RF + Tax % sütunu, "No price" rozeti, özet satırı
+>     (ürün / RF / fiyatsız), ürün formunda Default Tax % + RF · fiyat editörü "Default (all offices)" satırı + satır listesi/silme
+>     · quote formu: API kuralıyla fiyat seçimi, fiyatsız ürün pasif "(no price)", varsayılan vergi satıra, [RF] işareti;
+>     düzenleme kaydında API'nin reddettiği kalem artık uyarıyla bildirilir (önce sessiz kayboluyordu).
+>   - **P1b-2 LEENA (`72d712f`, eliza-next):** önce `main`'e ff (`028582a`, ağaç farkı 0). Migration **050_taxonomy_seed**
+>     (runner; **VERİ DEĞİŞTİRİR** → YON-12 a): 037 satırları Zoho adıyla, **ID korunarak** yeniden adlandırılır (Office →
+>     OFFICE EXPENSES · Operation → OPERATION COSTS · Pre-Event → PRE-EVENT COSTS · Sales → SALES COSTS · Marketing → MARKETING
+>     COSTS · Conference → CONFERENCE COSTS · gelir Extra Equipment → Extra Stand Materials) + eksik Zoho adları ON CONFLICT DO
+>     NOTHING + 3 yazım düzeltmesi (EXPENCES · Legel → Legal · "Stand Construction." noktası); kiracı başına 6 / 73 / 10 Zoho
+>     adı yoksa migration PATLAR; NOTICE sayıları. Dosyada yalnız adlar.
+> - **Kararlar (Suer 25 Eki — ADIM 0 soruları, "1a 2b 3a 4a 5b 6a 7a 8a 9a 10a"):** 1a fiyat EUR (Products'ta Currency sütunu
+>   YOK; Expenses/Revenues'ta var → Zoho ürün fiyatı ana para biriminde) · 2b Iraq Zone (LIFFY'de ofis yok) → ürün fiyatsız ·
+>   3a 6 negatif/sözde kalem dışlandı (Discount · Refund Coupon · İndirim · Agent Commission · Sales Commission · VAT (Turkey
+>   Service Fee)) · 4a `Kullanim Disi` kod değil → kod üretildi · 5b RF **4** ürün (+ "Yurtdışı Fuar Katılım Payı", Zoho
+>   kategorisi Registration Fee) · 6a 73 kategori-tip çifti · 7a mevcut adlar Zoho adıyla, ID korunur (Sentez 22 Eki) · 8a üç
+>   yazım düzeltmesi · 9a gelir 10 · 10a LIFFY DB panodan salt-okunur ölçüm.
+> - **Commit:** liffyv1 `main` **`73e69fc`** · liffy-ui `main` **`31b9a6f`** · LEENA `eliza-next` `028582a` (ff) + **`72d712f`** ·
+>   ell-docs bu kayıt. **PUSH YOK** (Suer).
+> - **Ölçülenler (CC, 25 Eki; K4 — sır değeri basılmadı; tutar/kişi/açıklama okunmadı):**
+>   - **ADIM 0 fark tablosu (Sentez ↔ ölçüm):** Products 251 · 12 kategori · Expense 17 · katalog 234 → AYNI · Zone: International
+>     228 (tümü; katalogda 211), dolu **20** + boş **3** (Sentez "23 ofis/pazar bölgeli") — Kenya 7 · Turkey 6 · Morocco 3 ·
+>     Nigeria 2 · Iraq 1 · Algeria 1 · Product Code 18 AYNI ama `Kullanim Disi` **2 üründe** (ikisi de pasif "-Eski-") · Tax 5
+>     tümünde, **katalogda 4** (5.'si Expense'te) · Usage Unit: Pieces / Person / Amount / Packs da var · fiyatsız **23** (Sentez
+>     22: International 22 + Turkey 1) + 0 fiyatlı 30 + negatif 5 · **Currency sütunu YOK** · aynı ad farklı Zone (pazar kopyası)
+>     **1** (Panel Printing F) → 233 ürün (234 değil); aynı ad aynı Zone 2 ad / 5 satır, kodları farklı → ayrı SKU · RF 3 ad tam
+>     eşleşti + kategoride 4. ürün · gider 6 kategori, **73 çift / 60 ayrı tip adı** (Sentez "60 çift") · gelir 10 AYNI ·
+>     Revenues Payment Method 6 AYNI.
+>   - **LIFFY canlı DB (salt-okunur, `BEGIN READ ONLY` + `default_transaction_read_only=on`; bağlantı panodan, basılmadı, pano
+>     sonra boşaltıldı):** PG 17.9, `current_user = liffy_user` · products **1** (TestCategory, m2; kodu Zoho kodlarıyla ve üretilen
+>     biçimle çakışmıyor) · product_prices **0** · quotes 2 (sent 1 · signed 1; her biri tek kalem, test ürününde) · offices 7 (CN
+>     DZ GH KE MA NG TR; TR default EUR) · exchange_rates yalnız EUR · organizers 1 · `users.office_id` dolu 0 ·
+>     `schema_migrations` YOK (LIFFY'de runner yok — elle `psql -f`, `LIFFY_OPERATIONS.md:67-73`).
+>   - **Zone → LIFFY ofisi:** International / boş → NULL (varsayılan) · Turkey TR · Kenya KE · Morocco MA · Nigeria NG · Algeria DZ
+>     · Iraq → ofis YOK (karar 2b). LEENA ofisleri (canlı): TR MA NG KE CN + pasif TEST AF — **DZ yok** (P3-4 convert notu).
+>   - **LEENA canlı (`claude_readonly`):** taksonomi 6/4/4 (037 adları; ID 1–6 / 1–4 / 1–4) · gider satırı **0** · `income_categories`'e
+>     FK veren kolon yok · aktif Owner'lı kiracı 1 · `schema_migrations` 51 (son 049). Tablo adı `income_categories`.
+>   - **Tohum (repodaki JSON; test DB'de GERÇEK CLI ile uygulandı):** **227 ürün · 205 fiyat (188 varsayılan + 17 ofis: KE 7 · TR 4
+>     · MA 3 · NG 2 · DZ 1) · fiyatsız 23** (22 Zoho'da fiyatsız + Iraq 1) · 0 fiyatlı 30 (seçilebilir) · **RF 4** · pasif 2 ·
+>     varsayılan vergili 3 (Registration Fee 0 · iki Turkey ürünü 5.4) · m2 20 / unit 207 · kod: Zoho 16 + üretilen 211 (EQP 155 ·
+>     SPN 12 · TOU 10 · CNS 9 · CAT 7 · SPC 6 · LOG 6 · TKT 4 · REG 1 · ADV 1) · aynı CSV → bayt bayt aynı JSON.
+>   - **Usage Unit → unit_type (deftere not, Sentez B):** M2 → m2 (20) · Pieces 185 · M3 5 · Person 5 · Page 4 · PAX 4 · Packs 2 ·
+>     Kg 1 · Meters 1 → unit (kaynak birim tohum JSON'unda `zoho_usage_unit`).
+>   - **050 (test DB, canlı şekli ≤ 049):** dry-run NOTICE `renamed 6 +0 · expense types +69 (Zoho pairs 73/73) · income
+>     categories renamed 1 +6 (Zoho 10/10)` · gerçek CLI COMMIT 1 → tekrar "Nothing to apply" · 037 ID'leri korundu · önceden
+>     elle eklenmiş tip çiftlenmedi · Owner'sız kiracı boş · gövde ikinci kez: 0 / 0.
+>   - **Testler:** LEENA `npm run test:setup && npm test` **471/471** (önce 461; + R26–R29 4 + `test_p1b2_taxonomy` 6) — üç tam
+>     koşu aynı (son koşu `72d712f`'te); **TABAN 342.00 KAYMADI** (T35 · I5 · R1 · B1). LIFFY `npm test` **26/26** (ilk test
+>     altyapısı: `backend/tests/`, yerel `liffy_test`, gerçek 050–053) — iki koşu aynı. liffy-ui `tsc --noEmit` temiz; eslint
+>     önce/sonra aynı tek eski hata (`set-state-in-effect`, `catalog/page.tsx:60`), yeni sorun yok.
+> - **YON-05 — çürüyen varsayımlar:** (1) "products += product_code, category, unit_type, is_active" → dördü 050'de VAR
+>   (`050_add_offices_expos_catalog.sql:132-150`); yalnız RF / vergi / Zoho kimliği eklendi, `product_code` = `products.code`
+>   (KAT-02). (2) "revenue_categories" → tablo `income_categories` (`036_ledger_reference.sql:150`). (3) "60 kategori-tip çifti" →
+>   73 çift / 60 ayrı tip adı. (4) "234 ürün / fiyatsız 22 / RF 3" → 227 / 23 / 4 (kararlarla). (5) "seed upsert" ↔ KAT-01 "ON
+>   CONFLICT DO NOTHING" → kütük kazandı: yalnız eksiği ekler, var olanı ezmez. (6) "iki repo" → LIFFY = liffyv1 + **liffy-ui**
+>   (ayrı repo; tohum verisi oraya girmedi). (7) LIFFY'de test altyapısı YOKTU → ilk kez kuruldu.
+> - **Test iddiası güncellemeleri (gereksinim değişti — 7a; mantık aynı):** `test_ledger` A2 (037 adları / 4 / 4 → Zoho adları /
+>   73 / 10, ID sırası aynı) · A8 / B1 / B5 kategori adı · `test_ledger_p1b` + `test_users_admin` fikstür seçimi `'Office'` →
+>   `'OFFICE EXPENSES'` · `test_migrate` R22–R25 Paket 3 kümesine (≤ 049) DONDURULDU (R15–R21 emsali); P1b-2 geçişi yeni R26–R29
+>   (altıncı test DB `ell_comm_test_p3`, şema ≤ 049).
+> - **Yan bulgular (🔶 Sentez'e):** (1) **Leena_v401_monorepo · ell-docs · liffy-ui de PUBLIC** (kimliksiz API 200) ve LEENA
+>   `CLAUDE.md` satır 150 okuma-yazma DB kullanıcısının şifresini düz metin taşıyor (2026-02-22, `1b9a792`'den beri) — satır
+>   silmek yetmez (geçmişte kalır), şifre değişimi gerekir; etkisi ölçülmedi. LIFFY'de `0e4b8a7`'nin sildiği parola satırı da
+>   public geçmişte durdu. Değer basılmadı. (2) 0 fiyatlı 30 ürün "ücretsiz" mi "fiyat girilmemiş" mi — iş bilgisi; şimdi
+>   seçilebilir. (3) Algeria (DZ) LIFFY'de ofis, LEENA'da ofis değil → P3-4 convert'te ofis eşlemesi. (4) LIFFY deploy ↔ 053
+>   sırası: yeni kod 053'ten önce gelirse ürün/kalem yazımı 500 verir (kullanıcı yok, YON-08); 053 deploy'dan hemen sonra.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** LIFFY canlıda 053 + tohum koşumu · LEENA staging/canlı 050 koşumu · LEENA staging taksonomisi
+>   (yalnız canlı okundu) · liffy-ui tarayıcıda (görsel tur yok; yalnız tsc/eslint) · liffy-ui Render deploy yolu · Render
+>   liffy-api'nin private repoyu çekebildiği · Sales_Contracts / Expos / Sales_Agents (AÇILMADI — Paket 4).
+> - **Bilinçle yapılmayanlar:** CSV'lerin repoya girmesi · Expenses/Revenues tutar/kişi/açıklama okuması · ödeme yöntemi göçü
+>   (yalnız SEM-01 eşleme kaydı) · LEENA'da ürün tablosu · LIFFY expo senkronu (P3-3) · imza v2 (P3-3a) · convert payload /
+>   `computeTotals` L4 kuralı (P3-4) · Iraq için ofis açmak · kurla fiyat çevirme · UI cilası · push.
+> - **Teslim (Suer):** (a) liffyv1 + liffy-ui push → Render liffy-api + liffy-ui deploy (private sonrası ilk push; tetiklenmezse
+>   Manual Deploy) → liffy-api Shell: `psql -f 053` → `apply_products_seed.js --dry-run` → gerçek → tekrar dry-run (eklenen 0).
+>   Beklenen: tohum 227 ürün / 205 fiyat; DB toplamı 228 ürün (227 Zoho + test) · RF 4 · fiyatsız 24 (23 + test ürünü) · fiyat
+>   satırı 205 (188 varsayılan). (b) LEENA `eliza-next` push → staging Shell `node scripts/migrate.js --dry-run` → gerçek → ui2
+>   Finance › Expenses + Drafts tip listesi → "merge" → YON-06 → **export (YON-12 a)** → `main` push → canlı migrate. (c) liffy.app
+>   Quotes › Products & Prices: özet 228 / 4 / 24, "No price" rozetleri, quote formunda fiyatsız ürün pasif.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -4406,7 +4598,11 @@
 >   (aynı ağaç; 046–049 uygulandı, `LIFFY_HMAC_SECRET` VAR, TR→TR deneme bölgesi duruyor).
 >   **★SIRADAKİ = P3-2 (LIFFY katalog tohumu — Zoho Products CSV bekliyor) ∥ P3-3 (LIFFY expo senkronu — LEENA'da `GET
 >   /api/expos` servis kimliği dilimi, KAPI-2 sorusu Sentez'de) ∥ UI-1.** P1b-2 Zoho CSV değişmedi (madde 3: CSV gelince araya
->   girer). P3-4 (gönderici) P3-2 + P3-3'ten sonra. **Eklemeler (Sentez EK 21 Eki — tarihsel):**
+>   girer). P3-4 (gönderici) P3-2 + P3-3'ten sonra.
+>   P3-2 + P1b-2 → ✅ **COMMIT'TE** (liffyv1 `73e69fc` · liffy-ui `31b9a6f` · LEENA `72d712f`; push + canlı Suer'de) —
+>   [defter:2026-10-25 PAKET 3 P3-2 + P1b-2]. P3-1 belge kapanışı **KB @ 2fd770d**. **★SIRADAKİ (Sentez 25 Eki — bu kazanır)
+>   = P3-3a (LEENA, KAPI-2: `GET /api/expos` servis kimliği + `published_to_liffy` + imza v2) → P3-3 → P3-4 · UI-1 paralel.**
+>   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
 >     permissions'a "field" eylemi eklenmez, tablo genişletilebilir kalır.

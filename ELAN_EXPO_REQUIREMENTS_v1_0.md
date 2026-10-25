@@ -104,6 +104,19 @@
 >   produces enough leads … add cost without proportional return" are SUPERSEDED — external
 >   research tools are accepted as pluggable finders feeding the 2.1 pipeline. "No system-level
 >   integration" remains.
+>
+> **Amendment 2026-10-25 (P1b-2 reference data from the Zoho export — ledger
+> `ELL_DURUM_DEFTERI_v2.md` "2026-10-25 — PAKET 3 P3-2 + P1b-2"; rule LED-17 note in
+> `ELL_LOCKED_KARARLAR_OZET.md`).** Original text is kept.
+> - **2.6 Expense hierarchy** ("currently 75 types across the six categories"): the Zoho export
+>   (2026-10-25) holds **60 distinct type names in 73 category–type pairs** — a type can sit under
+>   several categories (Hall Rent, Accommodation, Catering, …). Seeded as the 73 pairs. Category names
+>   follow Zoho (OFFICE EXPENSES, OPERATION COSTS, PRE-EVENT COSTS, SALES COSTS, MARKETING COSTS,
+>   CONFERENCE COSTS); the short names in 3.5 Reference Data Management (Office, Operation, …) are shorthand.
+> - **2.6 Revenue categories** (the 15-name flat list): the export uses **10** — Advance from Head Office,
+>   Advertising Fee, Electricity, Expo Participation, Extra Stand Materials, Local Service Fee,
+>   Participation Fee, Partner Commission Income, Sponsorship Income, Stand Construction. The other
+>   listed names are not seeded; the Owner adds them from the admin screen when needed.
 
 **Version:** 1.0 (Document complete — all parts filled) *(amended 2026-10-08 — see top)*
 **Date:** 2026-05-06
