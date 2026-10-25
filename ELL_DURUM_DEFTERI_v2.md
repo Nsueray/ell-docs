@@ -4316,6 +4316,37 @@
 >   canlı Shell `node scripts/migrate.js --dry-run` → gerçek → görsel (Territories · Convert queue · kontrat 4 €342.00) →
 >   CC'ye rapor → "CANLIDA" kaydı.
 
+> ## ✅ 2026-10-25 — PAKET 3 P3-1 CANLIDA (`028582a`, KAPI-2 geçti; `LIFFY_HMAC_SECRET` canlıda bilinçli YOK)
+>
+> - **Suer raporu (Shell + ekran; CC ölçümü değil):** **staging:** `eliza-next` `34f3e4c` push → otomatik deploy → Shell
+>   migrate dry-run OK 4 + COMMIT 4 (NOTICE: 046 `contract_line_items` 2 rows · 047 service users 1 · 048 permissions 20 ·
+>   049 `convert_requests` created) → `LIFFY_HMAC_SECRET` staging'e eklendi, log "✓ Service identity (LIFFY_HMAC_SECRET)
+>   enabled — POST /api/contracts/convert only" → ekran turu **4/4** (Territories: TR→TR deneme satırı eklendi, **staging'de
+>   duruyor** · Convert queue boş · kontrat 4 brüt = net = €18600.00, Tax 0, SR €342.00 · LIFFY (service) etiketli).
+>   **canlı:** merge `028582a` → **export 25 Eki 16:43** (`leena_v401_db`, `.dir.tar.gz`, tamamlandı — YON-12 a+c) → `main`
+>   push `2463259..028582a`, ell-docs `b297a12..d5e9b99` → deploy logunda 3 satır (Territory routes · Convert queue routes ·
+>   "ℹ Service identity path closed — LIFFY_HMAC_SECRET not set") → `/health` 200 → Shell migrate dry-run OK 4 + COMMIT 4
+>   (NOTICE'lar staging ile birebir; `current_user = leena_v401_db_user`) → ekran turu **4/4** (Territories 0 satır ·
+>   Convert queue 0/0/0 · kontrat 4 brüt = net = €18600.00, Tax 0, SR €342.00 · Users 2 shown, LIFFY (service) etiketli).
+> - **Ölçülenler (CC, 25 Eki):** `origin/main` = `028582a` · canlı `/health` 200 · `/ui2/sales-convert-queue.html` 200 ·
+>   `/ui2/admin-territories.html` 200 · `/ui2/sales.html` 404 → canlı yeni kodu sunuyor · **canlı DB (salt-okunur
+>   `claude_readonly`, ilk iki deneme "Connection terminated unexpectedly", üçüncüde bağlandı):** `schema_migrations` **51**,
+>   son `049_convert_requests`, son uygulama 14:10 UTC · 046–049 kaydı 4 · servis kullanıcısı **1** (şifresiz + aktif 1) ·
+>   `sellable_territories` 0 · `convert_requests` 0 · `service_request_nonces` 0 · `contract_line_items` 2 (ikisi de vergi
+>   NULL = 0) · `permissions` 20 · `role_permissions` 30 (şablonlar değişmedi) · `contracts` 3 → Suer raporuyla birebir.
+> - **Kütük:** KAT grubu başlığına "P3-1 canlı `028582a`" uygulama ibaresi (bu commit).
+> - **Gözlem (Suer, UI — engel değil):** `admin-user.html` servis kullanıcısında "Resend invitation" düğmesi görünüyor; davet
+>   yolu yok (API 409 `SERVICE_USER` döner — `test_p3_convert` U1) → **UI-1 kuyruğuna** (★ bloğunda; gizlenecek). Şimdi
+>   düzeltme YOK.
+> - **Kuyruk notu:** "`JWT_SECRET` env'ini liffy-worker-docker'dan kaldır" (worker JWT okumuyor — [defter:2026-10-23 FAZ B
+>   (b2)]; b3 yalnız api) **P3-4 deploy'una bağlı** kalır. ⚠️ Bu madde önceki defter kayıtlarında madde olarak
+>   **BULAMADIM** (yalnız b3 "yalnız api" notu vardı) → bu kayıtla Faz B kuyruğuna yazıldı.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** ilk iki bağlantı kopmasının sebebi (üçüncü deneme bağlandı; IP kuralı mı geçici mi
+>   bilinmiyor) · export dosyasının restore edilebilirliği (YON-11) · staging'deki TR→TR deneme satırı (Suer raporu; staging
+>   DB'si okunmadı — staging ↔ canlı farkı).
+> - **Bilinçle yapılmayanlar:** kod değişikliği (kapsam dışı) · canlıya `LIFFY_HMAC_SECRET` (P3-4'e kadar kapalı — Suer
+>   bilinçli) · staging deneme satırının silinmesi.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -4369,8 +4400,13 @@
 >   b3 yalnız liffy-api · b4 · c1–c3; **(a) Anthropic ERTELENDİ**) — [defter:2026-10-23 FAZ B TAMAMLANDI] →
 >   ~~Paket 3 kriter turu~~ ✅ [defter:2026-10-24 PAKET 3 KRİTER TURU] → **★SIRADAKİ = Paket 3 (P3-1 inşa — LEENA alıcı,
 >   KAPI-2; P3-2..4 LIFFY ayrı oturum) ∥ UI-1 (taşındı) ∥ P1b-2 Zoho CSV** (Suer CSV'yi getirince; paralel).
->   P3-1 → ✅ **STAGING'E HAZIR** (`34f3e4c`, push Suer'de) — [defter:2026-10-24 PAKET 3 P3-1] → ✅ **MAIN'E MERGE (`028582a`)**,
->   canlı sırası Suer'de — [defter:2026-10-25 PAKET 3 P3-1: MAIN'E MERGE]; P3-2 Zoho Products CSV'si bekler. **Eklemeler (Sentez EK 21 Eki — tarihsel):**
+>   P3-1 → ✅ **STAGING'E HAZIR** (`34f3e4c`) — [defter:2026-10-24 PAKET 3 P3-1] → ✅ **MAIN'E MERGE (`028582a`)** →
+>   ✅ **CANLIDA (25 Eki, KAPI-2 geçti)** — [defter:2026-10-25 PAKET 3 P3-1 CANLIDA]. **Canlı / staging:** canlı = LEENA
+>   `main` `028582a` (046–049 uygulandı, `LIFFY_HMAC_SECRET` YOK → servis yolu kapalı) · staging = `eliza-next` `34f3e4c`
+>   (aynı ağaç; 046–049 uygulandı, `LIFFY_HMAC_SECRET` VAR, TR→TR deneme bölgesi duruyor).
+>   **★SIRADAKİ = P3-2 (LIFFY katalog tohumu — Zoho Products CSV bekliyor) ∥ P3-3 (LIFFY expo senkronu — LEENA'da `GET
+>   /api/expos` servis kimliği dilimi, KAPI-2 sorusu Sentez'de) ∥ UI-1.** P1b-2 Zoho CSV değişmedi (madde 3: CSV gelince araya
+>   girer). P3-4 (gönderici) P3-2 + P3-3'ten sonra. **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
 >     permissions'a "field" eylemi eklenmez, tablo genişletilebilir kalır.
@@ -4392,6 +4428,10 @@
 >   KAPANIŞI].
 >   **Tasarım fazı kuyruğu (Sentez 22 Eki):** UI düzeni (sayfa içi bağlantılar menüye — iskelet sonrası) · sayfa
 >   geçiş yavaşlığı (ölçülecek).
+>   **UI-1 kuyruğu (25 Eki açıldı — ayrı liste YOKTU; bilinen adaylar kaynaklarıyla):** organizer ana paneli (UI-06) ·
+>   Commissions & Agents ui2 ikizi (kütük UI "AÇIK SORULAR — KAPANDI") · TAŞI sayfaları ([defter:2026-10-22 SAYFA
+>   ENVANTERİ]) · **`admin-user.html`: servis kullanıcısında "Resend invitation" düğmesi gizlenecek** (davet yolu yok — API
+>   409 `SERVICE_USER`; Suer canlı tur gözlemi 25 Eki, engel değil — [defter:2026-10-25 PAKET 3 P3-1 CANLIDA]).
 >   Paralel/sonda: v402 temizlik sayımı (L-1 sonrası) · em-dash · test zinciri · `PRE_MIGRATION_CURRENCIES`
 >   yedeğinin kaldırılması (040 canlıda).
 >   **Faz B kuyruğu (zaman: Paket 2 SONRASI, Paket 3 ÖNCESİ — Sentez 22 Eki; 23 Eki: (b) JWT + (c) LIFFY DB ✅ KAPANDI —
@@ -4400,7 +4440,9 @@
 >   `settings.local.json`'daki 16 kopyası silindi) · ~~LIFFY `JWT_SECRET` (K-E)~~ ✅ 23 Eki · **LIFFY kullanıcı şifreleri
 >   toplu rotasyon — Paket 4 öncesi** (Suer 23 Eki; Zoho göçü / ekip açılışında; değerler public geçmişte —
 >   [defter:2026-10-23 K4 İHLAL #3]) → sonra: 3 izlenen `.env.backup` · staging DB inbound
->   `0.0.0.0/0` daraltma · ~~sırlı ölü izin kuralları~~ ✅ 23 Eki (52 kural) · NOLOGIN kalan eski roller + tablo sahipliği (Sentez sorusu) ·
+>   `0.0.0.0/0` daraltma · ~~sırlı ölü izin kuralları~~ ✅ 23 Eki (52 kural) · **`JWT_SECRET` env'ini liffy-worker-docker'dan
+>   kaldır** (worker JWT okumuyor; **P3-4 deploy'una bağlı** — madde 25 Eki yazıldı, [defter:2026-10-25 PAKET 3 P3-1 CANLIDA]) ·
+>   NOLOGIN kalan eski roller + tablo sahipliği (Sentez sorusu) ·
 >   auto-deploy'un `35cad76`'da tetiklenmeme sebebi (Render event log'dan ölçülecek; Sentez 21 Eki; `613ce8e`'de
 >   tetiklendi, 22 Eki) ·
 >   Render CLI yenileme (oturum 2026-06-17'de düştü; worker logları okunamıyor; Sentez 21 Eki).

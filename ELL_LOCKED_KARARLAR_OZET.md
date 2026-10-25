@@ -259,6 +259,8 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 
 > Sentez Paket 3 kriter turunun (24 Eki) bu pakette doğan hükümleri. Gelir brüt / matrah net hükmü TAH-05'te.
 > Kapılar: LEENA tarafı KAPI-2 (authMiddleware + L4), LIFFY tarafı SERBEST.
+> **Uygulama: P3-1 canlı `028582a` (25 Eki)** — LEENA alıcı tarafı: TAH-05 · KAT-04 (alıcı) · KAT-05 · KAT-06 (tablo + ekran).
+> LIFFY tarafı (KAT-01..03, KAT-04 gönderici) P3-2..4'te açık. [defter:2026-10-25 PAKET 3 P3-1 CANLIDA]
 
 - **KAT-01** (Paket 3 hüküm 1 — Suer S1, Sentez 24 Eki) — Katalog kaynağı Zoho Products dışa aktarımıdır (Suer CSV); pazar-kopyası ürünler TEK ürün + `product_prices` (ürün × ofis × para birimi — LIFFY 050 şeması) olarak normalize edilir. Tohum AYRI ve idempotent dosyadır (`ON CONFLICT DO NOTHING`); test ürünü + 2 test quote KALIR (S8 E2E çapası), tohum sonrası sayım deftere. [defter:2026-10-24 PAKET 3 KRİTER TURU]
 - **KAT-02** (Paket 3 hüküm 2, Sentez 24 Eki) — RF bayrağı ÜRÜN kaydındadır (`products.is_registration_fee`, varsayılan false); convert anında satıra DONMUŞ kopya olarak geçer (L2a). Kod önekiyle türetme YOKTUR (sessiz hata). `product_code` = `products.code`. [defter:2026-10-24 PAKET 3 KRİTER TURU]
