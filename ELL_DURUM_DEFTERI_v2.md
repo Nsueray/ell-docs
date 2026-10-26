@@ -5050,6 +5050,43 @@
 >   LEENA C1).
 > - **Bilinçle yapılmayanlar:** canlı webhook / imza denemesi · temizlik (Paket 4 öncesi karar).
 
+> ## ✅ 2026-10-26 — PAKET 4 ÖN-ÖLÇÜM TESLİM (Zoho göçü; salt okuma, İNŞA YOK)
+>
+> - **Rapor:** LEENA `docs/audits/PAKET4_ON_OLCUM_2026-10-26.md` — dal `audit/paket4-on-olcum` (`main` @ `0c90d0d`'ten)
+>   **`2d7013c`**, PUSH YOK. Tabanlar: LEENA `0c90d0d` · ell-docs KB `4f1e665` · LEENA DB canlı, `BEGIN READ ONLY`
+>   (`transaction_read_only = on`, `claude_readonly`, 2026-10-26 14:46 UTC'den; bağlantı dizesi basılmadı — K4).
+>   Girdi: altı Zoho CSV (`~/Downloads/zoho_export_2026-10-25/`) — repoya GİRMEDİ; raporda satır değeri / ad / e-posta /
+>   tutar YOK (yalnız sayım, oran, picklist dağılımı, soyut biçim).
+> - **Ne yapıldı:** Sentez 26 Eki ön-ölçüm listesinin 11 başlığı ölçüldü + "SENTEZ ÖZETİ" (13 madde) + "SUER'E İŞ SORULARI"
+>   (5) + "ÖLÇÜLMEDİ". Kod / migration / DB yazımı YOK.
+> - **Ölçülenler (özet; ayrıntı raporda):**
+>   - Sales_Contracts 108 kolon → VAR 19 · TÜRETİLİR 35 · YOK 25 · ATILIR 29. **Dışa aktarımda ürün kalemi YOK** → LEENA
+>     matrahı yalnız `contract_line_items`'tan (`utils/commissionSlices.js:28-29`) → satırsız göçte komisyon hesaplanmaz.
+>   - Status 5 değer → LEENA 4 statünün hepsi var. OUT↔IN: 12 birebir · 1 belirsiz · 5 yetim IN · 27 IN'siz OUT; metinde AF
+>     atfı 0.
+>   - Eski ödeme alanları 574 kontrat / 921 giriş (%98'i 2019–2023); tam ayrışan 163. Revenues 2023–2026. Örtüşme 6 kontrat,
+>     kanıtlı çift 0. İptal-dışı 2014–2018 kontratlarının 1191'inde hiç ödeme kaydı yok.
+>   - K7: (brüt − vergi − RF) × SR% → 1044 satırda 688 eşit + 100 yuvarlama, 256 fark (52'si vergi düşülmemiş eski formül,
+>     166'sı elle). Güncel 10 örnekte SR 8/9, SD (ikinci Zoho alanı) 8/8. **SD kişisi kolonu yok** (SD%'li 800 kontrat).
+>   - Expos: Zoho 206 (ad,yıl) anahtarı, 2014–2027; LEENA 23; örtüşen 16; kontratların 3149/3927'sinin fuarı LEENA'da yok.
+>   - Revenues: payer → kontrat şirketi %99.2; kontrata otomatik bağ 813/1043; yöntem 6/6 = SEM-01 tablosu; gelir
+>     kategorisi 10/10 ama `payments`'ta kolon yok.
+>   - Expenses: payee 295 id / 293 ad, LEENA suppliers 0; taksonomi 73/73 (1 yazım eşlemesiyle); ofis kolonu yok;
+>     `expense_date` / `payment_method` / `account_id` karşılığı yok; maaş 474 satır, komisyon ödemesi 178 satır.
+>   - Sales_Agents: LEENA 152 (150 Zoho id'li + 2 yerli); delta 4 (2026, kontratı 0); kontratların temsilcisi 3927/3927 LEENA'da.
+>   - Kur: Zoho tabanı EUR, kur = 1 EUR başına yerel birim → LEENA kuru = 1/Zoho; kur kayıt giriş anına bağlı; MAD tüm yıllarda
+>     tek değer; ADR-012 kural 3 ("EUR saklanmış") bu dışa aktarımda gözlenmedi.
+>   - **TABAN:** kontrat 4 SR earned = **342.00** (canlı, salt-okunur, repo `SLICE_CTES` metniyle).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Products (talimatla atlandı) · kalem düzeyi K7 (kalem yok) · Revenue→kontrat gerçek bağı
+>   (dışa aktarımda yok; sezgisel) · SD kişisi · Net Total / Agent Name / Validity / Balance. anlamı · Zoho kur geçmişi ve saat
+>   dilimi · fuar eşlemesinin elle doğrulaması · LIFFY company eşlemesi (LIFFY atlandı) · testler (kod değişmedi).
+> - **Bilinçle yapılmayanlar:** kod / migration / DB yazımı · CSV'lerin repoya alınması · kütük ID tahsisi (hüküm yok, ölçüm) ·
+>   ADR-012 notu (Sentez kararına bırakıldı).
+> - **Sapma (kayıt):** picklist dağılımı basan betikte iki kez tutar içeren kolon (kontrat Adjustment/Discount ve bir gider
+>   serbest metni) araç çıktısına düştü — kimliksiz, rapora/deftere/commit'e girmedi; sonrası yalnız picklist. K4 sınıfı değil.
+> - **🔶 Sentez'e:** Paket 4 kriter turu girdisi = rapor "SENTEZ ÖZETİ" + 5 Suer sorusu (kalem dışa aktarımı · Revenue→kontrat
+>   bağ alanı · SD kişisi kuralı · ödemesiz tarihsel kontratlar · maaş/komisyon giderleri).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -5136,6 +5173,9 @@
 >   P3 kapanış düzeltmeleri → ✅ **CANLIDA (26 Eki)** — [defter:2026-10-26 P3 KAPANIŞ DÜZELTMELERİ CANLIDA] (LEENA `0c90d0d` ·
 >   liffyv1 `8851c3a` · liffy-ui `e8b7688`). **★SIRADAKİ (Suer 26 Eki — bu kazanır) = Paket 4 ön-ölçüm (bir sonraki prompt;
 >   `docs/audits/PAKET4_ON_OLCUM_<tarih>.md`) ∥ LIFFY staging kurulumu (SERBEST, YON-13 c) ∥ UI-1.**
+>   Paket 4 ön-ölçüm → ✅ **TESLİM** (LEENA `2d7013c`, dal `audit/paket4-on-olcum`; push Suer'de) —
+>   [defter:2026-10-26 PAKET 4 ÖN-ÖLÇÜM TESLİM]. **★SIRADAKİ (bu kazanır) = Paket 4 kriter turu (Sentez; girdi: rapor SENTEZ
+>   ÖZETİ + 5 Suer sorusu) ∥ LIFFY staging kurulumu (SERBEST, YON-13 c) ∥ UI-1.**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
