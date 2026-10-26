@@ -4708,6 +4708,42 @@
 > - **Teslim (Suer):** teslim metnindeki SUER BLOĞU A–H (push → staging migrate → LIFFY `migrate_p3.sh` → env → yayınla → Sync +
 >   quote → kontrat kontrolü → "ONAY" → merge + canlı).
 
+> ## ✅ 2026-10-26 — PAKET 3 KALANI: MAIN'E MERGE (LEENA `d25c532`; export + push + canlı 051 + canlı env Suer'de)
+>
+> - **Ne yapıldı:** Suer "ONAY" yazdı (P3-5 staging kabulü) → `eliza-next` (`12823be`) `main`'e `--no-ff` merge: **`d25c532`**
+>   (ebeveynler `bf443c3` + `12823be`). Ayrı worktree'de; ana çalışma kopyası (`eliza-next`, başkasının `.DS_Store`'u)
+>   dokunulmadı. LIFFY tarafı (liffyv1 `42ef56a` · liffy-ui `8b31805`) zaten `main`'de ve push'lı — merge yok.
+> - **Commit:** LEENA `main` **`d25c532`** (origin/main'in 2 önünde: `12823be` · `d25c532`) · ell-docs bu kayıt. **PUSH YOK** (Suer).
+> - **Ölçülenler (CC, 26 Eki; K4 — değer basılmadı):** `origin/eliza-next` = `12823be` (Suer push'u) · `origin/main` = `bf443c3`
+>   (canlı) · merge ağacı ↔ `12823be` fark **0** (495/495 bu ağaçta koştu, iki koşu) · canlıya göre değişen 22 dosya: çalışan kod
+>   `index.js`, `middleware/serviceAuth.js`, `routes/{contracts,convertQueue,expos,liffyExpos}.js`,
+>   `public/ui2/{admin-liffy-expos.html,nav.json,sales-convert-queue.html}` + migration 051 + `tests/*` + `package.json` +
+>   `docs/API_CONVERT_v1.md` + `CLAUDE.md` · **geri alma kanıtı:** `git revert -m 1 d25c532` geçici worktree'de temiz; ağaç
+>   `bf443c3` ile birebir · staging: `/ui2/admin-liffy-expos.html` 200, `/api/expos` ve `/api/liffy-expos` oturumsuz 401 →
+>   staging P3-3a'yı sunuyor · canlı: `/ui2/admin-liffy-expos.html` 404, `/health` 200 · canlı DB (salt okunur):
+>   `schema_migrations` 52, son `050_taxonomy_seed`; `expos.published_to_liffy` YOK; `permissions` 20; Project şablonu 1
+>   (organizer 1: expos 22, Project kullanıcısı 0); servis kullanıcısı 1 (organizer 1); `convert_requests` 0 → canlı 051 beklenen
+>   NOTICE: `051: organizer 1 → expos 22 (published 0) · Project template +sales.read (users on Project: 0)` +
+>   `051: permissions 21 (+expo_publish.write) · convert_requests +office_code +needs_agent`.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** P3-5 staging çıktıları — B (051 NOTICE / `COMMIT: 1`), C (`migrate_p3.sh` doğrulama satırı),
+>   D (deploy logları, worker'dan `JWT_SECRET` silindi mi), F (convert durumu / kontrat no), G (Convert queue sayıları, `needs_agent`,
+>   kontrat L4, TABAN ekranı): Suer yalnız "ONAY" yazdı, rapor gelmedi; "ONAY" staging kabulü sayıldı · LIFFY canlı DB (054/055
+>   koşumu, outbox sayaçları) · canlı export · canlı migration · canlı env.
+> - **Canlı geçişte dikkat:** (1) liffy-api env'i canlıya çevrilmeden ÖNCE LIFFY Quotes listesinde "Pending" sayacı 0 olmalı
+>   (pending + sending toplamı) — pending satır 60 sn'lik döngüyle env değişince CANLI LEENA'ya gider; "Failed" kendiliğinden
+>   gitmez, yalnız Resend ile. (2) İmza v1 kaldırıldı: canlıda
+>   `LIFFY_HMAC_SECRET` YOK ([defter:2026-10-25 PAKET 3 P3-1 CANLIDA]) → servis yolu zaten kapalı, v1 kullanan istemci yok.
+>   (3) push → 051 arası canlıda `/api/liffy-expos`, convert ve convert-queue 503 NOT_MIGRATED (trafik yok: LIFFY henüz staging'i
+>   gösteriyor). (4) F'deki test quote LIFFY'de staging `contract_id`'siyle kalır; staging'den senkronlanan expo kopyaları ilk
+>   canlı Sync'te güncellenir / pasifleşir.
+> - **Bilinçle yapılmayanlar:** push · canlı export / migration / env · "PAKET 3 CANLIDA" kaydı (Suer raporundan sonra) · LEENA
+>   skill dosyaları (P3-1 emsali).
+> - **Teslim (Suer, canlı sırası):** YON-06 iki ölçüm → **export (YON-12 a+c)** → LEENA `git push origin main` + ell-docs push →
+>   deploy logu → `/health` 200 → canlı Shell `node scripts/migrate.js --dry-run` (beklenen NOTICE yukarıda + `DRY-RUN OK: 1`) →
+>   gerçek (`COMMIT: 1`) → Leena_v401 env `LIFFY_HMAC_SECRET` = YENİ değer → canlı ui2'de servis kullanıcısı UUID'si → LIFFY outbox
+>   kontrolü → liffy-api env (`LEENA_API_URL` canlı · yeni sır · canlı UUID) → canlı ui2 yayınla → LIFFY Sync → CC'ye rapor →
+>   "PAKET 3 CANLIDA".
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -4777,6 +4813,8 @@
 >   → ✅ **STAGING'E HAZIR** (LEENA `12823be` · liffyv1 `42ef56a` · liffy-ui `8b31805`) — [defter:2026-10-26 PAKET 3 KALANI].
 >   **★SIRADAKİ = P3-5 (Suer: push → staging + LIFFY migration → env → gerçek quote → kontrat → "ONAY") → merge + canlı → "PAKET 3
 >   CANLIDA" · UI-1 paralel.** Faz B: worker `JWT_SECRET` silme bu turun D adımında (kullanım 0 ölçüldü).
+>   P3-5 → ✅ **ONAY (Suer 26 Eki)** → ✅ **MAIN'E MERGE (`d25c532`)** — [defter:2026-10-26 PAKET 3 KALANI: MAIN'E MERGE].
+>   **★SIRADAKİ = canlı geçiş (Suer: export → push → canlı 051 → canlı env → yayınla + Sync) → "PAKET 3 CANLIDA" · UI-1 paralel.**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
