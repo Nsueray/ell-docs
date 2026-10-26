@@ -4562,6 +4562,45 @@
 >   `DRY-RUN OK: 1`) → gerçek (`COMMIT: 1`) → ui2 Finance › Expenses tip listesi → CC'ye rapor → "CANLIDA" kaydı. LIFFY (a) / (c)
 >   raporu ayrı.
 
+> ## ✅ 2026-10-26 — P3-2 + P1b-2 CANLIDA (LIFFY `73e69fc` + liffy-ui `31b9a6f` · LEENA `bf443c3`; staging + canlı migration Suer'de)
+>
+> - **Suer raporu (Shell + ekran; CC ölçümü değil — Paket 3 kalanı promptunun ÖN İŞ'i, 26 Eki):** liffyv1 `73e69fc` + liffy-ui
+>   `31b9a6f` push → Render liffy-api / liffy-ui deploy **Live** (private repo sonrası ilk push, otomatik tetiklendi) →
+>   liffy-api Shell: 053 `psql` COMMIT · `apply_products_seed --dry-run` 227/205 → gerçek COMMIT 227/205 → ikinci dry-run
+>   inserted 0/0 · DB toplamı products **228** (zoho 227) · RF **4** · fiyatsız **24** · fiyat satırı **205** (varsayılan 188) →
+>   liffy.app/quotes/catalog: "228 products · 4 registration fee · 24 without price", fiyatsızlar "No price" rozetli, quote
+>   formunda gri "(no price)" · LEENA `eliza-next` `72d712f` push → leena-staging otomatik Live → staging migrate dry-run OK 1
+>   + COMMIT 1 (050 NOTICE: renamed 6 +0 · types +69 (73/73) · income renamed 1 +6 (10/10)) → Expenses formunda yeni liste
+>   görüldü → merge `bf443c3` → **export 26 Eki 11:17** → `main` push `028582a..bf443c3`, ell-docs `2fd770d..2c64281` → canlı
+>   migrate dry-run OK 1 + COMMIT 1 (NOTICE birebir).
+> - **Ölçülenler (CC, 26 Eki; K4 — değer basılmadı):** `origin/main`: LEENA `bf443c3` · liffyv1 `73e69fc` · liffy-ui `31b9a6f` ·
+>   ell-docs `2c64281` · LEENA `origin/eliza-next` `72d712f` · `leena.app/health` 200 · `leena-staging.onrender.com/health` 200 ·
+>   **canlı LEENA DB (`claude_readonly`, `BEGIN READ ONLY`):** `schema_migrations` **52**, son uygulanan `050_taxonomy_seed`
+>   (2026-10-26 08:49 UTC; öncekisi 046–049 25 Eki 14:10) · `expense_categories` **6** · `expense_types` **73** ·
+>   `income_categories` **10** → Suer raporuyla birebir.
+> - **Kütük:** KAT grubu başlığına "P3-2 canlı `73e69fc` / P1b-2 canlı `bf443c3`" (bu commit).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** LIFFY DB (053 + tohum sayıları yalnız Suer raporu) · liffy.app ekranı · staging DB (bağlantı
+>   yok) · export dosyasının geri yüklenebilirliği (YON-11) · Render deploy logları.
+> - **Bilinçle yapılmayanlar:** kod değişikliği (kayıt turu) · 0 fiyatlı 30 ürün kararı (iş bilgisi, açık).
+
+> ## ⚠️ 2026-10-26 — K4 İHLAL #4 (CC): sır adı aramasının kapsamı `.env`'i dışlamadı → DURMA işletildi
+>
+> - **Ne oldu:** Paket 3 kalanı ADIM 0'da (madde 12: worker `JWT_SECRET` kullanımı) CC `~/Projects/liffyv1/backend` içinde
+>   `grep -rn "JWT_SECRET" --exclude-dir=node_modules .` koştu. Kapsam git dışı (`.gitignore:5`) **yerel `backend/.env`**'i
+>   dışlamadı → `.env:4` satırı **`JWT_SECRET` değeriyle (uzunluk 64)** CC tool çıktısına düz metin düştü.
+> - **Nereye gitti:** YALNIZ bu oturumun yerel dökümü (`~/.claude/projects/-Users-nsa-Desktop-Leena-Projesi-Leena-v401-monorepo/
+>   8b9eac2a-….jsonl`) + model bağlamı. Sohbete / belgeye / commit'e yazılmadı; dosya git'te izlenmiyor.
+> - **Durma (K4 "3. tekrar = dur", #3 emsali):** CC başka dosyaya dokunmadan durdu, Suer'e raporladı (ad + uzunluk). **Suer kararı
+>   (26 Eki):** rotasyon YOK — Paket 4 öncesi toplu rotasyon (23 Eki kararı, Faz B kuyruğu) · devam.
+> - **Etki (defterden, CC ölçümü değil):** canlı liffy-api `JWT_SECRET` 23 Eki'de yenilendi (b3) → bu yerel değer bugünkü canlı JWT
+>   DEĞİL. ⚠️ 23 Eki kaydındaki ÖLÇÜLMEDİ maddesi açık kalır: yerel JWT = eski canlı JWT (= bugünkü `UNSUBSCRIBE_SECRET`) mi.
+> - **Sebep:** kod-kullanım sorusu için `git grep` (yalnız izlenen dosyalar) yerine düz `grep -r`; `.env*` dışlanmadı, çıktı
+>   maskelenmedi — 23 Eki allowlist kuralı bu kapsamda uygulanmadı.
+> - **Önlem:** sır ADI aramaları `git grep` ile ya da `--exclude='.env*'` (+ `*.backup*`, `*.save`) + çıktı maskesiyle. CC hafızası
+>   (`memory/feedback_k4_grep_scope.md`). Bu oturumun geri kalanında kod araması `git grep`'le yapıldı.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** yerel değerin canlı `UNSUBSCRIBE_SECRET` ile eşitliği (Render env gerekir) · kötüye kullanım.
+> - **Bilinçle yapılmayanlar:** rotasyon (Suer kararı) · `.env`'e dokunma · oturum dökümü silme.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -4626,6 +4665,8 @@
 >   [defter:2026-10-25 PAKET 3 P3-2 + P1b-2] → LEENA ✅ **MAIN'E MERGE (`bf443c3`)** — [defter:2026-10-26 P1b-2: MAIN'E MERGE]
 >   (LIFFY push'landı; 053 + tohum Suer'de). P3-1 belge kapanışı **KB @ 2fd770d**. **★SIRADAKİ (Sentez 25 Eki — bu kazanır)
 >   = P3-3a (LEENA, KAPI-2: `GET /api/expos` servis kimliği + `published_to_liffy` + imza v2) → P3-3 → P3-4 · UI-1 paralel.**
+>   P3-2 + P1b-2 → ✅ **CANLIDA (26 Eki)** — [defter:2026-10-26 P3-2 + P1b-2 CANLIDA] (LIFFY `73e69fc` · LEENA `bf443c3`).
+>   **★SIRADAKİ (Suer 26 Eki — bu kazanır) = Paket 3 kalanı: P3-3a + P3-3 + P3-4 + P3-5 tek prompt, tek kapı (Sentez 26 Eki).**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
