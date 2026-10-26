@@ -5087,6 +5087,23 @@
 > - **🔶 Sentez'e:** Paket 4 kriter turu girdisi = rapor "SENTEZ ÖZETİ" + 5 Suer sorusu (kalem dışa aktarımı · Revenue→kontrat
 >   bağ alanı · SD kişisi kuralı · ödemesiz tarihsel kontratlar · maaş/komisyon giderleri).
 
+> ## ⚠️ 2026-10-26 — PAKET 4 ÖN-ÖLÇÜM EK: ZOHO API (kimlik yerelde yok → API çağrısı YAPILAMADI)
+>
+> - **Ne yapıldı:** Suer "dışa aktarım yok, API'den alın" → rapora §14 eklendi; Sentez özeti madde 1 ve 6 güncellendi; Suer
+>   soru 1 CEVAPLANDI (API), soru 2 API'ye devredildi. Zoho'ya hiçbir istek gitmedi (token yenileme dahil).
+> - **Commit:** LEENA `547b721` (dal `audit/paket4-on-olcum`, `2d7013c` üstüne). PUSH YOK.
+> - **Ölçülenler:** `scripts/import-zoho-agents.js` env adları `ZOHO_CLIENT_ID` · `ZOHO_CLIENT_SECRET` · `ZOHO_REFRESH_TOKEN`
+>   (`:63`), DC env'i yok (ABD adresleri koda gömülü `:59-60`) · LEENA yerel 5 env dosyasında ZOHO anahtarı **0** (maskeli
+>   okuyucu, değer basılmadı) · kod kanıtı: kontrat modülü **`Sales_Orders`**, fuar modülü **`Vendors`** (eliza zoho-sync) ·
+>   LIFFY kimliği DB'de `organizers.zoho_*` (liffyv1 migration 020). Belge (ölçüm değil): kalemler `Ordered_Items` alt formu
+>   (liste çağrısında gelmez; tekil GET / COQL); tüm çekim ≤ ~3.960 kredi (COQL ~30), ücretli sürüm günlük tabanı ≥ 50.000.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** token geçerliliği · satır alan adları · 50'lik satır doluluğu · RF satır mı · Revenues modül
+>   API adı (BULAMADIM) + kontrat lookup'ı · org sürümü / lisans / gerçek kredi · OAuth kapsamı. eliza / liffyv1 yerel `.env`
+>   adlarına bakma girişimi oturumun izin denetiminde reddedildi (kapsam dışı) — dokunulmadı.
+> - **Bilinçle yapılmayanlar:** eliza / LIFFY kimliğinin kullanılması · Zoho'ya istek · kod.
+> - **🔶 Suer:** Render → Leena_v401 ve eliza-api → Environment'ta yalnız ADLARA bakılır (`ZOHO_CLIENT_ID` ·
+>   `ZOHO_CLIENT_SECRET` · `ZOHO_REFRESH_TOKEN`); bulunursa değerler yerel LEENA `.env`'e (sohbete değil) → CC ölçümü koşar.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -5176,6 +5193,8 @@
 >   Paket 4 ön-ölçüm → ✅ **TESLİM** (LEENA `2d7013c`, dal `audit/paket4-on-olcum`; push Suer'de) —
 >   [defter:2026-10-26 PAKET 4 ÖN-ÖLÇÜM TESLİM]. **★SIRADAKİ (bu kazanır) = Paket 4 kriter turu (Sentez; girdi: rapor SENTEZ
 >   ÖZETİ + 5 Suer sorusu) ∥ LIFFY staging kurulumu (SERBEST, YON-13 c) ∥ UI-1.**
+>   EK: Zoho API ölçümü kimlik bekliyor (LEENA `547b721`) — [defter:2026-10-26 PAKET 4 ÖN-ÖLÇÜM EK: ZOHO API]; Suer env ADLARINA
+>   bakar (Leena_v401 · eliza-api), kriter turu kalem/gelir bağı kararını buna göre verir.
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
