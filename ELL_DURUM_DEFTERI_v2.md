@@ -5139,6 +5139,148 @@
 >   token (COQL kapsamlı) · RF satırı/alanı tutarsızlığında K7b farkı · başlık vergisinin satırlara dağıtımı · 2014–2025 doluluk
 >   oranı için daha geniş örneklem.
 
+> ## ✅ 2026-10-26 — SENTEZ: PAKET 4 KRİTER TURU (ZOHO GÖÇÜ) — AYNEN (KB @ eb52632)
+>
+> - **Kaynak:** Suer'in "PAKET 4 — ZOHO GÖÇÜ" promptu (26 Eki) içindeki Sentez metni, AYNEN. Kütük karşılıkları bu commit'te:
+>   AD-01 düzeltmesi · yeni GOC grubu (GOC-01..04). LEENA `CLAUDE.md:44` aynı düzeltmeyi LEENA'nın ilk Paket 4 commit'inde alır.
+> - **⚠️ METİN KESİK GELDİ (BULAMADIM):** promptta Sentez metni §4 "MUTABAKAT RAPORU" başlığının ilk satırında, "Σ" işaretinden
+>   sonra kesiliyor. Aşağıdaki blok promptta gelen hâliyle AYNEN; §4'ün devamı ve sonraki bölümler (varsa) Sentez'den istenir.
+>   Mutabakat kalemleri o güne dek Orchestrator promptunun P4-3 listesinden okunur (kontrat sayısı · Σ GT EUR yıl × para birimi ·
+>   kalem sayısı · milat sonrası ödeme Σ · sentetik ödeme · L4-fark · SR komisyon farkı · SD atanmamış · fuar eşleme 16 · hesapsız
+>   gider · bağsız gelir · ofis-sorusu · TABAN 342.00).
+>
+>   ```
+>   SENTEZ → ORCHESTRATOR — PAKET 4 KRİTER TURU: ZOHO GÖÇÜ (26 Eki)
+>   KB @ eb52632. Girdi: ön-ölçüm c7f3efa (§0–14) + EK-2 API ölçümü + Suer
+>   kararları (26 Eki). Göç = Zoho'daki tarihçeyi LEENA'ya TAŞIMAK; Zoho
+>   kanonik kalır (Paket 6'ya kadar çift kayıt yok — göç tek seferlik +
+>   fark senkronu, aşağıda). KAPI-2 (canlı DB'ye toplu yazma).
+>
+>   ══ 0. DÜZELTME — ELIZA CANLI (YON-01) ══
+>   AD-01 düzeltilir: "eliza-legacy emekli" → "eliza-legacy canlı okuma
+>   aracı (Zoho aynası + WhatsApp botu); üzerine inşa edilmez; kapatma
+>   Paket 6'da, yeni sistem aynı cevapları verince (Suer kararı 8 Eki
+>   zaten böyleydi)". LEENA CLAUDE.md:44 ve kütük aynı turda. Paket 4
+>   kaynağı ELIZA DB DEĞİL, Zoho API.
+>
+>   ══ 1. KAYNAK VE KİMLİK ══
+>   - Zoho CRM API, kalem bazlı (Sales_Orders + Ordered_Items +
+>     Received_Payment · Vendors · Payment_Audit · Expensess · Products
+>     yalnız eşleme için · Sales_Agents delta).
+>   - AYRI SALT-OKUNUR TOKEN (Suer, Zoho API konsolu): kapsam yalnız
+>     ZohoCRM.modules.READ + ZohoCRM.coql.READ; eliza-api'nin yazma
+>     yetkili token'ı göçte KULLANILMAZ. Değer yerel LEENA .env (git dışı),
+>     K4. CC'ye talimat: Suer'e adım adım tek blok.
+>   - Çekim: COQL ile toplu (≈30 kredi) + alt formlar tekil GET (~3.950);
+>     ham JSON yerel diske (repoya DEĞİL; kişisel veri), göç betiği oradan
+>     okur → tekrar koşulabilir, Zoho'ya ikinci kez gidilmez.
+>
+>   ══ 2. İDEMPOTENT VE GERİ ALINABİLİR ══
+>   - Her hedef tabloya zoho_record_id (nullable, partial UNIQUE): contracts
+>     · contract_line_items (Zoho satır id'si yoksa contract id + line_no) ·
+>     payments · expos · expenses · suppliers · commission_payouts ·
+>     sales_agents (var). Aynı kayıt ikinci koşuda ATLANIR (ON CONFLICT
+>     DO NOTHING; güncelleme YOK — göç sonrası fark Zoho'da kalır, Paket 6
+>     kesimine kadar yeniden koşulmaz; Suer isterse "fark koşusu" = yalnız
+>     yeni zoho_record_id'ler).
+>   - Her göç satırı migration_batch_id taşır (tek koşu = tek id) →
+>     geri alma = batch'in tüm satırlarını silen tek script (ledger
+>     entries dahil; immutability trigger'ları için ell.allow_*_reset
+>     deseni, yalnız göç batch'i için). Bu, göç verisine özel istisna;
+>     kütüğe yazılır.
+>   - Staging'de TAM PROVA (canlı kopyası üstüne) → mutabakat raporu →
+>     Suer "go" → canlıda export (YON-12 a+c, istisna YOK) → koşu →
+>     mutabakat tekrar → fark 0 değilse batch geri alınır.
+>
+>   ══ 3. EŞLEME HÜKÜMLERİ ══
+>   Kontrat: Status Valid→Active · Cancelled→Cancelled · On Hold→On Hold ·
+>     Transferred Out→Transferred + transferred_from zinciri (12 çift
+>     eşlenir; 27 IN'siz OUT → Transferred, devamı yok, "devamsız" sayacı;
+>     5 yetim IN → Active, transferred_from NULL, not). AF Number →
+>     af_number (3919 dolu; boşlar Zoho id'den türetilir, not).
+>     contract_date = Contract Date (boşsa Created Time, not). Expo FK
+>     zorunlu (aşağıda). Sales Group → ofis eşlemesi (028 backfill
+>     kuralı). revenue = Grand Total (BRÜT, S2); kur = 1/Zoho Exchange
+>     Rate (ADR-012 notu: Zoho kur = 1 EUR başına yerel; "EUR saklanmış"
+>     gözlenmedi, kural 3 SUPERSEDED); revenue_eur Zoho'nun bölmesinden.
+>   Kalemler: Ordered_Items → contract_line_items (quantity · unit_price =
+>     List_Price · discount_percent = Discount(tutar)/(qty×price) ·
+>     tax_percent: satırda 0 ise başlık Tax'ı satırlara NET ORANTILI
+>     dağıtılır (TAH-05 uyumu; dağıtım kalıntısı son satıra, ±0.01) ·
+>     is_registration_fee = ürün RF ise (KAT-02; Registration_Fee başlık
+>     alanı yok sayılır — tutarsızsa not). L4 brüt kontrolü: Σ satır brüt
+>     ↔ Grand Total ±0.01; tutmayanlar "L4-fark" sayacı, kontrat yine
+>     taşınır, kalemler taşınır, fark deftere (göç kaydı DOĞRULAMA
+>     yapmaz, KAYDEDER — Zoho gerçeği neyse o).
+>   Komisyon: SR = Sales Agent (3927/3927 eşleşiyor) + SR % override
+>     (Zoho'daki oran, kontrat başına); SD: oran taşınır, KİŞİ BOŞ (Suer
+>     S3) → "SD atanmamış" sayacı + ui2 toplu atama ekranı (Paket 4
+>     ekranı). Agent %: aynı. Zoho'nun HESAPLANMIŞ komisyonu taşınmaz
+>     (MOT-01); fark çıkanlar (RF ve eski formül) mutabakat raporunda
+>     listelenir, LEENA rakamı geçerli (K7). Suer'in 1 vakası (RF'den
+>     komisyon ödenmiş): LEENA'da payout olarak taşınır, komisyon değil.
+>   Ödemeler (Suer S4, MİLAT 2019-01-01): milat sonrası Received_Payment
+>     satırları → payments (payment_date · amount kontrat para biriminde ·
+>     kur kontrattan · amount_eur · method: Payment_Audit eşleşmesi varsa
+>     oradan (SEM-01 tablosu), yoksa bank_transfer + "Zoho göçü, yöntem
+>     bilinmiyor" notu · received_office_id = kontratın ofisi · payer =
+>     Payment_Audit Payer Company varsa). Milat öncesi (+ Received_Payment
+>     olmayan, Payment Done=true kontratlar): TEK sentetik ödeme, kontrat
+>     tarihli, amount = Grand Total, not "Zoho göçü — ödeme ayrıntısı
+>     yok", migration_flag=synthetic. Payment Done=false ve satır yok →
+>     ödemesiz, bakiye açık. Payment_Audit'teki ödemenin ikinci kaydı
+>     (14 birebir) ÇİFT SAYILMAZ: Received_Payment kanonik, Payment_Audit
+>     yalnız zenginleştirme (yöntem/makbuz/kategori). payments'a
+>     receipt_no + income_category_id (nullable) eklenir (şema eksiği 9).
+>   Fuarlar: Vendors 206 → LEENA expos backfill (ad+yıl anahtarı; 16
+>     örtüşen eşlenir, 190 yeni; status accomplished/cancelled —
+>     expos_status_check'e "cancelled" eklenir; published_to_liffy=false;
+>     organizer_role GL Account'tan; Country → core_countries; kişisel
+>     veri kolonları (30) TAŞINMAZ; tedarikçi şirket adları (forwarder,
+>     contractor…) → expo_partners'a şirket adıyla, kişi/telefon/mail
+>     OLMADAN). Algeria + Iraq fuarları taşınır; ofis sorusu ayrı (aşağıda).
+>   Giderler (Suer S5): Expensess 1592 → expenses TAMAMI, isimleriyle.
+>     Payee → suppliers (295; kişi olan payee'ler de supplier kaydı,
+>     tür "employee" eklenir — LED-18 sözlüğüne 5. tür) · maaş satırları
+>     employee tedarikçisine bağlı, kategori OFFICE EXPENSES / Salaries ·
+>     expense_date = Due Date varsa, yoksa Created Time (not) ·
+>     payment_method = bank_transfer varsayılan (Zoho'da yok, not) ·
+>     account_id = ofisin varsayılan hesabı (LED-12; hesap yoksa NULL +
+>     "hesapsız göç" sayacı — Suer hesapları açınca toplu bağlama ekranı)
+>     · expo_id Expo Name'den · office: kontrat yoksa Expense Owner'ın
+>     ofisi, yoksa Turkey (028 kuralı). Görünürlük Paket 2 yetkisiyle
+>     (Suer ayarlar).
+>     Komisyon gideri (178 satır) → expenses'a DEĞİL, commission_payouts'a
+>     (agent eşleşmesi Payee adıyla; ofis = ödeyen ofis; not "Zoho göçü").
+>     Fuar gideri olarak görünmesi: payout → ledger hareketi Sales Costs
+>     kategorisiyle expo_id taşır (LED-04; payout'a expo_id nullable
+>     eklenir — kontratın fuarı). Rapor: "fuar P&L" komisyonu gider gibi
+>     gösterir (ledger'dan), "personel toplamı" = Σ maaş gideri + Σ payout,
+>     kişi bazlı (employee supplier ↔ sales_agent bağı: suppliers.
+>     sales_agent_id nullable, e-posta/ad önerisi, Suer onaylar — OFS-05).
+>   Gelirler: Payment_Audit → yalnız zenginleştirme (yukarıda); kontrata
+>     bağlanamayan 1043−eşleşen → "bağsız gelir" ledger income satırı
+>     (hesap: ofis varsayılanı; kategori Zoho'dan) — gelir kaybolmaz
+>     (RAP-02).
+>   Temsilciler: delta 4 taşınmaz (kontratsız, e-posta çakışıyor) — not.
+>
+>   ══ 4. MUTABAKAT RAPORU (göçün kabul ölçütü) ══
+>   Staging ve canlı koşu sonrası, otomatik: kontrat sayısı Zoho=LEENA ·
+>   Σ
+>   ```
+>
+> - **Orchestrator promptu (26 Eki) — yürütme çerçevesi (özet, Sentez metni DEĞİL):** tek dal `eliza-next` (`main`'den ff) · tek
+>   prompt · tek kapı (staging TAM PROVA + mutabakat → Suer "go" → canlı) · KAPI-2 bu blokla onaylı, ara soru yok; karar gerektiren
+>   yeni şey → en kilitli hükme uygun uygula, "SAPMA" başlığıyla raporla · Zoho'ya yazma yok · canlı DB'ye CC yazmaz · P4-0 kimlik
+>   (eliza-api token'ı göçte kullanılmaz; ayrı salt-okunur Self Client token `ZOHO_RO_*`) + çekim · P4-1 şema (runner, 052+) · P4-2
+>   göç betiği · P4-3 mutabakat · P4-4 ui2 (Owner) · testler · teslim iki aşama (token beklemeden inşa; token gelince pull + staging
+>   prova + canlı sırası).
+> - **Kütük (bu commit):** AD-01 düzeltme notu · GOC grubu: GOC-01 (SD kişi boş + toplu atama, Suer S3) · GOC-02 (ödeme miladı
+>   2019-01-01 + sentetik ödeme, S4) · GOC-03 (giderler tamamı isimleriyle, employee tedarikçi, komisyon → payout, S5) · GOC-04
+>   (idempotent `zoho_record_id` + batch geri alma istisnası).
+> - **Bilinçle yapılmayanlar:** kesik §4'ün tamamlanması (Sentez'in işi — tahmin yazılmadı) · LEENA `CLAUDE.md:44` (LEENA repo; Paket 4
+>   ilk commit'i) · ell-docs `leena/CLAUDE.md` + `leena/todo.md` (başkasının açık değişikliği — dokunulmadı).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -5234,6 +5376,10 @@
 >   `Ordered_Items`, ödemeler `Received_Payment`, Revenues = `Payment_Audit` (kontrat bağı yok); ELIZA canlı (YON-01 düzeltmesi).
 >   **★SIRADAKİ (bu kazanır) = Paket 4 kriter turu (Sentez; girdi: rapor SENTEZ ÖZETİ güncel + §14) ∥ LIFFY staging kurulumu
 >   (SERBEST, YON-13 c) ∥ UI-1.**
+>   Paket 4 kriter turu → ✅ **Sentez 26 Eki, AYNEN** (metin §4'te KESİK geldi — devamı Sentez'den) —
+>   [defter:2026-10-26 SENTEZ: PAKET 4 KRİTER TURU]; kütük AD-01 düzeltmesi + GOC-01..04. **★SIRADAKİ (bu kazanır) = Paket 4 inşa
+>   (CC, dal `eliza-next`; ilk teslim token beklemeden: P4-1..P4-4 + testler + Suer token bloğu; ikinci teslim token gelince: pull →
+>   staging TAM PROVA → mutabakat → Suer "go" → canlı) ∥ LIFFY staging kurulumu (SERBEST, YON-13 c) ∥ UI-1.**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
