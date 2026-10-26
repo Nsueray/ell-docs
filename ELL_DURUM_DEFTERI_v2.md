@@ -4539,6 +4539,29 @@
 >   Finance › Expenses + Drafts tip listesi → "merge" → YON-06 → **export (YON-12 a)** → `main` push → canlı migrate. (c) liffy.app
 >   Quotes › Products & Prices: özet 228 / 4 / 24, "No price" rozetleri, quote formunda fiyatsız ürün pasif.
 
+> ## ✅ 2026-10-26 — P1b-2: MAIN'E MERGE (LEENA `bf443c3`; push + export + canlı migration Suer'de) + UI-1 notu
+>
+> - **Ne yapıldı:** Suer "merge" dedi → `eliza-next` (`72d712f`) `main`'e `--no-ff` merge: **`bf443c3`** (ebeveynler
+>   `028582a` + `72d712f`). Ayrı worktree'de yapıldı; ana çalışma kopyası (`eliza-next`, başkasının `.DS_Store`'u) dokunulmadı.
+>   Suer notu UI-1 kuyruğuna (★ bloğu; bu dilimde kod YOK): Expenses / Drafts formunda kategori/tip İKİ ayrı seçim.
+> - **Commit:** LEENA `main` **`bf443c3`** (origin/main'in 2 önünde: `72d712f` · `bf443c3`) · ell-docs bu kayıt. **PUSH YOK** (Suer).
+> - **Ölçülenler (CC, 26 Eki):** `origin/eliza-next` = `72d712f` (Suer push'u) · `origin/main` = `028582a` (canlı) · liffyv1
+>   `origin/main` = `73e69fc` ve liffy-ui `origin/main` = `31b9a6f` (Suer push'ları) · ell-docs `origin/main` = `2fd770d`
+>   (`31f5276` push EDİLMEDİ) · merge ağacı ↔ `72d712f` fark **0** (471/471 bu ağaçta koştu) · canlıya göre değişen dosyalar
+>   YALNIZ `migrations/050_taxonomy_seed.sql` + `tests/*` + `package.json` (test zinciri) → çalışan kod DEĞİŞMEDİ, etki yalnız
+>   050 · **geri alma kanıtı:** `git revert -m 1 bf443c3` geçici worktree'de temiz; ağaç `028582a` ile birebir. ⚠️ 050 VERİ
+>   değiştirir (ad UPDATE): kod geri alınsa da adlar Zoho'da kalır — uygulama kodu kategori adıyla arama yapmıyor (yalnız
+>   testler, [defter:2026-10-25 PAKET 3 P3-2 + P1b-2]); veri geri dönüşü = export'tan restore ya da ters UPDATE (hazırlanmadı).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging'de 050 koşumu, NOTICE'i ve Expenses/Drafts ekranı (Suer raporu gelmedi; "merge"
+>   staging kabulü sayıldı; Suer'in iki ayrı seçim notu ekranın görüldüğünü düşündürür ama ölçüm değil) · staging taksonomisi ·
+>   LIFFY: Render deploy, 053 + tohum koşumu, liffy.app ekranı (yalnız push'lar ölçüldü) · canlı export · canlı migration.
+> - **Bilinçle yapılmayanlar:** push · canlı migration · iki ayrı seçimli form (UI-1) · ters UPDATE betiği.
+> - **Teslim (Suer, canlı sırası):** YON-06 iki ölçüm → **export (YON-12 a)** → LEENA `git push origin main` + ell-docs push →
+>   deploy logu → `/health` 200 → canlı Shell `node scripts/migrate.js --dry-run` (beklenen: `050: organizer 1 → expense
+>   categories renamed 6 +0 · expense types +69 (Zoho pairs 73/73) · income categories renamed 1 +6 (Zoho 10/10)` +
+>   `DRY-RUN OK: 1`) → gerçek (`COMMIT: 1`) → ui2 Finance › Expenses tip listesi → CC'ye rapor → "CANLIDA" kaydı. LIFFY (a) / (c)
+>   raporu ayrı.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -4600,7 +4623,8 @@
 >   /api/expos` servis kimliği dilimi, KAPI-2 sorusu Sentez'de) ∥ UI-1.** P1b-2 Zoho CSV değişmedi (madde 3: CSV gelince araya
 >   girer). P3-4 (gönderici) P3-2 + P3-3'ten sonra.
 >   P3-2 + P1b-2 → ✅ **COMMIT'TE** (liffyv1 `73e69fc` · liffy-ui `31b9a6f` · LEENA `72d712f`; push + canlı Suer'de) —
->   [defter:2026-10-25 PAKET 3 P3-2 + P1b-2]. P3-1 belge kapanışı **KB @ 2fd770d**. **★SIRADAKİ (Sentez 25 Eki — bu kazanır)
+>   [defter:2026-10-25 PAKET 3 P3-2 + P1b-2] → LEENA ✅ **MAIN'E MERGE (`bf443c3`)** — [defter:2026-10-26 P1b-2: MAIN'E MERGE]
+>   (LIFFY push'landı; 053 + tohum Suer'de). P3-1 belge kapanışı **KB @ 2fd770d**. **★SIRADAKİ (Sentez 25 Eki — bu kazanır)
 >   = P3-3a (LEENA, KAPI-2: `GET /api/expos` servis kimliği + `published_to_liffy` + imza v2) → P3-3 → P3-4 · UI-1 paralel.**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
@@ -4627,7 +4651,10 @@
 >   **UI-1 kuyruğu (25 Eki açıldı — ayrı liste YOKTU; bilinen adaylar kaynaklarıyla):** organizer ana paneli (UI-06) ·
 >   Commissions & Agents ui2 ikizi (kütük UI "AÇIK SORULAR — KAPANDI") · TAŞI sayfaları ([defter:2026-10-22 SAYFA
 >   ENVANTERİ]) · **`admin-user.html`: servis kullanıcısında "Resend invitation" düğmesi gizlenecek** (davet yolu yok — API
->   409 `SERVICE_USER`; Suer canlı tur gözlemi 25 Eki, engel değil — [defter:2026-10-25 PAKET 3 P3-1 CANLIDA]).
+>   409 `SERVICE_USER`; Suer canlı tur gözlemi 25 Eki, engel değil — [defter:2026-10-25 PAKET 3 P3-1 CANLIDA]). ·
+>   **Expenses / Drafts formunda kategori/tip İKİ ayrı seçim** (önce kategori, sonra yalnız o kategorinin tipleri — Zoho gibi;
+>   bugün tek liste "KATEGORİ / Tip", 73 seçenek: `finance-expenses.html:37-49`, `finance-drafts.html:34-42`; Suer 26 Eki —
+>   [defter:2026-10-26 P1b-2: MAIN'E MERGE]).
 >   Paralel/sonda: v402 temizlik sayımı (L-1 sonrası) · em-dash · test zinciri · `PRE_MIGRATION_CURRENCIES`
 >   yedeğinin kaldırılması (040 canlıda).
 >   **Faz B kuyruğu (zaman: Paket 2 SONRASI, Paket 3 ÖNCESİ — Sentez 22 Eki; 23 Eki: (b) JWT + (c) LIFFY DB ✅ KAPANDI —
