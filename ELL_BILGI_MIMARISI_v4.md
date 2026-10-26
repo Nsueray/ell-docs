@@ -217,6 +217,20 @@ ui2'de Finance alt menüsü yukarıdaki bölümlerden türetilir ve **dört grup
   outbox'ıdır (KAT-04, P3-4). Ekran LEENA tarafı alındı-kaydıdır.
 - Admin'e servis kullanıcısı (KAT-05, `users.is_service`) eklenir: listede görünür, giriş/davet yolu yoktur.
 
+### 4.3 ui2 Admin › Migration (yama — Paket 4, 27 Eki; UI-01)
+
+| ui2 alanı · grubu | dayandığı bölüm | ekran |
+|---|---|---|
+| **Admin** · Migration | Sentez Paket 4 §2 (geri alma) + §4 (mutabakat) · GOC-04 | **Batches** — göç batch'leri, canlı sayımlar, açık işler, onay metinli geri alma |
+| Admin · Migration | Sentez §3 Komisyon · GOC-01 | **SD unassigned** — Zoho SD oranı bekleyen kontratlar; toplu SD ataması |
+| Admin · Migration | Sentez §3 Giderler · GOC-03 / LED-12 | **Unbound expenses** — hesapsız göç giderleri; hesaba toplu bağlama (gider hareketi yazılır) |
+| Admin · Migration | Sentez §3 Gelirler · GOC-02 / RAP-02 | **Unlinked income** — kontrata bağlanamayan Zoho geliri (salt okuma) |
+
+- Neden Admin (Finance değil): dördü de göç temizliği ve Owner işidir (`migration.read` / `migration.write` sistem şablonlarına
+  verilmedi). Finance alt menüsü Finance şablonunun izinleriyle tam görünür kalır (kabul testi). Göç kapanınca (Paket 6) grup
+  kapanış adayıdır.
+- Finance › Contracts aynı ekran kalır; göç sonrası satır sayısı için sayfalama + süzgeç (yıl · fuar · ofis · statü · göçmüş) eklendi.
+
 ---
 
 ## 5. "Sales agent nerede?" — net cevap

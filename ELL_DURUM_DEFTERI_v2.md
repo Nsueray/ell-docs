@@ -5281,6 +5281,62 @@
 > - **Bilinçle yapılmayanlar:** kesik §4'ün tamamlanması (Sentez'in işi — tahmin yazılmadı) · LEENA `CLAUDE.md:44` (LEENA repo; Paket 4
 >   ilk commit'i) · ell-docs `leena/CLAUDE.md` + `leena/todo.md` (başkasının açık değişikliği — dokunulmadı).
 
+> ## ✅ 2026-10-27 — PAKET 4 İLK TESLİM: İNŞA + TESTLER (LEENA `1a475f9`, dal `eliza-next`; token beklemeden — Zoho'ya istek YOK)
+>
+> - **Süreç (Suer promptu 26 Eki — tek dal, tek prompt, tek kapı; KAPI-2 Sentez bloğuyla onaylı):** `eliza-next` `main`'den ff
+>   (`606d175` → `0c90d0d`) + tek commit. ÖN İŞ ell-docs `385b827` (Sentez metni aynen — §4'te kesik — · AD-01 düzeltmesi · GOC-01..04).
+>   İkinci teslim (token gelince): çekim → staging TAM PROVA → mutabakat → Suer "go" → canlı.
+> - **Ne yapıldı:**
+>   - **P4-0 kimlik + çekim:** yerel `.env`'deki üç eliza-api `ZOHO_*` satırı SİLİNDİ (13 → 10 satır; dotenv üçünü görmüyor; maskeli
+>     ölçüm). Yeni adlar `ZOHO_RO_CLIENT_ID / _SECRET / _REFRESH_TOKEN` — `scripts/zoho/token-setup.js` (panodan okur, panoyu boşaltır,
+>     değer basmaz; kapsam salt-okunur değilse ya da ABD dışıysa `.env`'e YAZMAZ). `scripts/zoho/pull.js`: COQL listeler (Sales_Orders id ·
+>     Vendors · Products · Sales_Agents) + liste API'si (Payment_Audit · Expensess — lookup görünen adları) + Sales_Orders tekil GET
+>     (Ordered_Items + Received_Payment) → `~/zoho_raw/<tarih>/` (REPO DIŞI; `.gitignore` `zoho_raw/`); tekrar koşulur (var olan atlanır),
+>     kredi sayacı, günlükte kişisel veri yok. **Alan adı TAHMİNİ yok:** her alan çekilen alan metadatasından etiketle çözülür; çözülemeyen
+>     zorunlu alan = DUR.
+>   - **P4-1 şema — `052_zoho_migration.sql` (runner):** `migration_batches` · `zoho_record_id` (partial UNIQUE kiracı × id) +
+>     `migration_batch_id` 9 tabloda · payments `receipt_no` / `income_category_id` / `migration_flag` (+ `contract_id` yalnız göç
+>     satırında NULL olabilir — bağsız gelir) · expenses `account_id` yalnız göç satırında NULL (+ tek seferlik hesap bağlama UPDATE'i) ·
+>     suppliers `employee` türü + `sales_agent_id` · payouts `expo_id` · expos `cancelled` · contracts `migration_note` + `sd_pct_pending` ·
+>     GOC-04 satır düzeyi DELETE koruyucusu (yalnız geri alınan batch'in satırı, `ell.allow_migration_rollback`) · `migration.read/write`.
+>   - **P4-2 göç:** `scripts/zoho/migrate.js` (`--dry-run` = tam yazım + ROLLBACK · `--apply`; tek transaction, tek batch, toplu yazım,
+>     idempotent) Sentez §3 eşlemesiyle · `rollback.js` (mantık `utils/migration.js`'te, ui2 ile ortak; batch dışı bağımlılık varsa
+>     hiçbir şey silinmez). **P4-3:** `reconcile.js` → `docs/audits/GOC_MUTABAKAT_<tarih>.md` (yalnız sayım/oran/sınıf; L4 ve SR
+>     listeleri batch içi sıra no) + 10 satır özet. **P4-4 ui2 (Owner):** Admin › Migration grubu (Batches · SD unassigned · Unbound
+>     expenses · Unlinked income) + Finance › Contracts sayfalı/süzgeçli (`?paged=1`; eski liste yanıtı birebir).
+> - **Commit:** LEENA `eliza-next` **`1a475f9`** (origin'in 2 önünde: `0c90d0d` ff + `1a475f9`) · ell-docs ÖN İŞ `385b827` + bu kayıt.
+>   **PUSH YOK** (Suer).
+> - **Testler:** `npm run test:setup && npm test` **541/541** (29 suite; önce 504): runner R34–R37 (052 canlı şeklinde dry-run → apply →
+>   tekrar · NOTICE · eski satırlar NULL · kurallar) + `tests/test_zoho_migration.js` 33 (sahte Zoho sunucusu, sentetik fikstür: 10 kontrat ·
+>   6 fuar · 4 gelir · 6 gider — çekim / göç sayaçları / idempotentlik / mutabakat / istisna yalnız batch satırında / bağlama / SD ataması /
+>   API + yetki / geri alma → sayılar göç öncesine / ekranlar / CLI çıktısında URL ve kişi adı yok). **TABAN 342.00** tüm suite'lerde.
+> - **Ölçülenler (CC, 26–27 Eki):** canlı LEENA salt-okunur (`claude_readonly`, `BEGIN READ ONLY`): runner `plan()` → bekleyen yalnız
+>   `052`, **DUR yok** (052'nin 17 ilişki · 2 fonksiyon · 9 trigger · 23 kolon · 16 kısıt izinin hiçbiri canlıda yok) · **TABAN kontrat 4
+>   sr earned = 342.00** · **canlıda `accounts` 0 satır** (göçteki ödeme / gider / payout'ların hepsi ilk koşuda hesapsız kalır; bağlama
+>   ekranı var) · `payments`'ta DB değişmezlik trigger'ı YOK (017/018/038 + katalog) · `expos.slug` UNIQUE · `expos_status_check` /
+>   `suppliers_type_check` adları · canlıda kontratsız ödeme 0, gider 0.
+> - **SAPMA (en kilitli hükme göre uygulandı; ayrıntı LEENA commit'i + teslim metni):** (1) SD oranı `sd_pct_pending`'de bekler — Suer
+>   onaylı `contracts_sd_pct_requires_fk_check` kişisiz oranı reddeder, kısıt korundu · (2) Agent %: SR internal varken agent yazılamaz
+>   (agent ⊕ SR) → taşınmadı, sayaç + not · (3) payments'a yeni silme koruyucusu EKLENMEDİ (yok; test kurulumları bayraksız siler) —
+>   "batch dışı ödeme silinemez" hareket bağı + hareket koruyucusuyla kanıtlandı · (4) bağsız gelir = kontratsız payments satırı (LED-04) ·
+>   (5) sentetik ödemenin hesabı/hareketi yok; milat öncesi satırlar tek sentetikte (Σ) — çift sayım yok · (6) Payment_Audit eşleşmesi
+>   aynı gün, yoksa ±3 gün · (7) fuar statüsü Active → sales-open, boş → tarihten · (8) gider ofisi Expense Owner → "Created by." →
+>   Turkey · (9) eşleşmeyen komisyon gideri taşınmaz (sayaç) · (10) "RF'den komisyon" vakasına ayrı kod yok (komisyon gideri payout olarak
+>   gelir) · (11) dört göç ekranı Finance değil **Admin › Migration** (Owner işi; Finance şablonu değişmezi korunur — BM v4 §4.3 yaması) ·
+>   (12) Payment_Audit + Expensess liste API'siyle · (13) notlar İngilizce (dil kuralı) · (14) fark koşusunda çocuk kayıt yalnız yeni
+>   kontrata · (15) mevcut test beklentisi güncellenen sayım/listeler: kayıt defteri 21→23, tedarikçi türü 4→5, Admin alt menüsü; R30–R33
+>   ≤051'e donduruldu (emsal); test DB stub'ına `organizer_role` + `expo_partners` (canlı ölçümü).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Zoho tarafının tamamı (token yok — gerçek alan etiketleri, doluluk, fuar eşleme 16, kredi) · staging
+>   (052 dry-run/apply staging'de koşmadı) · COQL `limit offset, count` sözdizimi ve liste API'si `fields` davranışı gerçek Zoho'da ·
+>   Self Client'ın `self_client.json` indirme düğmesi · fuar tedarikçi ŞİRKET alanlarının etiketleri (expo_partners eşlemesi mühürsüz —
+>   yazım yok) · ui2 ekranlarının gerçek tarayıcı görünümü (yalnız tarayıcısız çizim testi) · Sentez metninin §4 sonrası.
+> - **Bilinçle yapılmayanlar:** Zoho'ya istek (token bekliyor) · canlıya/staging'e yazma · push · fuar P&L raporu (payout fuarı
+>   `commission_payouts.expo_id`'de; `ledger_lines` view'i LED-16 gereği değişmedi) · EMS expo formunun status listesi (`cancelled` EMS
+>   ekranında seçilemez) · tedarikçi ↔ temsilci bağ ekranı (sütun var, öneri sayacı var) · LEENA skill dosyaları (finans emsali) · ell-docs
+>   `leena/CLAUDE.md` + `leena/todo.md` (başkasının açık değişikliği).
+> - **Teslim (Suer):** P4-0(b) token bloğu (teslim metninde; değer sohbete değil panoya) → CC: `pull.js --probe` + tam çekim → ikinci teslim
+>   (staging sırası).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -5380,6 +5436,9 @@
 >   [defter:2026-10-26 SENTEZ: PAKET 4 KRİTER TURU]; kütük AD-01 düzeltmesi + GOC-01..04. **★SIRADAKİ (bu kazanır) = Paket 4 inşa
 >   (CC, dal `eliza-next`; ilk teslim token beklemeden: P4-1..P4-4 + testler + Suer token bloğu; ikinci teslim token gelince: pull →
 >   staging TAM PROVA → mutabakat → Suer "go" → canlı) ∥ LIFFY staging kurulumu (SERBEST, YON-13 c) ∥ UI-1.**
+>   Paket 4 → ✅ **İLK TESLİM** (LEENA `1a475f9`, dal `eliza-next`; 541/541; push Suer'de) — [defter:2026-10-27 PAKET 4 İLK TESLİM].
+>   **★SIRADAKİ (bu kazanır) = Suer: P4-0(b) salt-okunur token (Self Client, ZOHO_RO_*) → CC: `pull.js --probe` + tam çekim + alan
+>   eşlemesi mühürü → Paket 4 İKİNCİ TESLİM (staging TAM PROVA → mutabakat → Suer "go" → canlı) ∥ LIFFY staging kurulumu ∥ UI-1.**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
