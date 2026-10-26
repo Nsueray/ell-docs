@@ -4744,6 +4744,141 @@
 >   kontrolü → liffy-api env (`LEENA_API_URL` canlı · yeni sır · canlı UUID) → canlı ui2 yayınla → LIFFY Sync → CC'ye rapor →
 >   "PAKET 3 CANLIDA".
 
+> ## ✅ 2026-10-26 — PAKET 3 CANLIDA (P3-3a + P3-3 + P3-4 + P3-5; LEENA `d25c532` · liffyv1 `42ef56a` · liffy-ui `8b31805`; KAPI-2 geçti)
+>
+> - **Ne yapıldı (Suer raporu 26 Eki, AYNEN; tek değişiklik: servis kullanıcısı UUID'si kısaltıldı — ell-docs PUBLIC, sır değil ama
+>   tam değer repoya yazılmadı):**
+>
+>   ```
+>   STAGING (B–G): leena-staging migrate dry-run OK 1 + COMMIT 1 (051 NOTICE: expos 22 (published 0) ·
+>   Project +sales.read (users 0) · permissions 21 · convert_requests +office_code +needs_agent) ·
+>   liffy-api migrate_p3.sh: 054 legacy expos deleted 1 · quotes without expo 2 · 055 outbox ready ·
+>   verify "integer | 0 | 0 | 2 | 2 | 5" == done · liffy-api env 3 değişken (staging) → "[LEENA]
+>   integration enabled" · liffy-worker-docker JWT_SECRET silindi, deploy Live ("UNSUBSCRIBE
+>   COMPLIANT"; açılışta 1 geçici "Database connection error: connection timeout" satırı — tekrar
+>   görülmedi, izlenecek) · staging ui2: TEST expo #11 published → liffy Sync "1 new" · quote
+>   QTR-100002 (TEST expo, TR, EUR, RF 350 + stand 9 m² × 430, her ikisi %20) → Send → Sign (scan
+>   URL "*") → ATR-100002 "Converted · Contract #5 · 1 attempt" · staging Convert queue 1 converted /
+>   0 failed / needs agent 0 · kontrat #5: brüt 5064.00 / net 4220.00 / vergi 844.00 / matrah 3870.00
+>   / SR Suer1 (e-posta eşleşti, oran %0) / fuar dolu / RF etiketli · kontrat 4 SR 342.00 → ONAY.
+>   CANLI: export ATLANDI (Suer kararı; sabah 11:17 export + PITR mevcut; YON-12 tek istisna, kural
+>   değişmedi — Sentez kabul) · main push bf443c3..d25c532, ell-docs 635a63b..95a216b · Leena_v401
+>   Live, logda "LIFFY expo publishing routes loaded" + "Service identity path closed" · canlı migrate
+>   dry-run OK 1 + COMMIT 1 (NOTICE staging ile birebir) · Leena_v401 env LIFFY_HMAC_SECRET = YENİ
+>   değer (staging'den farklı), logda "✓ Service identity (LIFFY_HMAC_SECRET) enabled — signature v2 ·
+>   POST /api/contracts/convert + GET /api/expos (published only)" · canlı servis kullanıcısı UUID
+>   11de7606-… · LIFFY outbox Pending 0 / Failed 0 / Converted 1 · liffy-api
+>   env 3 değişken canlıya çevrildi, logda "[LEENA] integration enabled (expo sync + convert, signature
+>   v2)" + "[convertOutbox] started" · canlı ui2 Expos → LIFFY: #11 TEST + #15 test published (2/22)
+>   · liffy Sync: "Synced 2 published expo(s) · 1 new · 1 updated · 0 unpublished" (#11 staging
+>   kopyası canlı kimliğine güncellendi).
+>   ```
+>
+> - **Sentez hükmü (26 Eki, "LIFFY HEDEFİ: a + c") AYNEN → kütük YON-13:**
+>
+>   ```
+>   a) LIFFY canlıya çevrildi (yapıldı); env ileri-geri çevirme YASAK; CC LIFFY testleri yerelden staging
+>   LEENA'ya; Suer görsel kontrolü c gelene kadar canlı LIFFY'de test quote'uyla. c) LIFFY staging servisi
+>   KABUL, Paket 4 öncesi, SERBEST, tek CC promptu; şartlar: taze küçük DB kopyası, anahtarlar yok, worker
+>   yok, LEENA_URL = staging + ayrı HMAC çifti, JWT ayrı. b) RET.
+>   ```
+>
+> - **Suer kararları (26 Eki) AYNEN + uygulama durumu (CC ölçümü; KOD YOK bu kayıtta):**
+>
+>   ```
+>   fuar yayın kapısı kalır, proje ekibi yayınlar (satışçı Sync'e dokunmaz; otomatik tazeleme yeter) ·
+>   imzada tarama bağlantısı zorunlu DEĞİL (quotes.sign'dan scan şartı kalkar, scan nullable kalır — KAT
+>   notu; LEENA scan_link zaten nullable) · Expenses/Drafts formu kategori + tip iki ayrı kutu (UI-1'de) ·
+>   SR oranı %0 geldi → oranı Finans girer (kullanım kılavuzuna).
+>   ```
+>
+>   - **Yayın kapısı:** kod gerekmez — `expo_publish.write` şablonsuz (Owner kısa devre, 051); proje ekibine Owner ui2 Admin ›
+>     Users › kişi → Role & permissions → "Per-user override" ile verir (`public/ui2/admin-user.html:86`). Project şablonuna
+>     ekleme ayrı karar (yapılmadı). Satışçı zaten Sync'e basamaz: LIFFY `POST /api/quotes/expos/sync` owner + admin
+>     (`backend/routes/quotes.js:242-244`, aksi 403); satışçı için quote formu açılışında 10 dk otomatik tazeleme
+>     (`services/expoSync.js:14`) → kütük KAT-03 notu.
+>   - **Tarama bağlantısı:** BUGÜN ZORUNLU — LIFFY `backend/routes/quotes.js:1094-1095` (boşsa 400) + liffy-ui
+>     `app/quotes/page.tsx:466` ve `:775` ("Signed Scan URL *"); staging testinde `*` yazıldı. Şartın kaldırılması KOD işi →
+>     kuyrukta (LIFFY, SERBEST, ayrı dilim). LEENA tarafı değişmez (`scan_url` boş gelirse NULL) → kütük KAT-04 notu.
+>   - **Expenses/Drafts iki kutu:** UI-1 kuyruğunda ([defter:2026-10-26 P1b-2: MAIN'E MERGE]) → kütük UI notu.
+>   - **SR oranı:** convert SR'ı yazarken `sr_pct` NULL bırakır (SAPMA 3) → motor temsilcinin `default_commission_pct`'ini kullanır;
+>     canlıda Suer1 (internal, aktif) varsayılanı **0.00** (ölçüldü; staging ölçülmedi, staging 24 Eki'de canlının kopyası) → %0
+>     bu yüzden. Finans iki yerden girer: temsilci varsayılanı (klasik `/sales-agents.html` "Comm %", `:261`) ya da kontrata
+>     özel oran (klasik `contract-detail.html` komisyon atama → `PUT /api/contracts/:id/assignment`, `routes/contracts.js:1240`;
+>     ui2'de ikizi yok — UI-1 adayı) → `docs/KULLANIM_KILAVUZU_v1.md` §3.
+> - **Commit:** kod YOK · ell-docs bu kayıt + kütük + iki belge taslağı. **PUSH YOK** (Suer).
+> - **Ölçülenler (CC, 26 Eki; salt okunur — K4, değer basılmadı):** `origin/main`: LEENA **`d25c532`** · liffyv1 **`42ef56a`** ·
+>   liffy-ui **`8b31805`** · ell-docs `95a216b` · `origin/eliza-next` `12823be` (= main ağacı) · leena.app
+>   `/ui2/admin-liffy-expos.html` 200 · `/health` 200 · `/api/expos` oturumsuz 401 · liffy.app 200 · **canlı DB:**
+>   `schema_migrations` **53, son `051_liffy_expo_publish`** · `permissions` 21 · Project şablonunda `sales.read` 1 satır ·
+>   `published_to_liffy` TRUE: **#11** "[TEST] Reactivation Smoke Test Expo" + **#15** "test" (rapordaki 2/22 ile aynı) · servis
+>   kullanıcısı (organizer 1) UUID'si rapordakiyle **EŞLEŞTİ** · `convert_requests` **0** (canlıda henüz convert yok) · `contracts`
+>   3 satır, en büyük id 4 → **canlıda kontrat 5 YOK** (kontrat #5 yalnız staging'de) · canlı kontrat 4 = `AF-TEST-LINES-001`,
+>   Active, `source_quote_id` dolu.
+> - **SAPMA listesi (Sentez'e, NİHAİ — 10 madde):** 1–9 [defter:2026-10-26 PAKET 3 KALANI] AYNEN: (1) LIFFY doğrudan `main`
+>   (liffyv1 + liffy-ui; LIFFY staging yok) · (2) `LEENA_SERVICE_USER_ID` üçüncü env · (3) SR eşlemesi e-postayla (tek aktif
+>   internal) + `needs_agent` — 🔶 Sentez onayı bekler · (4) 054 sonrası 2 eski test quote'u expo'suz · (5) LIFFY expo yazma 409
+>   `EXPOS_READ_ONLY` · (6) sign → gönderim beklenir (≤ 15 sn), imza geri alınmaz · (7) kontratta ofis kolonu yok
+>   (`convert_requests.office_code`) · (8) Users & Offices ekranı vardı, yalnız API `office_id` · (9) aynı saniyede özdeş istek
+>   REPLAY → LIFFY sıralar + bir kez yeniden imzalar · **(10) canlı export ATLANDI** (Suer kararı; sabah 11:17 export + PITR;
+>   YON-12 tek istisna, kural değişmedi — Sentez kabul).
+> - **Temizlik listesi (Paket 4 öncesi KARAR — Suer/Sentez; bu kayıtta HİÇBİR ŞEY silinmedi):**
+>   - LIFFY test quote'ları: ATR / QMA önekli olanlar (Suer listesi) — ATR-100002 (QTR-100002) staging kontrat #5'e bağlı,
+>     `contract_id` staging'in; imzalı quote API'den silinemez · 054'ten expo'suz kalan 2 eski test quote (KAT-01 S8 çapası).
+>     LIFFY DB bu turda ölçülmedi (numaralar Suer raporundan).
+>   - LEENA staging kontrat #5 + `convert_requests` satırı + staging TEST expo #11 yayını.
+>   - LEENA canlı: kontrat 4 `AF-TEST-LINES-001` (test) · yayındaki test fuarları #11 / #15 (kaldırılınca ilk LIFFY Sync'te
+>     pasifleşir). "Canlı kontrat 5" ölçümde YOK. ⚠️ **Kontrat 4 TABAN'ın dayanağıdır** ("contract 4 sr earned 342.00" — testlerde
+>     B1 · T35, staging ekranında Suer kontrolü) → silme kararı TABAN'ın yeni dayanağıyla birlikte verilmeli.
+> - **Faz B:** liffy-worker-docker `JWT_SECRET` ✅ **KALDIRILDI (26 Eki, Suer)** — deploy Live; açılışta 1 geçici "Database
+>   connection error: connection timeout" (tekrar görülmedi, izlenecek) → ★ bloğundaki Faz B kuyruğunda işaretlendi.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** LIFFY canlı DB (outbox sayaçları, quote'lar, expo kopyaları — yalnız Suer raporu) · Render
+>   logları (Suer raporu) · staging (bağlantı yok; kontrat #5 rakamları Suer raporu — TAH-05 aritmetiği tutarlı: 350 + 9 × 430 =
+>   4220 net, %20 → 844, brüt 5064, matrah RF hariç 3870) · worker timeout satırının sebebi · canlıda gerçek convert (henüz yok) ·
+>   export (atlandı) · liffy-ui'nin tarayıcı görünümü (Suer'in staging/canlı turu dışında).
+> - **Bilinçle yapılmayanlar:** kod (tarama şartını kaldırma · Project şablonuna `expo_publish.write`) · temizlik · LIFFY staging
+>   kurulumu (YON-13 c — ayrı prompt) · LEENA skill dosyaları · KB yeniden yükleme (YON-03: push sonrası).
+> - **Belgeler (taslak, Türkçe, kısa; ell-docs PUBLIC → host / kullanıcı adı / UUID / sır değeri YOK):**
+>   `docs/KULLANIM_KILAVUZU_v1.md` (proje ekibi · satışçı · Finans) · `docs/ISLETIM_NOTU_v1.md` (servis ↔ dal · env adları ve işi ·
+>   sırların yeri · migration koşumu).
+> - **Kütük (bu commit):** KAT başlığı "Paket 3 CANLIDA" · KAT-03 / KAT-04 Suer 26 Eki notları · TAH-05 uygulama notu · **YON-13**
+>   (LIFFY HEDEFİ a + c) · UI notu (Expenses/Drafts iki kutu, UI-1).
+> - **Teslim (Suer):** ell-docs push → KB yeniden yükleme (YON-03; Sentez + Orchestrator) → `KB @ <hash>`.
+
+> ## ⚠️ 2026-10-26 — K4 İHLAL #5 (CC): izlenen kaynak koddaki gömülü yedek token çıktıya düştü — değer zaten PUBLIC; Suer: durma yok
+>
+> - **Ne oldu:** PAKET 3 CANLIDA belge işinde (İşletim notu için env adlarının kullanım yerleri) CC LEENA'da `git grep -n` ile
+>   `ZOHO_WEBHOOK_TOKEN` vb. adları aradı. `.env`'e dokunulmadı; ama izlenen kaynak `backend/leena-v401-backend/routes/webhook.js:8`
+>   `process.env.ZOHO_WEBHOOK_TOKEN || '<sabit>'` biçiminde **gömülü yedek değer** taşıyor → satır değerle (**uzunluk 26, ilk 2
+>   karakter `98`**) tool çıktısına düştü. Durma sonrası tek satırlık yaş ölçümünde (blame + maske) **ikinci kez** düştü: geri
+>   referanslı `sed -E` maskesi macOS/BSD `sed`'de ÇALIŞMADI.
+> - **Nereye gitti:** YALNIZ bu oturumun yerel dökümü + model bağlamı. Sohbete / belgeye / commit'e yazılmadı. **Değer zaten
+>   public:** LEENA reposu PUBLIC (`gh repo view`: `PUBLIC`), satır `c6f8a39`'dan beri kodda ("security: Sprint 1 hotfix — 5
+>   security fixes", 2026-02-23).
+> - **Durma:** CC durdu, Suer'e raporladı (ad + uzunluk + ilk 2). **Suer kararı (26 Eki) AYNEN:**
+>
+>   ```
+>   Devam. K4 #5 deftere girsin, durma yok (değer zaten public repoda; kuralın amacı sızıntı önlemek,
+>   burada korunacak sır kalmamış). ZOHO_WEBHOOK_TOKEN: Render Leena_v401 env'inde VAR (Suer ölçtü) →
+>   yedek değer devrede değil. Faz B kuyruğuna: webhook.js:8 gömülü yedek değer KALDIRILACAK (env yoksa
+>   webhook 503), token Paket 4 öncesi toplu rotasyonla. K4 kuralı için Sentez'e yeniden yazım
+>   önerisi: "K4 = sır DEĞERİ; public repoda zaten açık olan sabitler ayrı bulgu sınıfı (SIZ), duruş
+>   değil kayıt". İki belgeyi yaz, tek commit, push komutu.
+>   ```
+>
+> - **Etki:** canlı Leena_v401'de `ZOHO_WEBHOOK_TOKEN` env'i VAR (Suer ölçtü) → webhook doğrulaması env değeriyle; gömülü yedek
+>   devrede DEĞİL. Yedeğin kendisi bir güvenlik bulgusudur (env silinirse public değer geçer) → Faz B kuyruğuna yazıldı.
+> - **Sebep:** #4 önlemi (`git grep`) yalnız `.env`'i dışlar; izlenen kod da sabit sır taşıyabilir. Satırın tamamı basıldı; ikinci
+>   baskıda maske önceden sınanmadı.
+> - **Önlem:** env kullanım soruları `git grep -l` / `-c` ile; satır gerekiyorsa sınanmış maske
+>   `sed -E "s/'[^']{8,}'/'<masked>'/g; s/\"[^\"]{8,}\"/\"<masked>\"/g"` (sahte dizgide doğrulandı); yeni maske önce sahte
+>   girdide sınanır. CC hafızası güncellendi (`memory/feedback_k4_grep_scope.md`).
+> - **Sentez'e öneri (Suer metni):** "K4 = sır DEĞERİ; public repoda zaten açık olan sabitler ayrı bulgu sınıfı (SIZ), duruş değil
+>   kayıt". Karar Sentez'de; kütük/CLAUDE.md K4 metni bu kayıtta DEĞİŞMEDİ.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Render env'i (Suer ölçtü; CC görmedi) · webhook'a bu değerle istek gelip gelmediği · LEENA
+>   reposunun başka gömülü yedek değerleri (tarama yapılmadı — Faz B işi).
+> - **Bilinçle yapılmayanlar:** kod düzeltmesi (Faz B kuyruğu) · rotasyon (Paket 4 öncesi toplu) · oturum dökümü silme.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -4815,6 +4950,10 @@
 >   CANLIDA" · UI-1 paralel.** Faz B: worker `JWT_SECRET` silme bu turun D adımında (kullanım 0 ölçüldü).
 >   P3-5 → ✅ **ONAY (Suer 26 Eki)** → ✅ **MAIN'E MERGE (`d25c532`)** — [defter:2026-10-26 PAKET 3 KALANI: MAIN'E MERGE].
 >   **★SIRADAKİ = canlı geçiş (Suer: export → push → canlı 051 → canlı env → yayınla + Sync) → "PAKET 3 CANLIDA" · UI-1 paralel.**
+>   Paket 3 → ✅ **CANLIDA (26 Eki, KAPI-2 geçti)** — [defter:2026-10-26 PAKET 3 CANLIDA] (LEENA `d25c532` · liffyv1 `42ef56a` ·
+>   liffy-ui `8b31805`). **★SIRADAKİ (Suer 26 Eki — bu kazanır) = Paket 4 kriter turu (Sentez) ∥ LIFFY staging kurulumu (SERBEST,
+>   tek CC promptu — YON-13 c) ∥ UI-1 ∥ kullanım kılavuzu (taslak `docs/KULLANIM_KILAVUZU_v1.md`).** Temizlik kararı Paket 4
+>   öncesi — liste [defter:2026-10-26 PAKET 3 CANLIDA].
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
@@ -4852,8 +4991,10 @@
 >   `settings.local.json`'daki 16 kopyası silindi) · ~~LIFFY `JWT_SECRET` (K-E)~~ ✅ 23 Eki · **LIFFY kullanıcı şifreleri
 >   toplu rotasyon — Paket 4 öncesi** (Suer 23 Eki; Zoho göçü / ekip açılışında; değerler public geçmişte —
 >   [defter:2026-10-23 K4 İHLAL #3]) → sonra: 3 izlenen `.env.backup` · staging DB inbound
->   `0.0.0.0/0` daraltma · ~~sırlı ölü izin kuralları~~ ✅ 23 Eki (52 kural) · **`JWT_SECRET` env'ini liffy-worker-docker'dan
->   kaldır** (worker JWT okumuyor; **P3-4 deploy'una bağlı** — madde 25 Eki yazıldı, [defter:2026-10-25 PAKET 3 P3-1 CANLIDA]) ·
+>   `0.0.0.0/0` daraltma · ~~sırlı ölü izin kuralları~~ ✅ 23 Eki (52 kural) · ~~`JWT_SECRET` env'ini liffy-worker-docker'dan
+>   kaldır~~ ✅ **KALDIRILDI 26 Eki** (Suer; [defter:2026-10-26 PAKET 3 CANLIDA]) ·
+>   **LEENA `routes/webhook.js:8` gömülü `ZOHO_WEBHOOK_TOKEN` yedeği KALDIRILACAK** (env yoksa webhook 503; KAPI-2 — auth;
+>   canlıda env VAR, Suer 26 Eki; token Paket 4 öncesi toplu rotasyonla — [defter:2026-10-26 K4 İHLAL #5]) ·
 >   NOLOGIN kalan eski roller + tablo sahipliği (Sentez sorusu) ·
 >   auto-deploy'un `35cad76`'da tetiklenmeme sebebi (Render event log'dan ölçülecek; Sentez 21 Eki; `613ce8e`'de
 >   tetiklendi, 22 Eki) ·
