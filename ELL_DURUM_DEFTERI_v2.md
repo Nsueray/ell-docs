@@ -5104,6 +5104,41 @@
 > - **🔶 Suer:** Render → Leena_v401 ve eliza-api → Environment'ta yalnız ADLARA bakılır (`ZOHO_CLIENT_ID` ·
 >   `ZOHO_CLIENT_SECRET` · `ZOHO_REFRESH_TOKEN`); bulunursa değerler yerel LEENA `.env`'e (sohbete değil) → CC ölçümü koşar.
 
+> ## ✅ 2026-10-26 — PAKET 4 ÖN-ÖLÇÜM EK-2: ZOHO API ÖLÇÜLDÜ (60 kredi, salt okuma) + YON-01 DÜZELTMESİ: ELIZA CANLI
+>
+> - **Ne yapıldı:** Suer `eliza-api` env dışa aktarımını verdi → yalnız `ZOHO_CLIENT_ID` · `ZOHO_CLIENT_SECRET` ·
+>   `ZOHO_REFRESH_TOKEN` git dışı yerel LEENA `.env`'e (önceden yoktu); kaynak dosya SİLİNDİ (ölçüldü); `.env` git'te izlenmiyor
+>   (`.gitignore:76`). Değer / satır basılmadı (K4). Tek token tazeleme + 60 CRM okuma çağrısı. Rapor §14 ölçülmüş hâliyle yeniden
+>   yazıldı; Sentez özeti 1 / 5 / 6 güncellendi; Suer soru 1 ve 2 ÖLÇÜLDÜ olarak kapandı.
+> - **Commit:** LEENA **`c7f3efa`** (dal `audit/paket4-on-olcum`, `547b721` üstüne). PUSH YOK.
+> - **Ölçülenler:**
+>   - Token: HTTP 200, ABD veri merkezi; kapsam `ZohoCRM.modules.ALL ZohoCRM.settings.ALL ZohoCRM.users.READ` → **COQL kapsamı yok**
+>     (deneme 401 `OAUTH_SCOPE_MISMATCH`); ⚠️ `modules.ALL` yazma da içerir — ölçümde yalnız GET.
+>   - Modüller: kontrat `Sales_Orders` · kalem alt formu **`Ordered_Items`** · ödeme alt formu **`Received_Payment`** · Revenues =
+>     **`Payment_Audit`** (CLAUDE.md'deki ad doğru) · fuar `Vendors` · gider `Expensess`.
+>   - Kalemler: en yeni 50 kontratın **50'sinde** satır (135, ort. 2.70); en eski (2014) kontratta da 2 satır (tek kayıt). RF ayrı
+>     ÜRÜN satırı (27/50); `Registration_Fee` alanı RF satırlı 27'nin 18'inde boş. Vergi satırda 0/135, başlıkta 7/50.
+>   - K7 satırlarla (SR'li 18): eşit 11 + yuvarlama 1, fark 6 (hepsi RF satırlı; 1'inde Zoho RF'den de komisyon ödemiş, 5'i
+>     ölçülemedi). SD satır tabanıyla 15/15 (±1).
+>   - Ödemeler: `Received_Payment` (Date · Payment · Note; yöntem yok) 23/50 kontratta; Σ = `Total_Payment` **50/50**.
+>     `Payment_Audit`'te kontrat lookup'ı **YOK** (alt form `Payment_Terms` de Payment_Audit'e bağlı); eşleşebilen 19 kaydın 14'ü
+>     Received_Payment satırının birebir aynası (şirket + fuar + tarih + tutar).
+>   - Tam çekim: tekil GET yoluyla ~3.950 kredi (alt formlar yalnız tekil kayıtta); kalan-kredi başlığı 60 çağrıda dönmedi.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** 2014–2025'te satır ve Received_Payment doluluk oranı (örneklem 2026 + 1 eski kayıt) · 5 SR
+>   farkının nedeni · `Payments` alt formunun sahibi · `Payment_Terms` içeriği · `Agent_Registration_Fee` doluluğu · org sürümü /
+>   lisans / gerçek limit · COQL.
+> - **Bilinçle yapılmayanlar:** yazma çağrısı · 60 kredi üstü · ELIZA DB'nin kaynak olarak kullanılması · CLAUDE.md düzeltmesi
+>   (aşağıda, aday).
+> - **YON-01 DÜZELTMESİ (Suer, ELIZA penceresi ölçümü 26 Eki — CC bu ölçümü yapmadı, AYNEN kayda):** "ELIZA / eliza-legacy
+>   emekli" kaydı **YANLIŞ** — `eliza-api` / bot / dashboard **CANLI**; her saat Zoho'dan `Sales_Orders` + `Vendors`, 06:00 / 18:00'de
+>   `Received_Payment` çekiyor; aynada kalem ve Zoho id YOK → **Paket 4 kaynağı ELIZA DB olamaz, Zoho API olur.** CC'nin bu turdaki
+>   destekleyici kanıtı: `eliza-api` env'indeki Zoho anahtarı geçerli (token 200); eliza `syncSalesOrders.js` `Sales_Orders` listesi +
+>   `Received_Payment` okuyor (`:5, :89, :367`). **Düzeltme adayları (dokunulmadı):** LEENA `CLAUDE.md:44` "eliza-legacy EMEKLİ
+>   (AD-01)" satırı; ELIZA'yı emekli sayan eski defter / rapor ifadeleri (tarih kaydı — YON-01 gereği yerinde kalır).
+> - **🔶 Sentez'e:** Paket 4 kriter turu girdisi güncel: kalem + ödeme kaynağı API'de kesin; karar noktaları — salt-okunur ayrı
+>   token (COQL kapsamlı) · RF satırı/alanı tutarsızlığında K7b farkı · başlık vergisinin satırlara dağıtımı · 2014–2025 doluluk
+>   oranı için daha geniş örneklem.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -5195,6 +5230,10 @@
 >   ÖZETİ + 5 Suer sorusu) ∥ LIFFY staging kurulumu (SERBEST, YON-13 c) ∥ UI-1.**
 >   EK: Zoho API ölçümü kimlik bekliyor (LEENA `547b721`) — [defter:2026-10-26 PAKET 4 ÖN-ÖLÇÜM EK: ZOHO API]; Suer env ADLARINA
 >   bakar (Leena_v401 · eliza-api), kriter turu kalem/gelir bağı kararını buna göre verir.
+>   Zoho API → ✅ **ÖLÇÜLDÜ** (LEENA `c7f3efa`) — [defter:2026-10-26 PAKET 4 ÖN-ÖLÇÜM EK-2: ZOHO API ÖLÇÜLDÜ]: kalemler
+>   `Ordered_Items`, ödemeler `Received_Payment`, Revenues = `Payment_Audit` (kontrat bağı yok); ELIZA canlı (YON-01 düzeltmesi).
+>   **★SIRADAKİ (bu kazanır) = Paket 4 kriter turu (Sentez; girdi: rapor SENTEZ ÖZETİ güncel + §14) ∥ LIFFY staging kurulumu
+>   (SERBEST, YON-13 c) ∥ UI-1.**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
