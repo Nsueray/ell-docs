@@ -29,9 +29,8 @@ gönderir ve imzalatır → kontrat ELIZA'da kendiliğinden oluşur → Finans o
 3. **Kalemler:** ürünler katalogdan seçilir. Fiyatı olmayan ürün quote'a eklenemez. RF (kayıt ücreti) ürünleri işaretlidir.
    Vergi oranı her satırda ayrı tutulur. Ekrandaki toplam, ELIZA'daki kontrat brütüyle birebir aynıdır (iki sistem aynı
    kuralı kullanıyor, TAH-05).
-4. Sıra şöyle: **Create → Send → Sign.** İmza adımında imza tarihi ve **Signed Scan URL** istenir.
-   *Şimdilik bu alan zorunlu.* Zorunluluk kaldırılacak (Suer kararı, kod henüz değişmedi). Tarama yoksa staging testindeki
-   gibi `*` yazılabilir.
+4. Sıra şöyle: **Create → Send → Sign.** İmza adımında yalnız imza tarihi zorunludur. **Signed Scan URL isteğe bağlıdır**;
+   tarama yoksa alanı boş bırak (`*` gibi yer tutucular da "link yok" sayılır).
 5. İmzadan sonra quote detayındaki **Convert to ELIZA** kartına bak:
 
    | Görünen | Anlamı | Ne yapılır |
@@ -93,5 +92,6 @@ gönderir ve imzalatır → kontrat ELIZA'da kendiliğinden oluşur → Finans o
 
 ---
 
-**Açık işler (bu taslağı değiştirecek):** imzada tarama zorunluluğunun kalkması (LIFFY kodu) · Agents / Commissions ekranlarının
-ui2 karşılığı (UI-1) · Expenses / Drafts formunda kategori ve tipin iki ayrı kutu olması (UI-1).
+**Açık işler (bu taslağı değiştirecek):** Agents / Commissions ekranlarının ui2 karşılığı (UI-1) · Expenses / Drafts formunda
+kategori ve tipin iki ayrı kutu olması (UI-1) · fiyatı 0 olan ürünler için uyarı rozeti (LIFFY; o zamana dek 0 fiyatlı ürünün
+fiyatını quote satırında kendin gir).

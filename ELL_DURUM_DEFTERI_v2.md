@@ -4879,6 +4879,128 @@
 >   reposunun başka gömülü yedek değerleri (tarama yapılmadı — Faz B işi).
 > - **Bilinçle yapılmayanlar:** kod düzeltmesi (Faz B kuyruğu) · rotasyon (Paket 4 öncesi toplu) · oturum dökümü silme.
 
+> ## ✅ 2026-10-26 — SENTEZ: PAKET 3 KAPANIŞ ONAYI + 3 HÜKÜM + PAKET 4 BAŞLANGICI — AYNEN (KB @ c129a2a)
+>
+> - **Kaynak:** Suer'in "P3 KAPANIŞ DÜZELTMELERİ" promptu (26 Eki) içindeki Sentez metni, AYNEN. Kütük karşılıkları bu commit'te:
+>   KAT-04 (SAPMA 3 + 6) · OFS-05 (SAPMA 7) · YON-10 (K4 yeniden tanım) · YON-13 (maliyet) · KAT-01 (0 fiyatlı 30 ürün).
+>
+>   ```
+>   SENTEZ → ORCHESTRATOR — PAKET 3 KAPANIŞ ONAYI + 3 HÜKÜM + PAKET 4 BAŞLANGICI (26 Eki)
+>
+>   PAKET 3 KABUL. KB @ c129a2a. Yol haritası 3/6 kapandı.
+>   SAPMA 1–10: HEPSİ KABUL. Notlar: (3) SR eşlemesi e-postayla + needs_agent
+>   → KAT notu; sr_pct NULL → temsilci varsayılanı doğru (override yoksa
+>   default; K7). (6) senkron ≤15 sn + imza geri alınmaz: KABUL, outbox
+>   retry var; "imza geri alınmaz" kütüğe (quote signed = terminal, 1f
+>   kararıyla aynı). (7) kontratta ofis kolonu yok: KABUL — ofis
+>   sales_agent/ödeme üzerinden türetilir (OFS-05), kolon açılmaz.
+>   (10) export atlandı: tek istisna, kural aynı.
+>
+>   1 K4: KABUL. Kural = sır DEĞERİ (canlı env'de olan). Public repoda
+>     zaten açık sabit / yerel .env = "SIZ" sınıfı: deftere kayıt, duruş
+>     yok. "4. ihlal = promptlar Sentez'den" KALDIRILIR. CLAUDE.md K4
+>     metni bu tanımla güncellenir.
+>   2 Repo görünürlüğü: Suer kararı aşağıda. Rotasyon Paket 4 öncesi
+>     toplu — değişmedi. CLAUDE.md:150 şifresi zaten geçersiz (Faz A);
+>     satır yine silinir (düzeltme dilimine).
+>   3 "P3 kapanış düzeltmeleri" dilimi: KABUL, AYRI ve ÖNCE (LIFFY staging
+>     kurulumundan önce, tek prompt): quotes.sign scan zorunluluğu kalkar
+>     (SERBEST) · webhook.js:8 yedek kaldır, env yoksa 503 (KAPI-2 onaylı)
+>     · is_service satırlarda davet düğmeleri gizle · CLAUDE.md:150 satırı
+>     sil · K4 metni. Expenses/Drafts iki kutu → UI-1'e (ekran işi, şablon
+>     taşımasıyla birlikte).
+>   Bekleyen bilgi: 0 fiyatlı 30 ürün seçilebilir → KABUL (fiyat
+>   quote'ta girilir; uyarı rozeti). DZ ofisi LEENA'da yok → convert 422:
+>   Suer'e soru Paket 4'te (Algeria ofisi açılacak mı — Iraq kararıyla
+>   birlikte). Kılavuz taslakları: Suer okur, Sentez değil (kullanıcı
+>   dili). leena-email-worker dalı: düzeltme diliminde ölçülür.
+>
+>   PAKET 4 — ZOHO GÖÇÜ: KRİTER TURU BAŞLANGICI
+>   Önce ön-ölçüm (CC, teslimat; altı CSV ~/Downloads/zoho_export_
+>   2026-10-25/; değer basmadan): Sales_Contracts 108 kolon → LEENA
+>   contracts/line_items/payments alan eşlemesi (var/yok/türetilir/
+>   atılır) · Status eşlemesi (Valid→Active, Transferred Out/In →
+>   SEM-06, Cancelled, On Hold) · ödeme alanlarının yapısı (1st/2nd
+>   Payment, 1–5 Date/Amount/Type serbest metin: kaç satır ayrıştırılabilir
+>   biçimde, kaçı değil) · SR/SD/Agent % + Registration Fee + Net Total
+>   ile K7 formülünün Zoho'daki sonuçlarını yeniden üretme testi (10
+>   örnek kontrat, hesap eşleşiyor mu) · Expos 208 → LEENA expos eşlemesi
+>   (ad + yıl; 16 mevcut LEENA expo'su hangileriyle örtüşüyor) ·
+>   Revenues 1043 → payments (Payer Company → payer, Payment Method
+>   eşleme tablosu) · Expenses 1592 → expenses (Payee → suppliers 294
+>   tekil) · Sales_Agents delta 4 · para birimi/kur: Zoho Exchange Rate
+>   hangi tarihte donmuş (ADR-012: Zoho kuru taşınır) · kişisel veri
+>   envanteri (hangi kolonlar; göçte hangileri taşınır, hangileri
+>   taşınmaz). Rapor: docs/audits/PAKET4_ON_OLCUM_<tarih>.md + Sentez'e
+>   özet; Suer'e iş soruları ayrı başlıkta (en fazla 5).
+>   Paralel: LIFFY staging kurulumu (SERBEST; 26 Eki hükmü c; Suer maliyet
+>   onayı) · UI-1 · temizlik listesi (test quote'lar · kontrat #5 ·
+>   TEST OFFICE · kontrat 4 = TABAN dayanağı → yeni TABAN çapası Sentez
+>   kararıyla: göç sonrası gerçek bir kontrat) · Suer'in "kullanmadığım
+>   modüller" turu (envanter 23 Eki girdi; Suer liste verir, Sentez
+>   KALSIN/SİL).
+>
+>   Suer kararı — repolar: Leena_v401_monorepo + liffy-ui PRIVATE (şimdi);
+>   ell-docs PUBLIC KALIR (AI'ların tek belge kaynağı; elle dosya taşıma
+>   istenmiyor). Faz B'ye: ell-docs geçmiş temizliği (eski şifre satırları)
+>   öne alınır. LIFFY staging 15 $/ay: onay.
+>   ```
+
+> ## ✅ 2026-10-26 — P3 KAPANIŞ DÜZELTMELERİ (Sentez hüküm 3): STAGING'E HAZIR (LEENA `606d175` · liffyv1 `8851c3a` · liffy-ui `e8b7688`; webhook KAPI-2 Sentez onaylı)
+>
+> - **Süreç (Suer promptu 26 Eki — tek dilim, LIFFY staging'den ÖNCE):** dallar LEENA `eliza-next` (`main`'den ff: `12823be` →
+>   `d25c532`) · liffyv1 + liffy-ui doğrudan `main` · ell-docs `main`; repo başına tek commit. Webhook KAPI-2 (Sentez onaylı, ara
+>   soru yok); gerisi SERBEST. Kapsam dışı: Expenses/Drafts iki kutu (UI-1) · LIFFY staging · Paket 4 · rotasyon.
+> - **Ne yapıldı:**
+>   - **(1) LIFFY imza (`8851c3a` + `e8b7688`):** `POST /api/quotes/:id/sign` tarama linki İSTEMEZ; boş ya da harf/rakam içermeyen
+>     yer tutucu (`*`, `-`, `...`) = NULL (`normalizeScanUrl`); `signed_at` zorunlu kalır. Convert yükü `scan_url: null` taşır;
+>     LEENA `scan_link` nullable (C1 testi). liffy-ui Sign penceresi: alan "(optional)", düğme yalnız tarihi ister, boş alan null.
+>   - **(2) LEENA webhook (`606d175`, KAPI-2):** `routes/webhook.js` gömülü `ZOHO_WEBHOOK_TOKEN` yedeği KALDIRILDI; token istek
+>     anında yalnız env'den okunur; env yoksa **503 `WEBHOOK_NOT_CONFIGURED`** (açılış hatası değil); yanlış/eksik token **403**
+>     "Invalid token" (eski davranış). `index.js` açılışta durum satırı: `✓ Zoho webhook token set (ZOHO_WEBHOOK_TOKEN)` ya da
+>     `⚠️ Zoho webhook closed — ZOHO_WEBHOOK_TOKEN not set (POST /api/webhook/zoho answers 503)` (yalnız ad). Canlıda env VAR (Suer)
+>     → davranış değişmez.
+>   - **(3) ui2 servis kullanıcısı:** Admin › Users listesinde `is_service` satırında yalnız ad + durum (`service`); e-posta / rol /
+>     ofis / temsilci "—". Kullanıcı detayında yalnız Status (Deactivate gerekçe zorunlu / Activate) + "About this user" notu +
+>     History (Owner, salt okuma); Profile · Invitation · Role & permissions GİZLİ. Sunucu bu yazımları zaten 409 `SERVICE_USER`
+>     ile reddediyordu (`routes/users.js:293`, `:408`) — değişmedi.
+>   - **(4) LEENA `CLAUDE.md`:** `:150` DB bağlantı satırı SİLİNDİ (yerine "bağlantı dizesi repoda tutulmaz" notu; değer
+>     yazılmadı, satır git geçmişinde kalır) · K4 yeni tanım (sır = canlı env değeri; SIZ sınıfı; maske önce sahte girdide sınanır,
+>     hata dalında da maskesiz yazdırma yok) · webhook akış notu (KURAL 4) · test sayısı 504/504. `docs/CLAUDE_ARCHIVE.md`'de aynı
+>     satır YOK (ölçüldü). "4. ihlal = promptlar Sentez'den" metni ell-docs + LEENA'da **BULUNAMADI** → kaldırılacak satır yoktu.
+>   - **(5) Ölçüm:** `leena-email-worker` dalı — repoda `render.yaml` / `Procfile` / Dockerfile YOK → Render ayarından okunur
+>     (Suer bloğunda). Worker'ın statik require grafiği **5 dosya** (`email_worker.js`, `utils/email.js`, `utils/qrcode.js`,
+>     `utils/trackingPixel.js`, `utils/callCenterReport.js`) → env adları 15: `PGHOST PGPORT PGDATABASE PGUSER PGPASSWORD NODE_ENV
+>     BASE_BADGE_URL CAMPAIGN_SENDER_NAME CAMPAIGN_SCHEDULER_INTERVAL_SECONDS CAMPAIGN_SCHEDULER_BATCH_LIMIT EMAIL_WORKER_BATCH_SIZE
+>     SENDGRID_API_KEY SENDER_EMAIL UNSUBSCRIBE_SECRET CALLCENTER_REPORT_TO` → `docs/ISLETIM_NOTU_v1.md` güncellendi.
+> - **Commit:** LEENA `eliza-next` **`606d175`** (origin'in 2 önünde: `d25c532` ff + `606d175`) · liffyv1 `main` **`8851c3a`** ·
+>   liffy-ui `main` **`e8b7688`** · ell-docs bu commit (Sentez kaydı + bu kayıt + kütük + iki belge). **PUSH YOK** (Suer).
+> - **Testler:** LEENA `npm run test:setup && npm test` **504/504** (önce 495; + `tests/test_p3_closing.js` 9: W0 kaynakta yedek
+>   yok · W1 env'siz 503 · W2/W3 yanlış/eksik token 403 · W4 doğru token kapıdan geçer (e-postasız → 400) · W5 yazım yok · C1
+>   `scan_url` null/yok → 201 + `scan_link` NULL · U1–U3 ui2 çizimi: servis listesi, servis detayı, insan detayı regresyon) —
+>   iki tam koşu aynı; **TABAN 342.00 KAYMADI** (T35). LIFFY `npm test` **60/60** (26 + 34; + S1–S4: taramasız · `*` · kırpılmış
+>   link · `signed_at` yok → 400). liffy-ui `tsc --noEmit` temiz · eslint `app/quotes/page.tsx` 0 hata / 2 uyarı = HEAD.
+> - **Ölçülenler (CC, 26 Eki):** `gh repo view`: Leena_v401_monorepo **PRIVATE** · liffyv1 PRIVATE · liffy-ui **PRIVATE** ·
+>   ell-docs **PUBLIC** (Suer kararıyla uyumlu) · kimlikli DB URL kalıbı (`<kullanıcı>:<şifre>@`, yalnız dosya adı basıldı): LEENA
+>   izlenen dosyalarda 1 (`CLAUDE.md`) → **0**; **ell-docs `leena/CLAUDE.md` aynı eski satırı taşıyor** (izlenen dosya, geçmişte 1
+>   commit; PUBLIC) → Faz B "ell-docs geçmiş temizliği" maddesinin somut hedefi · webhook yedeğinin yaşı `c6f8a39` (2026-02-23) ·
+>   0 fiyatlı 30 ürün: bugün seçilebilir, satır fiyatı ön-dolar ve ezilebilir (LIFFY `routes/quotes.js:575-585`); 0-fiyat **uyarı
+>   rozeti kodda YOK** → kuyruk.
+> - **K4 — SIZ kaydı (yeni tanım; duruş yok):** (4)'te satır konum doğrulaması (assert) bir satır kaymayla düştü; hata dalındaki
+>   kontrol baskısı maskesizdi → `CLAUDE.md:150` DB bağlantı satırı (kullanıcı + şifre + host) CC tool çıktısına düştü. Sınıf
+>   **SIZ**: şifre Faz A'da geçersizlendi (Sentez 26 Eki madde 2), değer bugüne dek PUBLIC repo geçmişinde, ayrıca CLAUDE.md
+>   oturum açılışında bağlama zaten yükleniyor. Nereye: yalnız bu oturumun yerel dökümü. Önlem: K4 metnine "hata dalında da
+>   maskesiz yazdırma yok" eklendi; CC hafızası güncellendi.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** `leena-email-worker` dalı (Render paneli — Suer) · repolar PRIVATE olduktan sonra Render'ın
+>   GitHub erişimi / ilk otomatik deploy (LEENA + liffy-ui; tetiklenmezse Manual Deploy) · staging / canlı görsel kontrol · canlı
+>   açılış logundaki webhook satırı · ell-docs geçmişindeki diğer eski şifre satırları (yalnız bu kalıp sayıldı).
+> - **Bilinçle yapılmayanlar:** 0-fiyat uyarı rozeti (kuyruk, LIFFY SERBEST) · mevcut imzalı quote'lardaki `*` değerleri (LIFFY
+>   ATR-100002, LEENA staging kontrat #5 `scan_link` — temizlik listesine) · Project şablonuna `expo_publish.write` · webhook'ta
+>   sabit-zamanlı karşılaştırma (kapsam dışı; eski `!==` korundu) · LEENA skill dosyaları · ell-docs `leena/CLAUDE.md` (başkasının
+>   açık değişikliği var; Faz B geçmiş temizliğinde) · push / merge.
+> - **Teslim (Suer):** teslim metnindeki SUER BLOĞU (push ×4 → staging kontrolü → "merge" → export kararı → `main` push → canlı
+>   webhook log satırı).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -4954,6 +5076,12 @@
 >   liffy-ui `8b31805`). **★SIRADAKİ (Suer 26 Eki — bu kazanır) = Paket 4 kriter turu (Sentez) ∥ LIFFY staging kurulumu (SERBEST,
 >   tek CC promptu — YON-13 c) ∥ UI-1 ∥ kullanım kılavuzu (taslak `docs/KULLANIM_KILAVUZU_v1.md`).** Temizlik kararı Paket 4
 >   öncesi — liste [defter:2026-10-26 PAKET 3 CANLIDA].
+>   ✅ **Sentez 26 Eki: PAKET 3 KABUL, KB @ c129a2a, SAPMA 1–10 KABUL** — [defter:2026-10-26 SENTEZ: PAKET 3 KAPANIŞ ONAYI].
+>   P3 kapanış düzeltmeleri → ✅ **STAGING'E HAZIR** (LEENA `606d175` · liffyv1 `8851c3a` · liffy-ui `e8b7688`) —
+>   [defter:2026-10-26 P3 KAPANIŞ DÜZELTMELERİ]. **★SIRADAKİ (Sentez 26 Eki — bu kazanır) = P3 kapanış: Suer push + staging
+>   kontrolü → "merge" → canlı · sonra Paket 4 ön-ölçüm (CC; `docs/audits/PAKET4_ON_OLCUM_<tarih>.md`) ∥ LIFFY staging kurulumu
+>   (SERBEST, 15 $/ay onaylı) ∥ UI-1 ∥ temizlik listesi.** Suer kararı: Leena_v401_monorepo + liffy-ui PRIVATE (ölçüldü),
+>   ell-docs PUBLIC kalır. Paket 4'e Suer sorusu: DZ ofisi (Algeria) açılacak mı — Iraq kararıyla birlikte.
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
@@ -4993,8 +5121,10 @@
 >   [defter:2026-10-23 K4 İHLAL #3]) → sonra: 3 izlenen `.env.backup` · staging DB inbound
 >   `0.0.0.0/0` daraltma · ~~sırlı ölü izin kuralları~~ ✅ 23 Eki (52 kural) · ~~`JWT_SECRET` env'ini liffy-worker-docker'dan
 >   kaldır~~ ✅ **KALDIRILDI 26 Eki** (Suer; [defter:2026-10-26 PAKET 3 CANLIDA]) ·
->   **LEENA `routes/webhook.js:8` gömülü `ZOHO_WEBHOOK_TOKEN` yedeği KALDIRILACAK** (env yoksa webhook 503; KAPI-2 — auth;
->   canlıda env VAR, Suer 26 Eki; token Paket 4 öncesi toplu rotasyonla — [defter:2026-10-26 K4 İHLAL #5]) ·
+>   ~~**LEENA `routes/webhook.js:8` gömülü `ZOHO_WEBHOOK_TOKEN` yedeği KALDIRILACAK**~~ ✅ kodda KALDIRILDI (`606d175`, env yoksa
+>   503; canlıya merge'le) — token Paket 4 öncesi toplu rotasyonla ([defter:2026-10-26 K4 İHLAL #5]) ·
+>   **ÖNE ALINDI (Sentez 26 Eki): ell-docs geçmiş temizliği (eski şifre satırları)** — somut hedef: `leena/CLAUDE.md` eski LEENA
+>   DB bağlantı satırını taşıyor (izlenen dosya + geçmiş; PUBLIC) — [defter:2026-10-26 P3 KAPANIŞ DÜZELTMELERİ] ·
 >   NOLOGIN kalan eski roller + tablo sahipliği (Sentez sorusu) ·
 >   auto-deploy'un `35cad76`'da tetiklenmeme sebebi (Render event log'dan ölçülecek; Sentez 21 Eki; `613ce8e`'de
 >   tetiklendi, 22 Eki) ·

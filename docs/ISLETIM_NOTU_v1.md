@@ -9,7 +9,7 @@
 | Sistem | Render servisi | Repo · dal | Adres | Not |
 |---|---|---|---|---|
 | ELIZA / LEENA | `Leena_v401` (web) | `Leena_v401_monorepo` · `main` | leena.app (ui2: `/ui2/`) | Push = canlı deploy, 20–60 sn kesinti (G43) |
-| | `leena-email-worker` | aynı repo · auto-deploy açık¹ | — | `node email_worker.js`: e-posta kuyruğu + kampanya |
+| | `leena-email-worker` | aynı repo · dal¹ | — | `node email_worker.js`: e-posta kuyruğu + kampanya |
 | | `leena_v401_db` | — | — | PostgreSQL 17 · PITR 7 gün + export |
 | | `leena-staging` (web) | aynı repo · **`eliza-next`** | leena-staging.onrender.com | Worker YOK · ayrı DB (`leena-staging-db`) |
 | LIFFY | `liffy-api` | `liffyv1` · `main` | api.liffy.app | |
@@ -17,7 +17,8 @@
 | | `liffy-ui` | `liffy-ui` · `main` | liffy.app | `/api/*` → api.liffy.app (`next.config.ts:8`) |
 | | `liffy-redis` · `liffy-db` | — | — | Kuyruk · PostgreSQL 17 |
 
-¹ "web + worker Auto-Deploy On Commit" (Suer gözlemi, 8 Eki). Worker'ın dalını CC panelde görmedi.
+¹ Repoda `render.yaml` / `Procfile` / Dockerfile YOK (ölçüldü 26 Eki) → dal yalnız Render ayarında: Render → leena-email-worker →
+Settings → Branch (Suer okur). "web + worker Auto-Deploy On Commit" (Suer gözlemi, 8 Eki).
 
 - **LIFFY'nin staging'i YOK.** Kurulumu kabul edildi (YON-13 c). O gelene kadar `liffy-api` canlı LEENA'ya bağlı kalır;
   env'i canlı ↔ staging arasında ileri-geri çevirmek **YASAK** (YON-13).
@@ -39,18 +40,22 @@
 - `UNSUBSCRIBE_SECRET`: e-postadaki abonelikten çıkış imzası. Yoksa uygulama açılmaz.
 - `SENDGRID_API_KEY` · `SENDER_EMAIL` · `ADMIN_EMAIL`: e-posta gönderimi.
 - `BASE_BADGE_URL`: e-postalardaki rozet linklerinin kökü.
-- `ZOHO_WEBHOOK_TOKEN`: Zoho form webhook'unun doğrulaması. ⚠️ Kodda gömülü bir yedek değer var; kaldırılması Faz B
-  kuyruğunda ([defter:2026-10-26 K4 İHLAL #5]).
+- `ZOHO_WEBHOOK_TOKEN`: Zoho form webhook'unun doğrulaması. Yalnız env'den okunur; yoksa webhook 503 döner ve açılış logu
+  bunu yazar (LEENA `606d175`; koddaki gömülü yedek kaldırıldı — [defter:2026-10-26 P3 KAPANIŞ DÜZELTMELERİ]).
 - `CALLCENTER_KEY` · `CALLCENTER_SUPERVISOR_KEY` · `CALLCENTER_AGENTS` · `CALLCENTER_REPORT_TO`: çağrı merkezi.
 - `CORS_EXTRA_ORIGINS`: ek izinli kökenler.
 - `EXPECTED_DB_NAME`: bağlanılan DB adı farklıysa uygulama açılmaz; staging koruması.
 - `INVITE_ECHO=1`: davet linkini yanıtta gösterir. **Yalnız staging'de kullanılır.**
 - `NODE_ENV` · `PORT`.
 
-**`leena-email-worker`** (`email_worker.js`'te geçen adlar): `PG*` · `BASE_BADGE_URL` · `CAMPAIGN_SENDER_NAME` ·
-`CAMPAIGN_SCHEDULER_INTERVAL_SECONDS` · `CAMPAIGN_SCHEDULER_BATCH_LIMIT` · `EMAIL_WORKER_BATCH_SIZE`.
+**`leena-email-worker`** (statik require grafiği 5 dosya: `email_worker.js` + `utils/email.js`, `utils/qrcode.js`,
+`utils/trackingPixel.js`, `utils/callCenterReport.js` — ölçüldü 26 Eki):
+- `PG*` · `NODE_ENV`: DB bağlantısı.
+- `CAMPAIGN_SENDER_NAME` · `CAMPAIGN_SCHEDULER_INTERVAL_SECONDS` · `CAMPAIGN_SCHEDULER_BATCH_LIMIT` · `EMAIL_WORKER_BATCH_SIZE`:
+  kampanya ve kuyruk hızı (G8).
+- `SENDGRID_API_KEY` · `SENDER_EMAIL`: gönderim. `UNSUBSCRIBE_SECRET`: e-postadaki çıkış/izleme bağlantısı imzası.
+- `BASE_BADGE_URL`: rozet linklerinin kökü. `CALLCENTER_REPORT_TO`: çağrı merkezi raporunun alıcısı.
 - Bunlar worker servisinde tanımlanır; web servisinde tanımlamak işe yaramaz (G34).
-- Worker'ın içe aldığı modüllerin env adları ayrıca sayılmadı.
 
 **LIFFY (`liffyv1`; api ile worker aynı kodu çalıştırır):**
 - `DATABASE_URL` · `REDIS_URL`: DB ve kuyruk.
