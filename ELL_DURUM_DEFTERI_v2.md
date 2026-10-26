@@ -5001,6 +5001,26 @@
 > - **Teslim (Suer):** teslim metnindeki SUER BLOĞU (push ×4 → staging kontrolü → "merge" → export kararı → `main` push → canlı
 >   webhook log satırı).
 
+> ## ✅ 2026-10-26 — P3 KAPANIŞ DÜZELTMELERİ: MAIN'E MERGE (LEENA `0c90d0d`; export kararı + `main` push Suer'de)
+>
+> - **Ne yapıldı:** Suer "merge" yazdı (staging kontrolü) → `eliza-next` (`606d175`) `main`'e `--no-ff` merge: **`0c90d0d`**
+>   (ebeveynler `d25c532` + `606d175`). Ayrı worktree'de; ana çalışma kopyası (`eliza-next`, başkasının `.DS_Store`'u)
+>   dokunulmadı. LIFFY tarafı (liffyv1 `8851c3a` · liffy-ui `e8b7688`) push'lı = canlı; merge yok.
+> - **Commit:** LEENA `main` **`0c90d0d`** (origin/main'in 2 önünde: `606d175` · `0c90d0d`) · ell-docs bu kayıt. **PUSH YOK** (Suer).
+> - **Ölçülenler (CC, 26 Eki):** `origin/eliza-next` = `606d175` · liffyv1 `origin/main` = `8851c3a` · liffy-ui = `e8b7688` ·
+>   ell-docs = `e4b3b36` (Suer push'ları) · `origin/main` = `d25c532` (canlı) · merge ağacı ↔ `606d175` fark **0** (504/504 bu
+>   ağaçta, iki koşu) · canlıya göre değişen 7 dosya: çalışan kod `routes/webhook.js` + `index.js` (log satırı) +
+>   `public/ui2/admin-user{,s}.html`; ayrıca `CLAUDE.md`, `package.json` (test zinciri), `tests/test_p3_closing.js` · migration
+>   YOK · **geri alma kanıtı:** `git revert -m 1 0c90d0d` geçici worktree'de temiz; ağaç `d25c532` ile birebir · staging
+>   `/ui2/admin-users.html` yeni kodu taşıyor (servis satırı yardımcısı var); canlı taşımıyor · staging webhook'a tokensız POST →
+>   **403** (503 değil → staging'de `ZOHO_WEBHOOK_TOKEN` TANIMLI; istek kapıda reddedildi, yazım yok).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Suer'in staging görsel kontrolünün ayrıntısı (yalnız "merge" yazıldı — kabul sayıldı) ·
+>   liffy.app Sign penceresi · `leena-email-worker` dalı (Render paneli) · canlı açılış logundaki webhook satırı · export kararı.
+> - **Bilinçle yapılmayanlar:** push · canlı webhook denemesi (canlı env'e dokunan/ölçen istek atılmadı).
+> - **Teslim (Suer, canlı sırası):** YON-06 iki ölçüm → export kararı (YON-12c; kod-only, migration yok) → LEENA
+>   `git push origin main` + ell-docs push → deploy logunda `✓ Zoho webhook token set (ZOHO_WEBHOOK_TOKEN)` → `/health` 200 →
+>   canlı ui2 Admin › Users servis satırı sade → CC'ye rapor → "P3 KAPANIŞ CANLIDA" kaydı.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -5082,6 +5102,8 @@
 >   kontrolü → "merge" → canlı · sonra Paket 4 ön-ölçüm (CC; `docs/audits/PAKET4_ON_OLCUM_<tarih>.md`) ∥ LIFFY staging kurulumu
 >   (SERBEST, 15 $/ay onaylı) ∥ UI-1 ∥ temizlik listesi.** Suer kararı: Leena_v401_monorepo + liffy-ui PRIVATE (ölçüldü),
 >   ell-docs PUBLIC kalır. Paket 4'e Suer sorusu: DZ ofisi (Algeria) açılacak mı — Iraq kararıyla birlikte.
+>   P3 kapanış düzeltmeleri → ✅ **MAIN'E MERGE (`0c90d0d`)** — [defter:2026-10-26 P3 KAPANIŞ DÜZELTMELERİ: MAIN'E MERGE];
+>   canlı sırası Suer'de (export kararı → push → webhook log satırı).
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
