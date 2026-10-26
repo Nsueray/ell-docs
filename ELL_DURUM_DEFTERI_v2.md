@@ -5021,6 +5021,35 @@
 >   `git push origin main` + ell-docs push → deploy logunda `✓ Zoho webhook token set (ZOHO_WEBHOOK_TOKEN)` → `/health` 200 →
 >   canlı ui2 Admin › Users servis satırı sade → CC'ye rapor → "P3 KAPANIŞ CANLIDA" kaydı.
 
+> ## ✅ 2026-10-26 — P3 KAPANIŞ DÜZELTMELERİ CANLIDA (LEENA `0c90d0d` · liffyv1 `8851c3a` · liffy-ui `e8b7688`; webhook KAPI-2 geçti)
+>
+> - **Ne yapıldı (Suer raporu 26 Eki, AYNEN):**
+>
+>   ```
+>   4 push (606d175 · 8851c3a · e8b7688 · e4b3b36) → leena-staging/liffy-api/liffy-ui otomatik deploy
+>   (private sonrası ilk push, sorunsuz) → staging logda "✓ Zoho webhook token set (ZOHO_WEBHOOK_TOKEN)"
+>   → staging Admin › Users: LIFFY (service) satırı e-posta/rol/ofis/temsilci "—", detay yalnız Status +
+>   About + History → liffy.app QMA-100001 Sign penceresi "Signed Scan URL (optional)", Sign'a basılmadı
+>   → merge 0c90d0d → export ATLANDI (kod-only, migration yok; Suer kararı) → main push
+>   d25c532..0c90d0d, ell-docs e4b3b36..d441e07 → canlı Leena_v401 Live, logda "✓ Zoho webhook token set
+>   (ZOHO_WEBHOOK_TOKEN)" + servis yolu v2 satırı → canlı Admin › Users sade ("2 shown").
+>   leena-email-worker (Render Settings): dal main · root backend/leena-v401-backend · start "node
+>   email_worker.js" · auto-deploy On Commit · şu an 0c90d0d Live.
+>   ```
+>
+> - **Ölçülenler (CC, 26 Eki):** `origin/main`: LEENA **`0c90d0d`** · ell-docs `d441e07` · `origin/eliza-next` `606d175` (= main
+>   ağacı) · leena.app `/health` 200 · canlı `/ui2/admin-users.html` ve `/ui2/admin-user.html` servis kullanıcısı kodunu taşıyor
+>   (yeni kod canlıda) · canlı webhook'a CC istek ATMADI (Suer'in log satırı yeterli).
+> - **Export:** atlandı — Suer kararı (YON-12c KAPI-2 paketi, ama kod-only, migration yok). Paket 3 CANLIDA'daki istisnadan ayrı
+>   ikinci kayıt; kural değişmedi (Sentez'in "tek istisna" notu Paket 3 canlı geçişi içindi → Sentez'e bilgi).
+> - **Kapanan ÖLÇÜLMEDİ:** `leena-email-worker` dalı = **`main`** · root `backend/leena-v401-backend` · start `node email_worker.js` ·
+>   auto-deploy On Commit · şu an `0c90d0d` (Suer, Render Settings) → `docs/ISLETIM_NOTU_v1.md` §1 tablosu güncellendi. Render'ın
+>   private repolara erişimi sorunsuz (ilk otomatik deploy tetiklendi — Suer).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** canlı webhook davranışı (CC denemedi; yalnız log satırı) · Zoho'dan gerçek bir form gönderimi ·
+>   liffy.app'te taramasız gerçek imza (bilinçle yapılmadı — canlı kontrat açar, YON-13; davranış testlerle kanıtlı: LIFFY S1–S4,
+>   LEENA C1).
+> - **Bilinçle yapılmayanlar:** canlı webhook / imza denemesi · temizlik (Paket 4 öncesi karar).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -5104,6 +5133,9 @@
 >   ell-docs PUBLIC kalır. Paket 4'e Suer sorusu: DZ ofisi (Algeria) açılacak mı — Iraq kararıyla birlikte.
 >   P3 kapanış düzeltmeleri → ✅ **MAIN'E MERGE (`0c90d0d`)** — [defter:2026-10-26 P3 KAPANIŞ DÜZELTMELERİ: MAIN'E MERGE];
 >   canlı sırası Suer'de (export kararı → push → webhook log satırı).
+>   P3 kapanış düzeltmeleri → ✅ **CANLIDA (26 Eki)** — [defter:2026-10-26 P3 KAPANIŞ DÜZELTMELERİ CANLIDA] (LEENA `0c90d0d` ·
+>   liffyv1 `8851c3a` · liffy-ui `e8b7688`). **★SIRADAKİ (Suer 26 Eki — bu kazanır) = Paket 4 ön-ölçüm (bir sonraki prompt;
+>   `docs/audits/PAKET4_ON_OLCUM_<tarih>.md`) ∥ LIFFY staging kurulumu (SERBEST, YON-13 c) ∥ UI-1.**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:

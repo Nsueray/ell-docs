@@ -9,7 +9,7 @@
 | Sistem | Render servisi | Repo · dal | Adres | Not |
 |---|---|---|---|---|
 | ELIZA / LEENA | `Leena_v401` (web) | `Leena_v401_monorepo` · `main` | leena.app (ui2: `/ui2/`) | Push = canlı deploy, 20–60 sn kesinti (G43) |
-| | `leena-email-worker` | aynı repo · dal¹ | — | `node email_worker.js`: e-posta kuyruğu + kampanya |
+| | `leena-email-worker` | aynı repo · `main`¹ | — | Root `backend/leena-v401-backend` · start `node email_worker.js`: e-posta kuyruğu + kampanya |
 | | `leena_v401_db` | — | — | PostgreSQL 17 · PITR 7 gün + export |
 | | `leena-staging` (web) | aynı repo · **`eliza-next`** | leena-staging.onrender.com | Worker YOK · ayrı DB (`leena-staging-db`) |
 | LIFFY | `liffy-api` | `liffyv1` · `main` | api.liffy.app | |
@@ -17,8 +17,9 @@
 | | `liffy-ui` | `liffy-ui` · `main` | liffy.app | `/api/*` → api.liffy.app (`next.config.ts:8`) |
 | | `liffy-redis` · `liffy-db` | — | — | Kuyruk · PostgreSQL 17 |
 
-¹ Repoda `render.yaml` / `Procfile` / Dockerfile YOK (ölçüldü 26 Eki) → dal yalnız Render ayarında: Render → leena-email-worker →
-Settings → Branch (Suer okur). "web + worker Auto-Deploy On Commit" (Suer gözlemi, 8 Eki).
+¹ Render Settings (Suer, 26 Eki): dal `main` · root `backend/leena-v401-backend` · start `node email_worker.js` · auto-deploy
+On Commit — yani her LEENA `main` push'u worker'ı da yeniden başlatır. Repoda `render.yaml` / `Procfile` / Dockerfile YOK;
+ayar yalnız Render panelinde ([defter:2026-10-26 P3 KAPANIŞ DÜZELTMELERİ CANLIDA]).
 
 - **LIFFY'nin staging'i YOK.** Kurulumu kabul edildi (YON-13 c). O gelene kadar `liffy-api` canlı LEENA'ya bağlı kalır;
   env'i canlı ↔ staging arasında ileri-geri çevirmek **YASAK** (YON-13).
