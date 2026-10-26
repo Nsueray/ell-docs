@@ -4601,6 +4601,113 @@
 > - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** yerel değerin canlı `UNSUBSCRIBE_SECRET` ile eşitliği (Render env gerekir) · kötüye kullanım.
 > - **Bilinçle yapılmayanlar:** rotasyon (Suer kararı) · `.env`'e dokunma · oturum dökümü silme.
 
+> ## ✅ 2026-10-26 — PAKET 3 KALANI (P3-3a + P3-3 + P3-4; P3-5 Suer'de): STAGING'E HAZIR (LEENA `12823be` · liffyv1 `42ef56a` · liffy-ui `8b31805`; tek kapı sonda — KAPI-2)
+>
+> - **Süreç (Sentez 26 Eki, Suer talimatı — tek prompt, tek kapı):** kriterler 24 Eki Paket 3 + 25 Eki 7 hüküm + Zoho hükümleri
+>   AYNEN; karar gerektiren yeni şey → en kilitli hükme uygun seçenek + SAPMA kaydı; KAPI-2 maddeleri (authMiddleware GET
+>   /api/expos, imza v2, convert ucu) bu blokla Sentez onaylı. Dallar: LEENA `eliza-next` (`main`'den ff: `72d712f` → `bf443c3`)
+>   · LIFFY `liffyv1` + `liffy-ui` doğrudan `main` (SAPMA, prompt'un kendi gerekçesi: Render liffy-api / liffy-ui yalnız `main`'i
+>   izliyor, LIFFY staging yok, kullanıcı yok; repo başına tek commit = tek revert).
+> - **Ara durma:** ADIM 0'da K4 İHLAL #4 → DUR → Suer kararı ile devam — [defter:2026-10-26 K4 İHLAL #4].
+> - **Suer düzeltmeleri (26 Eki — prompt hatalı, SAPMA DEĞİL) AYNEN:**
+>
+>   ```
+>   Çelişkiler — prompt hatalı, şöyle uygula (SAPMA değil):
+>   - published_to_liffy: nullable boolean default false (Sentez A.7).
+>   - İzin kodu: 044 biçimine uy; öneri expo_publish.write (modül adı sende), yalnız Owner şablonu.
+>   - Resend yalnız failed/pending'de; acked'de düğme yok. 409 yolu testle kanıtlanır (LEENA +
+>     LIFFY outbox testi), ekranda gösterilmez. F adımında "Resend → failed" beklentisi SİLİNDİ.
+>   - G adımı: Convert queue 1 converted, 0 failed.
+>   - Convert queue menü izni: nav.json'da sales.read (Sales sekmesinde; hüküm 3'ün amacı proje
+>     ekibinin görmesi). contracts.read Finance › Contracts'ta kalır.
+>   ```
+>
+> - **Ne yapıldı:**
+>   - **P3-3a LEENA (`12823be`, KAPI-2):** İMZA v2 `HMAC-SHA256(sır, ts \n METHOD \n yol \n ham gövde)` (`middleware/serviceAuth.js`),
+>     v1 KALDIRILDI (v1 imza → 401) · izin listesi `POST /api/contracts/convert` + `GET /api/expos`; başka her uç 403 ·
+>     migration **051** (runner): `expos.published_to_liffy` nullable DEFAULT false · `expo_publish.write` (admin; şablonsuz — Owner
+>     kısa devre) · Project şablonu `sales.read` (all; NOTICE etkilenen kullanıcı sayısı) · `convert_requests` + `office_code` +
+>     `needs_agent` · `GET /api/expos` servis dalı (`routes/liffyExpos.js`): yalnız yayınlı, alan kümesi id · ad · kod (slug) · yıl ·
+>     tarihler (metin) · şehir · mekân · ülke · durum; organizer/kullanıcı token'ının EMS yanıtı DEĞİŞMEDİ · `/api/liffy-expos` (liste
+>     + yayınla/kaldır, audit `expo.publish`/`expo.unpublish`) + ui2 **Admin › Organization › Expos → LIFFY** · convert: yayınsız
+>     expo **422 `EXPO_NOT_PUBLISHED`** · `office_code` ZORUNLU, LEENA aktif ofisi değilse **422 `OFFICE_UNKNOWN`** · SR eşlemesi
+>     (SAPMA 3) · kuyruk kapısı `sales.read` + canlı `needs_agent` + ofis sütunu · `docs/API_CONVERT_v1.md` §2 v2 + imzalayıcı,
+>     §3 `office_code` / `sales_owner_email`, §5 422'ler, §9 `GET /api/expos` · ORTAK fikstür
+>     `tests/fixtures/p3_convert_vectors.json` (LIFFY'de bayt bayt aynı; iki testte sha256 sabit).
+>   - **P3-3 LIFFY (`42ef56a`):** migration **054** (psql): `canonical_expo_id` uuid → **integer** · eski test expo SİLİNİR · test
+>     quote'ları expo'suz KALIR (`quotes.expo_id` nullable; S8 çapası) · `source` / `synced_at` · tekillik (organizer, canonical) ·
+>     KORUMA: eski expo > 1 → hiçbir şey değişmez, DUR · `services/leenaClient.js` (imzalayıcı v2; env `LEENA_API_URL` ·
+>     `LEENA_HMAC_SECRET` · `LEENA_SERVICE_USER_ID`, eksikse kapalı — yalnız AD loglanır) · `services/expoSync.js` (upsert, yayından
+>     kalkan pasifleşir, bozuk yükte hiçbir şey yazılmaz) · "Sync expos" + quote formunda 10 dk'dan eskiyse otomatik · LIFFY'de expo
+>     yarat/düzenle/sil → **409 `EXPOS_READ_ONLY`** · yeni quote yalnız senkronlu aktif ELIZA expo'suyla (400 `EXPO_NOT_SYNCED`) ·
+>     `GET /api/users` artık `office_id` döndürür (Users & Offices ekranı) · `GET /api/quotes/me` (ofis).
+>   - **P3-4 LIFFY (`42ef56a` + liffy-ui `8b31805`):** `utils/quoteTotals.js` = LEENA kuralı (satır bazlı yuvarlama; ekran = payload =
+>     L4) · migration **055** outbox (`convert_status` pending|sent|acked|failed · `convert_error` · `convert_attempts` · `contract_id` ·
+>     `last_attempt_at`) · `services/convertOutbox.js`: sign → anında gönderim (beklenir) · 201 → acked + contract_id · 409
+>     ALREADY_CONVERTED → acked (mevcut contract_id) · 4xx → failed + "KOD: mesaj" · 5xx / ağ / 401 STALE-REPLAY → pending, geri
+>     çekilme 1-2-4-8 dk, 5. → failed `RETRY_EXHAUSTED` · kalemsiz → gönderilmez, failed `NO_LINE_ITEMS` · env yok → failed
+>     `NOT_CONFIGURED` · bayat `sent` (> 5 dk) geri alınır · 60 sn koşucu (`server.js`) · Resend yalnız failed/pending (acked'de
+>     düğme yok) · liste outbox sayaçları + `convert_status` süzgeci (RAP-02) · liffy-ui: Expos sekmesi salt-okunur + Sync + env
+>     uyarısı · quote detayında "Convert to ELIZA" kartı + Resend · listede sayaçlar · form toplamları `lib/quoteTotals.ts` (API
+>     ile aynı) · kullanıcı ofisi boşsa formda uyarı + varsayılan ofis kullanıcının ofisi · **401 → token sil + /login** (sidebar üç
+>     nokta + `LayoutClient`'ta tek seferlik fetch koruması — tüm same-origin `/api/*` çağrıları; login çağrısı hariç).
+>   - **Faz B (12):** liffy-worker-docker `CMD node backend/worker.js`; statik require grafiği **84 dosya** — `jsonwebtoken` ve
+>     `config.JWT_SECRET` kullanımı **0** (yalnız `config.js` env'i okur) → Suer bloğunda "worker'dan `JWT_SECRET` sil" adımı.
+> - **Commit:** LEENA `eliza-next` **`12823be`** (origin'in 2 önünde: `bf443c3` ff + `12823be`) · liffyv1 `main` **`42ef56a`** ·
+>   liffy-ui `main` **`8b31805`** · ell-docs ÖN İŞ `253b1c8` + bu kayıt. **PUSH YOK** (Suer).
+> - **Ölçülenler (CC, 26 Eki; K4 — değer basılmadı; kod araması `git grep`):**
+>   - **ADIM 0 (LEENA canlı, `claude_readonly`):** `schema_migrations` 52, son `050` · `expos` 23 (22 kiracı 1) · expos'ta
+>     `published_to_liffy` / para birimi / ofis / kod kolonu YOK (kod → `slug`) · ofisler TR MA NG KE CN aktif + TEST/AF pasif, **DZ
+>     yok** · `users` 2 (servis 1) · `sales_agents` aktif internal 22 (e-postalı 20), kiracıda yinelenen e-posta grubu 11 ·
+>     **LIFFY:** HTTP istemcisi = Node ≥ 18 global `fetch` (Docker `node:22`; `axios` bağımlılıkta) · `GET /api/users` `office_id`
+>     DÖNDÜRMÜYORDU (Users & Offices "Current Office" hep None — düzeltildi) · liffy-ui 401: yalnız sidebar yoklaması duruyordu,
+>     login'e atma YOKTU · API_CONVERT_v1'de ajan eşlemesi YOKTU (yalnız `sales_owner_user_id` yumuşak bağ).
+>   - **Testler:** LEENA `npm run test:setup && npm test` **495/495** (önce 471; + `test_p3_3a` 18 · `test_p3_3a_premig` 2 · migrate
+>     R30–R33 4) — iki tam koşu aynı; **TABAN 342.00 KAYMADI** (B1 · T35). LIFFY `npm test` **56/56** (P3-2 26 + `test_p3_4_sender`
+>     30; sahte ELIZA imza v2'yi doğrular). liffy-ui `tsc --noEmit` temiz · eslint HEAD ↔ yeni AYNI 11 bulgu (hepsi önceden vardı) ·
+>     `lib/quoteTotals.ts` 6/6 fikstür vakası = API.
+>   - **Ortak fikstür:** 6 toplam vakası; eski LIFFY sonda-yuvarlama **2 vakada** > 0.01 farklıydı (`per-line-net-rounding` 1.25 ↔
+>     1.30 · `per-line-tax-rounding` 74.37 ↔ 74.34) → LEENA'da `L4_MISMATCH`; yeni kuralla iki tarafta aynı brüt · imza vektörleri
+>     (POST convert · GET expos) LEENA `serviceAuth.sign` = LIFFY `signV2`.
+>   - **Yerel birlikte çalışma (commit dışı betik):** LIFFY `leenaClient` → LEENA GERÇEK uçları (test DB): `GET /api/expos` 200
+>     (yalnız yayınlı) · convert 201, sunucu brütü 74.34 = LIFFY brütü · ikinci gönderim 409 ALREADY_CONVERTED, aynı contract_id.
+>   - **`migrate_p3.sh` (yerel, canlı şekilli scratch DB: 050–053 + 1 eski expo + 2 quote):** 1. koşu `054: … legacy expos deleted 1 ·
+>     quotes left without expo 2` · `055: … signed quotes 1 (queued 0 …)` · doğrulama `integer | 0 | 0 | 2 | 2 | 5` · 2. koşu değişiklik
+>     yok · `DATABASE_URL` yoksa çıkış 1.
+> - **SAPMA listesi (Sentez'e):**
+>   1. LIFFY doğrudan `main` (prompt bildirdi; gerekçe yukarıda).
+>   2. **`LEENA_SERVICE_USER_ID` üçüncü env** (D'de yoktu): `X-ELL-Service-User` başlığı zorunlu; API doc §2 örneğinde adı zaten
+>      geçiyordu; sır değil. Değer = ilgili ELIZA ortamındaki servis kullanıcısının `users.id`'si (staging ≠ canlı).
+>   3. **SR eşlemesi** (API doc'ta yoktu): yeni opsiyonel `sales_owner_email` → kiracıda TEK aktif `internal` `sales_agents.email`
+>      eşleşmesi (büyük/küçük + boşluk farksız; 043 R21 emsali) → `sr_sales_agent_id`, `sr_pct` NULL (motor
+>      `default_commission_pct`); sıfır / çoklu / external / pasif → SR boş + `needs_agent` (kayıt + kuyrukta CANLI türetilir,
+>      Proje atayınca kalkar). Komisyon formülü değişmedi (MOT-01 / K7b).
+>   4. **054:** test quote'ları expo'suz kaldı (`quotes.expo_id` nullable — prompt'un iki seçeneğinden biri; senkron satırı migration
+>      anında yok); yeni quote için zorunluluk uygulamada (`EXPO_NOT_SYNCED`). Koruma eşiği "eski expo ≤ 1" 25 Eki ölçümüne dayanır.
+>   5. Expo yazma uçları **409** `EXPOS_READ_ONLY` (403 değil — 401/403 oturum davranışı; G45 deseni) · LEENA `EXPO_NOT_FOUND` 400
+>      kaldı (yalnız yayınsız 422).
+>   6. Sign → gönderim **beklenir** (fire-and-forget değil): F'de acked'in hemen görünmesi için; imza önce commit'li, gönderim hatası
+>      imzayı geri almaz; süre ≤ 15 sn zaman aşımı. Resend deneme sayacını sıfırlar (sayaç = mevcut döngü).
+>   7. **Ofis:** kontratta ofis kolonu YOK → `office_code` yalnız kapı + `convert_requests.office_code` kaydı (kontrata kolon
+>      eklenmedi).
+>   8. (8) YON-05: ekran zaten vardı (Users & Offices); yalnız API `office_id`'yi döndürmüyordu. Kapı mevcut `isPrivileged`
+>      (owner + admin) korundu ("Owner" yerine).
+>   9. Aynı saniyede iki özdeş imzalı istek (gövdesiz GET) aynı imzayı üretir → ikincisi `SERVICE_REPLAY` (v2 tasarım sonucu):
+>      LIFFY aynı kiracıda senkronu sıralar + REPLAY'de ≥ 1 sn bekleyip bir kez yeniden imzalar; API doc §2'ye yazıldı.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging / canlı 051 · LIFFY canlı 054/055 · staging DB (bağlantı yok: expo sayısı, Project
+>   kullanıcısı, servis kullanıcısı UUID) · LIFFY canlı DB bugün (eski expo 1 / quote 2 = 25 Eki ölçümü; `users.office_id` doluluğu,
+>   LIFFY kullanıcı e-postaları ↔ LEENA temsilci eşleşmesi) · Render deploy'ları · liffy-ui tarayıcıda (görsel tur yok; `next build`
+>   koşulmadı) · gerçek ağ üzerinden LIFFY ↔ leena-staging (yalnız yerel birlikte çalışma) · `UNSUBSCRIBE_SECRET` ↔ yerel JWT
+>   (K4 #4'ten açık).
+> - **Bilinçle yapılmayanlar (KAPSAM DIŞI):** 0 fiyatlı 30 ürün kararı · bölge yasağının uygulanması (Paket 4) · iade/kredi · Zoho
+>   kontrat göçü · UI cilası · servis kullanıcısında "Resend invitation" gizleme (UI-1) · kontrata ofis kolonu · LEENA skill
+>   dosyaları (P3-1 emsali) · push / merge.
+> - **Risk notu (canlıya geçiş, H):** F'deki test quote LIFFY'de staging `contract_id`'siyle kalır (imzalı quote API'den
+>   silinemez); staging'den senkronlanan expo kopyaları canlı LEENA'ya ilk Sync'te güncellenir / pasifleşir (staging expos 24 Eki'de
+>   canlının kopyasıydı).
+> - **Teslim (Suer):** teslim metnindeki SUER BLOĞU A–H (push → staging migrate → LIFFY `migrate_p3.sh` → env → yayınla → Sync +
+>   quote → kontrat kontrolü → "ONAY" → merge + canlı).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -4667,6 +4774,9 @@
 >   = P3-3a (LEENA, KAPI-2: `GET /api/expos` servis kimliği + `published_to_liffy` + imza v2) → P3-3 → P3-4 · UI-1 paralel.**
 >   P3-2 + P1b-2 → ✅ **CANLIDA (26 Eki)** — [defter:2026-10-26 P3-2 + P1b-2 CANLIDA] (LIFFY `73e69fc` · LEENA `bf443c3`).
 >   **★SIRADAKİ (Suer 26 Eki — bu kazanır) = Paket 3 kalanı: P3-3a + P3-3 + P3-4 + P3-5 tek prompt, tek kapı (Sentez 26 Eki).**
+>   → ✅ **STAGING'E HAZIR** (LEENA `12823be` · liffyv1 `42ef56a` · liffy-ui `8b31805`) — [defter:2026-10-26 PAKET 3 KALANI].
+>   **★SIRADAKİ = P3-5 (Suer: push → staging + LIFFY migration → env → gerçek quote → kontrat → "ONAY") → merge + canlı → "PAKET 3
+>   CANLIDA" · UI-1 paralel.** Faz B: worker `JWT_SECRET` silme bu turun D adımında (kullanım 0 ölçüldü).
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
