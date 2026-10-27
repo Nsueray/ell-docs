@@ -5337,6 +5337,66 @@
 > - **Teslim (Suer):** P4-0(b) token bloğu (teslim metninde; değer sohbete değil panoya) → CC: `pull.js --probe` + tam çekim → ikinci teslim
 >   (staging sırası).
 
+> ## ✅ 2026-10-27 — PAKET 4 İKİNCİ TESLİM — AŞAMA 1: ZOHO ÇEKİMİ + ALAN EŞLEMESİ MÜHÜRÜ + CANLI ÜSTÜNDE SALT-OKUNUR ÖN-PLAN (LEENA `54abcdb`; staging ÖNCESİ)
+>
+> - **Süreç:** Suer P4-0(b) bloğuyla salt-okunur token'ı üretti (Self Client; değerler panodan, sohbete düşmedi; `.env`'e
+>   `ZOHO_RO_*` üç satır, maskeli ölçüm (değer / parça yazılmadı — public repo); scope `ZohoCRM.modules.READ ZohoCRM.coql.READ
+>   ZohoCRM.settings.fields.READ`; geçici kasa `~/.zoho_ro_setup` silindi). CC: probe → eşleme düzeltmeleri → tam çekim → canlı
+>   bağlam üstünde salt-okunur plan → üç büyük sayacın kök nedeni → kod düzeltmeleri + testler → commit. Staging koşusu bu kayıtta YOK.
+> - **Ne yapıldı / ölçülenler:**
+>   - **Token gözlemi:** Client ID / Secret'ın maskeli izi (uzunluk + ilk 2) P4-0(a)'da silinen eliza-api değerleriyle AYNI → büyük
+>     olasılıkla aynı Self Client (kesin karşılaştırma yapılamaz; eski değer silindi). Zoho sınırı: client × kullanıcı başına en çok
+>     20 aktif refresh token, 21.'si en eskisini geçersiz kılar (zoho.com/accounts/protocol/oauth/token-limits.html). eliza-legacy'nin
+>     çekmeye devam ettiği ÖLÇÜLMEDİ (Suer kontrolü önerildi).
+>   - **Probe:** `/settings/modules` → 401 `OAUTH_SCOPE_MISMATCH` (kilitli üç scope dışında; yalnız bilgi amaçlı → atlanır, not dosyası).
+>     Alan metadatası 8/8 modül (alt formlar `Ordered_Items` · `Received_Payment` dahil). Engel 1: Expensess'te **"Amount" alanı YOK**
+>     → ölçüm (9 kredi, yalnız sayı): 1.618 kayıt · `Total Payment` (formül, Payments alt formu toplamı) 1.616 dolu · `Budgeted` (plan)
+>     1.095 · ikisi dolu 1.093'ün 1.050'si eşit · statü Fully Payed 1.589 / Waiting Due Date 13 / Partly Payed 16 → tutar = Total Payment.
+>     Fuar tedarikçi ŞİRKET alanları 7 etiketle mühürlendi (Forwarder Name · Turkish Forwarder Company · Contractor Company · Caterer
+>     Company · Visa Company · Travel Name · Agency Name); "… Contact / Email / Phone" ve Istanbul / Local (şirket alanı yok) taşınmaz.
+>   - **Tam çekim** (`~/zoho_raw/2026-10-27`, repo dışı, dizin 0700 / dosya 0600, 33 MB): COQL `limit offset, count` gerçek Zoho'da
+>     ÇALIŞTI · listeler Sales_Orders 3.928 · Vendors 208 · Products 251 · Sales_Agents 154 · Payment_Audit 1.044 · Expensess 1.618 ·
+>     tekil GET 3.928/3.928 (yerel bağlantı 2.274'te koptu → `fetch failed`; ikinci koşu kaldığı yerden 1.654, hata 0) · kredi ≈ 4.000
+>     (ilk koşu günlüğe yazılamadı — ilerleme satırından ~2.300; ikinci 1.654; probe + ölçüm ~30) · `x-api-credits-remaining` başlığı dönmedi.
+>   - **Salt-okunur ön-plan** (canlı LEENA, `claude_readonly`, `BEGIN READ ONLY`; 052 canlıda yok → 052'ye özgü zoho_record_id
+>     aramaları boş sayıldı = ilk koşu): **DUR 0** · fuar **16 eşleşme (Sentez hedefi 16) + 190 yeni (Sentez 190)**, yinelenen anahtar 2,
+>     tedarikçi şirketi 324 (var olan / yinelenen fuarınki taşınmaz 86) · kontrat 3.928 (Active 3.350 · Cancelled 527 · Transferred 41 ·
+>     On Hold 10; transfer çifti 12, devamsız OUT 27 / IN 5, belirsiz 2 / 1; AF türetilen 8, çakışma 0; ofis-sorusu 452; SD atanmamış
+>     801, atanamaz 15; Agent % yerleşmeyen 8; kalemsiz 5) · kalem Zoho 9.251 → LEENA 7.813 + katlanan azaltma 1.425 + değersiz 13 ·
+>     ödeme 1.959 (milat sonrası 1.822 − 1 geçersiz + sentetik 128 GT + 10 Σ milat öncesi; ödemesiz 2.449; yöntem PA tam 628 / ±3 gün 31
+>     / varsayılan 1.162) · bağsız gelir 368 (PA tutarsız 17) · gider 1.436 (komisyon 180 → payout; tutarsız 2; maaş 477) · tedarikçi
+>     283 (employee 36) · payout 71 · **canlıda hesap 0 → tüm para satırları hesapsız, ledger hareketi 0**.
+>   - **Kök neden 1 — L4 1.728 (ilk plan):** Zoho'da **1.305 "azaltma satırı"** (List_Price 0 + Discount → Total After Discount < 0;
+>     ayrıca negatif fiyat / sıfır adet + indirim, toplam 1.425). LEENA satırı negatif olamaz (024: `quantity > 0` · `unit_price ≥ 0` ·
+>     indirim 0–100) → kod indirimi YOK SAYIYORDU (komisyon tabanı şişiyordu). Ölçüm: SR komisyonu dolu + azaltmalı 564 kontratta Zoho'nun
+>     kendi SR komisyon alanı "azaltma RF DIŞI kalemlerden düşülür" tabanıyla **367**'sinde, "yok say" ile **5**'inde tutuyor (orantılı
+>     118 · RF dahil 114 · hiçbiri 187); azaltmasız 479'da satır tabanı 386. **Düzeltme:** azaltma RF dışı pozitif kalemlere net-orantılı ek
+>     indirim; aşan kısım RF kalemine (54 kontrat; RF komisyonsuz — K7b); sıfır fiyatlı gerçek kalem korunur. Sonuç L4 **1.485** = indirim
+>     yüzdesi hassasiyeti (numeric(5,2); satır başı ≤ brüt × %0,005) 1.400 · Zoho başlık Discount 45 · Adjustment 34 · ikisi 1 · diğer 5.
+>   - **Kök neden 2 — payout 56/180:** alıcı (Payee = Accounts lookup) adı temsilci adıyla tam tutmuyor; 94 satır 1 alıcı, yalnız İLK AD
+>     tutuyor. **Düzeltme:** tam ad → ≥2 ad parçası içerme (15 satır, "X Co" ↔ "X Co Agency") OTOMATİK; yalnız ilk ad EŞLENMEZ → payout
+>     **71** (tam 56 · parça 15) + **109 satır / 14 alıcı Suer onayına** (`scripts/zoho/payee-review.js` → `payee_agent_review.md` +
+>     `payee_agent_map.json`, ham dizinde; ekrana yalnız sayı; Suer yanıtı "1=a, 2=-" → CC `--confirm`).
+>   - **Mutabakat:** L4 listesine NEDEN sütunu (yüzde hassasiyeti / başlık indirimi / düzeltme / diğer); kalem sayısı ölçütü = Zoho −
+>     katlanan − atlanan. Pull: ağ kopmasında üstel yeniden deneme (5 deneme; sahte bağlantıyla sınandı).
+> - **Commit:** LEENA `eliza-next` **`54abcdb`** (`1a475f9` üstüne; origin `1a475f9`'da — Suer push'lamış, ölçüldü). **PUSH YOK** (Suer).
+> - **Testler:** `npm run test:setup && npm test` **543/543** (29 suite; önce 541): M13 azaltma satırı katlama · M14 alıcı → temsilci
+>   eşleme + inceleme yanıtı; M2 / M12 beklentisi `expo_partners` 5 (forwarder 4 + stand_contractor 1; kişi alanları boş). **TABAN 342.00.**
+> - **SAPMA (en kilitli hükme göre; İLK TESLİM'in 15 maddesine ek):** (16) gider tutarı = Total Payment (Sentez alan adı vermedi; Amount
+>   yok; ödenmiş tutar — gider olaydır, LED-08; Budgeted plan) · (17) azaltma satırı katlama (Sentez formülü `Discount/(qty×price)` fiyat
+>   0'da tanımsız; Zoho komisyon tabanı ölçümüyle) · (18) RF'ye taşma · (19) değersiz satır atlanır · (20) alıcı eşlemesi kademeli + Suer
+>   onayı (Sentez "Payee adıyla" — tam ad şart değil, ilk ad TAHMİN) · (21) `/settings/modules` atlanır · (22) tedarikçi rolleri: Agency →
+>   `other` + not (CHECK'te ajans yok), Turkish forwarder → `forwarder` + not; yalnız YENİ fuara · (23) test: fikstür etiketi
+>   Amount → Total Payment, fuara 2 şirket alanı; M2 / M12 beklentileri; M13 / M14 eklendi (bu paketin kendi testi).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging (052 + göç + mutabakat DB'de koşmadı) · eliza-legacy'nin yeni token sonrası çekmeye devam
+>   ettiği · ilk çekim koşusunun kesin kredisi · Zoho kalan-kredi başlığı · alıcı onayları (Suer) · başlık Discount'un Zoho komisyon
+>   tabanına etkisi (45 + 1 kontrat) · L4 "diğer" 5'in nedeni · staging DB'nin canlıya yakınlığı (24 Eki kopyası; sonrası ölçülmedi) ·
+>   ekranların gerçek tarayıcı görünümü.
+> - **Bilinçle yapılmayanlar:** staging / canlı yazma · push · alıcı onayının tahminle doldurulması · başlık Discount / Adjustment'ın
+>   kalemlere dağıtılması (Sentez: L4 kaydedilir, düzeltilmez) · `Budgeted` taşınması.
+> - **Teslim (Suer, K1 — sırayla):** (1) alıcı inceleme dosyasını aç + yanıtla (adlar sohbete girmez) → (2) staging bloğu: push → staging
+>   Shell 052 → staging DB URL panoya → CC: canlı-değil kapısı → göç dry-run → apply → mutabakat → (3) staging görsel + "go" → canlı sırası.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -5439,6 +5499,9 @@
 >   Paket 4 → ✅ **İLK TESLİM** (LEENA `1a475f9`, dal `eliza-next`; 541/541; push Suer'de) — [defter:2026-10-27 PAKET 4 İLK TESLİM].
 >   **★SIRADAKİ (bu kazanır) = Suer: P4-0(b) salt-okunur token (Self Client, ZOHO_RO_*) → CC: `pull.js --probe` + tam çekim + alan
 >   eşlemesi mühürü → Paket 4 İKİNCİ TESLİM (staging TAM PROVA → mutabakat → Suer "go" → canlı) ∥ LIFFY staging kurulumu ∥ UI-1.**
+>   Paket 4 → ✅ **İKİNCİ TESLİM AŞAMA 1** (LEENA `54abcdb`; çekim 3.928/3.928; ön-plan DUR 0, fuar 16 + 190; 543/543) —
+>   [defter:2026-10-27 PAKET 4 İKİNCİ TESLİM — AŞAMA 1]. **★SIRADAKİ (bu kazanır) = Suer: komisyon alıcısı onayı (14 alıcı / 109 satır)
+>   → staging TAM PROVA (push → staging 052 → CC göç + mutabakat) → Suer "go" → canlı ∥ LIFFY staging kurulumu ∥ UI-1.**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
