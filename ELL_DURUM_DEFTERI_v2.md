@@ -5528,6 +5528,35 @@
 >     alıcısız satır) · tedarikçi 295 (temsilciye bağlı 33) · **aliases 0** — bu temsilciye çözülen ikinci bir Company kaydı taşınan
 >     giderlerde YOK (Suer'in andığı eski adlı kayıt varsa gideri yok; ölçülmedi) · yeni temsilci 12 · TABAN 342.00.
 
+> ## ✅ 2026-10-28 — PAKET 4 STAGING TAM PROVA: GÖÇ + MUTABAKAT (staging batch #2; LEENA `86002b1` + rapor `9980d75`)
+>
+> - **Süreç:** Suer `eliza-next` push (`1a475f9..86002b1`, ölçüldü: komut çıktısı) → leena-staging deploy → Suer staging Shell'de 052
+>   (çıktı sohbete yapıştırılmadı; CC salt-okunur ölçtü: `schema_migrations` 54 kayıt, son `052_zoho_migration`, `migration_batches`
+>   var ve boş, `suppliers.aliases` + `sales_agents.migration_batch_id` var → GOC-06'lı 052 uygulanmış) → staging DB URL panoya →
+>   CC: pano türü maskeli okundu (yalnız uzunluk + ilk 2) → canlı-değil kapısı (hedef `leena_staging_db`, canlı host değil) → göç
+>   `--dry-run` → `--apply` → `reconcile.js --batch 2 --label staging` (her koşu `EXPECTED_DB_NAME=leena_staging_db` + kapı) → pano
+>   temizlendi. Değer sohbete / deftere yazılmadı.
+> - **Göç (staging, tek transaction, tek batch):** dry-run DUR 0 ("batch would be #1") → apply **batch #2** (dry-run 1'i tüketti).
+>   Eklenen: temsilci (acente) 12 · fuar 190 · fuar tedarikçisi 324 · tedarikçi 295 · kontrat 3.928 · transfer bağı 12 · kalem 7.813 ·
+>   ödeme 2.327 (kontratlı 1.959 + bağsız gelir 368) · gider 1.436 · payout 179 · ledger hareketi 1.300 (staging'de ofis varsayılan
+>   hesapları VAR — canlıda 0; canlıda hareket 0 beklenir). Sayaçlar canlı ön-planla aynı (fuar 16 + 190, payout 179 / 180, acente 12).
+> - **Mutabakat (`docs/audits/GOC_MUTABAKAT_2026-10-28_staging.md`, BEGIN READ ONLY): 16 / 16 kabul ölçütü ✅** — kontrat 3.928 = 3.928 ·
+>   Σ Grand Total EUR 28 hücrede fark 0 · kalem 9.251 = 7.813 + katlanan 1.425 + atlanan 13 · milat sonrası ödeme 1.821 = 1.821 (5 para
+>   birimi, fark 0) · sentetik 138 · L4 1.474 (DB hesabı; yüzde hassasiyeti 1.389 · başlık indirimi 45 · düzeltme 34 · ikisi 1 · diğer 5) ·
+>   SR komisyonu 2.271 karşılaştırma, fark > 1: 690 (LEENA geçerli — K7) · SD atanmamış 801 (atanamaz 15) · fuar eşleme 16 / 16 ·
+>   hesapsız gider 1.412 · bağsız gelir 368 · ofis-sorusu 452 · acente 12 / 12 (kontrat bağsız payout 14) · aliases'lı tedarikçi 0 ·
+>   **TABAN kontrat 4 SR earned = 342.00**.
+> - **Gözlem:** `reconcile.js` zinciri (`commissionSlices` → `routes/contracts` → `utils/db.js`) yerel `.env`'i dotenv ile yüklüyor
+>   (yalnız sayı basıldı: 13 değişken); `.env`'de `DATABASE_URL` YOK (sayım 0) ve dotenv var olanı ezmez → hedef panodaki URL
+>   (Target satırı `leena_staging_db` ölçüldü). Canlı koşuda da `EXPECTED_DB_NAME` + Target satırı denetlenir.
+> - **Commit:** LEENA `9980d75` (rapor). **PUSH YOK** (Suer).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging ui2 ekranlarının görsel kontrolü (Suer) · staging'in canlıya yakınlığı (24 Eki kopyası) ·
+>   L4'ün plan (1.485) ile DB hesabı (1.474) arasındaki 11'lik farkın satır satır nedeni (hesap yöntemi: plan Grand Total'i kalem
+>   brütüyle, DB kalem başı yuvarlamayla) · geri alma staging'de denenmedi (testte sınandı).
+> - **Bilinçle yapılmayanlar:** canlı yazma · staging'de geri alma (batch #2 Suer'in görsel kontrolü için yerinde) · push.
+> - **Teslim (Suer, K1):** staging ui2 görsel kontrol (Admin › Migration batch #2 · kontrat listesi göçmüş süzgeci · kontrat 4 = 342.00)
+>   → "go" → canlı sırası (merge → export YON-12 a+c → main push → canlı Shell 052 → Suer laptop'tan göç + mutabakat).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -5634,8 +5663,10 @@
 >   [defter:2026-10-27 PAKET 4 İKİNCİ TESLİM — AŞAMA 1]. **★SIRADAKİ (bu kazanır) = Suer: komisyon alıcısı onayı (14 alıcı / 109 satır)
 >   → staging TAM PROVA (push → staging 052 → CC göç + mutabakat) → Suer "go" → canlı ∥ LIFFY staging kurulumu ∥ UI-1.**
 >   Paket 4 → ✅ **PAYEE EŞLEMESİ / GOC-06** (LEENA `86002b1`; 12 acente external_agency + 1 var olan temsilci; 548/548) —
->   [defter:2026-10-28 PAYEE EŞLEMESİ]; Suer `1=a` → payout 179/180. **★SIRADAKİ (bu kazanır) = staging TAM PROVA
->   (push → staging 052 → CC göç + mutabakat) → Suer "go" → canlı ∥ LIFFY staging kurulumu ∥ UI-1.**
+>   [defter:2026-10-28 PAYEE EŞLEMESİ]; Suer `1=a` → payout 179/180.
+>   Paket 4 → ✅ **STAGING TAM PROVA** (batch #2; 16 / 16 ölçüt ✅; TABAN 342.00) — [defter:2026-10-28 PAKET 4 STAGING TAM PROVA].
+>   **★SIRADAKİ (bu kazanır) = Suer: staging ui2 görsel kontrol → "go" → canlı (merge → export YON-12 a+c → main push → canlı 052 →
+>   Suer laptop'tan göç + mutabakat) ∥ LIFFY staging kurulumu ∥ UI-1.**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
