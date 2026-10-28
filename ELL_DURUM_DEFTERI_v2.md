@@ -5397,6 +5397,133 @@
 > - **Teslim (Suer, K1 — sırayla):** (1) alıcı inceleme dosyasını aç + yanıtla (adlar sohbete girmez) → (2) staging bloğu: push → staging
 >   Shell 052 → staging DB URL panoya → CC: canlı-değil kapısı → göç dry-run → apply → mutabakat → (3) staging görsel + "go" → canlı sırası.
 
+> ## ✅ 2026-10-28 — PAYEE EŞLEMESİ: ÖLÇÜM + GOC-06 ALICI MODELİ (LEENA `86002b1`; staging ÖNCESİ)
+>
+> - **Sentez metinleri (AYNEN):**
+>
+>   SENTEZ → ORCHESTRATOR — PAYEE EŞLEMESİ: ÖNCE ÖLÇ + GOC-06 (28 Eki, Suer)
+>
+>   BAĞLAM (Suer): Expensess.Payee, Company modülüne (API adı Accounts;
+>   etiketini Suer "Company" yaptı) bağlı lookup; serbest metin değil.
+>   Ad gerçektir. Zoho'da Company→Sales_Agent bağı olmadığı için komisyon
+>   alan kişiler Company'de mükerrer açılmış; ad değişimiyle çift kayıt
+>   var. Soru "ad doğru mu" değil, "hangi temsilci".
+>
+>   A) SUER'E SORMADAN ÖLÇ (salt-okunur token, az kredi)
+>   1. 14 payee adı için Accounts kayıtlarını çek (yalnız bu 14; alanlar:
+>      Account_Name, Email, Phone, Mobile, Website, Description, Owner ve
+>      diğer metin alanları). Değer sohbete yazılmaz.
+>   2. Sales_Agents (154) ile eşle: e-posta → telefon → tam ad → ad +
+>      soyadının biri. Tek aday = OTOMATİK. Çok/sıfır aday = kalan.
+>   3. Kalan: sayı + takıldığı kriter bana; >0 ise yalnız o kadar satır
+>      Suer'e, dosya yöntemiyle.
+>   4. Delta 4 temsilci (kontratsız, önceden "taşınmaz"): 14'ün içinde
+>      varsa TAŞINIR — gideri var, kaydı olmalı. Hüküm düzeltildi.
+>
+>   B) GOC-06 ALICI MODELİ (Suer kararı): Zoho kısıtı TAŞINMAZ.
+>   - Alıcı = suppliers kaydı; tür company / employee (LED-18 + 5. tür).
+>   - employee → suppliers.sales_agent_id (A'daki eşlemeyle dolar).
+>     Aynı kişiye ait tüm Company adları TEK supplier'a; diğer adlar
+>     suppliers.aliases (text[]). Eşleşmeyen → supplier, temsilci bağı yok.
+>   - Temsilci detayı (ui2, P4 sonrası küçük dilim): aldığı toplam =
+>     Σ commission_payouts + Σ expenses (supplier.sales_agent_id = agent),
+>     yıl süzgeci, satır satır.
+>   - Tedarikçi detayı: yıl bazlı ödeme geçmişi (fuar alanı, reklam
+>     firması: "yıllar boyu ne ödedik").
+>   - Accounts modülünün tamamı ŞİMDİ çekilmez; tedarikçi zenginleştirme
+>     (adres, sektör, ülke) ayrı dilim.
+>   Kütük: GOC-06. Defter tek kayıt. Staging bloğu A'dan sonra.
+>
+>   SENTEZ → ORCHESTRATOR — EK: 14 PAYEE'NİN KİMLİĞİ (28 Eki, Suer ölçtü)
+>   Suer dosyaya baktı: 1 numaralı alıcı (94 satır) bir çalışan — ad
+>   değişimi nedeniyle temsilci kaydıyla soyadı tutmuyor. Diğer 13'ü
+>   ŞİRKET: bize müşteri getiren dış acenteler, komisyon ödenmiş, Zoho
+>   Sales_Agents'a hiç yazılmamış (çalışan olmadıkları için).
+>   HÜKÜM:
+>   - 13 dış acente → sales_agents'a tür "agency/external" olarak
+>     OLUŞTURULUR (Zoho'da kaydı yok; kaynak = Company adı; zoho_record_id
+>     = Accounts kaydının id'si). Aynı adla suppliers (company) kaydı +
+>     suppliers.sales_agent_id bağı. Komisyon giderleri →
+>     commission_payouts (GOC hükmü aynen). Böylece "hangi acenteye ne
+>     ödedik" temsilci ekranında görünür.
+>   - Kontrat-acente bağı: Zoho Sales_Contracts'ta acente adı alanı var
+>     mı (Agent lookup/metin) ÖLÇ; varsa 13 ad ile eşle ve contracts.
+>     agent_id doldur; yoksa payout kontratsız, sayaçta "acente-kontrat
+>     bağsız".
+>   - 1 numaralı çalışan: Bloğun A adımı yalnız bu kişi için koşar
+>     (Accounts e-posta/telefon ↔ Sales_Agents). Tek aday çıkmazsa Suer'e
+>     tek satır: "1=?".
+>   - A-1 adımındaki "14 Accounts kaydını çek" aynen kalır (13'ün
+>     zoho_record_id'si için gerekli).
+>   Suer'den başka iş istenmez. Staging bloğu bundan sonra.
+>
+> - **Süreç:** Orchestrator bloğu (Sentez iki metni + uygulama adımları A–D; Suer'e soru yok). CC: salt-okunur ölçüm → kod (052
+>   genişletme, plan / apply / geri alma / inceleme / mutabakat) → testler → canlı üstünde salt-okunur ön-plan → commit. Staging YOK.
+>   Kütük numarası Sentez'in verdiği gibi **GOC-06** (GOC-05 kütükte YOK — BULAMADIM).
+> - **Ne yapıldı / ölçülenler (yalnız sayı; ad / e-posta / telefon sohbete ve buraya yazılmadı):**
+>   - **A-1 Accounts:** `pull.js --payees` — YALNIZ inceleme dosyasındaki 14 alıcı (tekil GET) + Accounts alan metadatası + Zoho
+>     temsilci iletişim alanları (COQL 1 sorgu); **~18 kredi**, hata 0; `accounts_payees.json` + `lists/Sales_Agents_contact.json`
+>     ham dizinde (repo dışı, 0600). Alan doluluğu (14): Company Name 14 · Company Email 2 · Phone 3 · Website 2 · Description 0 ·
+>     Account Type 14 (Agent 8 · Customer 3 · Employee 1 · Freelancer 1 · Unknown 1). Accounts'ta **Mobile alanı YOK**; Zoho
+>     Sales_Agents'ta **telefon alanı YOK** (metadata) → telefon kademesi boş. 14 Accounts id'si canlı `sales_agents.zoho_record_id`'de 0.
+>   - **A-2 #1 (çalışan, 94 satır):** e-posta (Accounts'ta yok) → telefon (yok) → tam ad 0 → ad + soyadlarından biri 0 → **TEK ADAY YOK →
+>     Suer'e "1=?"** (dosya yöntemi; 8 harfli aday: ilk adı tutan 1 · LEENA'da olan kontratsız aktif 3 · **delta 4** — seçilirse taşınır).
+>     Delta 4 temsilcinin (Zoho Employee, aktif, e-postalı) hiçbiri 14 alıcıyla eşleşmedi → gideri yok → taşınmaz (seçilmedikçe).
+>   - **Bulgu — #4 dış acente DEĞİL, var olan temsilcinin şirketi:** bir Zoho temsilcisinin "Agent Company Name"i (Accounts lookup) =
+>     #4'ün Accounts kaydı ve şirket e-postası aynı; LEENA'da `external_freelance`, aktif. Canlı ön-planda zaten agent_company tam adıyla
+>     bağlanıyordu (inceleme dosyası ad alanı boş Zoho listesiyle üretildiği için listeye düşmüştü). → yeni kayıt AÇILMAZ; yeni kimlik
+>     kademesi ("agent company link") bunu ad tahmini olmadan bağlar. **Acente = 13 → 12 yeni `external_agency` + 1 var olan temsilci.**
+>   - **A-3 kontrat ↔ acente:** Sales_Orders **"Agent Name"** (picklist, 6 değer; boşu "-None-") gerçek değer 111 kontrat / 3 değer
+>     (106 · 3 · 2). 12 acenteyle tam ad 0, ad parçası 0; LEENA / Zoho temsilcileriyle de 0. 111'in 109'unda iç SR (dışlayıcılık),
+>     Agent % > 0 hiçbirinde. → **kontrat-acente bağı 0; acente payout'ları kontratsız (14 satır, sayaç "acente-kontrat bağsız")**.
+>   - **CC uyguladı (Sentez kimlik hükmü):** `payee-review.js --kind "1=employee,2-14=agency"` → 12 acente (#4 otomatik bağlandığı için
+>     listede değil) + 1 çalışan; çalışan eşlemesi kademeleri koştu, sonuç yukarıda.
+>   - **B — model (kod):** 052 genişletildi (henüz hiçbir DB'de koşmadı): `suppliers.aliases text[]` (NULL eleman CHECK'i) ·
+>     `sales_agents.migration_batch_id` (FK kiracı × batch, partial index) · NOTICE ayrı satırda. Plan: alıcı kademeleri onaylı → alıcı
+>     id'si = temsilcinin zoho id'si (önceki batch'in acentesi) → kimlik bağı → tam ad → ≥2 ad parçası; acente bağlanmazsa
+>     `external_agency` AÇILIR (ad = Company adı, `agent_company` = aynı ad, zoho_record_id = Accounts id, e-posta Accounts'tan, ofis =
+>     ödeyen ofis, aktif = son 24 ayda taşınan gider, batch no); gideri olan delta temsilci TAŞINIR (tür eşlemesi
+>     `import-zoho-agents.js` TYPE_MAP ile aynı); Agent Name → acente TEKİL ad + SR / başka agent YOKSA agent + Agent % (çakışma sayaç +
+>     not, `contracts_agent_sr_exclusive_check`); payout fuarı: giderin Expo Name'i, yoksa acentenin bağlı kontratlarının TEK fuarı.
+>     Tedarikçi = alıcı: çözülen temsilci başına TEK tedarikçi (ana kayıt: en çok satır → en yeni gider → küçük id), diğer Company adları
+>     `aliases`, `sales_agent_id` dolu; bağsız alıcı → kendi kaydı; tür: iç temsilci / maaş → employee, acente ve diğerleri → supplier;
+>     var olan tedarikçiye alias / bağ YAZILMAZ (UPDATE yok). Apply: temsilciler önce; kontrat / tedarikçi / payout ref çözümü. Geri
+>     alma: `sales_agents` silme sırasında (kontrat / payout / tedarikçiden sonra) + bağımlılık denetimi. ui2 Göç paneli: "Sales agents"
+>     sayısı. `payee-review.js`: `--kind`, çalışan kademe eşlemesi, numaralar korunur, yalnız açık alıcı yanıt ister. Mutabakat: 3 ölçüt
+>     (acente sayısı · acente-kontrat bağsız payout · aliases'lı tedarikçi) + 10 satır özetin 9. satırı.
+>   - **Salt-okunur ön-plan (canlı, son kod, `claude_readonly`, `BEGIN READ ONLY`):** DUR 0 · yeni temsilci **12** (external_agency, 12'si
+>     aktif) · payout **85** (kimlik bağı 4 · tam ad 52 · ad parçası 15 · acente 14) · eşleşmeyen 95 (= #1'in 94'ü + alıcısız 1) ·
+>     acente-kontrat bağsız payout 14 · kontrat Agent Name 111 → bağ 0 · tedarikçi **295** (önce 283; employee 36 · temsilciye bağlı 32 =
+>     tam ad 14 · parça 4 · kimlik 2 · acente 12 · aliases 0 — #1 yanıtına bağlı · maaş satırlı acente 1) · delta taşınan 0 ·
+>     diğer sayaçlar 27 Eki kaydıyla aynı (fuar 16 + 190, kontrat 3.928, L4 1.485) · **TABAN 342.00 (canlı RO)**.
+> - **Commit:** LEENA `eliza-next` **`86002b1`** (`54abcdb` üstüne; origin `1a475f9`'da — 2 commit önde). **PUSH YOK** (Suer).
+> - **Testler:** `npm run test:setup && npm test` **548/548** (29 suite; önce 543): A7 alıcı akışı (inceleme → tür → `--payees` 7 kredi →
+>   e-postayla otomatik çalışan eşlemesi; kademe birimi) · M15 göç sonucu (acente external_agency + payout kontratsız · ad değiştirmiş
+>   çalışanın iki Company kaydı TEK employee tedarikçide + aliases · SR'lı kontratın Agent Name'i yazılmaz) · M16 plan birimi (SR'sız
+>   kontrat → acente agent + Agent % · payout fuarı kontrattan · delta taşındı · agent + SR birlikte 0) · M17 kademe birimi · R4
+>   mutabakat sayaçları. Beklenti güncellemeleri: M2 (acente 1 · tedarikçi 5 · payout 3 · hareket 5) · M11 (payout sorgusu tek satıra
+>   süzüldü; tedarikçi 5 / employee 2) · B2 (hareket 7 + acente silindi) · A5 (gider listesi 8) · runner R36 batch kolonu 9 → 10.
+>   **TABAN 342.00.**
+> - **SAPMA (en kilitli hükme göre; 27 Eki'nin 23 maddesine ek):** (24) #4 dış acente değil, var olan temsilcinin şirketi (kimlik +
+>   e-posta) → 12 yeni + 1 bağ; Sentez "13'ü Sales_Agents'ta hiç yok" ölçümle tutmadı · (25) tür "company" → LED-18 `supplier`
+>   (CHECK'te company yok; yeni tür açılmadı) · (26) acente tedarikçisi maaş satırı taşısa da supplier (1) · (27) Account Type
+>   Freelancer 1 / Customer 3 olan alıcılar da hükümle `external_agency` (Zoho türü taşınmadı) · (28) telefon kademesi boş (Accounts'ta
+>   Mobile, Sales_Agents'ta telefon alanı yok) · (29) tedarikçi → temsilci bağı eşleme kademeleriyle DOLAR (GOC-03'ün "öneri, Suer
+>   onaylar" hükmünü bu bağ için GOC-06 geçer — 32 bağ) · (30) acente aktifliği koşu gününe göre (24 ay; canlı koşu günü değişirse
+>   değişebilir) · (31) payout fuarı kontrattan yalnız TEK fuar varsa · (32) inceleme adayına kontratsız aktif temsilciler eklendi
+>   (delta adayı) · (33) 052 NOTICE yeni sayısı ayrı satırda (runner R35 regex'i korunur) · (34) testler (yukarıda).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging (052 + göç + mutabakat DB'de koşmadı) · #1'in temsilcisi (Suer yanıtı bekleniyor) ·
+>   Agent Name'deki 3 değerin ne olduğu (acente / temsilci değil — kimliği ölçülmedi) · eliza-legacy'nin yeni token sonrası çekmeye
+>   devam ettiği · acente aktifliğinin canlı koşu gününde değişip değişmeyeceği · ekranların gerçek tarayıcı görünümü.
+> - **Bilinçle yapılmayanlar:** Accounts modülünün tamamı (tedarikçi zenginleştirme ayrı dilim) · ui2 temsilci / tedarikçi detay
+>   ekranları (P4 sonrası küçük dilim — kuyrukta) · var olan tedarikçilere UPDATE · Zoho Account Type'ın taşınması · #1'in tahminle
+>   bağlanması · staging / canlı yazma · push.
+> - **KUYRUK (P4 sonrası küçük dilim, Sentez B):** ui2 temsilci detayı — aldığı toplam = Σ `commission_payouts` + Σ `expenses`
+>   (`suppliers.sales_agent_id` = temsilci), yıl süzgeci, satır satır · tedarikçi detayı — yıl bazlı ödeme geçmişi.
+> - **Teslim (Suer, K1 — sırayla):** (1) #1 yanıtı ("1=?", dosya; adlar sohbete girmez) → CC `--confirm` + ön-plan → (2) staging bloğu:
+>   push → staging Shell 052 → staging DB URL panoya → CC: canlı-değil kapısı → göç dry-run → apply → mutabakat → (3) staging görsel +
+>   "go" → canlı sırası.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -5502,6 +5629,9 @@
 >   Paket 4 → ✅ **İKİNCİ TESLİM AŞAMA 1** (LEENA `54abcdb`; çekim 3.928/3.928; ön-plan DUR 0, fuar 16 + 190; 543/543) —
 >   [defter:2026-10-27 PAKET 4 İKİNCİ TESLİM — AŞAMA 1]. **★SIRADAKİ (bu kazanır) = Suer: komisyon alıcısı onayı (14 alıcı / 109 satır)
 >   → staging TAM PROVA (push → staging 052 → CC göç + mutabakat) → Suer "go" → canlı ∥ LIFFY staging kurulumu ∥ UI-1.**
+>   Paket 4 → ✅ **PAYEE EŞLEMESİ / GOC-06** (LEENA `86002b1`; 12 acente external_agency + 1 var olan temsilci; 548/548) —
+>   [defter:2026-10-28 PAYEE EŞLEMESİ]. **★SIRADAKİ (bu kazanır) = Suer: #1 alıcının temsilcisi ("1=?", dosya) → staging TAM PROVA
+>   (push → staging 052 → CC göç + mutabakat) → Suer "go" → canlı ∥ LIFFY staging kurulumu ∥ UI-1.**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
