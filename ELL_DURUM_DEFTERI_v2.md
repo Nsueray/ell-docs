@@ -5523,6 +5523,10 @@
 > - **Teslim (Suer, K1 — sırayla):** (1) #1 yanıtı ("1=?", dosya; adlar sohbete girmez) → CC `--confirm` + ön-plan → (2) staging bloğu:
 >   push → staging Shell 052 → staging DB URL panoya → CC: canlı-değil kapısı → göç dry-run → apply → mutabakat → (3) staging görsel +
 >   "go" → canlı sırası.
+>   - **Suer yanıtı (28 Eki): `1=a`** (ilk adı tutan aday; LEENA'da var, delta değil) → CC `payee-review.js --confirm "1=a"` (açık alıcı
+>     0). Ön-plan yeniden (canlı RO): DUR 0 · payout **179 / 180** (onaylı 94 · kimlik 4 · tam ad 52 · parça 15 · acente 14; eşleşmeyen 1 =
+>     alıcısız satır) · tedarikçi 295 (temsilciye bağlı 33) · **aliases 0** — bu temsilciye çözülen ikinci bir Company kaydı taşınan
+>     giderlerde YOK (Suer'in andığı eski adlı kayıt varsa gideri yok; ölçülmedi) · yeni temsilci 12 · TABAN 342.00.
 
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
@@ -5630,7 +5634,7 @@
 >   [defter:2026-10-27 PAKET 4 İKİNCİ TESLİM — AŞAMA 1]. **★SIRADAKİ (bu kazanır) = Suer: komisyon alıcısı onayı (14 alıcı / 109 satır)
 >   → staging TAM PROVA (push → staging 052 → CC göç + mutabakat) → Suer "go" → canlı ∥ LIFFY staging kurulumu ∥ UI-1.**
 >   Paket 4 → ✅ **PAYEE EŞLEMESİ / GOC-06** (LEENA `86002b1`; 12 acente external_agency + 1 var olan temsilci; 548/548) —
->   [defter:2026-10-28 PAYEE EŞLEMESİ]. **★SIRADAKİ (bu kazanır) = Suer: #1 alıcının temsilcisi ("1=?", dosya) → staging TAM PROVA
+>   [defter:2026-10-28 PAYEE EŞLEMESİ]; Suer `1=a` → payout 179/180. **★SIRADAKİ (bu kazanır) = staging TAM PROVA
 >   (push → staging 052 → CC göç + mutabakat) → Suer "go" → canlı ∥ LIFFY staging kurulumu ∥ UI-1.**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
