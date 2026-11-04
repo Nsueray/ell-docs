@@ -5594,6 +5594,10 @@
 >   GOC-04 "güncelleme YOK") · canlı export · push · canlı 052 · canlı göç.
 > - **Bilinçle yapılmayanlar:** push · canlı export / migration / göç · yeni Zoho çekimi (staging kanıtı bu ham veriyle) · "PAKET 4
 >   CANLIDA" kaydı (koşu + mutabakattan sonra).
+> - **İlerleyiş (4 Kas):** ✅ **export 11:21** (Suer bildirdi; YON-12 a+c) · ✅ **YON-06** (CC ölçtü, ~11:58 +03, salt okunur):
+>   (a) pencere açık — `email_campaigns` active 0 (completed 27 · draft 3) · `email_queue` pending/processing 0 · son 1 saatte gönderim 0
+>   / check-in 0 / yeni kayıt 0 · ±1 gün içinde süren fuar 0 → G42 kapsamı dışı; (b) status.render.com "All Systems Operational",
+>   çözülmemiş olay 0 → push serbest (gündüz deploy: G43 20–60 sn 502 penceresi).
 > - **Teslim (Suer, canlı sırası; K1 — adım adım):** **export (YON-12 a+c, istisna YOK)** (DUR: export bitmeden push yok) → YON-06 iki
 >   ölçüm → LEENA `git push origin main eliza-next` + ell-docs push → deploy logu → `/health` 200 → canlı Shell
 >   `node scripts/migrate.js --dry-run` (beklenen NOTICE yukarıda + `DRY-RUN OK: 1`) → gerçek (`COMMIT: 1`) → Suer laptop: canlı DB
@@ -5710,7 +5714,7 @@
 >   [defter:2026-10-28 PAYEE EŞLEMESİ]; Suer `1=a` → payout 179/180.
 >   Paket 4 → ✅ **STAGING TAM PROVA** (batch #2; 16 / 16 ölçüt ✅; TABAN 342.00) — [defter:2026-10-28 PAKET 4 STAGING TAM PROVA].
 >   Paket 4 → Suer "go" (4 Kas) → ✅ **MAIN'E MERGE (`5c4c34b`)** — [defter:2026-11-04 PAKET 4: MAIN'E MERGE].
->   **★SIRADAKİ (bu kazanır) = Suer: export (YON-12 a+c) → `main` push → canlı Shell 052 → Suer laptop'tan göç (dry-run → apply) →
+>   **★SIRADAKİ (bu kazanır) = ✅ export 11:21 · ✅ YON-06 → Suer: `main` + `eliza-next` push → canlı Shell 052 → Suer laptop'tan göç (dry-run → apply) →
 >   CC canlı mutabakat (salt okunur) → "PAKET 4 CANLIDA" ∥ LIFFY staging kurulumu ∥ UI-1.**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
