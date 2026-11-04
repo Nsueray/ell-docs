@@ -5610,6 +5610,11 @@
 >   - Laptop bağlantısı (ölçülmedi, belge): Render belgesi "eklenen kullanıcı yeni varsayılan olur; panelin bağlantı URL'leri
 >     varsayılan kullanıcının" + "özgün kullanıcının girişi kaldırılır" (render.com/docs/postgresql-credentials) → Faz A sonrası
 >     panelin External URL'si `leena_app_2026` taşımalı; yanlışsa bağlantı reddedilir, hiçbir şey yazılmaz (dry-run önce).
+>   - ✅ **canlı göç dry-run** (Suer, laptop, çıktı sohbete yapıştırıldı; pano komut sonunda temizlendi): `Target: database=leena_v401_db
+>     user=leena_v401_db_user` (→ panel URL'si yazma yetkili girişi taşıyor) · sayaçların TAMAMI CC'nin 4 Kas salt-okunur ön-planıyla
+>     BİREBİR · eklenecek: temsilci 12 · fuar 190 · fuar tedarikçisi 324 · tedarikçi 295 · kontrat 3.928 · transfer bağı 12 · kalem 7.813
+>     · ödeme 2.327 · gider 1.436 · payout 179 · ledger 0 (staging'den tek fark ledger: canlıda ofis hesabı yok — beklenen) · L4 1.485 ·
+>     `DRY-RUN OK — batch would be #1` · CC salt okunur teyit: tablo sayıları değişmedi (kontrat 3 · temsilci 152 · …), `migration_batches` 0.
 > - **Teslim (Suer, canlı sırası; K1 — adım adım):** **export (YON-12 a+c, istisna YOK)** (DUR: export bitmeden push yok) → YON-06 iki
 >   ölçüm → LEENA `git push origin main eliza-next` + ell-docs push → deploy logu → `/health` 200 → canlı Shell
 >   `node scripts/migrate.js --dry-run` (beklenen NOTICE yukarıda + `DRY-RUN OK: 1`) → gerçek (`COMMIT: 1`) → Suer laptop: canlı DB
@@ -5726,8 +5731,8 @@
 >   [defter:2026-10-28 PAYEE EŞLEMESİ]; Suer `1=a` → payout 179/180.
 >   Paket 4 → ✅ **STAGING TAM PROVA** (batch #2; 16 / 16 ölçüt ✅; TABAN 342.00) — [defter:2026-10-28 PAKET 4 STAGING TAM PROVA].
 >   Paket 4 → Suer "go" (4 Kas) → ✅ **MAIN'E MERGE (`5c4c34b`)** — [defter:2026-11-04 PAKET 4: MAIN'E MERGE].
->   **★SIRADAKİ (bu kazanır) = ✅ export 11:21 · ✅ YON-06 · ✅ push + deploy (`5c4c34b`) · ✅ canlı 052 (TABAN 342.00) → Suer
->   laptop'tan göç (dry-run → apply) →
+>   **★SIRADAKİ (bu kazanır) = ✅ export 11:21 · ✅ YON-06 · ✅ push + deploy (`5c4c34b`) · ✅ canlı 052 (TABAN 342.00) · ✅ göç dry-run
+>   (sayaçlar ön-planla birebir) → Suer laptop'tan göç `--apply` →
 >   CC canlı mutabakat (salt okunur) → "PAKET 4 CANLIDA" ∥ LIFFY staging kurulumu ∥ UI-1.**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
