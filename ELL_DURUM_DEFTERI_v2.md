@@ -5828,6 +5828,84 @@
 >   yayın + Elahe daveti (rol Sentez onayıyla) → adresler + "açtım" → CC ikinci teslim: uçtan uca kanıt + giriş adresleri bloğu +
 >   "LIFFY STAGING + DENEME-0 HAZIR" kaydı.
 
+> ## ✅ 2026-11-04 — SENTEZ: LIFFY STAGING + DENEME-0 — 5 HÜKÜM (4 Kas) + SUER 2 = a — AYNEN
+>
+> - **Kaynak:** Suer'in "SENTEZ 5 HÜKÜM (4 Kas) + Suer kararı" promptu içindeki Sentez metni, AYNEN. İlk teslim KABUL; SAPMA 1–9
+>   KABUL. Kütük karşılıkları bu commit'te: **YET-10** (DENEME-0 rolü) · **YET-11** (kapsam bulgusu → YET-KAPSAM dilimi) · **YET-12**
+>   (LIFFY register yalnız davetle) · YON-13 notu ("staging arayüzü hedefini env'den alır, varsayılan canlı") · YON-15 notu (sıraya
+>   YET-KAPSAM). LIFFY kuyruğu: "migration zinciri onarımı" (AÇIK KUYRUKLAR › Eski açık maddesi genişletildi). Uygulama →
+>   [defter:2026-11-04 LIFFY STAGING + DENEME-0: 5 HÜKÜM UYGULANDI].
+>
+>   ```
+>   SENTEZ → ORCHESTRATOR — LIFFY STAGING + DENEME-0: 5 HÜKÜM (4 Kas)
+>   İlk teslim KABUL (tohum kararı doğru; liffy-ui canlı-yönlendirme
+>   bulgusu önemli, düzeltme doğru — kütüğe YON notu: "staging arayüzü
+>   hedefini env'den alır, varsayılan canlı").
+>
+>   1. ROL = a: Sales şablonu + ofis Turkey + kişi başı override
+>      sales.read=all; LEENA'da yazma 0 (kontrat LIFFY'den convert ile
+>      gelir). Paket 5 girdisi: "Satış Operasyon" şablonu (kontrat listesi
+>      + kuyruk, yazma yok) — override kalıcı çözüm değil.
+>   2. KAPSAM DENETİMİ BULGUSU: GET /api/contracts izin/kapsam bakmıyor —
+>      canlıda da geçerli, YET ihlali. HÜKÜM: ayrı küçük KAPI-2 dilimi
+>      "YET-KAPSAM" P4-kapanıştan HEMEN SONRA, Paket 5'ten ÖNCE (raporlama
+>      daha çok veri açar; kapsam önce). PİLOT-1 öncesi ŞART.
+>      DENEME-0 için (staging, eğitim, 3.9k gerçek kontrat görünür):
+>      [SUER: a/b] — a) kabul, Elahe görür · b) YET-KAPSAM dilimi Elahe'den
+>      önce (9 Kas riske girer). Sentez önerisi a: çalışan, staging,
+>      tazelemede silinir; tutar görme yetkisi zaten Suer'in kararı.
+>   3. [TEST] fuar: EVET, staging'de yayından kaldır; Elahe yalnız
+>      DENEME 2026 görür.
+>   4. LIFFY register açık: Faz B kuyruğuna DEĞİL, BU PAKETİN İKİNCİ
+>      TESLİMİNE: env bayrağı (REGISTRATION_ENABLED, varsayılan false;
+>      staging+canlı) → yalnız davet. Canlı davranış değişiyor (KAPI-1,
+>      merge=deploy): Suer onayı = bu blok. Mevcut kullanıcılar etkilenmez;
+>      kanıt: register 403 + davet akışı çalışır (staging'de ölç).
+>   5. SAPMA 1–9: HEPSİ KABUL. Not: Elahe geçici şifresi panodan → ilk
+>      girişte değiştirme zorunlu mu ÖLÇ; değilse kılavuza "ilk iş şifre
+>      değiştir" satırı. Migration zincirinin boş DB'de düşmesi
+>      (005/013/031/048) → LIFFY kuyruğuna "zincir onarımı" (SERBEST,
+>      acil değil); staging kaynağı döküm kalır.
+>   Kütük: OFS-07/YON-14/YON-15 okundu sayılır; KB'yi P4-kapanış
+>   raporuyla birlikte çekerim.
+>   SUER: 2 = a.
+>   ```
+
+> ## ✅ 2026-11-04 — LIFFY STAGING + DENEME-0: 5 HÜKÜM UYGULANDI — REGISTRATION_ENABLED (liffyv1 `1a2ac9d`; push + staging kanıtı Suer'de)
+>
+> - **Ne yapıldı:** hüküm 4 → liffyv1 **tek commit**: `POST /api/auth/register` yalnız `REGISTRATION_ENABLED` TAM `true` iken açık;
+>   aksi hâlde doğrulamadan ve yazmadan ÖNCE **403 `REGISTRATION_DISABLED`** (`backend/config.js` tek okuma noktası ·
+>   `routes/auth.js` · açılış logu `[Auth] self-registration OFF …` / `… ENABLED …` — `server.js`). Staging ve canlıda değişken
+>   TANIMLANMAZ → kapalı; yeni kullanıcı yalnız Owner/admin'den (Admin › Users, `POST /api/users`). Hüküm 1 / 3 → Suer bloğuna adım.
+>   Hüküm 5 → şifre ölçümü + kılavuz satırı. Kütük YET-10..12 + YON-13 / YON-15 notları.
+> - **Commit:** liffyv1 `main` **`1a2ac9d`** (origin'in 1 önünde; ilk teslim `7c7966b` · liffy-ui `b78231b` · ell-docs `289240f`
+>   origin'de — Suer push etti, ölçüldü: `git status --branch`) · ell-docs bu kayıt. **PUSH YOK** (Suer). ⚠️ liffyv1 `main` push'u =
+>   CANLI deploy → canlıda register kapanır (KAPI-1, Sentez onaylı — hüküm 4).
+> - **Ölçülenler:**
+>   - `/api/auth/register` çağıran kod: liffyv1 + liffy-ui'de **0** (`git grep`); liffy-ui'de register sayfası YOK (yalnız
+>     `layout-client.tsx:69`'da genel sayfa listesinde ad olarak). Kullanıcı açmanın diğer yolları değişmedi: `POST /api/users`
+>     (Owner/admin) · `scripts/seed_admin.js` (doğrudan DB) · staging tohumu.
+>   - **Şifre (hüküm 5 notu):** LIFFY'de **ilk girişte değiştirme zorunluluğu YOK** ve **kullanıcının kendi şifresini değiştireceği yol
+>     YOK** — `password_hash`'e tek yazım Owner/admin sıfırlaması (`routes/userManagement.js:295`, `requirePrivileged`); `users`'ta
+>     "değiştirmeli" kolonu yok (şema anlık görüntüsü); liffy-ui'de şifre değiştirme ekranı yok (yalnız Admin › Reset Password ·
+>     Add user). → "ilk iş şifre değiştir" LIFFY'de UYGULANAMAZ; kılavuza doğru satır yazıldı (aşağıda SAPMA 10). LEENA tarafında Elahe
+>     şifresini davet bağlantısıyla KENDİSİ belirler (geçici şifre yok).
+>   - **Testler:** liffyv1 `npm test` **81/81** (katalog 26 + sender 34 + staging tohumu 21; üç ardışık koşu; artakalan süreç 0) — yeni
+>     R1–R5: bayrak yalnız tam `true` (yok / boş / `false` / `1` / `TRUE` / `yes` → kapalı) · bayraksız register 403, organizer /
+>     kullanıcı / gönderici satırı yazılmaz · boş gövde de 403 (400 değil) · **davet akışı:** Owner `POST /api/users` 201 → yeni kullanıcı
+>     girer 200; Owner + satış girişi etkilenmez · bayrak `true` → eski davranış AYNEN (200 + organizer + owner + token).
+> - **SAPMA (10):** Sentez notu "ilk iş şifre değiştir" yerine kılavuz: "LIFFY'de şifreni kendin değiştiremezsin; kimseyle paylaşma;
+>   değişmesi gerekirse Suer'e yaz → Suer Admin › Users › Reset Password ile yenisini verir". Kendi şifresini değiştirme ekranı
+>   (LIFFY) bu pakette YAPILMADI — 🔶 Sentez: Paket 5 / UI-1 girdisi mi, YET-KAPSAM'a mı.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging'de register 403 + davet akışı (servisler açılınca, ikinci teslim kanıtıyla) · canlıda
+>   register 403 (push sonrası) · canlı liffy-api env'inde `REGISTRATION_ENABLED` adının hiç tanımlı olmadığı (panel; tanımlıysa ve
+>   `true` ise canlı açık kalır — Suer bakar).
+> - **Bilinçle yapılmayanlar:** YET-KAPSAM (ayrı KAPI-2 dilimi, P4-kapanıştan sonra) · "Satış Operasyon" şablonu (Paket 5) · LIFFY
+>   kendi-şifre ekranı · migration zinciri onarımı (kuyrukta, SERBEST) · liffy-ui'de değişiklik (register sayfası yok) · push.
+> - **Teslim (Suer, K1):** güncellenmiş SUER BLOĞU (teslim metninde): liffyv1 push → Render (DB · api · ui) → tohum → LEENA staging
+>   (DENEME 2026 + yayın · `[TEST]` yayından kaldırma · Elahe daveti Sales + Turkey + `sales.read=all`) → LIFFY (Reset Password) →
+>   adresler + "açtım" → CC ikinci teslim: uçtan uca kanıt + register 403 + davet akışı (staging) + "HAZIR" kaydı.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -5947,6 +6025,11 @@
 >   [defter:2026-11-04 LIFFY STAGING + DENEME-0: İLK TESLİM]. **★SIRADAKİ (bu kazanır, bu hat) = Suer: push → Render servisleri + env →
 >   `seed_staging.sh` → LEENA staging "DENEME 2026" + yayın + Elahe daveti (rol Sentez onayıyla) → CC ikinci teslim (uçtan uca kanıt)
 >   → Cuma 6 Kas hazır → Suer kısa deneme → 9 Kas Elahe.**
+>   Sentez 5 hüküm (4 Kas) + Suer 2 = a → ✅ **AYNEN** — [defter:2026-11-04 SENTEZ: LIFFY STAGING + DENEME-0 — 5 HÜKÜM]; uygulandı:
+>   liffyv1 `1a2ac9d` (REGISTRATION_ENABLED; 81/81) — [defter:2026-11-04 LIFFY STAGING + DENEME-0: 5 HÜKÜM UYGULANDI].
+>   **Sıra (YON-15 notu, bu kazanır): P4-kapanış → YET-KAPSAM (KAPI-2, küçük) → Paket 5 Raporlama → UI-1 ∥ LIFFY staging + DENEME-0.**
+>   **★SIRADAKİ (bu kazanır, bu hat) = Suer: liffyv1 push → güncellenmiş SUER BLOĞU (Render + tohum + LEENA staging + `[TEST]`
+>   yayından kaldırma + davet) → CC ikinci teslim (uçtan uca kanıt + register 403 + davet akışı) → Cuma 6 Kas hazır.**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
@@ -6835,7 +6918,10 @@ liste" daha erken yapılabilir; tam temiz hali Faz 2 ile.
       (önceki tarama: HEAD'de ve geçmişte para-riskli sızıntı YOK).
 
 ### Eski açık (Faz 0/1'den taşınan)
-- [ ] LIFFY migration ordering kırıklığı (005→007) — Faz 1'e ertelenmişti, hâlâ açık.
+- [ ] LIFFY migration ordering kırıklığı (005→007) — Faz 1'e ertelenmişti, hâlâ açık. **Genişletildi (4 Kas, ölçüldü — "migration
+  zinciri onarımı", Sentez 4 Kas hüküm 5: SERBEST, acil değil):** 001–055 boş DB'de dört yerde düşer — 005 (`mining_jobs` 007'de) ·
+  013 (olmayan kolon) · 031 (organizer satırı ister) · 048 (Owner satırı ister). Staging kaynağı döküm KALIR (liffyv1
+  `backend/scripts/staging/liffy_schema_2026-11-04.sql`). [defter:2026-11-04 LIFFY STAGING + DENEME-0: İLK TESLİM]
 
 ---
 

@@ -22,10 +22,15 @@
 
 Şifreleri kimseyle paylaşma. Sorun olursa Suer'e yaz.
 
+- **LIFFY şifresi:** geçici şifreyi Suer verir. LIFFY'de şifreni **kendin değiştiremezsin** (böyle bir ekran yok, 4 Kas'ta ölçüldü).
+  Şifreni bir yere yazma ve kimseyle paylaşma. Değişmesi gerekirse Suer'e yaz; Suer **Admin › Users › Reset Password** ile
+  yenisini verir.
+- **ELIZA şifresi:** davet bağlantısıyla **kendin belirlersin**. Geçici şifre yoktur.
+
 ## 2. LIFFY'de teklif: Create → Send → Sign
 
 1. **Quotes → New Quote.**
-2. **Fuar:** `DENEME 2026`. Listede başka fuar da çıkabilir; yalnız `DENEME 2026`'yı seç.
+2. **Fuar:** `DENEME 2026`. Listede yalnız bu fuar olmalı. Başka bir fuar görürsen onu seçme, Suer'e haber ver.
 3. **Ofis:** senin ofisin (Turkey) kendiliğinden gelir. Sarı "ofis yok" uyarısı görürsen dur ve Suer'e haber ver.
 4. **Firma adı:** uydurma bir ad.
 5. **Kalemler:** ürünü katalogdan seç, miktarı yaz. Fiyatı olmayan ürün eklenemez; başka ürün seç. Ekrandaki toplam,
