@@ -5615,12 +5615,61 @@
 >     BİREBİR · eklenecek: temsilci 12 · fuar 190 · fuar tedarikçisi 324 · tedarikçi 295 · kontrat 3.928 · transfer bağı 12 · kalem 7.813
 >     · ödeme 2.327 · gider 1.436 · payout 179 · ledger 0 (staging'den tek fark ledger: canlıda ofis hesabı yok — beklenen) · L4 1.485 ·
 >     `DRY-RUN OK — batch would be #1` · CC salt okunur teyit: tablo sayıları değişmedi (kontrat 3 · temsilci 152 · …), `migration_batches` 0.
+>   - ✅ **canlı göç `--apply` (batch #2) + mutabakat 16 / 16** → [defter:2026-11-04 PAKET 4 CANLIDA].
 > - **Teslim (Suer, canlı sırası; K1 — adım adım):** **export (YON-12 a+c, istisna YOK)** (DUR: export bitmeden push yok) → YON-06 iki
 >   ölçüm → LEENA `git push origin main eliza-next` + ell-docs push → deploy logu → `/health` 200 → canlı Shell
 >   `node scripts/migrate.js --dry-run` (beklenen NOTICE yukarıda + `DRY-RUN OK: 1`) → gerçek (`COMMIT: 1`) → Suer laptop: canlı DB
 >   URL panoya → `EXPECTED_DB_NAME=leena_v401_db DATABASE_URL="$(pbpaste)" node scripts/zoho/migrate.js --dry-run` → `--apply`
 >   (batch no) → pano temizlenir → CC `reconcile.js --batch N --label live` (salt okunur) → fark ≠ 0 → Suer `rollback.js N` →
 >   "PAKET 4 CANLIDA" + kütük GOC + yeni TABAN çapası.
+
+> ## ✅ 2026-11-04 — PAKET 4 CANLIDA: ZOHO GÖÇÜ (canlı batch #2; mutabakat 16 / 16 ✅; LEENA rapor `905280f`; KAPI-2 geçti)
+>
+> - **Ne yapıldı:** Suer laptop'tan (WARP kapalı; panelin External URL'si panoya; pano komut sonunda temizlendi)
+>   `EXPECTED_DB_NAME=leena_v401_db DATABASE_URL="$(pbpaste)" node scripts/zoho/migrate.js --apply --raw ~/zoho_raw/2026-10-27`
+>   koştu, çıktıyı sohbete yapıştırdı → CC canlı mutabakatı salt okunur koştu (`reconcile.js --batch 2 --raw … --label live`;
+>   `DATABASE_URL` = `RENDER_DATABASE_READONLY_URL`, scratchpad sarmalayıcısıyla, değer basılmadan; maske önce sahte girdide sınandı)
+>   + bağımsız tablo sayımı (salt okunur). Değer sohbete / deftere yazılmadı.
+> - **Commit:** LEENA `eliza-next` **`905280f`** (rapor `docs/audits/GOC_MUTABAKAT_2026-11-04_live.md`; origin'in 1 önünde; `main`
+>   `5c4c34b` değişmedi — rapor yalnız belge) · ell-docs bu kayıt. **PUSH YOK** (Suer).
+> - **Ölçülenler:**
+>   - göç (Suer çıktısı): `Mode: APPLY (single transaction, single batch) · raw 2026-10-27 · organizer 1` · `Target:
+>     database=leena_v401_db user=leena_v401_db_user` · sayaçların TAMAMI dry-run ile ve CC'nin 4 Kas salt-okunur ön-planıyla BİREBİR ·
+>     eklenen: temsilci (acente) 12 · fuar 190 · fuar tedarikçisi 324 · tedarikçi 295 · kontrat 3.928 · transfer bağı 12 · kalem 7.813 ·
+>     ödeme 2.327 (kontratlı 1.959 + bağsız gelir 368) · gider 1.436 · payout 179 · ledger 0 · L4 (plan) 1.485 · **`COMMIT — migration
+>     batch #2 applied`** (dry-run 1'i tüketti — SAPMA 36'nın beklediği gibi).
+>   - mutabakat (CC, BEGIN READ ONLY, `claude_readonly`, ~13:31 +03): **16 / 16 kabul ölçütü ✅**, çıkış 0 — kontrat 3.928 = 3.928 ·
+>     Σ Grand Total EUR 28 hücrede fark 0 · kalem 9.251 = 7.813 + katlanan 1.425 + atlanan 13 · milat sonrası ödeme 1.821 = 1.821 (5 para
+>     birimi, fark 0) · sentetik 138 · L4 1.474 (DB hesabı; yüzde hassasiyeti 1.389 · başlık indirimi 45 · düzeltme 34 · ikisi 1 · diğer 5)
+>     · SR komisyonu 2.271 karşılaştırma, fark > 1: 690 (LEENA geçerli — K7) · SD atanmamış 801 (atanamaz 15) · fuar eşleme 16 / 16 ·
+>     hesapsız gider 1.436 · bağsız gelir 368 · ofis-sorusu 452 · acente 12 / 12 (kontrat bağsız payout 14) · aliases'lı tedarikçi 0 ·
+>     **TABAN kontrat 4 SR earned = 342.00**.
+>   - staging raporuyla `diff` (1.575 satır): fark YALNIZ başlıkta (tarih · hedef) ve ledger kaynaklı satırlarda — hesapsız gider
+>     1.412 → 1.436 · ödeme ledger 1.028 → 0 / hesapsız 793 → 1.821 · gider ledger 24 → 0 · payout ledger 138 → 0 · bağsız gelir ledger
+>     110 → 0 · hesapsız kontratlı ödeme 1.051 → 2.189 (= 1.821 + 368). Neden: canlıda ofis varsayılan hesabı 0 (4 Kas ölçümü) → ledger
+>     hareketi 0 (beklenen; dry-run'da da 0). Kabul tablosunun geri kalanı ve L4 / SR listeleri birebir.
+>   - bağımsız sayım (CC, salt okunur): `migration_batches` yalnız **#2**, `applied` · her tabloda toplam = göç öncesi + batch #2:
+>     temsilci 152 + 12 = 164 · kontrat 3 + 3.928 = 3.931 · kalem 2 + 7.813 = 7.815 · ödeme 15 + 2.327 = 2.342 · payout 8 + 179 = 187 ·
+>     fuar 23 + 190 = 213 · gider 0 + 1.436 · tedarikçi 0 + 295 · fuar tedarikçisi 0 + 324 · ledger 0 · başka batch'e ait satır 0 ·
+>     transfer bağı (`contracts.transferred_from_contract_id`, `scripts/zoho/lib/apply.js:130-138`) 12, kaynağın 12'si de batch #2'de.
+>   - canlı uçlar (13:33 +03): `/health` 200 · `/ui2/admin-migration.html` 200 · `/api/migration/batches` oturumsuz 401.
+> - **Geri alma:** fark 0 → `rollback.js` KOŞULMADI. Gerekirse: `DATABASE_URL="$(pbpaste)" node scripts/zoho/rollback.js 2` (GOC-04).
+> - **SAPMA (en kilitli hükme göre; 35–36'ya ek):** (37) "yeni TABAN çapası" bu kayıtta SEÇİLMEDİ — (a) 8 Eki hükmü: "yeni TABAN çapası
+>   Sentez kararıyla belirlenmeden contract 4 silinmez/değişmez"; (b) aday göçmüş GERÇEK bir kontrat olur, çapa değeri bir temsilcinin
+>   hak ediş tutarıdır → ell-docs PUBLIC'e yazılamaz (göç kuralı: kişi / tutar satırı yok). Uygulanan: **TABAN contract 4 = 342.00
+>   KALIR** (LEENA `CLAUDE.md` aynen). Sentez'e iki soru: aday ölçütü (öneri: göçmüş · Active · transfer yok · L4 farkı yok · tek
+>   internal SR · RF'siz · ödemesi tam) ve değerin yeri (öneri: LEENA PRIVATE `CLAUDE.md`; deftere yalnız LEENA kontrat no + "değer
+>   LEENA CLAUDE.md'de").
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** canlı ui2 görsel kontrolü (Admin › Migration batch #2 · Finance › Contracts göçmüş süzgeci —
+>   oturumlu; Suer) · Zoho'da 27 Eki'den sonra girilen / değişen kayıtlar (göç ham `2026-10-27` anlık görüntüsünden; Paket 6 fark
+>   koşusuna — GOC-04 "güncelleme YOK") · L4 plan 1.485 ↔ DB 1.474 farkının satır satır nedeni (staging'deki gibi açık) · geri alma
+>   canlıda / staging'de denenmedi (testte sınandı).
+> - **Bilinçle yapılmayanlar:** CC canlı yazma · rollback (fark 0) · raporun `main`'e merge'ü (yalnız belge; ayrı deploy tetiklenmesin
+>   diye sonraki kod paketiyle) · yeni TABAN seçimi (SAPMA 37) · KAPSAM DIŞI: LIFFY · Zoho / eliza kapatma · realtime sync · Paket 6
+>   fark koşusu · UI cila.
+> - **Teslim (Suer, K1):** push (LEENA `eliza-next` `905280f` → staging deploy, yalnız belge · ell-docs) → canlı ui2 görsel kontrol
+>   (Admin › Migration batch #2 `applied` · Finance › Contracts göçmüş süzgeci · kontrat 4 = 342.00) → Sentez: SAPMA 35–37 + yeni TABAN
+>   çapası.
 
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
@@ -5731,9 +5780,10 @@
 >   [defter:2026-10-28 PAYEE EŞLEMESİ]; Suer `1=a` → payout 179/180.
 >   Paket 4 → ✅ **STAGING TAM PROVA** (batch #2; 16 / 16 ölçüt ✅; TABAN 342.00) — [defter:2026-10-28 PAKET 4 STAGING TAM PROVA].
 >   Paket 4 → Suer "go" (4 Kas) → ✅ **MAIN'E MERGE (`5c4c34b`)** — [defter:2026-11-04 PAKET 4: MAIN'E MERGE].
->   **★SIRADAKİ (bu kazanır) = ✅ export 11:21 · ✅ YON-06 · ✅ push + deploy (`5c4c34b`) · ✅ canlı 052 (TABAN 342.00) · ✅ göç dry-run
->   (sayaçlar ön-planla birebir) → Suer laptop'tan göç `--apply` →
->   CC canlı mutabakat (salt okunur) → "PAKET 4 CANLIDA" ∥ LIFFY staging kurulumu ∥ UI-1.**
+>   Paket 4 → ✅ **PAKET 4 CANLIDA** (canlı batch #2; 16 / 16 ölçüt ✅; TABAN 342.00; LEENA rapor `905280f`) —
+>   [defter:2026-11-04 PAKET 4 CANLIDA].
+>   **★SIRADAKİ (bu kazanır) = Suer push (LEENA `eliza-next` `905280f` · ell-docs) → canlı ui2 görsel kontrol (Admin › Migration
+>   batch #2 · göçmüş süzgeci · kontrat 4 = 342.00) → Sentez: SAPMA 35–37 + yeni TABAN çapası ∥ LIFFY staging kurulumu ∥ UI-1.**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:

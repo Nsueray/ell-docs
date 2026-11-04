@@ -283,6 +283,10 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 > Sentez Paket 4 kriter turunun (26 Eki) hükümleri. Göç = Zoho tarihçesinin LEENA'ya TAŞINMASI; Zoho Paket 6'ya kadar kanonik
 > kalır (göç tek seferlik; sonrası yalnız yeni `zoho_record_id`'ler için "fark koşusu"). Kaynak Zoho API (ayrı salt-okunur token);
 > ELIZA DB değil (AD-01 düzeltmesi). Kapı: KAPI-2 (canlı DB'ye toplu yazma) — staging TAM PROVA + mutabakat → Suer "go" → canlı.
+>
+> **Canlıda (4 Kas):** KAPI-2 geçti — canlı batch **#2** `applied` (ham `2026-10-27`; tek transaction), mutabakat 16 / 16 ✅, TABAN
+> 342.00 korundu; geri alma `rollback.js 2` (GOC-04) koşulmadı. Yeni TABAN çapası Sentez kararında (değer PUBLIC repoya yazılmaz).
+> [defter:2026-11-04 PAKET 4 CANLIDA]
 
 - **GOC-01** (Suer S3, Sentez 26 Eki) — Zoho kontratında SD KİŞİSİ YOKTUR: SD oranı taşınır, kişi BOŞ kalır ("SD atanmamış" sayacı); kişi ui2 toplu atama ekranıyla verilir (`contracts_sd_requires_sr_check`'e uyar — SR'sız kontrata SD atanamaz). Agent % aynı muamele. Zoho'nun hesapladığı komisyon taşınmaz (MOT-01); farklar mutabakatta listelenir, LEENA rakamı geçerli (K7). [defter:2026-10-26 SENTEZ: PAKET 4 KRİTER TURU]
 - **GOC-02** (Suer S4, Sentez 26 Eki) — Ödeme MİLADI 2019-01-01: milat sonrası `Received_Payment` satırları → `payments` (kur kontrattan; yöntem `Payment_Audit` eşleşmesinden, yoksa `bank_transfer` + not). Milat öncesi ve `Received_Payment`'sız `Payment Done = true` kontrat → TEK sentetik ödeme (kontrat tarihli, tutar = Grand Total, `migration_flag = 'synthetic'`). `Payment Done = false` + satırsız → ödemesiz (bakiye açık). `Payment_Audit` yalnız zenginleştirmedir (yöntem / makbuz / kategori) — aynı ödeme ÇİFT SAYILMAZ; kontrata bağlanamayan kaydı "bağsız gelir" olarak gelir (RAP-02). [defter:2026-10-26 SENTEZ: PAKET 4 KRİTER TURU]
