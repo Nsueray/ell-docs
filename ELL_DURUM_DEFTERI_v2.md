@@ -5671,6 +5671,163 @@
 >   (Admin › Migration batch #2 `applied` · Finance › Contracts göçmüş süzgeci · kontrat 4 = 342.00) → Sentez: SAPMA 35–37 + yeni TABAN
 >   çapası.
 
+> ## ✅ 2026-11-04 — SENTEZ: DENEME-0 + LIFFY STAGING (4 Kas, Suer kararları) — AYNEN (KB @ 1e0d6a8)
+>
+> - **Kaynak:** Suer'in "LIFFY STAGING + DENEME-0" promptu (4 Kas) içindeki Sentez metni, AYNEN. Kütük karşılıkları bu commit'te:
+>   **OFS-07** (Algeria/Iraq Turkey ofisinde; "ofis-sorusu" sayacı KAPANDI — kod değişikliği P4 kapanış penceresinde, burada
+>   değil) · **YON-14** (yeni — staging tazeleme kuralı) · **YON-15** (yeni — sıra + takvim + PİLOT-1 + DENEME-0 kabulü) ·
+>   YON-13'e not (kişisel veri varsa kopya değil tohum). Uygulama ve ölçüm → [defter:2026-11-04 LIFFY STAGING + DENEME-0: İLK TESLİM].
+>
+>   ```
+>   SENTEZ → ORCHESTRATOR — DENEME-0 + LIFFY STAGING (4 Kas, Suer kararları)
+>   P4-kapanış ile PARALEL, ayrı dal/pencere (liffyv1 + liffy-ui + LEENA
+>   staging ayarı). SERBEST bölge (staging, canlıya dokunmaz). KB @ 1e0d6a8.
+>
+>   SUER KARARLARI (kütüğe):
+>   - Sıra: P4-kapanış → Paket 5 Raporlama → UI-1. ∥ LIFFY staging + DENEME-0.
+>   - Algeria/Iraq = b: ikisi de Turkey ofisinde kalır (452 kontrat; "ofis-
+>     sorusu" sayacı kapanır). Gerekçe: Cezayir fuarlarını merkez satıyor;
+>     DZ ofisi açılırsa bölge kuralı (SAT-04) merkezi keser. İleride yerel
+>     masraf için açılırsa "merkez satabilir" ayarıyla. OFS'ye not.
+>   - PİLOT-1 (canlı kullanım) kararı Paket 5 sonrasına; "çift kayıt yok"
+>     kuralı geçerli, canlıda kimse girmez.
+>   - TAKVİM: Cuma 6 Kas hazır → Suer staging'de kısa deneme → Pazartesi
+>     9 Kas Elahe başlar.
+>
+>   A) LIFFY STAGING (onaylı ~15 $/ay; Orchestrator'ın mevcut planı):
+>   liffy-api-staging + liffy-ui-staging + staging DB (canlı LIFFY
+>   kopyası ya da boş + tohum — Orchestrator ölçüp seçer; kişisel veri
+>   taşınacaksa kopya değil tohum). Convert hedefi = LEENA staging
+>   (ayrı LIFFY_HMAC_SECRET; K4: değer panodan, sohbete girmez; canlı
+>   sırla AYNI OLMAZ). Outbox/kuyruk staging'de uçtan uca çalışır.
+>   Kanıt: staging'de 1 teklif → Send → Sign → convert → LEENA staging'de
+>   kontrat (CC ölçer, sayı).
+>
+>   B) DENEME-0 DÜZENİ (staging, eğitim; veri sayılmaz, Zoho tek gerçek):
+>   1. Test fuarı: LEENA staging'de "DENEME 2026" (published_to_liffy=
+>      true, ofis Turkey); Elahe'nin tüm işleri bu fuarda.
+>   2. Hesaplar: Elahe → LEENA staging kullanıcısı (davet INVITE_ECHO ile;
+>      rol = mevcut şablonlardan kontrat girişi/listesi için EN DAR olan —
+>      Orchestrator şablonları ölçüp önerir, ben onaylarım; Owner/Finance
+>      DEĞİL) + LIFFY staging kullanıcısı (ofis Turkey). Suer'in kendi
+>      staging hesabı zaten var mı ÖLÇ; yoksa aynı yolla.
+>   3. Tazeleme kuralı (kütüğe, YON): staging her KAPI-2 provasından önce
+>      canlıdan yenilenir (Faz A geri yükleme); deneme verisi silinir,
+>      bilerek. Paket 5'e kadar prova planı yok → 9 Kas–Paket 5 arası
+>      staging dokunulmaz. Tazeleme öncesi Suer'e 1 gün haber.
+>   4. Kılavuz: tek sayfa, kişisel veri yok, ell-docs docs/ altına:
+>      LIFFY'de teklif → Send → Sign · convert kuyruğu · LEENA'da kontratı
+>      görme · hata bildirimi: Elahe → Suer (ekran görüntüsü + ne yaptı)
+>      → Suer defter için Orchestrator'a. Mevcut kılavuz/runbook
+>      bölümlerinden derlenir; yoksa CC yazar.
+>   5. Kabul (DENEME-0 kapanışı): Elahe staging'de uçtan uca 3 kontrat
+>      girer, LEENA staging'de görünür; hata listesi deftere; her hata
+>      "ürün hatası / kılavuz eksiği / eğitim" diye sınıflanır → Paket 5
+>      ve UI-1 girdisi.
+>   6. Kapsam dışı: canlı hesap açma · Zoho · ödeme/gider girişi (Elahe
+>      yalnız kontrat) · UI cila.
+>
+>   Teslim: Cuma 6 Kas'a kadar A+B hazır; Suer'e tek blok: giriş adresleri
+>   + davet adımı (değer yok). Rapor: sayılar + ölçülmedi listesi.
+>   ```
+
+> ## ✅ 2026-11-04 — LIFFY STAGING + DENEME-0: İLK TESLİM (liffyv1 `7c7966b` · liffy-ui `b78231b`; servis açma + push Suer'de)
+>
+> - **Ne yapıldı:** ADIM 0 ölçümü (LIFFY canlı + LEENA staging, ikisi de salt okunur, bağlantı panodan, basılmadı, pano sonra
+>   boşaltıldı; canlı LEENA `claude_readonly`) → **karar: TOHUM** (kopya değil) → liffyv1 tohum betiği + şema anlık görüntüsü + test ·
+>   liffy-ui staging düzeltmesi + STAGING rozeti · `docs/DENEME0_KILAVUZ_v1.md` · kütük OFS-07 / YON-14 / YON-15. LEENA'da kod
+>   değişikliği YOK (`eliza-next` dokunulmadı).
+> - **Commit:** liffyv1 `main` **`7c7966b`** · liffy-ui `main` **`b78231b`** (ikisi de origin'in 1 önünde) · ell-docs bu kayıt.
+>   **PUSH YOK** (Suer). ⚠️ LIFFY'de `main` push'u = canlı deploy: liffyv1'de çalışan dosya değişmedi (yalnız `backend/scripts/staging/`
+>   + test + `package.json` test zinciri); liffy-ui'de değişen iki dosya env yokken canlı çıktıyı değiştirmez (aşağıda ölçüm).
+> - **Ölçülenler (ADIM 0):**
+>   - **(a) LIFFY canlı DB** (PG 17.9; `session_user` `liffy_app_2026b`, `current_user` `liffy_user`; 36 tablo, tam sayım): kişisel veri
+>     taşıyan tablolar dolu: persons **80.855** · affiliations **90.841** · mining_results **65.065** · campaign_events 42.275 ·
+>     list_members 31.473 · prospects **26.123** · campaign_recipients 17.939 · verification_queue 16.122 · sequence_recipients 1.885 ·
+>     prospect_intents 455 · unsubscribes 56 · contact_* 35 · users 3 · sender_identities 6 → **TOHUM** (Sentez: kişisel veri varsa
+>     kopya değil). Yapılandırma: offices 7 (CN DZ GH KE MA NG TR; TR varsayılanı EUR) · exchange_rates 1 (EUR) · organizers 1 ·
+>     pipeline_stages 7 · products 228 (227 Zoho + 1 test) · product_prices 205 · quotes 3 · expos 2 · companies 0.
+>   - **Şema:** `backend/migrations` 001–055 boş DB'de **koşmuyor** (yerel deneme: 005 `mining_jobs`'u 007'den önce ister · 013 olmayan
+>     kolon · 031 organizer satırı · 048 Owner satırı ister) → şema = canlıdan **şema-yalnız dump** (pg_dump 17.10, `--schema-only
+>     --no-owner --no-privileges`, 36 tablo, veri satırı 0, sır biçimli değer 0). Haziran 2026 canlı dump'ı + 047–055 ile fark YALNIZ
+>     048'in `sales_owner_user_id` kolonları (provada Owner olmadığı için koşmadı) → **elle drift yok**. `\restrict` satırları ve
+>     `SET transaction_timeout` çıkarıldı (psql sürümü / PG 17'ye özel); PG 14 ve PG 17'de geri yüklendi.
+>   - **(b) env (ADLAR; kaynak: kod `git grep` + `.env.example` + İşletim Notu §2 — canlı Render paneli ÖLÇÜLMEDİ):**
+>     liffy-api-staging'de **OLACAK:** `DATABASE_URL` (staging DB, Internal) · `NODE_ENV=production` · `JWT_SECRET` ve
+>     `UNSUBSCRIBE_SECRET` (yeni, staging'e özel; ikisi de boot FATAL — `server.js:7-14`) · `LEENA_API_URL` =
+>     `https://leena-staging.onrender.com` · `LEENA_HMAC_SECRET` (= LEENA staging `LIFFY_HMAC_SECRET`) · `LEENA_SERVICE_USER_ID`
+>     (staging "LIFFY (service)", ölçüldü: aktif) · `DISABLE_SEQUENCE_WORKER=1` · `DISABLE_ACTION_WORKER=1`. **OLMAYACAK:**
+>     `SENDGRID_API_KEY` · `ANTHROPIC_API_KEY` · `ZEROBOUNCE_API_KEY` · `REDIS_URL` · `INBOUND_WEBHOOK_SECRET` ·
+>     `INBOUND_PARSE_ADDRESS` · `MINING_*` · `MANUAL_MINER_TOKEN` · `API_BASE_URL`. Zoho / Twilio için env adı kodda YOK (Zoho
+>     anahtarları `organizers.zoho_*` kolonlarında → tohumda BOŞ; Twilio referansı 0). CORS env'i gerekmez: `app.use(cors())` tüm
+>     kökenlere açık (`server.js:63`). liffy-ui-staging: `BACKEND_URL` · `NEXT_PUBLIC_API_URL` · `API_BASE_URL` · `API_REWRITE_URL`
+>     (yeni) — dördü de staging api adresi · `NEXT_PUBLIC_ENV=staging` (yeni).
+>   - **Açılış:** SendGrid / Anthropic / ZeroBounce / Redis / Zoho yokken api açılır, `/api/health` 200, FATAL yok (test B1); bu
+>     anahtarlar çağrı anında denetlenir (`routes/adminAIMiner.js:72` · `services/sourceDiscovery.js:72` · `mailer.js:44` …),
+>     yüklemede değil → **"kapalı" log satırı eklenmedi** (gerek yok; canlı açılış çıktısı değişmedi).
+>   - **Outbox:** convert outbox **api sürecinde** koşar (`server.js:136-140`), ayrı worker'da değil → "worker YOK" convert'i
+>     etkilemez; imza anında gönderim beklenir (`routes/quotes.js` sign → `enqueueAndSend`). Send e-posta göndermez (yalnız durum).
+>   - **(c) Dal:** staging servisleri `main` (kod aynı, env farklı) — ayrı dal gerekmedi.
+>   - **(d) LEENA staging** (`leena_staging_db`, BEGIN READ ONLY): `schema_migrations` 54 (son `052_zoho_migration`) · kullanıcı 3:
+>     **Suer Owner, aktif, şifreli** (ofis yok) · servis kullanıcısı 1 ("LIFFY (service)", aktif) · aktif insan 1 · `user_permissions` 0 ·
+>     açık davet 0 · ofis: TR CN KE MA NG aktif, AF pasif (**DZ yok**) · expo 212, **yayınlı 1** (`[TEST] Reactivation Smoke Test
+>     Expo`), DENEME 0 · kontrat 3.932 (LIFFY'den 3) · convert_requests received 1 / succeeded 1 · aktif internal temsilci 22, Elahe
+>     e-postalı 0 (→ Elahe'nin kontratları **needs_agent** doğar) · bölge tablosu TR 1 satır · **TABAN 342.00** (staging) ·
+>     `INVITE_ECHO` env'i DB'den ölçülemez (panel / davet ekranındaki uyarı kutusu teyit eder).
+>   - **Rol şablonları (staging, ölçüldü):** Sales 3 (`sales.read`·`contracts.read`·`commissions.read`, hepsi `own`) · Project 4
+>     (`operations.read`·`sales.read`·`budget.read`·`budget.write`, hepsi `all`) · Office Manager 12 (`office`) · Finance 12 · Owner 0.
+>     Kapılar: Finance › Contracts menüsü `contracts.read` (`public/ui2/nav.json`) · convert kuyruğu `sales.read` **kapsam `all`**
+>     (`routes/convertQueue.js:49-50`, dar kapsam 409). **Tek şablon ikisini birden vermiyor:** Sales → kuyruk 409; Project →
+>     kontrat menüsü yok + `budget.write`. **Öneri (Sentez onayına):** **Sales** şablonu + ofis Turkey + kişi başı ezme
+>     `sales.read` → `all` (Admin › Users › Per-user override; `utils/permissions.js:4`). Yazma yetkisi SIFIR. Kuyruk Elahe'ye gerekmezse
+>     yalnız Sales.
+>   - **(e) Kılavuz:** `KULLANIM_KILAVUZU_v1.md` §2 (satışçı) + §3.3 (kuyruk) deneme ortamına uyarlandı → `docs/DENEME0_KILAVUZ_v1.md`
+>     (tek sayfa; adres değeri / kişisel veri yok).
+>   - **Canlı LEENA:** TABAN kontrat 4 SR earned = **342.00** (`claude_readonly`, salt okunur).
+>   - **Testler:** liffyv1 `npm test` **76/76** (katalog 26 + sender 34 + yeni staging tohumu 16; üç ardışık koşu; tohum testi PG 14
+>     ve PG 17'de) — tohum: korumalar (ad / kişisel veri / e-posta) · ilk koşu (organizer 1 · ofis 7 · kur 1 · pipeline 7 · kullanıcı 2
+>     TR · ürün 227 · fiyat 205) · ikinci koşu +0 · çıktıda şifre / hash / bağlantı dizesi / e-posta 0 · açılış · owner girişi · reset →
+>     satış girişi · expo senkronu (imza v2) · quote → Send → Sign → convert **acked** (sahte ELIZA). liffy-ui: `next build` env YOK →
+>     `routes-manifest.json` rewrite önceki derlemeyle **bayt bayt aynı** · staging env → staging adresi, istemci paketinde
+>     `api.liffy.app` 0 · eslint yeni bulgu 0. LEENA testleri koşulmadı (LEENA kodu değişmedi).
+> - **YON-05 (çürüyen varsayımlar):** (1) "şema = migration 050–055" → zincir boş DB'de koşmuyor, taban şema gerekir ·
+>   (2) "liffy-ui'de kod değişikliği beklenmiyor" → `/api/*` rewrite canlıya GÖMÜLÜ (`next.config.ts:8`); göreli `/api` çağıran
+>   ekranlar (sidebar sayaçları, dashboard, lists …) staging token'ıyla canlıya gider → canlı 401 → `installAuthFetchGuard` oturumu
+>   kapatır → staging UI kullanılamaz · (3) "CORS için staging UI adresi" → LIFFY CORS açık · (4) "Project? sales.read +
+>   contracts.read?" → tek şablon yok · (5) "DENEME 2026 ofis Turkey" → LEENA `expos`'ta ofis kolonu YOK (`routes/liffyExpos.js:54-55`,
+>   26 Eki ölçümü geçerli); ofis quote'tan gelir (LIFFY kullanıcısı TR → payload `office_code` TR) · (6) "LIFFY'de ilk girişte şifre
+>   belirleme" → YOK (yalnız Owner/admin oluşturur ya da sıfırlar — `routes/userManagement.js:114,271`).
+> - **SAPMA (bu iş, 1–9):** (1) şema kaynağı canlı şema-yalnız dump (yukarıda) · (2) liffy-ui kod değişikliği: rewrite hedefi
+>   `API_REWRITE_URL` (yoksa canlı adres — canlı birebir) + STAGING rozeti login sayfasında da · (3) CORS env'i eklenmedi · (4) betik yolu
+>   `backend/scripts/staging/seed_staging.sh` (repo deseni `backend/scripts/`) · (5) Elahe'nin LIFFY şifresi: tohum RASTGELE yazar
+>   (kimse bilmez), Suer **Admin › Users › Reset password** ile geçici şifre verir (pano) — tohumda tek gizli istem (Owner) ·
+>   (6) uygulama-içi dizi / aksiyon işçileri staging'de kapalı (`DISABLE_*`), convert outbox AÇIK · (7) LEENA rolü: Sales + kişi başı
+>   `sales.read=all` önerisi · (8) LIFFY organizer'ı: canlının kişisel olmayan alanları (ad · slug · ülke · saat dilimi · gönderici adı)
+>   betikte sabit (PRIVATE repo); telefon / adres / gönderici e-postası bilinçle BOŞ, SendGrid `''` (kolon NOT NULL) · (9) YON-14'ün
+>   LIFFY karşılığı: LIFFY staging canlı kopyası değil → "canlıdan yenileme" LIFFY'de = DB'yi boşaltıp tohumu yeniden koşmak (Sentez
+>   teyidi).
+> - **Olay (kayıt, K4 ihlali değil):** ikinci pano isteğinde panoda **canlı LEENA** bağlantısı vardı (`db` `leena_v401_db`, yazma yetkili
+>   kullanıcı). Hedef kapısı (`leena_staging_db` değil → DUR) bağlantı açılmadan durdurdu; pano boşaltıldı; Suer doğru URL'yi kopyaladı.
+>   Değer basılmadı. Ders: her pano ölçümünde DB adı kapısı bağlantıdan ÖNCE.
+> - **Bulgu (Sentez'e; kapsam dışı, kod değişmedi):** LEENA `GET /api/contracts` (liste ve `paged=1`) izin / kapsam denetimi YAPMAZ —
+>   yalnız `authMiddleware` (`routes/contracts.js:321,368`); ui2 menüsü `contracts.read` ile gizlenir ama API, oturumu olan her
+>   kullanıcıya kiracının tüm kontratlarını verir. Staging canlı kopyası olduğundan DENEME-0'da Elahe'nin oturumu gerçek kontrat
+>   verisine (3.932) erişebilir. Ayrıca LIFFY `POST /api/auth/register` herkese açık (yeni organizer açar; canlıda da aynı) — staging
+>   adresi de açık internette olacak.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** canlı liffy-api / liffy-ui Render env adları ve Settings (root · build · start — Suer okur) · LEENA
+>   staging `INVITE_ECHO` ve `LIFFY_HMAC_SECRET` varlığı (panel) · Render plan adları / fiyatları (onaylı ~15 $/ay ile uyum) · Render
+>   Shell `psql` sürümü (`\restrict` çıkarıldığı için bağımsız) · yeni staging DB'nin PG sürümü (şema PG 14 ve 17'de sınandı, 18
+>   sınanmadı) · staging servisleri (henüz yok) · **uçtan uca kanıt** (staging'de teklif → Send → Sign → LEENA staging kontratı;
+>   ikinci teslim).
+> - **Bilinçle yapılmayanlar:** push · Render servis açma · canlıya yazma · LEENA kod değişikliği · LIFFY `server.js` açılış log satırı
+>   (gerek yok) · CORS env'i · LEENA staging'deki `[TEST]` expo'yu yayından kaldırma (Elahe'nin listesinde görünür; kılavuz "yalnız
+>   DENEME 2026" der — 🔶 Sentez) · liffyv1 `LIFFY_CURRENT_STATE.md` (izlenmeyen, başkasının dosyası) · KAPSAM DIŞI: canlı hesap · Zoho ·
+>   ödeme / gider · UI cila · P4 kapanış işleri · LIFFY worker.
+> - **Teslim (Suer, K1 — teslim metnindeki SUER BLOĞU):** push (liffyv1 · liffy-ui · ell-docs) → Render: `liffy-staging-db` →
+>   `liffy-api-staging` (+ env) → `liffy-ui-staging` (+ env) → api Shell'de `seed_staging.sh` → LEENA staging: "DENEME 2026" + LIFFY'ye
+>   yayın + Elahe daveti (rol Sentez onayıyla) → adresler + "açtım" → CC ikinci teslim: uçtan uca kanıt + giriş adresleri bloğu +
+>   "LIFFY STAGING + DENEME-0 HAZIR" kaydı.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -5784,6 +5941,12 @@
 >   [defter:2026-11-04 PAKET 4 CANLIDA].
 >   **★SIRADAKİ (bu kazanır) = Suer push (LEENA `eliza-next` `905280f` · ell-docs) → canlı ui2 görsel kontrol (Admin › Migration
 >   batch #2 · göçmüş süzgeci · kontrat 4 = 342.00) → Sentez: SAPMA 35–37 + yeni TABAN çapası ∥ LIFFY staging kurulumu ∥ UI-1.**
+>   Sentez 4 Kas (Suer kararları) → ✅ **AYNEN** — [defter:2026-11-04 SENTEZ: DENEME-0 + LIFFY STAGING]; kütük OFS-07 · YON-14 · YON-15.
+>   **Sıra (YON-15, bu kazanır): P4-kapanış (ayrı pencere) → Paket 5 Raporlama → UI-1 ∥ LIFFY staging + DENEME-0.**
+>   LIFFY staging + DENEME-0 → ✅ **İLK TESLİM** (liffyv1 `7c7966b` · liffy-ui `b78231b`; TOHUM; 76/76) —
+>   [defter:2026-11-04 LIFFY STAGING + DENEME-0: İLK TESLİM]. **★SIRADAKİ (bu kazanır, bu hat) = Suer: push → Render servisleri + env →
+>   `seed_staging.sh` → LEENA staging "DENEME 2026" + yayın + Elahe daveti (rol Sentez onayıyla) → CC ikinci teslim (uçtan uca kanıt)
+>   → Cuma 6 Kas hazır → Suer kısa deneme → 9 Kas Elahe.**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
