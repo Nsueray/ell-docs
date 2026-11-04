@@ -5600,7 +5600,16 @@
 >   çözülmemiş olay 0 → push serbest (gündüz deploy: G43 20–60 sn 502 penceresi) · ✅ **push** (Suer, komut çıktısı): LEENA
 >   `0c90d0d..5c4c34b main` + `86002b1..9980d75 eliza-next` · ell-docs `7921ea2..ef8ffa2 main` · ✅ **deploy** (CC, 12:03 +03): canlı
 >   `/health` 200 · `/ui2/admin-migration.html` 200 (önce 404) · `/api/migration/batches` oturumsuz 401 (rota bağlı) ·
->   `/ui2/finance-contracts.html` 200 → canlı `5c4c34b`'yi sunuyor; 052 henüz yok.
+>   `/ui2/finance-contracts.html` 200 → canlı `5c4c34b`'yi sunuyor; 052 henüz yok · ✅ **canlı 052** (Suer, canlı Shell, çıktı
+>   sohbete yapıştırıldı; dry-run ve gerçek art arda koşuldu): `Target: database=leena_v401_db session_user=leena_app_2026
+>   current_user=leena_v401_db_user` · 5 NOTICE beklenenle BİREBİR (contracts 3 · line items 2 · payments 15 · expenses 0 · suppliers 0
+>   · payouts 8 · expos 23 · expo partners 0 · ledger entries 0 · sales agents 152 · ofis varsayılan hesabı 0) · `DRY-RUN OK: 1` (86 ms)
+>   → `COMMIT: 1` (31 ms) `052_zoho_migration` · CC salt okunur teyit: `schema_migrations` 54, son `052_zoho_migration` ·
+>   `migration_batches` 0 satır, `claude_readonly` SELECT var · 052 kolonları 20 · `expos_status_values_check` var · izin
+>   `migration.read` + `migration.write` · **TABAN kontrat 4 SR earned = 342.00**.
+>   - Laptop bağlantısı (ölçülmedi, belge): Render belgesi "eklenen kullanıcı yeni varsayılan olur; panelin bağlantı URL'leri
+>     varsayılan kullanıcının" + "özgün kullanıcının girişi kaldırılır" (render.com/docs/postgresql-credentials) → Faz A sonrası
+>     panelin External URL'si `leena_app_2026` taşımalı; yanlışsa bağlantı reddedilir, hiçbir şey yazılmaz (dry-run önce).
 > - **Teslim (Suer, canlı sırası; K1 — adım adım):** **export (YON-12 a+c, istisna YOK)** (DUR: export bitmeden push yok) → YON-06 iki
 >   ölçüm → LEENA `git push origin main eliza-next` + ell-docs push → deploy logu → `/health` 200 → canlı Shell
 >   `node scripts/migrate.js --dry-run` (beklenen NOTICE yukarıda + `DRY-RUN OK: 1`) → gerçek (`COMMIT: 1`) → Suer laptop: canlı DB
@@ -5717,8 +5726,8 @@
 >   [defter:2026-10-28 PAYEE EŞLEMESİ]; Suer `1=a` → payout 179/180.
 >   Paket 4 → ✅ **STAGING TAM PROVA** (batch #2; 16 / 16 ölçüt ✅; TABAN 342.00) — [defter:2026-10-28 PAKET 4 STAGING TAM PROVA].
 >   Paket 4 → Suer "go" (4 Kas) → ✅ **MAIN'E MERGE (`5c4c34b`)** — [defter:2026-11-04 PAKET 4: MAIN'E MERGE].
->   **★SIRADAKİ (bu kazanır) = ✅ export 11:21 · ✅ YON-06 · ✅ push + deploy (`5c4c34b`) → Suer: canlı Shell 052 (dry-run → gerçek) →
->   Suer laptop'tan göç (dry-run → apply) →
+>   **★SIRADAKİ (bu kazanır) = ✅ export 11:21 · ✅ YON-06 · ✅ push + deploy (`5c4c34b`) · ✅ canlı 052 (TABAN 342.00) → Suer
+>   laptop'tan göç (dry-run → apply) →
 >   CC canlı mutabakat (salt okunur) → "PAKET 4 CANLIDA" ∥ LIFFY staging kurulumu ∥ UI-1.**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
