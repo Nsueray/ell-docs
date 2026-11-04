@@ -5557,6 +5557,50 @@
 > - **Teslim (Suer, K1):** staging ui2 görsel kontrol (Admin › Migration batch #2 · kontrat listesi göçmüş süzgeci · kontrat 4 = 342.00)
 >   → "go" → canlı sırası (merge → export YON-12 a+c → main push → canlı Shell 052 → Suer laptop'tan göç + mutabakat).
 
+> ## ✅ 2026-11-04 — PAKET 4: MAIN'E MERGE (LEENA `5c4c34b`; export + push + canlı 052 + göç Suer'de, mutabakat CC salt okunur)
+>
+> - **Ne yapıldı:** Suer "go" yazdı (4 Kas) → `eliza-next` (`9980d75`) `main`'e `--no-ff` merge: **`5c4c34b`** (ebeveynler
+>   `0c90d0d` + `9980d75`). Ayrı worktree'de; ana çalışma kopyası (`eliza-next`, başkasının `.DS_Store`'u) dokunulmadı.
+> - **Commit:** LEENA `main` **`5c4c34b`** (origin/main'in 5 önünde: `1a475f9` · `54abcdb` · `86002b1` · `9980d75` · `5c4c34b`) ·
+>   `eliza-next` origin'in 1 önünde (`9980d75`) · ell-docs bu kayıt. **PUSH YOK** (Suer).
+> - **Ölçülenler (CC, 4 Kas; K4 — değer basılmadı):**
+>   - merge ağacı ↔ `9980d75` fark **0** · `npm test` **548/548** (29 suite; bu ağaçta 4 Kas'ta yeniden — acente aktifliği koşu
+>     gününe bağlı, SAPMA 30).
+>   - geri alma kanıtı: `git revert -m 1 5c4c34b` geçici worktree'de temiz; ağaç `0c90d0d` ile birebir.
+>   - canlıya göre değişen 36 dosya; çalışan kod `index.js` (+ `/api/migration`), `routes/{contracts,ledger,migration}.js`,
+>     `utils/{ledger,migration}.js`, `public/ui2/` (4 göç ekranı + `finance-contracts.html` + `nav.json`) + migration 052 +
+>     `scripts/zoho/*` + `tests/*`.
+>   - push → 052 arası canlı davranışı (kod okundu): `/api/migration/*` 503 NOT_MIGRATED (`routes/migration.js:27-32`) · Finance ›
+>     Contracts sayfalı, göç süzgeci/bayrağı kapalı (`routes/contracts.js` `listPaged` → `migrationReady`) · tedarikçi türü dört
+>     (`utils/ledger.js` `supplierTypes`; `employee` 052'den sonra).
+>   - canlı (salt okunur): `/health` 200 · `/ui2/admin-migration.html` 404 (P4 henüz canlıda yok) · `schema_migrations` 53, son
+>     `051_liffy_expo_publish` · `migration_batches` YOK · `expos_status_check` var · ofis varsayılan hesabı (aktif) 0 → canlıda ledger
+>     hareketi 0 beklenir.
+>   - canlı ön-plan (salt okunur; 052'siz bağlam; ham `2026-10-27`): **DUR 0** · kontrat 3.928 · fuar 16 eşleşen + 190 yeni ·
+>     tedarikçi 295 · temsilci (acente) 12 (aktif 12) · payout 179 / 180 · gider 1.436 · bağsız gelir 368 · L4 (plan) 1.485 · ledger 0
+>     → 28 Eki ön-planı ve staging sayaçlarıyla aynı.
+>   - canlı 052 beklenen NOTICE (sayılar 4 Kas; push → koşu arasında canlı girişle değişebilir): `052: expos status check widened
+>     (+cancelled)` · `052: existing rows untouched … — contracts 3 · line items 2 · payments 15 · expenses 0 · suppliers 0 · payouts 8 ·
+>     expos 23 · expo partners 0 · ledger entries 0` · `052: sales agents 152 untouched …` · `052: office default accounts (active) 0 …`
+>     · `052: triggers rebuilt …` + `DRY-RUN OK: 1 migration(s)` (`052_zoho_migration`).
+>   - salt-okunur kullanıcı: `pg_default_acl`'de `leena_v401_db_user`'ın açtığı tablolara `claude_readonly` SELECT var → 052'nin
+>     açacağı `migration_batches` okunabilir → canlı mutabakat CC'de salt okunur yapılabilir.
+> - **SAPMA (en kilitli hükme göre; 27–28 Eki'nin 34 maddesine ek):** (35) canlı mutabakat (`reconcile.js`, BEGIN READ ONLY) CC'de
+>   `RENDER_DATABASE_READONLY_URL` ile — Suer yalnız göç komutunu koşar (K3; "CC canlıya yazmaz" korunur; rapor CC commit'i) ·
+>   (36) canlı göçte `--apply`'dan önce `--dry-run` (tam yazım + ROLLBACK; sayılar beklenenle karşılaştırılınca apply) — batch no 1'i
+>   tüketir, canlı batch büyük olasılıkla #2 (staging emsali; ekrana basılan numara geçerli).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging görsel kontrolün ayrıntısı (Suer yalnız "go" yazdı; "go" staging kabulü sayıldı) · Zoho'da
+>   27 Eki'den sonra girilen / değişen kayıtlar (göç ham `2026-10-27` anlık görüntüsünden; fark Zoho'da kalır, Paket 6 kesimine —
+>   GOC-04 "güncelleme YOK") · canlı export · push · canlı 052 · canlı göç.
+> - **Bilinçle yapılmayanlar:** push · canlı export / migration / göç · yeni Zoho çekimi (staging kanıtı bu ham veriyle) · "PAKET 4
+>   CANLIDA" kaydı (koşu + mutabakattan sonra).
+> - **Teslim (Suer, canlı sırası; K1 — adım adım):** **export (YON-12 a+c, istisna YOK)** (DUR: export bitmeden push yok) → YON-06 iki
+>   ölçüm → LEENA `git push origin main eliza-next` + ell-docs push → deploy logu → `/health` 200 → canlı Shell
+>   `node scripts/migrate.js --dry-run` (beklenen NOTICE yukarıda + `DRY-RUN OK: 1`) → gerçek (`COMMIT: 1`) → Suer laptop: canlı DB
+>   URL panoya → `EXPECTED_DB_NAME=leena_v401_db DATABASE_URL="$(pbpaste)" node scripts/zoho/migrate.js --dry-run` → `--apply`
+>   (batch no) → pano temizlenir → CC `reconcile.js --batch N --label live` (salt okunur) → fark ≠ 0 → Suer `rollback.js N` →
+>   "PAKET 4 CANLIDA" + kütük GOC + yeni TABAN çapası.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -5665,8 +5709,9 @@
 >   Paket 4 → ✅ **PAYEE EŞLEMESİ / GOC-06** (LEENA `86002b1`; 12 acente external_agency + 1 var olan temsilci; 548/548) —
 >   [defter:2026-10-28 PAYEE EŞLEMESİ]; Suer `1=a` → payout 179/180.
 >   Paket 4 → ✅ **STAGING TAM PROVA** (batch #2; 16 / 16 ölçüt ✅; TABAN 342.00) — [defter:2026-10-28 PAKET 4 STAGING TAM PROVA].
->   **★SIRADAKİ (bu kazanır) = Suer: staging ui2 görsel kontrol → "go" → canlı (merge → export YON-12 a+c → main push → canlı 052 →
->   Suer laptop'tan göç + mutabakat) ∥ LIFFY staging kurulumu ∥ UI-1.**
+>   Paket 4 → Suer "go" (4 Kas) → ✅ **MAIN'E MERGE (`5c4c34b`)** — [defter:2026-11-04 PAKET 4: MAIN'E MERGE].
+>   **★SIRADAKİ (bu kazanır) = Suer: export (YON-12 a+c) → `main` push → canlı Shell 052 → Suer laptop'tan göç (dry-run → apply) →
+>   CC canlı mutabakat (salt okunur) → "PAKET 4 CANLIDA" ∥ LIFFY staging kurulumu ∥ UI-1.**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
