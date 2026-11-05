@@ -6308,6 +6308,49 @@
 >   takip · gelen e-posta · dış kullanıcı duvarı (B2) · köprü sökme · LIFFY / liffy-ui değişikliği · canlı deploy · tasarım / cila ·
 >   LIFFY staging silme.
 
+> ## ✅ 2026-11-05 — P4-KAPANIŞ + B1-a: STAGING'DE — Suer ONAY 10/10 (B1-a KAPALI; teyit CC salt okuma)
+>
+> - **Ne yapıldı:** Suer push etti (LEENA `eliza-next` · ell-docs) ve staging'de migration'ları koştu. Dry-run `DRY-RUN OK: 5` → apply
+>   `COMMIT: 5` (053–057). Çıktıda `Target database=leena_staging_db`, `054 matched 452` ve `056 +227 / +204` görüldü (Suer).
+>   Ekran turu **10 / 10 ONAY** (Suer, 15:03). Ardından CC salt-okunur teyidi yaptı. Kod değişikliği YOK.
+> - **Commit:** ell-docs bu kayıt (defter). **PUSH YOK** (Suer). Push edilenler (CC `git fetch` ile ölçtü):
+>   - origin/eliza-next = **`222ac41`**
+>   - ell-docs origin/main = **`df050f6`**
+> - **Ölçülenler — HTTP (staging, tokensız):**
+>   - 200 dönenler: `/health` · `/ui2/nav.json` · `admin-catalog.html` · `sales-customers.html` · `finance-agents.html`
+>   - 401 dönenler: `/api/catalog/products` · `/api/customers` · `/api/sales-agents/1` · `/api/ledger/summary` · `/api/contracts`
+>   - **nav.json:** staging'deki dosyanın sha256'sı `222ac41`'deki dosyayla bayt bayt AYNI (`86d2c6ef…`). Suer ekranda Agents sekmesini
+>     gördü. → **Staging `eliza-next`'i izliyor: TEYİT** (P4-KAPANIŞ kaydının ÖLÇÜLMEDİ maddesi kapandı).
+> - **Ölçülenler — staging DB** (pano · `leena_staging_db` · PG 17.11 · `BEGIN READ ONLY`):
+>   - `schema_migrations` **59** kayıt, son **057_customers**; 053–057 aynı anda uygulandı (11:50 UTC).
+>   - **TABAN** kontrat 4 SR earned = **342.00** ✅
+>   - **TABAN-2** AF489555 (staging id 6483) SR earned SLICE_CTES ile ölçüldü → LEENA `CLAUDE.md` değerine **EŞİT** ✅. Suer de ekranda
+>     aynı değeri gördü: BASE × %3, ratio 1.0. Tutar burada yazılmaz (GOC-07).
+>   - **ledger_entries 1.304**, bunun **1.300**'ü göç batch'li — P4-KAPANIŞ öncesi ölçümle aynı, değişmedi. Suer'in bağlama denemesi
+>     (MAD gider × EUR hesap) "Bound 0 · skipped (currency ≠ EUR) 1" verdi: LED-11 doğru davrandı, hareket doğmadı.
+>   - Göç gideri: hesap etiketli 24 · hesapsız 1.412.
+>   - payments / commission_payouts trigger'ları **4** (LED-22 ✅).
+>   - "Office question" notu taşıyan kontrat **0** (önce 452 — OFS-07 ✅).
+>   - Katalog: **227** ürün · **204** fiyat · **24** fiyatsız · **4** RF ✅
+>   - Müşteri: firma 1 · kişi 1 (Suer'in tur maddesi 9) · `customer_company_id` dolu kontrat 0.
+>   - Kayıt defteri **25** · Sales şablonunda `sales.write` = own · `catalog.write` hiçbir şablonda yok (0).
+>   - Kontrat 3.933 (batch #2: 3.928) — değişmedi.
+> - **Suer notları:**
+>   1. Madde 1 (bağlama): MAD gider EUR hesaba bağlanamadı → doğru davranış (LED-11). 1.300 kontrolü ekranda yapılmadı; CC DB'de ölçtü
+>      (yukarıda).
+>   2. Madde 5 (TABAN-2): değer ekranda doğru. Ancak `finance-contract.html` Line items tablosunda **indirim % ve satır toplamı sütunu YOK**.
+>      Ekranda 12 × 410 + 350 = 5270 görünüyor, revenue 4532 — fark ekranda açıklanmıyor.
+>      → **UI kuyruğu (Prompt 1b, teklif düzenleyiciyle birlikte):** kontrat detayına indirim % + satır toplamı (D2: sunucudan gelir,
+>      istemci hesaplamaz).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:**
+>   - Staging'de Elahe hesabı / daveti (B1b'ye kaldı).
+>   - Canlıya hiçbir şey gitmedi (YON-16): canlıda 053–057 YOK, canlı DB bu turda okunmadı.
+>   - Ekran turunun ekran görüntüleri (istenmedi — YON-16).
+> - **Bilinçle yapılmayanlar:**
+>   - Prompt 1b başlatılmadı — Sentez 🔶 cevapları ayrı direktifle gelecek.
+>   - Staging'deki tur firması / kişisi silinmedi (tazelemede gider — YON-14).
+>   - `leena/CLAUDE.md` + `leena/todo.md` dokunulmadı.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -6472,6 +6515,10 @@
 >   **★SIRADAKİ (bu kazanır) = Suer: tek push bloğu (LEENA `eliza-next` + ell-docs push → staging migrate 053–057) + staging ekran turu
 >   (ONAY / İTİRAZ) → CC push sonrası salt-okunur teyit kaydı → Prompt 1b (B1b: teklif → send → sign → çevirme → kuyruk + Elahe kabul turu)
 >   → Prompt 2 (B2 + B3) → Prompt 3 (Paket 5) → kesim provası ×2 → kesim.** Canlı `main` DONUK (`5c4c34b`, YON-16).
+>   5 Kas: P4-KAPANIŞ + B1-a → ✅ **STAGING'DE, Suer ONAY 10/10 — B1-a KAPALI** — [defter:2026-11-05 P4-KAPANIŞ + B1-a: STAGING'DE].
+>   **★SIRADAKİ (bu kazanır) = Sentez 🔶 cevapları (ayrı direktif; 6 soru — [defter:2026-11-05 B1-a: KATALOG + MÜŞTERİ]) → Prompt 1b
+>   (B1b: teklif → send → sign → çevirme → kuyruk + Elahe kabul turu + UI kuyruğu: kontrat detayında indirim % + satır toplamı) →
+>   Prompt 2 (B2 + B3) → Prompt 3 (Paket 5) → kesim provası ×2 → kesim.** Prompt 1b direktifsiz BAŞLATILMAZ. Canlı DONUK.
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
