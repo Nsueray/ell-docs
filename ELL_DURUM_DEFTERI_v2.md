@@ -6088,6 +6088,78 @@
 >   - Kuruş kuralına ID verilmesi: ancak ölçüm > 0 çıkarsa.
 >   - OFS-07 ve LED-12 metinleri değiştirilmedi: 🔶 2–3.
 
+> ## ✅ 2026-11-05 — SENTEZ: 4 SORU HÜKMÜ (P4 kapanış, 5 Kas) — AYNEN (KB @ 0b9a640)
+>
+> - **Kaynak:** Suer'in 5 Kas promptu ("YALNIZ DEFTER/KÜTÜK") içindeki Sentez metni, AYNEN. Bu blok, bir önceki kayıttaki
+>   [defter:2026-11-05 SENTEZ: PAKET 4 KAPANIŞ HÜKÜMLERİ] 4 🔶 sorusunun cevabıdır.
+>
+>   ```
+>   SENTEZ → ORCHESTRATOR — 4 SORU HÜKMÜ (5 Kas). KB @ 0b9a640. Numaralar
+>   (GOC-07, KAT-07) kalsın.
+>
+>   1. Evet, kastım 8 Eki Ç2 ("ödeme değiştirilemez"). Trigger: payments +
+>      commission_payouts, ikisi. expenses: uygulama kodu kayıtlı (taslak
+>      olmayan) gider satırını UPDATE ediyor mu ÖLÇ; etmiyorsa trigger'a
+>      dahil, ediyorsa dışarıda + not. Düzeltme yolu her üçünde storno.
+>      Kütüğe yeni LED numarası (CC verir), Ç2'ye atıf.
+>   2. (a) KABUL: LED-12'ye istisna "migration_batch_id dolu satırlar
+>      hariç — hesap yalnız raporlama etiketi". (b) KABUL: GOC-05 göç
+>      kodunu da kapsar — batch satırları (ilk koşu ve fark koşusu) hiçbir
+>      koşulda ledger hareketi üretmez; ofis varsayılan hesabı varsa bile.
+>      Staging'deki 1.300 hareket bu düzeltmeyle yeniden üretilemez olmalı
+>      (test).
+>   3. KABUL: "ofis-sorusu" sayacı kapatma P4-KAPANIŞ'a dahil (Suer kararı
+>      b: DZ/IQ Turkey'de kalır; 452 kontratın bayrağı kalkar, OFS-07'ye
+>      "kapandı").
+>   4. KAPI-2; bu blokla onaylı, ara soru yok.
+>   Not: leena/CLAUDE.md + leena/todo.md oturum dışı değişiklikleri —
+>   kaynağı bilinmiyor; DOKUNMA, commit'leme, stash'leme; ayrı ölçüm.
+>   "devam" HENÜZ YOK: P4-KAPANIŞ uygulaması ve hedef ortamı ayrı
+>   direktifle gelecek; bu chat'te başlatma.
+>   ```
+>
+> - **Ne yapıldı:** metin deftere AYNEN. Kütük karşılıkları bu commit'te:
+>   - **LED-22** (yeni): ödeme / payout DB trigger'ı, Ç2'ye atıf. ID'yi CC tahsis etti. `expenses` ölçüm sonucuna göre DIŞARIDA + not.
+>   - LED-12 istisnası (hüküm 2a) · GOC-05 kapsamı ve test şartı (2b) · OFS-07: kapatma P4-KAPANIŞ'a dahil (3).
+>   - YON-15 notu: P4-KAPANIŞ = KAPI-2 (4).
+>   - AÇIK satırına hüküm notu ("LED-02" → LED-22) · GOC-07 / KAT-07: "numara kalır" · GOC grup başlığına özet.
+>   - ★ satırı güncellendi.
+> - **Commit:** ell-docs bu kayıt (defter + kütük, tek commit). **PUSH YOK** (Suer).
+> - **Ölçülenler (yalnız kod okuma, DB yok; LEENA `eliza-next` `905280f`):**
+>   - **Kayıtlı gideri UPDATE eden uygulama kodu VAR: tek yol.**
+>     - Yol: `bindExpenses` (`utils/migration.js:137-140`) → `UPDATE expenses SET account_id`.
+>     - Koşul: `migration_batch_id IS NOT NULL AND account_id IS NULL`, para birimi hesapla eşit.
+>     - Uç: `POST /api/migration/bind-expenses` (`routes/migration.js:155`).
+>     - Başka UPDATE yok. `routes/ledger.js:223`'teki dinamik `UPDATE ${table}` yalnız referans tablolarına gidiyor
+>       (`expense_categories` / `expense_types` / `income_categories`, `:213`).
+>     → Hüküm 1 gereği **`expenses` LED-22 trigger'ının DIŞINDA kalır, notlu.**
+>   - Giderin kendi DB koruyucusu zaten var. 039'daki `trg_expenses_immutable`, 052'de satır düzeyine çevrildi:
+>     - UPDATE: `ell_guard_expense_update` (052:233-245) yalnız tek UPDATE'e izin verir: göç gideri, `account_id` NULL → değer,
+>       diğer bütün alanlar aynı.
+>     - DELETE: `ell_guard_migration_delete` yalnız test bayrağıyla ya da GOC-04 geri almasıyla.
+>     - TRUNCATE: ret.
+>   - **Bağlama bugün ledger hareketi üretiyor (GOC-05 ihlali, kodda):** `bindExpenses` bağlanan her gidere `ledger_entries` 'out' /
+>     'expense' satırı yazıyor (`utils/migration.js:141-145`). → P4-KAPANIŞ'ın ilk ölçüm sorusu kod düzeyinde cevaplandı:
+>     **EVET, üretiyor.**
+>   - Ödeme bağlama yolu kodda YOK. `routes/migration.js`'in yazma uçları yalnız `batches/:id/rollback` (`:63`) · `sd-assign` (`:111`)
+>     · `bind-expenses` (`:155`).
+>   - `payments` / `commission_payouts`'u UPDATE / DELETE eden uygulama kodu **0**.
+>     - Testlerde 2 satır: `tests/test_zoho_migration.js:527` (geri alma bayraklarıyla) ve `:610` (bayraksız `DELETE FROM payments`).
+>       → `:610` LED-22 trigger'ında test kurulumuna uyarlanmalı (P4-KAPANIŞ test işi).
+>     - GOC-04 geri alması bu iki tabloyu batch'le siliyor (`utils/migration.js:21` `BATCH_TABLES`, `:73`) → trigger GOC-04
+>       istisnasını korumalı.
+>   - LED-22 numarası iki dosyada da kullanılmamıştı → çakışma yok.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:**
+>   - Canlı ve staging DB'nin hiçbiri: trigger'ların DB'deki varlığı · bağlanmış göç gideri sayısı · `migration_batch_id`'li
+>     `ledger_entries` sayısı (canlıda 4 Kas'ta 0'dı; YON-01).
+>   - 452 kontratın "ofis-sorusu" bayrağının hangi kolon olduğu (kod okunmadı).
+>   - Göç kodunun (`migrate.js` / `apply.js`) ofis varsayılan hesabıyla hareket yazdığı satırlar. Bu turda yalnız bağlama yolu
+>     okundu; staging'deki 1.300 hareket bu yolun dolaylı kanıtı.
+> - **Bilinçle yapılmayanlar:**
+>   - P4-KAPANIŞ başlatılmadı ("devam" yok; Sentez).
+>   - Trigger, test ve kod yazılmadı.
+>   - `leena/CLAUDE.md` + `leena/todo.md`: dokunulmadı, commit'lenmedi, stash'lenmedi (Sentez notu; ayrı ölçüm).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -6231,6 +6303,20 @@
 >   (6) defter / kütük.
 >   **Suer işleri (ekranlardan, paket değil):** SD toplu atama (801) · hesap açma, yalnız **GOC-05 düzeltmesinden SONRA**.
 >   Sıra (YON-15, değişmedi): P4-kapanış → YET-KAPSAM → Paket 5 → UI-1 ∥ LIFFY staging + DENEME-0 (9 Kas Elahe).
+>   Sentez 5 Kas **4 SORU HÜKMÜ** → ✅ **AYNEN** — [defter:2026-11-05 SENTEZ: 4 SORU HÜKMÜ]. Kütük: LED-22 · LED-12 istisnası ·
+>   GOC-05 kapsamı · OFS-07 · YON-15 notu (KAPI-2) · GOC-07 / KAT-07 numaraları kalır.
+>   **★SIRADAKİ (bu kazanır, P4 hattı) = P4-KAPANIŞ dilimi, KAPI-2 (5 Kas bloğuyla onaylı).** "devam" ve hedef ortam AYRI Sentez
+>   direktifiyle gelir; o gelmeden BAŞLATILMAZ. İçerik:
+>   (1) GOC-05: bağlama yalnız etiket olur. Bugün `ledger_entries` yazıyor (kod okumayla ölçüldü). Göç kodu da (ilk koşu ve fark
+>   koşusu) hareket üretmez. Test: staging'deki 1.300 hareket yeniden üretilemez ·
+>   (2) TABAN-2 (GOC-07) ·
+>   (3) kuruş ölçümü; > 0 ise kural ·
+>   (4) LED-22 trigger: `payments` + `commission_payouts`; `expenses` dışarıda; GOC-04 istisnası korunur; test `:610` uyarlanır ·
+>   (5) OFS-07 "ofis-sorusu" kapatma (452 kontrat) ·
+>   (6) ui2 temsilci + tedarikçi detayı ·
+>   (7) defter / kütük.
+>   Suer işleri değişmedi: SD toplu atama (801) · hesap açma GOC-05 düzeltmesinden SONRA. `leena/CLAUDE.md` + `leena/todo.md`
+>   dokunulmaz; ayrı ölçüm (Sentez).
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
