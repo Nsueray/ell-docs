@@ -5974,6 +5974,120 @@
 > - **Bilinçle yapılmayanlar:** kanıt quote'u / kontratı silinmedi (staging; Elahe listesinde "DENEME-0 KANIT (CC)" adıyla görünür,
 >   tazelemede gider — YON-14) · fuar adı "Deneme 2026" düzeltilmedi (kılavuz ekrana uyduruldu) · Elahe hesapları (Suer → 9 Kas).
 
+> ## ✅ 2026-11-05 — SENTEZ: PAKET 4 KAPANIŞ HÜKÜMLERİ (4 Kas; kayıp blok, 5 Kas yeniden gönderim) — AYNEN (KB @ 1e0d6a8)
+>
+> - **Kaynak:** Suer'in 5 Kas promptu ("YALNIZ DEFTER/KÜTÜK") içindeki Sentez metni, AYNEN. Blok 4 Kas'ta yazılmış, deftere
+>   girmemişti (kayıp blok). İçindeki 27 Eki **GOC-05** hükmü de defterde YOKTU (28 Eki kaydı: "GOC-05 kütükte YOK — BULAMADIM")
+>   → şimdi girer. PAKET 4 KABUL · KAPI-2 geçti · SAPMA 1–37 KABUL.
+>
+>   ```
+>   SENTEZ → ORCHESTRATOR — PAKET 4 KAPANIŞ HÜKÜMLERİ (4 Kas). KB @ 1e0d6a8 okundu.
+>   PAKET 4 KABUL. KAPI-2 geçti, 16/16, TABAN 342.00, K4/YON-12 temiz.
+>
+>   1) SAPMA 1–37: HEPSİ KABUL. Notlar:
+>   - (3) payments'ta DB-düzeyi değişmezlik yok → kütüğe "AÇIK: LED-02 DB
+>     düzeyinde zorlanmıyor"; P4 kapanış diliminde trigger (test kurulumu
+>     bayrakla siler).
+>   - (9) GOC-06 ile aşıldı; kalan 1 alıcısız satır expenses'ta kalır, not.
+>   - (17/18) azaltma katlama: Zoho komisyon tabanıyla 367/564 ölçümü
+>     gerekçe yeterli; kütüğe KAT altına "azaltma satırı kuralı".
+>   - (29) GOC-03 "öneri" hükmünü GOC-06 geçer — doğru.
+>   - (30) acente aktifliği koşu gününe bağlı → kütüğe not, değişmez.
+>   - (35/36) emsal: canlı mutabakat CC salt-okunur; apply'dan önce
+>     dry-run. YON-12'ye ek satır.
+>
+>   2) GOC-05 — KAYIP HÜKÜM (27 Eki bloğum deftere girmemiş; staging'de
+>   1.300 ledger hareketi bunun kanıtı). ŞİMDİ GİRER:
+>   GÖÇ VERİSİ LEDGER'A GİRMEZ. Canlıda hesap yok, 2019 öncesi sentetik,
+>   yöntem bilinmiyor → tarihsel banka bakiyesi kurulamaz. Hesap bakiyeleri
+>   kesim günü Suer'in gireceği açılış bakiyesiyle başlar (LED-14 ruhu).
+>   Sonuç: batch #2'deki ödeme/gider/payout KALICI olarak ledger
+>   hareketsiz. "Hesapsız gider / ödeme toplu bağlama" ekranı hesabı
+>   yalnız RAPORLAMA ETİKETİ olarak bağlar, ledger hareketi ÜRETMEZ
+>   (kod bunu şu an üretiyor mu ÖLÇ; üretiyorsa P4 kapanışında kapat —
+>   Suer hesap açmadan ÖNCE). Fuar P&L ve personel toplamı ledger'dan
+>   değil expenses/payments/payouts'tan okur.
+>   27 Eki'nin diğer maddeleri: §4 tam metin uygulanmış (16 ölçüt) ✓;
+>   "agent%+SR çakışma 8" ve "eşleşmemiş komisyon" sayaçları raporda ✓.
+>
+>   3) SAPMA 37 — YENİ TABAN ÇAPASI: ölçütü CC uygular, kontratı CC seçer
+>   (ben seçmem; deterministik): batch #2 · Active · transfer yok · L4
+>   farkı 0 · tek internal SR, oran > 0 · SD boş · EN AZ BİR RF kalemi
+>   VAR · en az bir kalemde indirim > 0 · ödemesi tam (sentetik değil) ·
+>   kontrat tarihi ≥ 2024-01-01 · bu kümede en küçük LEENA id.
+>   Değer: LEENA PRIVATE `CLAUDE.md`'ye (342.00'ın yanına) "TABAN-2:
+>   kontrat <id> SR earned = <tutar>"; ell-docs deftere yalnız "<id>,
+>   ölçüldü, değer LEENA CLAUDE.md". Kontrat 4 = 342.00 temizlik dilimine
+>   kadar İKİLİ çapa; temizlikte kontrat 4 silinir, TABAN-2 tek kalır.
+>
+>   4) NET > BRÜT KURUŞ (491.00/491.02): discount_amount kolonu YOK (D2;
+>   LIFFY quote'ları yüzdeyle üretir, sorun yalnız göçmüş kayıtta).
+>   Gerçek risk: Zoho ödemesi 491.02, LEENA toplam 491.00 → 0.02 fazla
+>   ödeme / ya da tersi 0.02 açık → tahsilat listeleri kirlenir. ÖNCE ÖLÇ
+>   (salt-okunur): batch #2 kontratlarında |bakiye| ∈ (0, 1.00) sayısı +
+>   işaret dağılımı. >0 ise P4 kapanışında LED kuralı: |bakiye| < 1.00
+>   → "kapalı" sayılır (collection/outstanding listelerinde görünmez,
+>   bakiye alanı olduğu gibi kalır — saklanan şey değişmez). Sayı 0 ise
+>   kural yazılmaz. 2019 SR %0: tarihsel gerçek, dokunulmaz.
+>
+>   5) SIRA: YON-15'te zaten kayıtlı (P4-kapanış → YET-KAPSAM → Paket 5 →
+>   UI-1 ∥ LIFFY staging + DENEME-0). P4-KAPANIŞ dilimi içeriği (tek
+>   oturum, KAPI-1): GOC-05 bağlama ekranı düzeltmesi · TABAN-2 · kuruş
+>   ölçümü (+kural) · LED-02 trigger · ui2 temsilci + tedarikçi detayı
+>   (GOC-06 kuyruğu) · defter/kütük.
+>   Suer işleri (ekranlardan, paket değil): SD toplu atama (801) ·
+>   hesap açma (bağlama GOC-05 düzeltmesinden SONRA).
+>   ```
+>
+> - **Ne yapıldı:** metin deftere AYNEN. Kütük karşılıkları bu commit'te:
+>   - **GOC-05** (yeni): göç verisi ledger'a girmez; hesap bağlama = raporlama etiketi.
+>   - **GOC-07** (yeni): TABAN-2 ölçütü, SAPMA 37. ID'yi CC tahsis etti.
+>   - **KAT-07** (yeni): azaltma satırı kuralı, SAPMA 17/18. ID'yi CC tahsis etti.
+>   - LED grubu: **AÇIK** satırı (SAPMA 3) ve numarasız **ADAY** kuruş kuralı (madde 4).
+>   - Notlar: GOC-03 (SAPMA 29) · GOC-06 (SAPMA 9 ve 30) · YON-12 ek satırı (SAPMA 35/36) · GOC grup başlığı (kapanış).
+>   - ★ bloğuna P4-KAPANIŞ dilimi içeriği ve Suer işleri eklendi.
+>   - Kod, ölçüm koşusu ve uygulama YOK; Suer "devam" deyince ayrı dilim.
+> - **Commit:** ell-docs bu kayıt (defter + kütük, tek commit). **PUSH YOK** (Suer).
+> - **Ölçülenler (yalnız kütük atfı için; salt okuma, kod yok):**
+>   - LEENA migration dosyalarındaki trigger'lar (`git grep`, `eliza-next` `905280f`), tabloya göre:
+>     - `ledger_entries` 4 · `expenses` 4 · `contract_line_items` 3
+>     - **`payments` 0 · `commission_payouts` 0**
+>     - Sonuç: SAPMA 3 (ödemede DB düzeyi koruyucu yok) dosya düzeyinde doğrulandı. Payout'ta da DB düzeyi koruyucu yok: ODE-03'ün
+>       "payout immutable" kuralı DB'de zorlanmıyor, aynı sınıf.
+>   - Kütükte LED-02 = para birimi tablosu (8 Eki **Ç4**). "Ödeme değiştirilemez" kuralı 8 Eki **Ç2**'dir; kütükte kendi ID'si YOK,
+>     yalnız TAH-01 / ODE-03'e atıfla geçer. → Sentez'in "LED-02" etiketi kütükteki LED-02'yle **uyuşmuyor** (🔶 1).
+>   - GOC-05 numarası kütükte boştu (hiç tahsis edilmemiş) → çakışma yok.
+>   - Sentez'in "staging'de 1.300 ledger hareketi" sayısı, 4 Kas canlı kaydındaki staging ↔ canlı farkıyla tutuyor:
+>     ödeme 1.028 + gider 24 + payout 138 + bağsız gelir 110 = **1.300**.
+>   - Kütükteki ilgili metinler:
+>     - OFS-07: "Sayacı kapatan kod değişikliği P4 kapanış penceresindedir". Bu kalem Sentez'in P4-KAPANIŞ listesinde YOK (🔶 3).
+>     - LED-12: "Ödemede `account_id` dolu ⇔ hareket var" (🔶 2).
+>     - GOC-03: "Hesap = ofis varsayılanı (LED-12)" (🔶 2).
+>     - YON-11: KAPI-2 = "mevcut davranış-kolon-trigger … para tablolarında mevcut satır" (🔶 4).
+> - **🔶 Sentez'e (CC; uygulama değil, 4 soru):**
+>   1. **"AÇIK: LED-02 …":** kastedilen ödeme değişmezliği (8 Eki Ç2) mi? Kütüğe Sentez'in yazdığı adla ve uyuşmazlık notuyla girdi;
+>      ID düzeltmesi Sentez'in kararı. Trigger kapsamına `commission_payouts` (ODE-03) da girecek mi?
+>   2. **GOC-05 ↔ LED-12 / GOC-03:**
+>      - (a) Bağlama ekranı göç ödemesine `account_id` yazıp hareket üretmezse, LED-12'nin "dolu ⇔ hareket" kuralı göç satırında
+>        bozulur. Etiket ayrı bir alanda mı tutulacak, yoksa LED-12'ye göç istisnası mı yazılacak?
+>      - (b) Göç kodu, ofis varsayılan hesabı varsa ledger hareketi yazıyor (staging'de 1.300 hareket bunun ölçümü). Suer hesap
+>        açtıktan sonra koşulacak bir Paket 6 fark koşusu da hareket üretir. GOC-05 düzeltmesi göç kodunu da kapsayacak mı?
+>   3. **OFS-07 sayaç kodu:** P4-KAPANIŞ içerik listesinde yok. Bu dilime mi dahil, ayrı iş mi?
+>   4. **Kapı:** P4-KAPANIŞ "KAPI-1" diye yazılmış. YON-11'e göre para tablosuna (`payments`) trigger eklemek KAPI-2 sınıfına
+>      giriyor. Hangisi geçerli?
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:**
+>   - Bağlama ekranının bugün ledger hareketi üretip üretmediği (GOC-05; P4-KAPANIŞ'ta ölçülecek).
+>   - Kuruş sayısı: batch #2'de |bakiye| ∈ (0, 1.00) olan kontrat sayısı ve işaret dağılımı.
+>   - TABAN-2 adayı (kontrat seçilmedi).
+>   - Canlı ve staging DB'de `payments` trigger'ı. Yalnız migration dosyaları okundu.
+>   - 27 Eki Sentez bloğunun özgün metni. Blok kayıp; elde yalnız bu 4 Kas özeti var.
+> - **Bilinçle yapılmayanlar:**
+>   - Kod, ölçüm koşusu ve TABAN-2 seçimi.
+>   - LEENA `CLAUDE.md`: TABAN-2 değeri P4-KAPANIŞ'ta yazılacak.
+>   - LED-02 etiketinin düzeltilmesi: karar Sentez'de.
+>   - Kuruş kuralına ID verilmesi: ancak ölçüm > 0 çıkarsa.
+>   - OFS-07 ve LED-12 metinleri değiştirilmedi: 🔶 2–3.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -6105,6 +6219,18 @@
 >   5 Kas: ✅ **HAZIR** — uçtan uca kanıt `ATR-100000` → convert acked → LEENA staging kontrat 7862 (400.00 EUR, TABAN 342.00) —
 >   [defter:2026-11-05 LIFFY STAGING + DENEME-0: HAZIR]. **★SIRADAKİ (bu kazanır, bu hat) = Suer kısa deneme (isteğe bağlı) →
 >   PAZARTESİ 9 Kas Suer bloğu (betik + SALES_EMAIL → Reset Password → LEENA daveti + override) → CC davet akışı ölçümü → Elahe.**
+>   Sentez 4 Kas **PAKET 4 KAPANIŞ HÜKÜMLERİ** (kayıp blok; 5 Kas'ta yeniden gönderildi) → ✅ **AYNEN** —
+>   [defter:2026-11-05 SENTEZ: PAKET 4 KAPANIŞ HÜKÜMLERİ]. PAKET 4 KABUL · SAPMA 1–37 KABUL. Kütük: GOC-05 · GOC-07 · KAT-07 ·
+>   LED AÇIK + ADAY · YON-12 eki. 4 🔶 soru Sentez'de.
+>   **★SIRADAKİ (bu kazanır, P4 hattı) = P4-KAPANIŞ dilimi.** Tek oturum; Sentez "KAPI-1" dedi (🔶 4); Suer "devam" deyince başlar:
+>   (1) GOC-05 bağlama ekranı düzeltmesi: önce ÖLÇ, ledger hareketi üretiyor mu; üretiyorsa kapat ·
+>   (2) TABAN-2: CC, GOC-07 ölçütüyle seçer; değer LEENA `CLAUDE.md`'ye, deftere yalnız id ·
+>   (3) kuruş ölçümü (|bakiye| ∈ (0, 1.00) sayısı + işaret); > 0 ise LED kuralı ·
+>   (4) "LED-02" trigger (`payments` değişmezliği; test kurulumu bayrakla siler) ·
+>   (5) ui2 temsilci + tedarikçi detayı (GOC-06 kuyruğu) ·
+>   (6) defter / kütük.
+>   **Suer işleri (ekranlardan, paket değil):** SD toplu atama (801) · hesap açma, yalnız **GOC-05 düzeltmesinden SONRA**.
+>   Sıra (YON-15, değişmedi): P4-kapanış → YET-KAPSAM → Paket 5 → UI-1 ∥ LIFFY staging + DENEME-0 (9 Kas Elahe).
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
