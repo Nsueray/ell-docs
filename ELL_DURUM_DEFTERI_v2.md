@@ -5906,6 +5906,41 @@
 >   (DENEME 2026 + yayın · `[TEST]` yayından kaldırma · Elahe daveti Sales + Turkey + `sales.read=all`) → LIFFY (Reset Password) →
 >   adresler + "açtım" → CC ikinci teslim: uçtan uca kanıt + register 403 + davet akışı (staging) + "HAZIR" kaydı.
 
+> ## ✅ 2026-11-05 — LIFFY STAGING + DENEME-0: SERVİSLER AÇIK · Elahe hesapları 9 Kas'a · tohum SALES_EMAIL'siz (liffyv1 `10047ee`)
+>
+> - **Suer durumu (bildirim, 5 Kas):** `liffy-staging-db` açıldı ($6, 1 GB) · `liffy-api-staging` Live (9 env; logda
+>   "self-registration OFF" + "[LEENA] integration enabled"; açılışta 1 geçici "Database connection error" satırı) · `liffy-ui-staging`
+>   Live (5 env, build env ile) · **canlı register 403 ölçüldü** (Suer).
+> - **Suer kararı (5 Kas):** Elahe'nin hesapları (LIFFY kullanıcısı + LEENA daveti + override) **Pazartesi 9 Kas'a ertelendi**; bugün
+>   tohum yalnız Owner ile. Pazartesi aynı betik `SALES_EMAIL` ile tekrar koşar, yalnız eksik kullanıcıyı ekler.
+> - **Ne yapıldı:** `seed_staging.sh` `SALES_EMAIL` olmadan **koşmuyordu** (`seed_staging.sh:55` FATAL; `seed_staging.js:89` de iki
+>   adres istiyordu) → düzeltildi: yalnız `OWNER_EMAIL` zorunlu; `SALES_EMAIL` boşsa satış kullanıcısı atlanır ("sales skipped");
+>   verilirse geçerli ve Owner'dan farklı olmalı (eskisi gibi). Sonraki koşu `SALES_EMAIL` ile yalnız o kullanıcıyı ekler: Owner var →
+>   şifre sorusu yok, Owner hash'i değişmez, diğer satırlar / katalog +0. Test S2/S3 yeni sözleşmeye göre; yeni S7 = Pazartesi koşusu;
+>   eski S7/S8 → S8/S9 (eski S2/S3 iki adresi zorunlu sayıyordu — davranış Suer kararıyla değişti, assertion buna göre).
+> - **Commit:** liffyv1 `main` **`10047ee`** (origin'in 1 önünde; `1a2ac9d` origin'de — Suer push etti, ölçüldü: `git status --branch`
+>   commit öncesi "up to date") · ell-docs bu kayıt (`97a54ce` origin'de, ölçüldü). **PUSH YOK** (Suer). ⚠️ liffyv1 push = canlı
+>   `liffy-api` deploy'u da tetikler; değişiklik yalnız `backend/scripts/staging/` + test (canlı yolda kod değişmedi).
+> - **Ölçülenler:**
+>   - **Staging register 403 ✅:** `POST https://liffy-api-staging…/api/auth/register` `{}` → **403 `REGISTRATION_DISABLED`**; aynı istek
+>     `liffy-ui-staging` `/api` rewrite'ı üzerinden → **403** aynı gövde. `/api/health` 200.
+>   - **liffy-ui-staging → api-staging (YON-13 notu kanıtı):** var olmayan e-postayla login denemesi hem UI rewrite'ı hem api-staging
+>     doğrudan → **500** (tohum öncesi boş DB: `users` yok → `routes/auth.js:179` catch). Tablosu olan DB'de aynı istek 401 döner
+>     (`auth.js:142`) → rewrite boş staging DB'li API'ye gidiyor. Canlıya istek atılmadı. `/login` HTML'inde `STAGING` etiketi 1 kez
+>     (genel sayfa etiketi).
+>   - **Canlı register:** Suer 403 ölçtü → canlıda `REGISTRATION_ENABLED` `true` DEĞİL (bayrak açık olsaydı boş gövde 400 dönerdi,
+>     `routes/auth.js:45`) — 5 Kas ÖLÇÜLMEDİ maddesi bununla kapanır.
+>   - **Açılış "Database connection error":** `db.js:32-39` açılışta tek bağlantı denemesi (tablo sorgusu değil) → o an bağlantı
+>     kurulamamış; sebebi ölçülmedi. Şimdi `/api/health` 200 (SELECT 1). Convert outbox tohum sonrası yeniden başlatma İSTEMEZ:
+>     hazırlık yalnız `true` önbelleklenir, `false` her turda yeniden bakılır (`services/convertOutbox.js:30-36`).
+>   - **Pazartesi yolu neden betik:** LIFFY Admin › Users kullanıcı açar ama **ofis atamaz** (`routes/userManagement.js:161` INSERT'te
+>     `office_id` yok; PATCH izinli alanlarda da yok `:218`) — ofis ayrı uçta (`routes/quotes.js:138`, liffy-ui Products & Pricing).
+>     Betik satış kullanıcısını doğrudan ofis TR ile açar → Pazartesi = betik + Admin › Users › Reset Password.
+>   - **Testler:** liffyv1 `npm test` **82/82** (katalog 26 + sender 34 + staging tohumu 22; iki koşu, ikincisi çıkış 0).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging tohumu (Suer koşar) · LEENA staging DENEME 2026 + yayın + `[TEST]` yayından kaldırma ·
+>   Sync · uçtan uca kanıt (Suer adımlarından sonra CC) · staging davet akışı (Pazartesi, Elahe) · açılış bağlantı hatasının sebebi.
+> - **Bilinçle yapılmayanlar:** Elahe LIFFY kullanıcısı + LEENA daveti + override (Suer kararı → 9 Kas) · push · liffy-ui (değişiklik yok).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -6030,6 +6065,10 @@
 >   **Sıra (YON-15 notu, bu kazanır): P4-kapanış → YET-KAPSAM (KAPI-2, küçük) → Paket 5 Raporlama → UI-1 ∥ LIFFY staging + DENEME-0.**
 >   **★SIRADAKİ (bu kazanır, bu hat) = Suer: liffyv1 push → güncellenmiş SUER BLOĞU (Render + tohum + LEENA staging + `[TEST]`
 >   yayından kaldırma + davet) → CC ikinci teslim (uçtan uca kanıt + register 403 + davet akışı) → Cuma 6 Kas hazır.**
+>   5 Kas: servisler açık (Suer) · staging register 403 ✅ · Elahe hesapları 9 Kas'a (Suer) · liffyv1 `10047ee` (tohum SALES_EMAIL'siz;
+>   82/82) — [defter:2026-11-05 LIFFY STAGING + DENEME-0: SERVİSLER AÇIK]. **★SIRADAKİ (bu kazanır, bu hat) = Suer BUGÜN: push → tohum
+>   (Owner) → LEENA staging DENEME 2026 + yayın + `[TEST]` kaldır → LIFFY Sync → CC uçtan uca kanıt → Cuma 6 Kas hazır · PAZARTESİ
+>   9 Kas: betik + SALES_EMAIL → Reset Password → LEENA daveti + override → Elahe.**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
