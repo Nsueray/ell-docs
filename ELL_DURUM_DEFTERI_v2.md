@@ -5941,6 +5941,39 @@
 >   Sync · uçtan uca kanıt (Suer adımlarından sonra CC) · staging davet akışı (Pazartesi, Elahe) · açılış bağlantı hatasının sebebi.
 > - **Bilinçle yapılmayanlar:** Elahe LIFFY kullanıcısı + LEENA daveti + override (Suer kararı → 9 Kas) · push · liffy-ui (değişiklik yok).
 
+> ## ✅ 2026-11-05 — LIFFY STAGING + DENEME-0: HAZIR — uçtan uca kanıt ✅ (Elahe hesapları 9 Kas, Suer kararı)
+>
+> - **Ne yapıldı:** Suer bugünkü bloğu koştu: push (liffyv1 `10047ee` · ell-docs `8287f28` — origin'de, ölçüldü `git fetch` +
+>   `git status --branch`) → tohum (Owner, `SALES_EMAIL`'siz) → LEENA staging "Deneme 2026" + Publish to LIFFY + `[TEST]` Unpublish →
+>   LIFFY Sync. CC uçtan uca kanıtı staging API'si üzerinden koştu (Owner şifresi panodan; değer / token basılmadı) ve LEENA staging
+>   DB'sini salt okudu (URL panodan; bağlanmadan önce DB adı kapısı `leena_staging_db`; `BEGIN READ ONLY` +
+>   `default_transaction_read_only`). İşletim Notu §1 + §2 güncellendi (LIFFY staging VAR; `REGISTRATION_ENABLED` · `API_REWRITE_URL` ·
+>   `NEXT_PUBLIC_ENV` adları). Kılavuz: LIFFY adresi + fuarın ekrandaki yazılışı.
+> - **Commit:** ell-docs bu kayıt. Kod değişikliği YOK (liffyv1 · liffy-ui · LEENA dokunulmadı). **PUSH YOK** (Suer).
+> - **Ölçülenler (LIFFY staging API, Owner oturumu):**
+>   - Tohum: kullanıcı **1** (owner, aktif, ofisli) · `/api/quotes/me` ofis **TR** · aktif ürün 225, varsayılan EUR fiyatlı 157 ·
+>     quote 0 · outbox 0 (kanıttan önce). `SALES_EMAIL`'siz koşunun yeni betikle yapıldığının işareti: eski betik bu komutta DURURDU.
+>   - Sync: `enabled true · missing [] · migrated true` · expo **1** satır: **"Deneme 2026"** · source `leena` · canonical **404** ·
+>     aktif · 2026-12-01 → `[TEST]` listede YOK.
+>   - **Kanıt:** quote `QTR-100000` (firma "DENEME-0 KANIT (CC)", EUR, 1 kalem `CAT-001` × 1, toplam **400**) create 201 → Send 200 →
+>     Sign 200 (`signed_at` 2026-11-05, tarama yok) → **convert `acked` ilk denemede** · `contract_id` **7862** · hata yok · outbox
+>     `acked 1`.
+> - **Ölçülenler (LEENA staging DB, salt okuma):**
+>   - Kontrat **7862**: `ATR-100000` · "DENEME-0 KANIT (CC)" · **Active** · 2026-11-05 · revenue **400.00 EUR** (= LIFFY toplamı) ·
+>     kur 1 · revenue_eur 400.00 · source_quote_id dolu · converted_by dolu · 07:54 UTC · fuar "Deneme 2026" (TR) · 1 satır
+>     `CAT-001` 1 × 400.00, vergi 0 · ödeme 0.
+>   - `convert_requests`: `received` → `succeeded` 201, aynı saniye (07:54:08 UTC).
+>   - SR ataması: `sr_sales_agent_id` **150** dolu (Owner e-postası bir iç satış temsilcisine eşleşti) → bu kontrat "needs agent"
+>     DEĞİL. Elahe'nin kontratlarında "needs agent" beklenir (4 Kas: Elahe e-postalı temsilci 0) — kılavuz §3.4 geçerli.
+>   - Kontrat toplam **3.933** (4 Kas 3.932 + 1) · LIFFY kaynaklı 4 (max id 7862) · LIFFY'ye yayında yalnız **id 404 "Deneme 2026"**.
+>   - **TABAN: contract 4 SR earned = 342.00** ✅ (staging).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Elahe akışı (LIFFY kullanıcısı + Reset Password + LEENA daveti + override → 9 Kas) · Elahe
+>   rolüyle Finance › Contracts / Convert queue görünürlüğü (override sonrası) · LIFFY arayüzünde (tarayıcı) kanıt quote'unun
+>   kartı — kanıt API'den; ekran Suer'in gözünde · `liffy-staging-db` PostgreSQL sürümü · açılış "Database connection error"
+>   sebebi · canlı TABAN bu turda okunmadı (canlıya dokunulmadı).
+> - **Bilinçle yapılmayanlar:** kanıt quote'u / kontratı silinmedi (staging; Elahe listesinde "DENEME-0 KANIT (CC)" adıyla görünür,
+>   tazelemede gider — YON-14) · fuar adı "Deneme 2026" düzeltilmedi (kılavuz ekrana uyduruldu) · Elahe hesapları (Suer → 9 Kas).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -6069,6 +6102,9 @@
 >   82/82) — [defter:2026-11-05 LIFFY STAGING + DENEME-0: SERVİSLER AÇIK]. **★SIRADAKİ (bu kazanır, bu hat) = Suer BUGÜN: push → tohum
 >   (Owner) → LEENA staging DENEME 2026 + yayın + `[TEST]` kaldır → LIFFY Sync → CC uçtan uca kanıt → Cuma 6 Kas hazır · PAZARTESİ
 >   9 Kas: betik + SALES_EMAIL → Reset Password → LEENA daveti + override → Elahe.**
+>   5 Kas: ✅ **HAZIR** — uçtan uca kanıt `ATR-100000` → convert acked → LEENA staging kontrat 7862 (400.00 EUR, TABAN 342.00) —
+>   [defter:2026-11-05 LIFFY STAGING + DENEME-0: HAZIR]. **★SIRADAKİ (bu kazanır, bu hat) = Suer kısa deneme (isteğe bağlı) →
+>   PAZARTESİ 9 Kas Suer bloğu (betik + SALES_EMAIL → Reset Password → LEENA daveti + override) → CC davet akışı ölçümü → Elahe.**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:

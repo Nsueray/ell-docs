@@ -17,7 +17,7 @@
 
 | Sistem | Adres | Giriş |
 |---|---|---|
-| **LIFFY (staging)** | Suer'in ilettiği `liffy-ui-staging` adresi | E-posta + Suer'in verdiği geçici şifre |
+| **LIFFY (staging)** | `liffy-ui-staging.onrender.com` | E-posta + Suer'in verdiği geçici şifre |
 | **ELIZA (staging)** | `leena-staging.onrender.com/ui2/` | Suer'in ilettiği davet bağlantısı → şifreni belirle → giriş |
 
 Şifreleri kimseyle paylaşma. Sorun olursa Suer'e yaz.
@@ -30,7 +30,7 @@
 ## 2. LIFFY'de teklif: Create → Send → Sign
 
 1. **Quotes → New Quote.**
-2. **Fuar:** `DENEME 2026`. Listede yalnız bu fuar olmalı. Başka bir fuar görürsen onu seçme, Suer'e haber ver.
+2. **Fuar:** `Deneme 2026` (ekrandaki yazılışı, 5 Kas'ta ölçüldü). Listede yalnız bu fuar olmalı. Başka bir fuar görürsen onu seçme, Suer'e haber ver.
 3. **Ofis:** senin ofisin (Turkey) kendiliğinden gelir. Sarı "ofis yok" uyarısı görürsen dur ve Suer'e haber ver.
 4. **Firma adı:** uydurma bir ad.
 5. **Kalemler:** ürünü katalogdan seç, miktarı yaz. Fiyatı olmayan ürün eklenemez; başka ürün seç. Ekrandaki toplam,

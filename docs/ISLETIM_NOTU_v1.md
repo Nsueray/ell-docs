@@ -14,19 +14,24 @@
 | | `leena-staging` (web) | aynı repo · **`eliza-next`** | leena-staging.onrender.com | Worker YOK · ayrı DB (`leena-staging-db`) |
 | LIFFY | `liffy-api` | `liffyv1` · `main` | api.liffy.app | |
 | | `liffy-worker-docker` | `liffyv1` · `main` | — | Mining / import (Playwright) |
-| | `liffy-ui` | `liffy-ui` · `main` | liffy.app | `/api/*` → api.liffy.app (`next.config.ts:8`) |
+| | `liffy-ui` | `liffy-ui` · `main` | liffy.app | `/api/*` → `API_REWRITE_URL`, tanımsızsa api.liffy.app (`next.config.ts:6`; build anında gömülür) |
 | | `liffy-redis` · `liffy-db` | — | — | Kuyruk · PostgreSQL 17 |
+| | `liffy-api-staging` (5 Kas) | `liffyv1` · `main` | liffy-api-staging.onrender.com | `leena-staging`'e bağlı · Redis / worker YOK (sequence + action kapalı) · ayrı DB `liffy-staging-db` (TOHUM, kişisel veri yok — YON-13) |
+| | `liffy-ui-staging` (5 Kas) | `liffy-ui` · `main` | liffy-ui-staging.onrender.com | `/api/*` → `liffy-api-staging` (`API_REWRITE_URL`) · kırmızı STAGING etiketi (`NEXT_PUBLIC_ENV=staging`) |
 
 ¹ Render Settings (Suer, 26 Eki): dal `main` · root `backend/leena-v401-backend` · start `node email_worker.js` · auto-deploy
 On Commit — yani her LEENA `main` push'u worker'ı da yeniden başlatır. Repoda `render.yaml` / `Procfile` / Dockerfile YOK;
 ayar yalnız Render panelinde ([defter:2026-10-26 P3 KAPANIŞ DÜZELTMELERİ CANLIDA]).
 
-- **LIFFY'nin staging'i YOK.** Kurulumu kabul edildi (YON-13 c). O gelene kadar `liffy-api` canlı LEENA'ya bağlı kalır;
-  env'i canlı ↔ staging arasında ileri-geri çevirmek **YASAK** (YON-13).
+- **LIFFY staging VAR (5 Kas 2026; eski satır "LIFFY'nin staging'i YOK" — tarihsel, YON-01).** `liffy-api-staging` → `leena-staging`;
+  canlı `liffy-api` → canlı LEENA. Env'i canlı ↔ staging arasında ileri-geri çevirmek hâlâ **YASAK** (YON-13). Staging DB
+  canlıdan kopya DEĞİL, tohumdur (`backend/scripts/staging/seed_staging.sh`); tazeleme YON-14
+  ([defter:2026-11-05 LIFFY STAGING + DENEME-0: HAZIR]).
 - **Kod canlıya şöyle çıkar:**
   - **LEENA:** iş `eliza-next`'te yapılır → push → staging kendiliğinden deploy olur → Suer kabul eder → CC `main`'e
     `--no-ff` merge eder → Suer sırayla: YON-06 iki ölçüm → export (YON-12) → `main` push → migration → env değişikliği.
-  - **LIFFY:** `main`'e push doğrudan canlıdır.
+  - **LIFFY:** `main`'e push doğrudan canlıdır. İki API de `main`'i izler: aynı push `liffy-api` (canlı) ve
+    `liffy-api-staging`'i birlikte deploy eder; ayrı staging dalı yok.
   - Push'u yalnız Suer yapar.
 
 ## 2. Env değişkenleri: ad ve görev (değer yok)
@@ -68,10 +73,15 @@ ayar yalnız Render panelinde ([defter:2026-10-26 P3 KAPANIŞ DÜZELTMELERİ CAN
   - `LEENA_SERVICE_USER_ID`, o ortamdaki servis kullanıcısının kimliğidir. Sır değildir ama ortama özeldir: ui2 Admin › Users →
     "LIFFY (service)" satırı, adres çubuğundaki `user=` değeri.
 - `DISABLE_CONVERT_OUTBOX`: outbox koşucusunu kapatır (acil durum anahtarı).
+- `REGISTRATION_ENABLED`: yalnız tam `true` iken kendi kendine kayıt açık. **Canlıda ve staging'de TANIMLANMAZ** → kayıt kapalı,
+  hesap yalnız Owner/admin'den (YET-12; liffyv1 `1a2ac9d`).
+- `DISABLE_SEQUENCE_WORKER` · `DISABLE_ACTION_WORKER`: api içi işçileri kapatır. **Yalnız staging'de** (e-posta yok).
 - `SENDGRID_API_KEY` · `INBOUND_WEBHOOK_SECRET` · `INBOUND_PARSE_ADDRESS`: e-posta gönderimi ve gelen yanıtlar.
 - `ANTHROPIC_API_KEY` · `ZEROBOUNCE_API_KEY` · `MINING_*`: mining ve doğrulama.
 
-**`liffy-ui`:** `BACKEND_URL` (login yönlendirmesi, yoksa hata verir) · `NEXT_PUBLIC_API_URL` · `API_BASE_URL`.
+**`liffy-ui`:** `BACKEND_URL` (login yönlendirmesi, yoksa hata verir) · `NEXT_PUBLIC_API_URL` · `API_BASE_URL` ·
+`API_REWRITE_URL` (`/api/*` hedefi; canlıda tanımsız = api.liffy.app) · `NEXT_PUBLIC_ENV` (`staging` → STAGING etiketi). Son ikisi
+build anında gömülür: değiştirince yeniden build gerekir.
 
 ## 3. Sırlar nerede (değer yok)
 
