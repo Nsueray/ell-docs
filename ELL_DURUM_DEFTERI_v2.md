@@ -6554,6 +6554,74 @@
 >   teklif kopyalama · ekranda sahip devri · canlı DB okuma · VPN / WARP ayarı · `leena/CLAUDE.md` + `leena/todo.md` (ell-docs'taki
 >   oturum dışı değişiklikler) dokunulmadı, commit'lenmedi.
 
+> ## ✅ 2026-11-05 — B1-b STAGING'DE: tur 1 · 2 · 8 Suer ONAY · 058 COMMIT · ARAÇ HESABI cc-staging · tur 3–7 staging'de (Playwright 6/6) · CC salt-okunur teyit
+>
+> - **Ne yapıldı:**
+>   - Suer push etti; staging'de 058: `COMMIT 1`, kayıt 60, ikinci koşu "Nothing to apply". Ekran turu **1 · 2 · 8 ONAY** (Suer).
+>     Madde 2'de ofis ön-dolmadı: Owner hesabında ofis yok — hata DEĞİL (Suer).
+>   - **SUER KARARI (5 Kas) — ARAÇ HESABI**, aynen: "staging'de CC için ARAÇ HESABI — cc-staging@elan-expo.com, Sales şablonu + Turkey +
+>     override sales.read=all (YET-10 reçetesi). Davet linki PANODA (K4: basma, iş bitince panoyu boşalt). Daveti kabul et, şifreyi kendin
+>     üret (rastgele), yalnız repo dışı 600 izinli yerel dosyada tut; sohbete / dosyaya / loga yazma. Bu hesap Sentez'in 'test kullanıcısı
+>     açılmaz' hükmünün DIŞINDA (deneme değil, araç; Suer kararı) — deftere ve kütüğe (YON-16'ya ek satır) böyle yaz: staging
+>     tazelemesinde silinir, yeniden açılır; iş bitince Suer pasifler."
+>   - CC daveti kabul etti. Pano maskeli okundu (yalnız şekil: staging host, token 43 karakter; mask önce sahte girdide sınandı).
+>     `invite/check` 200 → `invite/accept` 200. Şifre rastgele, 32 karakter, `~/.ell-cc/cc-staging.pw` (dosya 600, dizin 700); değer
+>     hiçbir çıktıya yazılmadı. Pano boşaltıldı (ölçüldü: 0 karakter).
+>   - **Ön ölçüm (API, araç hesabı):** Sales · Turkey · `sales.read` **own** — override YOKTU. Müşteri listesi boş, kuyruk 409
+>     OUT_OF_SCOPE. Ayrıca B1-b kuralı (SAPMA 13) test44'ü (Suer'in firması) Sales own yazma kapsamı dışında bırakıyor.
+>     → CC durdu, Suer'e sordu (kurulum Suer'in elindeydi). **Suer seçimi:** yalnız `sales.read = all` (YET-10 reçetesi) → test44 denenir
+>     → yedek: "yeni firma" kısa yolu. Override eklendi (DB'de ölçüldü: `sales.read` grant `all`).
+>   - **Staging DB (Suer kararı, 5 Kas):** bağlantı dizesi `~/.ell-cc/staging-db.url`'de (600, şifreyle aynı yer). Bundan sonra staging DB
+>     için PANO İSTENMEZ. Pano okunduktan sonra boşaltıldı. Bağlantı her seferinde `BEGIN READ ONLY` + ROLLBACK (aşağıda SAPMA 5).
+> - **Tur 3–7 — STAGING, araç hesabıyla, Playwright** (Chromium; betik scratchpad'de, ekran görüntüsü YOK): **6 / 6** ✅, sayfa / konsol
+>   hatası 0 (beklenen iki 409 ayrı sayıldı).
+>   - **3a** — seçiciler: firma 1 (test44 listede — `sales.read = all`) · fuar yalnız "Deneme 2026 · 2026-12-01" · ofis ön-dolu **Turkey**.
+>     test44 ile Open draft quote → **409 "This record is outside your permission scope."**, liste ekranında kalındı (🔶 4 staging'de ÖLÇÜLDÜ).
+>   - **3b** — yedek: kısa yoldan "CC Tool Co (staging B1-b)" · TR → seçili geldi → taslak **QTR-200000** (draft).
+>   - **3c** — ürün listesi: fiyatlı 190 · seçilemez (fiyatsız) 35. Kalemler:
+>     - BOS 390 — TR ofis fiyatı 390.00 · 10 adet · %10 indirim · vergi 0 → net 3510.00
+>     - RF 350 — 350.00 · 1 adet · vergi %20 → net 350.00, toplam 420.00, RF rozeti
+>     - Sunucu toplamları **net 3860.00 · vergi 70.00 · brüt 3930.00** = kuralla hesap (birebir).
+>   - **4** — Send → sent; satır ekleme / düzenleme kalktı; Sign formu + Decline.
+>   - **5** — Sign (tarama boş) → aynı adımda kontrat **ATR-200000** (staging id **7863**): brüt 3930.00 = teklif · net 3860.00 · vergi
+>     70.00 · EUR · kur 1 · revenue_eur 3930.00 · tarih 2026-11-05 · tarama boş · `customer_company_id` 2 · SR / SD boş (needs agent —
+>     araç hesabının temsilcisi yok; red değil). Kontrat ekranında Disc. + Line net + Line total.
+>   - **6** — kuyruk: converted 3 (LEENA 1 + LIFFY 2) · needs agent 1 · signed-pending 0. LEENA satırı converted, ATR-200000, 1 deneme.
+>   - **7** — Convert again → 409 "already been converted" + ALREADY_CONVERTED; ATR-200000 tek kontrat.
+> - **CC salt-okunur teyit (staging DB, `leena_staging_db`, PG 17.11, `transaction_read_only = on`):**
+>   - `schema_migrations` **60**, son `058_quotes`
+>   - **TABAN** kontrat 4 SR earned **342.00** ✅
+>   - **TABAN-2** AF489555 (staging id 6483) = LEENA `CLAUDE.md` değeri, **EŞİT** ✅ (değer burada yazılmaz — GOC-07)
+>   - quotes **1** (signed 1; QTR-200000, 2 satır, kur 1.000000, tarama NULL) · `quote_sequences` son 200000
+>   - yeni kontrat **ATR-200000**, `customer_company_id` **dolu** (2) · kontrat toplamı 3.933 → 3.934
+>   - `convert_requests` `source = 'leena'`: received 2 · succeeded **1** · failed 1 (Convert again 409 ALREADY_CONVERTED) — via user,
+>     ofis TR · LIFFY satırları (source NULL) değişmedi: received 2 · succeeded 2
+>   - kullanıcı cc-staging: aktif · Sales · Turkey · şifreli · ezme `sales.read` grant `all`
+>   - firma 2 (test44 + CC Tool Co) · denetim: quote.create 1 · line_add 2 · send 1 · sign 1
+>   - **HTTP (tokensız):** `/health` · `nav.json` · sales-quotes / sales-quote / sales-convert-queue / finance-contract → 200;
+>     `/api/quotes` · `/api/quotes/options` · `/api/convert-queue` · `/api/contracts/7863` → 401
+>   - **nav.json** sha256 staging = `c5ad2ee` (`21ae1d4e…`) → staging `eliza-next` `c5ad2ee`'yi çalıştırıyor
+> - **Commit:** ell-docs bu kayıt (defter + kütük YON-16 ek satırı). LEENA kod değişikliği YOK. **PUSH YOK** (Suer).
+> - **SAPMA (numaralı):**
+>   1. Tur firması test44 DEĞİL. test44 Suer'in firması → Sales own yazma kapsamı dışında → 409. Teklif, araç hesabının kısa yoldan
+>      açtığı firmayla tamamlandı — Suer seçimi.
+>   2. Ara soru soruldu (override eksikti + test44 kapsamı) — kurulum Suer'in elindeydi; tek soru, iki seçim.
+>   3. "convert_requests source='leena' 1" = 1 başarılı convert (succeeded 1); toplam LEENA olayı 4.
+>   4. Kalem seçimi: ürün = katalog kod sırasıyla ilk fiyatlı, RF olmayan, sıfır olmayan ürün (BOS 390). İndirim üründe, vergi RF'de
+>      (direktif: "birinde indirim, birinde vergi").
+>   5. Staging bağlantı kullanıcısı `leena_staging_db_user` (ana staging kullanıcısı, salt-okunur rol DEĞİL) → salt okuma CC'nin
+>      `BEGIN READ ONLY`'siyle sağlanıyor (her bağlantıda ölçüldü) — 🔶.
+>   6. Tur betiği repoya konmadı (staging'e YAZAR; yanlışlıkla koşulmasın) — scratchpad; adımları bu kayıtta.
+> - **🔶 Sentez'e:**
+>   - (1) Staging için ayrı salt-okunur DB rolü (canlıdaki `claude_readonly` emsali) — SAPMA 5.
+>   - (2) B1-b 🔶 4 staging kanıtıyla: Sales (own), `sales.read = all` ezmesiyle müşteriyi GÖRÜYOR ama teklif AÇAMIYOR. Kural kalsın mı,
+>     teklif firması için okuma kapsamı mı yeterli olsun — B2 / YET-KAPSAM.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Suer'in tur 3–7 ekran ONAY'ı (CC koştu; Suer 2 adrese bakacak) · staging'de 390 px · gerçek LIFFY'den
+>   staging'e HMAC gönderimi · araç hesabının pasiflenmesi (iş bitince Suer).
+> - **Bilinçle yapılmayanlar:** ekran görüntüsü (istenmedi) · test44 için kod değişikliği (🔶) · override'ı CC eklemedi (yetkisi yok —
+>   Suer) · araç hesabı / tur verisi silinmedi (tazelemede gider — YON-14) · canlı DB okunmadı · VPN / WARP'a dokunulmadı (YON-17) ·
+>   `leena/CLAUDE.md` + `leena/todo.md` dokunulmadı.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -6728,6 +6796,11 @@
 >   staging ekran turu (8 madde, yalnız Suer — ONAY / İTİRAZ) → CC push sonrası salt-okunur teyit kaydı → ONAY → B1 KAPALI → Sentez 🔶
 >   cevapları (5 soru) → Prompt 2 (B2 + B3; kriterler Sentez'den, YET-KAPSAM B2 ile — karar 5) → Prompt 3 (Paket 5) → kesim provası ×2 →
 >   kesim.** Prompt 2 direktifsiz BAŞLATILMAZ. Canlı `main` DONUK (`5c4c34b`, YON-16). Test kullanıcısı / deneme AÇILMAZ (YON-15 notu).
+>   5 Kas: B1-b → ✅ **STAGING'DE** — tur 1 · 2 · 8 Suer ONAY · 058 COMMIT (kayıt 60) · araç hesabı cc-staging (Suer kararı, YON-16 ek
+>   satırı) · tur 3–7 staging'de Playwright **6/6** · teyit (TABAN 342.00 · TABAN-2 eşit · ATR-200000) — [defter:2026-11-05 B1-b STAGING'DE].
+>   **★SIRADAKİ (bu kazanır) = Suer: 2 adrese bakış (staging kontrat 7863 + kuyruk) → ONAY → B1 KAPALI → Sentez 🔶 cevapları (B1-b 5 +
+>   staging 2) → Prompt 2 (B2 + B3; YET-KAPSAM B2 ile) → Prompt 3 (Paket 5) → kesim provası ×2 → kesim.** Prompt 2 direktifsiz
+>   BAŞLATILMAZ. Canlı `main` DONUK. Staging DB için pano İSTENMEZ (Suer, 5 Kas).
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
