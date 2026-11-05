@@ -42,3 +42,9 @@ Faz A restore + rollback.js. Prova ≥ 2 kez, canlının taze kopyasında.
 
 > **Uygulama notu (CC, 5 Kas):** Prompt 1'in B1'i promptun kendi "SIĞMAZSA" kuralıyla bölündü — B1-a (katalog + müşteri) bu
 > oturumda; B1b (teklif · send · sign · çevirme · kuyruk) Prompt 1b'de. LIFFY dizisinin canlı son değeri 100002 (envanter §8).
+>
+> **Kesim maddesi TEYİT (Sentez 5 Kas, karar 2 — B1-b, LEENA `c5ad2ee`):** "Teklif/AF dizisi LIFFY'nin son numarasının üstüne
+> alınır" maddesi geçerli. LEENA dizisi kiracı başına sayaç satırıdır (`quote_sequences.last_value`, ilk numara 200000; biçim
+> `Q<ofis ISO>-<dizi>`, AF = Q → A). Kesim adımı (migration zincirinden sonra, LIFFY kapanmadan önce, provada ölçülür):
+> `UPDATE quote_sequences SET last_value = GREATEST(last_value, <LIFFY quote_af_seq son değeri>)` — LEENA'da o ana kadar açılmış
+> numara varsa GREATEST onu korur. LIFFY tarihçesi LEENA `quotes` tablosuna taşınırsa kimlik uuid olduğundan çakışmaz (karar 3).

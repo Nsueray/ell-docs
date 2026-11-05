@@ -107,6 +107,9 @@ A sales proposal — proposed stand size, price, expo, and terms. Created by a S
 - Data owner: **LİFFY** (sales.quotes), submitted to **ELIZA** for approval
 - A Quote is NOT a Contract — it becomes a Contract only after approval by an authorized manager
 - Sales Reps create Quotes. They never create Contracts. (see ADR-003)
+- **LEENA quote (2026-11-05 — ADR-023, B1-b):** quotes also live in LEENA (`quotes`, uuid id; number `Q<office ISO>-<seq>` from 200000;
+  company required — free-text company name not accepted). Signing a LEENA quote converts it to a contract in the same step through the one
+  convert core; LIFFY quotes keep the HMAC convert until cutover. [defter:2026-11-05 B1-b: TEKLİF · SEND · SIGN]
 
 ### Contract
 
@@ -173,6 +176,9 @@ An exhibition brand owned by Elan Expo. This is the recurring event identity.
 - An Expo has multiple Editions over the years
 - Other languages: Fuar (Turkish), Salon (French), Exhibition (formal English)
 - In code and UI: always **Expo**
+- **Open for sale (2026-11-05 — Sentez E2):** column `expos.published_to_liffy` (LEENA 051) means **"open for sale"** — the same flag
+  gates LIFFY quoting (until cutover) AND LEENA quotes (B1-b: create / send / sign / convert). One rule, one flag; the column name stays
+  for now (rename is a later, separate decision). [defter:2026-11-05 SENTEZ: PROMPT 1 KABUL + 8 KARAR + 1b DİREKTİFİ]
 
 ### Edition
 

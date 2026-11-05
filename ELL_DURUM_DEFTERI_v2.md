@@ -6351,6 +6351,209 @@
 >   - Staging'deki tur firması / kişisi silinmedi (tazelemede gider — YON-14).
 >   - `leena/CLAUDE.md` + `leena/todo.md` dokunulmadı.
 
+> ## ✅ 2026-11-05 — SENTEZ: PROMPT 1 KABUL + 8 KARAR + 1b DİREKTİFİ — AYNEN (KB @ 4e8ec73)
+>
+> - **Kaynak:** Suer'in 5 Kas "PROMPT 1b" promptu §1 içindeki Sentez metni + aynı gün Suer DÜZELTMESİ, AYNEN. Bu blok
+>   [defter:2026-11-05 B1-a: KATALOG + MÜŞTERİ] kaydının 6 🔶 sorusunun ve SAPMA 1–27'nin cevabıdır.
+>
+>   ```
+>   SENTEZ → ORCHESTRATOR — PROMPT 1 KABUL + 8 KARAR + PROMPT 1b DİREKTİFİ (5 Kas). KB @ 4e8ec73 okundu. DEVAM.
+>
+>   PROMPT 1 (Paket 0 + B1-a): KABUL. SAPMA 1–27 HEPSİ KABUL. Notlar:
+>   (4) test beklentilerinin hükümle değişmesi doğru; CLAUDE.md "assertion
+>   değiştirilmez" kuralına "hüküm değiştirdiyse, hüküm numarasıyla"
+>   istisnası eklenir. (25) WARP: CC kullanıcı makinesinin ayarına (VPN
+>   vb.) DOKUNMAZ; canlı okuma engellenirse DURUR, Suer'e tek satır sorar
+>   — YON'a madde. (27) staging panosu emsali kabul, K4 aynen.
+>
+>   8 KARAR:
+>   1. LED-23 = a, evrensel. Bakiye saklanan değer değişmez; "settled"
+>      türetilmiş durumdur (D2). Tolerans sayacı raporda kalır.
+>   2. Teklif numarası = a: LEENA dizisi 200000'den; biçim aynen
+>      Q/A + ofis ISO + "-" + dizi; kesimde dizi LIFFY son numarasının
+>      üstüne alınır (kesim tasarımına madde).
+>   3. Teklif kimliği = a: uuid, contracts.source_quote_id tek kolon.
+>      S7 gerilimi kütüğe not: "teklif kimliği uuid — SEM-03 emsali,
+>      birleşme sonrası LIFFY tarihçesi çakışmasın diye".
+>   4. İmza → çevirme = a: Sign terminal; aynı istekte convert denenir;
+>      iş kuralı reddederse teklif signed kalır, convert_requests rejected
+>      + sebep, kuyrukta "signed-bekleyen" + Convert düğmesi (sebep
+>      giderilince tekrar). needs_agent red DEĞİLDİR (kontrat doğar,
+>      kuyrukta atama bekler — P3 kuralı aynen).
+>   5. YET-KAPSAM = a: B2 ile. 1b staging'de yalnız iç ekip + Elahe.
+>   6. `liffy` alt etiketi = a: 1b'de kalkar.
+>   7. TABAN-2 yorumları = a: teyit, GOC-07'ye yorum satırı olarak.
+>   8. Prompt 1b kapsamı = a + aşağıdaki EK HÜKÜMLER.
+>
+>   EK HÜKÜMLER (1b):
+>   E1. Teklif şirketi SERBEST METİN DEĞİL: quotes.company_id → companies
+>       (B1-a) ZORUNLU; kişi (contacts) isteğe bağlı; teklif ekranında
+>       firma seçici + "yeni firma" kısa yol (B1-a formu). Convert
+>       contracts.customer_company_id'yi doldurur (B1-a'da boş bırakılan
+>       FK burada bağlanır). LIFFY'deki "company_name" serbest metni
+>       taşınmaz.
+>   E2. Fuar kapısı: teklif yalnız expos.published_to_liffy = true olan
+>       fuara açılır — aynı bayrak, anlamı "satışa açık" (kolon adı
+>       şimdi değişmez; sözlüğe not). LIFFY kapısıyla aynı kural, iki
+>       ayrı kural doğmaz.
+>   E3. Fiyat: resolvePrice (KAT-01) teklifin ofisine göre; teklif para
+>       birimi = fiyat listesininki (bugün EUR); EUR dışı kur convert'te
+>       kullanıcıdan alınır ve donar (RAP-01). Satır: adet · birim fiyat
+>       (donmuş kopya) · indirim % · vergi % · RF bayrağı üründen (KAT-02).
+>       Toplamlar quoteTotals kuralı (TAH-05; ortak fikstür
+>       p3_convert_vectors.json aynen).
+>   E4. Tek çekirdek: convert = tek fonksiyon; iç yol (Sign) ve HMAC yolu
+>       (LIFFY, kesime kadar) aynı fonksiyonu çağırır. Test: aynı fikstür
+>       iki yoldan aynı kontrat (tutar, SR, AF). HMAC ucu davranışı
+>       DEĞİŞMEZ.
+>   E5. SR eşlemesi: owner_user_id → sales_agents.user_id → e-posta →
+>       needs_agent (P3 kuralı). SD boş (GOC-01). Agent % yok (iç
+>       kullanıcı).
+>   E6. Kontrat detayı: Line items tablosuna indirim % + satır toplamı
+>       (sunucudan; D2). Suer notu.
+>   E7. Elahe: staging daveti (Sales şablonu + Turkey + override
+>       sales.read=all — YET-10), kabul turunda Suer'le; Elahe en az 1
+>       teklif → Send → Sign → kontrat. Turda ≤8 madde.
+>   E8. Kapsam dışı (1b): e-posta/PDF (B3), takip, dış kullanıcı duvarı
+>       (B2), LIFFY/liffy-ui değişikliği, köprü sökme, tasarım.
+>   Kabul: staging'de uçtan uca teklif → kontrat iki yoldan (iç + HMAC
+>   fikstürü), testler, Suer + Elahe turu ONAY, TABAN 342.00 + TABAN-2
+>   eşit. Rapor + SAPMA + 🔶 her zamanki gibi.
+>
+>   SENTEZ → ORCHESTRATOR — DÜZELTME (5 Kas, Suer): E7 İPTAL. Elahe daveti
+>   YOK, kabul turu yalnız Suer (≤8 madde). YET-10 override uygulanmaz.
+>   Hiçbir pakette test kullanıcısı / deneme açılmaz — Suer "arayüz elle
+>   tutulur hale gelince" der, o zamana kadar konu kapalı. Kütükte
+>   DENEME-0 satırına "İPTAL, tarih Suer'de" notu. Gerisi aynen.
+>   ```
+> - **Uygulandı (bu tur, aynı ell-docs commit'i):** kütük LED-23 · GOC-07 · SEM-03 · KAT-03 · KAT-04 · AD-01 · YET-10 · YET-11 · YON-15
+>   notları + yeni **YON-17** (not 25) · ADR-023 kesim maddesi teyit + mekanizma · sözlük `published_to_liffy` · LEENA `CLAUDE.md`
+>   test kuralına not-4 istisnası (LEENA `c5ad2ee`). Uygulama kaydı: [defter:2026-11-05 B1-b: TEKLİF · SEND · SIGN].
+
+> ## ✅ 2026-11-05 — B1-b: TEKLİF · SEND · SIGN · KÖPRÜSÜZ ÇEVİRME · KUYRUK (LEENA `c5ad2ee`; staging'e hazır)
+>
+> - **Ne yapıldı:** Prompt 1b §2 ölçüm + §3 migration + §4.1–4.5 inşa + test + §5 belge dalgası, tek oturum. Bölünme GEREKMEDİ
+>   (promptun "SIĞMAZSA" kuralı uygulanmadı — 4.3–4.6 hepsi bu turda).
+>   - `058_quotes` — `quotes` (uuid — karar 3 · numara `Q<ofis ISO>-<dizi>`, kiracı başına dizi 200000'den `quote_sequences` sayaç
+>     satırıyla — karar 2 · firma ZORUNLU, kişi aynı firmanın — bileşik FK, E1 · fuar / ofis / para birimi / sahip FK · durum
+>     draft → sent → signed | declined, signed ve declined TERMİNAL · içerik + satırlar YALNIZ taslakta — DB trigger'ı · kur yalnız
+>     imzada, donar) + `quote_line_items` (katalog ürünü ZORUNLU · kod / açıklama / fiyat / vergi / RF DONMUŞ kopya · 024 kısıt seti)
+>     + `contacts` (company_id, id) UNIQUE + `convert_requests.source` (NULL = LIFFY/HMAC · 'leena' = iç yol). "converted" saklanmaz
+>     (D2: `contracts.source_quote_id` join'i). Yeni izin kodu YOK (sales.read / sales.write — 057).
+>   - `utils/quoteTotals.js` — TAH-05 toplam kuralı `validateConvert`'ten ÇIKARILDI (ifade sırası aynı; LIFFY'deki aynı adlı dosyanın
+>     LEENA karşılığı). `utils/convertCore.js` — convert gövdesi TEK fonksiyon (E4): HMAC ucu (`POST /api/contracts/convert`) aynı
+>     SQL / mesaj / kayıtla onu çağırır; iç yol (Sign / Convert) aynı fonksiyonu çağırır + `customer_company_id` (E1) + firma adı
+>     donmuş. SR (E5): sahip → `sales_agents.user_id` → e-posta → `needs_agent` (kontrat DOĞAR).
+>   - `/api/quotes` — liste / detay (toplamlar + EUR karşılığı sunucuda) · taslak düzelt · satır ekle / düzelt / sil (resolvePrice —
+>     KAT-01) · Send · Decline · Sign (tarama isteğe bağlı · EUR dışında kur ZORUNLU, donar — RAP-01) + AYNI istekte convert (karar 4:
+>     iş kuralı reddederse teklif signed kalır, `convert_requests` failed + sebep) · Convert (yeniden dene) · çift convert 409
+>     ALREADY_CONVERTED. Ret 409 / 422 / 400 + kod, 403 yok (G45). Kapsam YET-03 (own = sahibi). Denetim aynı tx'te (YET-08).
+>   - Kuyruk (§4.3): TEK liste, iki kanal — LEENA imzalı teklifleri (quotes'tan türetilir: converted · rejected = "signed — pending" +
+>     sebep + Convert · pending) + LIFFY istekleri (aynen); sayaçlar sunucuda (RAP-02); başlık kanal-tarafsız.
+>   - ui2: **Sales › Quotes** (liste + düzenleyici: firma seçici + "yeni firma" kısa yolu (B1-a formu) · kişi · yalnız satışa açık fuar ·
+>     ofis ön-dolu · satır düzenleyici (fiyatsız ürün seçilemez, 0 fiyat rozeti, RF rozeti) · toplam şeridi · Send / Sign / Decline /
+>     Convert) · Sales alt etiketi `liffy` KALKTI (karar 6) · **E6:** kontrat detayı Line items'a indirim % + satır neti + satır
+>     toplamı (+ EUR, sunucudan).
+> - **Commit:** LEENA `eliza-next` **`c5ad2ee`** (25 dosya). ell-docs bu kayıt (defter + kütük + ADR-023 + sözlük, tek commit).
+>   **PUSH YOK** (Suer).
+> - **Ölçülenler (§2, dosya:satır — önceki hal `222ac41`):**
+>   - **2.1 Repo:** ell-docs HEAD = origin = `4e8ec73` · LEENA `eliza-next` = origin = `222ac41` · son migration 057 · test tabanı
+>     **580/580** (32 suite, PG14, bu turda koşuldu). Staging panosu: ÖLÇÜLEMEDİ (aşağıda).
+>   - **2.2 Convert** (`routes/contracts.js` @222ac41): uç `:199` · AF payload'dan, yeniden hesap yok (`:9-10`) · idempotency
+>     `idx_contracts_source_quote_id` (012:104) → 409 ALREADY_CONVERTED + contract_id (`:297-300`) · SR e-posta → TEK aktif internal
+>     temsilci, yoksa `needs_agent` (`:240-246`) · `office_code` → `offices.country_code` aktif, yoksa 422 OFFICE_UNKNOWN (`:234-237`) ·
+>     yayın kapısı 422 EXPO_NOT_PUBLISHED (`:224-232`) · L3/L4/TAH-05 `validateConvert` (`:132-197`) · `converted_by` = `req.user_id`
+>     (`:272`) · kayıt received + succeeded | failed, sebep `error_code` (049:26-44; olay kümesinde "rejected" YOK) ·
+>     **`sellable_territories` convert'te UYGULANMIYOR** (`utils/permissions.js:69-91` yalnız kapsam yuvası; uygulama LIFFY tarafında).
+>   - **2.3:** `utils/quoteTotals.js` LEENA'da **BULAMADIM** (yalnız LIFFY `backend/utils/quoteTotals.js`); kural `validateConvert`
+>     içindeydi. Fikstür sha256 LEENA = LIFFY = `8e5b8889…` (salt okuma).
+>   - **2.4 LIFFY** (liffyv1 `10047ee`, salt okuma): AF görünümü `Q|A` + ofis kodu + `-` + `af_sequence` (`routes/quotes.js:24-30`) ·
+>     `quote_af_seq` START 100000 (051_add_quotes.sql:26) · durum kümesi draft | sent | signed | **declined** (051:72) · sent → declined
+>     (`:1050-1066`) · sent → draft dönüşü YOK · Sign: durum sent şart, `signed_at` zorunlu, tarama isteğe bağlı (`:1086-1110`).
+>     Son numara 100002 envanter kaydından (bu tur LIFFY DB okunmadı).
+>   - **2.5:** kontrat detayı `line_items` indirim % döndürüyordu, satır toplamı DÖNMÜYORDU (`contracts.js:590-601`) · ekran indirim %
+>     göstermiyordu · `customer_company_id` yazan kod 0 (grep).
+>   - **2.6:** nav.json Sales `sub: "liffy"` · Sales grupları customers + handoff · UI-0 testlerinde `liffy` etiketini sınayan assertion
+>     **0** · Sales gruplarını sabitleyen 2 beklenti (`test_ui2_ui0.js` G2 · `test_ui2_ledger_pages.js` U3).
+>   - **2.7:** YET-03 çözücü `utils/permissions.js:93-116` (own → kişinin kendisi, `created_by` ile) — teklifte hedef `created_by` =
+>     sahip.
+>   - **Testler:** **580 → 613/613** (32 → 34 suite) — PG14 iki koşu suite suite AYNI + PG **17.10** geçici kümede 1 koşu AYNI. Yeni:
+>     `test_b1b_quotes.js` (26) · `test_b1b_premig.js` (3; yeni kod + ≤ 057 şema → teklif uçları 503, HMAC convert / kontrat detayı /
+>     kuyruk aynen) · `test_migrate.js` R46-R49 (058 gerçek CLI; R42-R45 ≤ 057'ye dondurma). **E4 kanıtı:** aynı fikstür vakası
+>     (m2-discount-rf-mixed) iç yol (Sign) ve HMAC yolundan BAYT BAYT aynı kontrat (AF · brüt 5530.94 · kur · revenue_eur · tarih · SR ·
+>     satırlar + vergi tutarları). HMAC regresyonu: P3/P3-3a/P3 kapanış/P4 kapanış/premig suite'leri değişmeden yeşil.
+>   - **Playwright** (`tests/b1b_tour.js`, Chromium, yerel test DB): **8/8** — Sales'te `liffy` yok · fuar listesinde yalnız satışa açık
+>     · yeni firma kısa yolu → seçili · 2 kalem (indirim + vergi + RF) → net 2196.80 / vergi 369.36 / brüt 2566.16 · Send kilitler ·
+>     Sign → ATR-200000 → kontrat sayfası Disc. + Line total · kuyrukta LEENA + LIFFY · Convert again → ALREADY_CONVERTED · 390 px taşma
+>     yok · sayfa hatası 0. Tur bir GERÇEK hata yakaladı (409 yanıtı da `contract_id` taşıdığı için ekran "Contract created" diyordu) →
+>     commit'ten ÖNCE düzeltildi.
+>   - **TABAN 342.00** testte (T1, sentetik) ✅. **YON-06:** status.render.com "All Systems Operational", çözülmemiş olay 0
+>     (5 Kas 13:55 UTC, CC ölçtü); pencere: staging push, canlı dokunulmaz (YON-16).
+> - **YON-05 (çürüyen varsayımlar):** "LEENA `utils/quoteTotals.js`" → yoktu · "convert_requests rejected" → 049'da olay yok (failed) ·
+>   "fuar aktif" → LEENA `expos`'ta aktiflik kolonu yok · "sellable_territories convert'te" → uygulanmıyor · "LIFFY durumları
+>   draft/sent/signed" → + declined.
+> - **SAPMA (Prompt 1b, numaralı):**
+>   1. Teklif dizisi PG SEQUENCE nesnesi DEĞİL, kiracı başına sayaç satırı (`quote_sequences`, ilk 200000): kiracı başına sequence
+>      çalışma anında DDL ister; satır kilidi aynı tx'te, geri alınan tx numarayı geri verir. Kesim: `GREATEST(last_value, <LIFFY son>)`.
+>   2. Durum kümesine **declined** (sent → declined, TERMİNAL) + `POST /:id/decline` — §2.4: LIFFY'de var; sent → draft LIFFY'de de yok.
+>   3. "aktif fuar": LEENA `expos`'ta aktiflik kolonu yok; LIFFY'nin `is_active`'i yayın bayrağının senkron aynası → tek kapı
+>      `published_to_liffy IS TRUE` (E2 "iki ayrı kural doğmaz"). Kapı create / PUT / send / sign + çekirdekte.
+>   4. `utils/quoteTotals.js` LEENA'da yoktu → kural aynı adla LEENA'ya çıkarıldı (§2.3).
+>   5. Kanal kolonu `convert_requests.source`; HMAC yolu YAZMAZ (INSERT metni aynen) → NULL = LIFFY; 'liffy' değeri CHECK'te kesim için.
+>   6. "rejected" yeni olay değeri DEĞİL: `event='failed'` + http_status + error_code (049 CHECK'i aynen); "rejected" kuyrukta türetilmiş.
+>   7. İç yolda AF çakışması (`uq_contracts_af_number`) → 409 **AF_TAKEN**; HMAC yolunda eski mesaj ("Contract already transferred.")
+>      AYNEN (davranış değişmez).
+>   8. Convert anında satır ürünü `resolvePrice` ile yeniden sınanır (red: NO_PRICE / INACTIVE — Sentez listesi); fiyat YENİDEN
+>      HESAPLANMAZ, donmuş kopya kullanılır.
+>   9. İç yolda `contracts.sales_owner_user_id` + `company_id` (LIFFY soft-ref uuid'leri) BOŞ — sahip `source_quote_id` →
+>      `quotes.owner_user_id` ile türetilir (D2); iki sistemin kullanıcı kimlikleri tek kolonda karışmaz.
+>   10. Sign gövdesinde isteğe bağlı `signed_at` (YYYY-MM-DD, yoksa bugün) → `contract_date` (LIFFY'de zorunlu).
+>   11. Satır silinince satır no yeniden numaralanmaz (convert 1..n yeniden atar).
+>   12. Satır varken ofis / para birimi değişmez (409 HAS_LINES — fiyat bağlamı, KAT-01); firma değişince eski kişi düşer.
+>   13. Teklifin firması da kullanıcının kapsamında olmalı (YET-03 own: Sales yalnız kendi açtığı firmaya teklif açar — B1-a firma
+>       kapsamıyla tutarlı) — 🔶.
+>   14. Ret sınıfları: iş kuralı 422 (EXPO_NOT_PUBLISHED · NO_LINES · OFFICE_UNKNOWN · NO_PRICE · INACTIVE) · durum 409 (NOT_DRAFT ·
+>       NOT_SENT · NOT_SIGNED · HAS_LINES · ALREADY_CONVERTED · AF_TAKEN) · doğrulama 400 (EXCHANGE_RATE_REQUIRED dahil) · yetki 409.
+>   15. Yeni uç `GET /api/quotes/:id/products` (aktif ürünler, fiyat resolvePrice döngüsüyle — ikinci fiyat kuralı yazılmadı) +
+>       `components.js` `C.options`'a isteğe bağlı `disabledOf` (fiyatsız ürün seçilemez).
+>   16. E6 + RAP-01 para çifti testi (`test_ui2_ui0` K4): satır neti / toplamı EUR karşılığıyla (`line_net_eur` / `line_total_eur`,
+>       kontratın donmuş kuruyla) para çifti olarak; tek birimli `C.money` yalnız birim fiyatta kalır (test kuralı değişmedi).
+>   17. Teklif EUR karşılığı sunucuda: EUR teklif → 1 · imzalı → donmuş kur · diğer → "—".
+>   18. `signal.css` + `.ui-callout-pos` (token'lı, hex yok) — imza sonrası "kontrat oluştu" mesajı.
+>   19. Kuyruk sayaçları: eski anahtarlar (converted / failed / received) iki kanal toplamı + rejected / pending / signed_pending /
+>       by_channel; kuyruk kapısı aynen sales.read `all`.
+>   20. Kuyruk başlığı "signed quote → contract"; UI-0 R14'ün sabitlediği iki metin korundu.
+>   21. İmzalı + kontratlı teklifte "Convert again" düğmesi (tur maddesi 7 ekrandan sınanabilsin — sunucu 409).
+>   22. Hüküm değiştirdiği beklentiler (yeni CLAUDE.md istisnası, satırda hüküm numarasıyla): `test_ui2_ui0.js` G2 (Sales grupları
+>       customers / quotes / handoff + alt etiket boş — Prompt 1b §4.4, karar 8 + 6) · `test_ui2_ledger_pages.js` U3 (Sales alt menüsü 3
+>       bağlantı). Paket ilerlemesi: R42-R45 ≤ 057 dondurma (desen); R49'da küme dışı durum iki CHECK'i birden ihlal eder → iki ad da kabul.
+>   23. `setup_test_db.js`: onuncu DB `ell_comm_test_b1` (≤ 057, staging şekli).
+>   24. Playwright modülü `liffy-local-miner/node_modules`'tan `require` edildi (salt kullanım; LIFFY repo / DB'ye dokunulmadı). PG17 geçici
+>       küme: `initdb --no-locale` + `LC_ALL=C` + Unix soketsiz (scratchpad yolu 103 bayttan uzun); koşu sonrası silindi.
+>   25. §2.1 staging panosu ölçülemedi: panoda bağlantı dizesi YOKTU (maskeli okuma: uzunluk 15332, ilk 2 karakter "PR" — prompt metni);
+>       değer basılmadı (K4), Suer'e soru sorulmadı (ARA SORU YOK) → ÖLÇÜLMEDİ; push bloğundaki dry-run "bekleyen TAM 058" kısmen ölçer.
+>   26. E7 İPTAL (Sentez düzeltmesi) → Elahe daveti / YET-10 ezmesi uygulanmadı; tur yalnız Suer, 8 madde.
+>   27. Teklif ekranındaki "Edit details" firma değiştirmez (API destekler; ekranda kişi / fuar / ofis / para birimi / geçerlilik / not).
+> - **🔶 Sentez'e:** (1) teklif dizisi sayaç satırı (SAPMA 1) · (2) `declined` durumu + Decline (SAPMA 2) · (3) convert anında
+>   NO_PRICE / INACTIVE yeniden sınaması — imzadan sonra pasiflenen ürün kontratı durdurur (SAPMA 8): kalsın mı, uyarıya mı insin ·
+>   (4) Sales own kapsamında teklif yalnız kendi açtığı firmaya (SAPMA 13) — iki satışçı aynı müşteriye teklif veremez; B2 / YET-KAPSAM
+>   ile mi · (5) iç yolda `contracts.sales_owner_user_id` boş (SAPMA 9) — kesimde LIFFY tarihçesiyle birleşme kuralı.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:**
+>   - Staging bu turda OKUNMADI (pano boş — SAPMA 25): schema_migrations 59 · TABAN 342.00 · TABAN-2 · B1-a tabloları · convert_requests
+>     15 kolon staging'de ölçülmedi; önceki tur değerleri tarih kaydıdır (YON-01).
+>   - 058'in staging'de dry-run + apply + NOTICE'leri (Suer) · staging ekran turu (Suer) · push sonrası CC salt-okunur teyit.
+>   - TABAN-2 bu turda ölçülmedi (canlı / staging DB okunmadı); TABAN 342.00 yalnız testte (sentetik kontrat).
+>   - Gerçek LIFFY'den (staging) LEENA staging'e uçtan uca HMAC gönderimi — yalnız ortak fikstür + imza vektörüyle test.
+>   - Eşzamanlı Send ↔ satır ekleme yarışı (trigger `FOR SHARE`) ve eşzamanlı çift convert (partial UNIQUE) testle sınanmadı.
+>   - 390 px yalnız teklif detayında ölçüldü (liste + kuyruk değil).
+>   - Kesimde dizi yükseltme komutu çalıştırılmadı (yalnız ADR maddesi + mekanizma).
+>   - Gözlem (bu paketin işi değil, dokunulmadı): `finance-contract.html` başlığında `contract_date` ISO zaman damgası olarak görünüyor
+>     (pg `date` → JS Date, yerel saat dilimi; yerelde "2026-11-04T21:00:00.000Z") — tasarım fazı / UI kuyruğu adayı.
+> - **Bilinçle yapılmayanlar:** e-posta / PDF (B3) · takip · dış kullanıcı duvarı + YET-KAPSAM (B2) · LIFFY / liffy-ui değişikliği · köprü
+>   sökme · tasarım / cila · Elahe daveti, test kullanıcısı (E7 İPTAL) · teklif silme (teklif silinmez; taslak satırı silinir) ·
+>   teklif kopyalama · ekranda sahip devri · canlı DB okuma · VPN / WARP ayarı · `leena/CLAUDE.md` + `leena/todo.md` (ell-docs'taki
+>   oturum dışı değişiklikler) dokunulmadı, commit'lenmedi.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -6519,6 +6722,12 @@
 >   **★SIRADAKİ (bu kazanır) = Sentez 🔶 cevapları (ayrı direktif; 6 soru — [defter:2026-11-05 B1-a: KATALOG + MÜŞTERİ]) → Prompt 1b
 >   (B1b: teklif → send → sign → çevirme → kuyruk + Elahe kabul turu + UI kuyruğu: kontrat detayında indirim % + satır toplamı) →
 >   Prompt 2 (B2 + B3) → Prompt 3 (Paket 5) → kesim provası ×2 → kesim.** Prompt 1b direktifsiz BAŞLATILMAZ. Canlı DONUK.
+>   5 Kas: Sentez → **PROMPT 1 KABUL + 8 KARAR + 1b DİREKTİFİ** (E7 İPTAL — düzeltme) → ✅ **AYNEN** — [defter:2026-11-05 SENTEZ: PROMPT 1
+>   KABUL + 8 KARAR + 1b DİREKTİFİ]. B1-b → ✅ **STAGING'E HAZIR** (LEENA `c5ad2ee`; 613/613; Playwright 8/8) — [defter:2026-11-05 B1-b:
+>   TEKLİF · SEND · SIGN]. **★SIRADAKİ (bu kazanır) = Suer: tek push bloğu (LEENA `eliza-next` + ell-docs push → staging migrate 058) +
+>   staging ekran turu (8 madde, yalnız Suer — ONAY / İTİRAZ) → CC push sonrası salt-okunur teyit kaydı → ONAY → B1 KAPALI → Sentez 🔶
+>   cevapları (5 soru) → Prompt 2 (B2 + B3; kriterler Sentez'den, YET-KAPSAM B2 ile — karar 5) → Prompt 3 (Paket 5) → kesim provası ×2 →
+>   kesim.** Prompt 2 direktifsiz BAŞLATILMAZ. Canlı `main` DONUK (`5c4c34b`, YON-16). Test kullanıcısı / deneme AÇILMAZ (YON-15 notu).
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
