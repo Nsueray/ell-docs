@@ -8,6 +8,9 @@
 >
 > Yeni "LEENA write policy" Aşama 2'de yazılacak.
 >
+> **REF notu (2026-11-05, Prompt 2 REF-01):** referans verinin kanonik kaynağı LEENA'dır; ELIZA `core_*` kopyası kesimde
+> emekli (ADR-023 kesim maddesi). Bu ADR'nin "ELIZA authority data" ilkesi referans veri için de geçersizdir.
+>
 > **Master karar:**
 > [../archive/ELL_ARCHITECTURE_STAGE_1_TOPOLOGY_v1.1.md]
 > (A3, A17)

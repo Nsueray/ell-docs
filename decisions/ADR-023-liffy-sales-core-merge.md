@@ -48,3 +48,14 @@ Faz A restore + rollback.js. Prova ≥ 2 kez, canlının taze kopyasında.
 > `Q<ofis ISO>-<dizi>`, AF = Q → A). Kesim adımı (migration zincirinden sonra, LIFFY kapanmadan önce, provada ölçülür):
 > `UPDATE quote_sequences SET last_value = GREATEST(last_value, <LIFFY quote_af_seq son değeri>)` — LEENA'da o ana kadar açılmış
 > numara varsa GREATEST onu korur. LIFFY tarihçesi LEENA `quotes` tablosuna taşınırsa kimlik uuid olduğundan çakışmaz (karar 3).
+
+> **Kesim maddeleri (Sentez 5 Kas, Prompt 1b karar 5 = a + Prompt 2 REF-01 — CC, LEENA `b67b9fc`):**
+> - **LIFFY tarihçesi içeri alınırsa eşleme:** iç yolda doğan kontratlarda `contracts.sales_owner_user_id` ve `company_id` (LIFFY soft-ref
+>   uuid'leri) BOŞ kalır; sahip `source_quote_id → quotes.owner_user_id` ile türetilir (D2). LIFFY teklif tarihçesi LEENA `quotes`'a
+>   taşınırsa: LIFFY kullanıcı → LEENA `users` (e-posta eşleşmesi, tekil olmayan elle) ve LIFFY firma adı → LEENA `companies` eşlemesi
+>   kesim tasarımının ayrı adımıdır; eşleşmeyen satır sayacı mutabakata girer (RAP-02).
+> - **ELIZA `core_*` kopyası kesimde EMEKLİ (REF-01):** referans verinin kanonik kaynağı LEENA tablolarıdır (`core_countries` ·
+>   `core_sectors` · `languages` · `currencies` · `product_categories` · gider / gelir kategorileri). eliza-legacy'nin core_* kopyaları
+>   kesimden sonra okunmaz (Paket 6 kapatma ile birlikte). Not: ADR-005 (ELIZA write policy) zaten SUPERSEDED; ADR-016 core_* ile
+>   ilgisizdir (kampanya alıcı tamamlama) — Sentez'in "ADR-005/016" atfı 🔶 olarak soruldu.
+

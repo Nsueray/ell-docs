@@ -105,6 +105,18 @@
 >   research tools are accepted as pluggable finders feeding the 2.1 pipeline. "No system-level
 >   integration" remains.
 >
+> **Amendment 2026-11-05 (external sales users — Suer decision, Sentez Prompt 2; ledger `ELL_DURUM_DEFTERI_v2.md`
+> "2026-11-05 — SENTEZ: PROMPT 1b KABUL + 7 KARAR + PROMPT 2 DİREKTİFİ"; rules YET-13..YET-18 in `ELL_LOCKED_KARARLAR_OZET.md`).**
+> Original text is kept; marked lines read as amended:
+> - **SUPERSEDED for external SALES users:** "Agents are not employees and do not log into the system" (Part 2.3, three-tier
+>   commission, ~line 565) and "Sales agents are not licensed users. External agencies, freelancers … exist as sales agent records,
+>   not as login accounts" (~line 2191). An external sales user (freelancer, external agency) MAY sign in to LEENA with a narrow
+>   scope: user type `external`, linked to its external sales-agent record (required), an office (required), scope fixed to own
+>   (quotes, customers, own contracts without payments / commission / balance, communication log, follow-ups); finance is hidden.
+>   Widening needs an ADR. Most agents remain records without a login.
+> - **Still valid until Suer decides:** freelance DATA ENTRY (Part 2.1 channel 4, ~line 297: "No system logins; they submit through a
+>   public form") — the external-user model above does not cover data-entry freelancers.
+
 > **Amendment 2026-10-25 (P1b-2 reference data from the Zoho export — ledger
 > `ELL_DURUM_DEFTERI_v2.md` "2026-10-25 — PAKET 3 P3-2 + P1b-2"; rule LED-17 note in
 > `ELL_LOCKED_KARARLAR_OZET.md`).** Original text is kept.

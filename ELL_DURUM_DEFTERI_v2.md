@@ -6636,6 +6636,335 @@
 > - **Bilinçle yapılmayanlar:** Prompt 2 başlatılmadı (direktif yok) · tur verisi (CC Tool Co, QTR-200000, ATR-200000) silinmedi —
 >   tazelemede gider (YON-14) · `leena/CLAUDE.md` + `leena/todo.md` dokunulmadı.
 
+> ## ✅ 2026-11-05 — SENTEZ: PROMPT 1b KABUL + 7 KARAR + PROMPT 2 DİREKTİFİ — AYNEN (KB @ 697ac85)
+>
+> - **Kaynak:** Suer'in 5 Kas "PROMPT 2" promptu §1 içindeki Sentez metni, AYNEN. Bu blok [defter:2026-11-05 B1-b: TEKLİF · SEND · SIGN]
+>   kaydının 5 🔶 sorusunun + [defter:2026-11-05 B1-b STAGING'DE] kaydının 2 🔶 sorusunun cevabıdır.
+>
+>   ```
+>   SENTEZ → ORCHESTRATOR — PROMPT 1b KABUL + 7 KARAR + PROMPT 2 DİREKTİFİ (5 Kas). KB @ 697ac85 okundu. DEVAM.
+>
+>   PROMPT 1b: KABUL. B1 KAPALI teyit. SAPMA 1b/1–27 + staging/1–6 HEPSİ
+>   KABUL. Suer kararları (araç hesabı cc-staging YON-16 ek · staging DB
+>   adresi yerel 600 dosyada, pano istenmez · Elahe/deneme yok, tarih
+>   Suer'de) TEYİT. YON-17 (CC kullanıcı makinesine dokunmaz) teyit.
+>
+>   7 KARAR: 1=a (sayaç satırı; kesimde GREATEST) · 2=a (declined kalır)
+>   · 3=a (convert anında pasif/fiyatsız ürün DURDURUR; sebep + Convert
+>   tekrar) · 4=a (B2'de: teklif için firmanın OKUNABİLİR olması yeter,
+>   sahiplik teklifte; aynı firmaya ikinci satışçının açık teklifi varsa
+>   ekranda UYARI, engel değil) · 5=a (boş kalır; kesim tasarımına
+>   "LIFFY tarihçesi içeri alınırsa eşleme" maddesi) · 6=a (staging'e
+>   claude_readonly emsali rol — Suer tek SQL, Orchestrator bloğu; CC
+>   dosyası güncellenir) · 7 kayıt (UI kuyruğu: ISO tarih başlığı, teklif
+>   kopyalama, sahip devri, 390 px liste/kuyruk → tasarım fazı/UI
+>   kuyruğu).
+>
+>   GEREKSİNİM DEĞİŞİKLİĞİ (Suer 5 Kas; REQ'e amendment satırı, kütüğe
+>   YET): REQ 297/565/2191 "dış acente/freelancer giriş yapmaz" →
+>   SUPERSEDED: dış SATIŞ kullanıcısı (freelancer, dış acente) LEENA'ya
+>   girer, dar kapsamla. Veri girişi yapan freelancer: Suer kararı
+>   bekleniyor (aşağıda); gelene kadar REQ'teki "giriş yok, genel form"
+>   geçerli — B2 bunu kapsamaz.
+>
+>   PROMPT 2 = B2 + REF + B3 (tek prompt; SIĞMAZSA böl: B2+REF / B3;
+>   Suer turu promptun SONUNDA tek, 2–3 sonuç ekranı; ayrıntılı tur
+>   araç hesabıyla Playwright — B1-b deseni). Canlı DONUK (YON-16).
+>
+>   ══ B2 — KULLANICI / YETKİ / KAPSAM DUVARI (YET-13+) ══
+>   B2.1 Kullanıcı türü: users.user_type internal | external. external
+>     → sales_agents (external_agency | external_freelance) bağı ZORUNLU
+>     (davette seçilir; YET-09 geriye dönük kuralı değişmez) + ofis
+>     ZORUNLU. Davet akışı YET-05 aynen; davet ekranında tür + temsilci.
+>   B2.2 Kapsam duvarı (YET-KAPSAM, YET-11): contracts (liste/sayfalı/
+>     detay) · quotes · companies/contacts · convert-queue · payments
+>     (kontrat altı) · sales-agents detayı → HEPSİ sunucuda YET-03 ile
+>     (own/team/office/all). Ret 409 OUT_OF_SCOPE (G45). Eski kapısız
+>     uçlar kapanır; EMS/ziyaretçi uçları bu pakette dokunulmaz (ayrı,
+>     kütüğe AÇIK).
+>   B2.3 Dış kullanıcı tavanı: external için kapsam SABİT own; ezme ile
+>     genişletilemez (Owner dahil; genişletme = ADR). Finans görünmez:
+>     Finance sekmesi nav'da yok, finans/ledger/commission/payment uçları
+>     409, kontrat detayı DIŞ GÖRÜNÜM = sunucu tarafı daraltılmış yanıt
+>     (başlık, kalemler, toplamlar, durum; ödeme/komisyon/SR earned/
+>     bakiye YOK). İç Sales (own) mevcut haklarıyla kalır (kendi
+>     komisyonu görünür — commissions.read own).
+>   B2.4 Bölge yasağı (SAT-04): sellable_territories teklif
+>     açılışında + çekirdek convert'te (iç ve HMAC yolu aynı fonksiyon)
+>     uygulanır → 422 TERRITORY_NOT_SELLABLE. LIFFY tarafı değişmez.
+>   B2.5 Karar 4: teklif, kullanıcının OKUYABİLDİĞİ firmaya açılır;
+>     sahiplik teklifte; aynı firmaya başka satışçının açık (draft/sent)
+>     teklifi varsa ekranda uyarı.
+>   B2.6 "Satış Operasyon" şablonu (YET-10'un kalıcı çözümü): kontrat
+>     listesi + kuyruk okuma, kapsam office, yazma yok; 6. sistem
+>     şablonu (YET-04 kuralıyla, migration ile).
+>   B2.7 Test: yetki matrisi (Owner · Finance · Project · Sales own ·
+>     Satış Operasyon · external) × uç kümesi → beklenen 200/409; dış
+>     kullanıcı hiçbir finans ucuna ulaşamaz (negatif testler); Playwright
+>     turu ikinci araç hesabıyla cc-external (YON-16 ek kuralıyla; Suer
+>     açar, iş bitince pasifler).
+>   Kapsam dışı B2: veri-girişi freelancer formu · rol/yetki ekranı
+>   cilası · EMS kapıları.
+>
+>   ══ REF — REFERANS VERİ (Suer 5 Kas; yeni grup REF-01+) ══
+>   REF-01 İLKE: seçmeli her alan TEK referans tablosundan okunur;
+>     listesi olan alanda serbest metin YASAK (şehir, adres, not serbest).
+>     Yeni alan açan paket listeyi referans tablosuna koyar, ekrana
+>     gömmez. LEENA kanonik; ELIZA core_* kopyası kesimde emekli (ADR
+>     notu, ADR-005/016 SUPERSEDED).
+>   REF-02 ÖLÇ: ui2'deki tüm seçmeli alanlar — tablo mu, koda gömülü
+>     dizi mi (dosya:satır) → liste; ucuz olanlar bu dilimde tabloya,
+>     gerisi UI kuyruğuna.
+>   REF-03 Ekran: Admin › Reference data — ülke, sektör, para birimi,
+>     dil, ürün kategorisi, gider/gelir kategorisi (mevcut), tedarikçi
+>     türü (salt okuma, kodda CHECK), ofisler (salt okuma). İzin
+>     reference.write yalnız Owner şablonunda. Pasifleme var, silme yok
+>     (kullanımda olan değer). Denetim YET-08.
+>
+>   ══ B3 — SATIŞ İLETİŞİMİ: E-POSTA + TAKİP + GÜNLÜK (dar) ══
+>   B3.1 Send = GERÇEK gönderim: teklif e-postası kişinin e-postasına
+>     (contacts, zorunlu) + teklif PDF eki (sunucu üretir; gönderim
+>     anında donmuş kopya saklanır; imzadan sonra aynı PDF). Gönderen =
+>     sistem satış adresi, reply-to = satışçının e-postası (cevap onun
+>     kutusuna; REQ §2.7 "Gmail kutuları" kabul). Sınıf OPERASYONEL
+>     (unsubscribe altbilgisi yok; REQ §2.7). Altyapı: mevcut LEENA
+>     transactional yol (email_queue, campaign_id NULL, SendGrid).
+>   B3.2 Şablon: tek mantıksal şablon "teklif e-postası", 3 dil (EN/FR/
+>     TR) tek düzenleyicide; dil seçimi REQ §2.7 sırası (kişi dili →
+>     fuar yerel dili + ülke → EN). Owner düzenler (Admin › Templates,
+>     minimal).
+>   B3.3 İletişim günlüğü: communications — hedef (firma | teklif |
+>     kontrat), yön (out | in | not), kanal (email | phone | meeting |
+>     whatsapp — elle), zaman, kullanıcı, özet, durum (queued | sent |
+>     failed | bounced). Her e-posta gönderimi satır yazar; ekranda firma
+>     ve teklif/kontrat detayında "Communication" kartı; elle not eklenir.
+>     Kapsam YET-03 (hedefin kapsamı).
+>   B3.4 Takip: follow_ups — hedef, sahip, vade, not, durum (open | done).
+>     Send sonrası önerilen takip (vade = +7 gün, değiştirilebilir).
+>     Sales ana sayfasında "Takiplerim" (vadesi geçen vurgulu). Kapsam
+>     own/team.
+>   B3.5 Staging: e-posta işçisi yok → EMAIL_ECHO modu (INVITE_ECHO
+>     emsali): kuyruk satırı + işlenmiş içerik saklanır, gönderilmez;
+>     ekranda "echo" rozetiyle görülür. Canlıda leena-email-worker aynen.
+>     Test: işlenmiş e-posta + PDF içerik doğrulaması; fikstür.
+>   Kapsam dışı B3 (kütüğe, sonraki paketler): gelen e-postaların sisteme
+>     düşmesi (posta kutusu entegrasyonu — "B4 inbound") · 8 e-postalık
+>     operasyonel zincir (REQ §2.7, Proje tarafı — Paket 5 sonrası ayrı
+>     paket) · WhatsApp · pazarlama kampanyası.
+>
+>   Kabul (Prompt 2): staging'de (1) external araç hesabı yalnız kendi
+>   teklif/kontratını görür, finans 409; (2) Owner Reference ekranından
+>   bir sektör ekler → firma formunda görünür; (3) bir teklif Send →
+>   echo e-posta + PDF + günlük satırı + takip; TABAN 342.00 + TABAN-2
+>   eşit; testler; rapor + SAPMA + 🔶.
+>   Sonra: Prompt 3 = Paket 5 raporlama (kriter benden, Prompt 2
+>   koşarken). Belge: REQ amendment 2026-11-05 (dış giriş) · kütük YET-13+
+>   · REF-01..03 · sözlük (external user, communication, follow-up).
+>   ```
+> - **Uygulandı (bu tur, aynı ell-docs commit'i):** kütük YET-13..YET-18 (B2.1–B2.6) + YET AÇIK satırı (EMS kapıları · temsilci yazma
+>   uçları · ledger okuma uçları) · REF-01..03 (yeni grup) · ILT-01..05 (yeni grup — B3) · karar 1–6 notları (SEM-03 · KAT-04 · KAT-01 ·
+>   YET-03 · YON-16) · REQ amendment 2026-11-05 · ADR-023 kesim tasarımına iki madde · ADR-005 REF notu · sözlük (external user ·
+>   communication · follow-up · EMAIL_ECHO · Sales Operations). Uygulama kaydı: [defter:2026-11-05 PROMPT 2: B2 + REF + B3].
+
+> ## ✅ 2026-11-05 — PROMPT 2: B2 + REF + B3 — KAPSAM DUVARI · DIŞ KULLANICI · REFERANS VERİ · TEKLİF E-POSTASI + PDF · GÜNLÜK · TAKİP (LEENA `b67b9fc`; staging'e hazır)
+>
+> - **Ne yapıldı:** Prompt 2 §2 ölçüm + §3 migration + §4 inşa + test + §5 belge dalgası, tek oturum. Bölünme GEREKMEDİ (SIĞMAZSA kuralı
+>   uygulanmadı — B2 + REF + B3 aynı turda, tek LEENA commit'i).
+>   - `059_b2_external_users_scope` — `users.user_type` internal | external (NOT NULL DEFAULT internal; dış kullanıcı: ofis ZORUNLU,
+>     Owner / servis DEĞİL — CHECK; external_agency | external_freelance temsilci bağı ZORUNLU — ertelenmiş kısıt trigger'ı, COMMIT'te;
+>     tür DEĞİŞMEZ — trigger) · 021 CHECK'i (`sales_agents_external_user_null_check`) düştü → TÜR EŞLEŞMESİ trigger'ı (internal
+>     temsilci ↔ iç kullanıcı · external temsilci ↔ dış kullanıcı) · dış kullanıcıya kişi başı ezme YAZILAMAZ (trigger) · yeni kod
+>     `contracts.write` (Finance all · Office Manager office) · 6. sistem şablonu **Sales Operations** (contracts.read + sales.read, office).
+>   - `060_reference_data` — `languages` (ISO 639-1; en · fr · tr · ar) · `core_countries.is_active` + `default_language` (boş) ·
+>     `core_sectors.is_active` · `companies.sector_id` · `contacts.language` · `product_categories` (ürünlerdeki değerlerden tohum) +
+>     `products (organizer_id, category)` FK (ON UPDATE CASCADE).
+>   - `061_sales_communication` — `sales_email_templates` (`quote_email` × en / fr / tr, düz metin gövde, sürüm) · `quote_documents`
+>     (donmuş PDF, sha256, değişmez + silinmez) · `communications` (yalnız eklenir; hedef tam bir tane) · `follow_ups` (done terminal) ·
+>     `email_queue.reply_to` + `attachment_document_id` (NULL = bugünkü davranış) · 5 kod: communications.read / .write · followups.read /
+>     .write · templates.write (Sales own; Sales Operations office okuma; templates.write şablonsuz → Owner).
+>   - **B2 kapsam duvarı** (`utils/permissions.js` tek çözücü + `routes/contracts.js` · `salesAgents.js` · `payouts.js` · `convertQueue.js`):
+>     kontrat liste / sayfalı / detay / ödemeler / plan `contracts.read` + YET-03 (kontrat hedefi: own = Agent / SR temsilcisinin kullanıcısı
+>     + LEENA teklif sahibi · office = Agent → SR → teklif ofisi) · kontrat yazımları `contracts.write` + kapsam · temsilci liste / detay +
+>     ekstre `commissions.read` + temsilci kapsamı · kuyruk kapsamla SÜZÜLÜR. **Dış kullanıcı** (B2.3): `authMiddleware` izin listesi
+>     (quotes · customers · contracts · reference · communications · follow-ups; gerisi 409 EXTERNAL_NOT_ALLOWED) + çözücüde kod tavanı +
+>     sabit own + ezme yok sayılır · kontrat yanıtı DARALTILMIŞ (alan beyaz listesi) · /me'de Finance alanı yok. **B2.4** bölge: teklif
+>     açılış / düzeltme + convert çekirdeği (`territoryRefusal` — tek fonksiyon) → 422 TERRITORY_NOT_SELLABLE. **B2.5** okunabilir firma +
+>     OTHER_OPEN_QUOTE uyarısı. Davet: tür + external temsilci + ofis + şablon.
+>   - **REF:** `/api/reference-data` (9 tür; 7 yazılabilir; `reference.write`; her yazım denetimde) + Admin › Reference data · firma
+>     formunda sektör · kişide dil · katalog kategorileri tablodan (serbest metin kalktı).
+>   - **B3:** Send = gerçek gönderim, TEK transaction: kişi ZORUNLU (422 CONTACT_REQUIRED) → sent → PDF (`utils/pdf.js` bağımlılıksız
+>     yazıcı + `utils/quotePdf.js`) `quote_documents`'a donar → dil (kişi → fuar ülkesi = firma ülkesi ise ülkenin varsayılan dili → EN) →
+>     `email_queue` transactional satırı (reply-to = teklif sahibinin e-postası, ek = PDF; EMAIL_ECHO=1 → status 'echo', gönderilmez) →
+>     günlük satırı → istenmişse takip (+7 gün önerilir). `GET /api/quotes/:id/pdf` (donmuş; taslakta önizleme, saklanmaz) ·
+>     `/api/communications` · `/api/follow-ups` · `/api/sales-templates` · worker satırdaki reply_to + eki kullanır (NULL'da eski davranış).
+>   - **ui2:** Sales › My follow-ups (Sales sekmesinin girişi) · Sales › Contracts + Contract (dış görünüm) · teklifte Send formu (alıcı +
+>     takip vadesi) + PDF + Communication + Follow-ups kartları · firma ve kontrat (Sales + Finance) detayında Communication kartı ·
+>     Admin › Reference data · Admin › Templates (3 dil tek sayfa) · davette kullanıcı türü.
+> - **Commit:** LEENA `eliza-next` **`b67b9fc`** (66 dosya). ell-docs bu kayıt (defter + kütük + REQ + ADR-023 / ADR-005 + sözlük, tek
+>   commit). **PUSH YOK** (Suer).
+> - **Ölçülenler (§2, dosya:satır — önceki hal `c5ad2ee`):**
+>   - **2.1 Repo / staging:** ell-docs HEAD = origin = `697ac85` · LEENA `eliza-next` = origin = `c5ad2ee` · son migration 058 · staging (salt
+>     okuma, `~/.ell-cc/staging-db.url`, `BEGIN READ ONLY`, PG 17.11, kullanıcı `leena_staging_db_user`): `schema_migrations` **60** (son
+>     `058_quotes`) · TABAN **342.00** · TABAN-2 AF489555 (staging id 6483) = CLAUDE.md değeri, **EŞİT** · quotes **1** · cc-staging aktif
+>     (Sales · Turkey).
+>   - **2.2:** `users` 13 kolon, `user_type` YOK · davet `routes/users.js:226-283` (e-posta · ad · şablon [permissions.write] · ofis ·
+>     temsilci) · temsilci yalnız internal (`linkableAgent` `:128-137`) · INVITE_ECHO `utils/invites.js:33-35` · staging `sales_agents`:
+>     external_agency **17** (aktif 14) · external_freelance **19** (aktif 4) · internal 128 (kullanıcılı 1) — kullanıcılı external **0**.
+>   - **2.3 kapısız uçlar (YET-11):** `contracts.js` GET / `:252` · sayfalı `:204` · GET /:id `:450` · ödemeler GET `:820` · plan GET `:1346` +
+>     yazımlar (durum `:562` · ödeme `:643` · ters kayıt `:876` · transfer `:1005` · atama `:1191` · plan `:1387` · varsayılan plan `:1510`) ·
+>     `salesAgents.js` GET / `:44` · GET /:id `:67` · POST `:155` · PUT `:186` · `payouts.js` ekstre `:258` · `commissions.js:46` ·
+>     `cashForecast.js:175` · ledger okumaları (bilinçli — `ledger.js:23-25`). Kapılılar: kuyruk (sales.read **all** şartı `convertQueue.js:97`) ·
+>     quotes · customers · catalog · users · territories · ledger yazma · taslaklar · payout yazma. Çözücü `utils/permissions.js:93-116`.
+>   - **2.4:** 5 sistem şablonu (staging satır sayıları Finance 12 · Project 4 · Office Manager 12 · Sales 4 · Owner 0) · kayıt defteri **25**
+>     (044: 18 + 048: 2 + 051: 1 + 052: 2 + 055: 1 + 057: 1) · `roles.owner_template` · şablon trigger'ları `044:157-206` · Owner ezme trigger'ı
+>     `044:208-219` (aynı desen 059'da dış kullanıcıya).
+>   - **2.5:** nav.json Finance `permission: null` → görünürlük /me `areas`'tan (`shell.js:70-80`) · Sales girişi `sales-convert-queue.html`
+>     (Sales ana sayfası YOKTU).
+>   - **2.6:** staging `sellable_territories` **1** satır (Turkey → TR) · convert çekirdeğinde bölge denetimi YOKTU (`permissions.js:74-91`
+>     yalnız yuva).
+>   - **2.7 REF-02:** aşağıda (liste).
+>   - **2.8:** `utils/email.js` `sendEmailWithReplyTo` reply-to alır, EK YOK · worker Mode 1 sabit reply-to `reply@replies.leena.app`
+>     (`email_worker.js:318`) · transactional öncelik `campaign_id IS NULL` (`:50-75`) · LEENA'da PDF kütüphanesi **YOK** (package.json;
+>     sertifika tarayıcıda "Save as PDF") · gönderen `SENDER_EMAIL` (varsayılan noreply@leena.app) · staging `email_queue` 18 kolon,
+>     `status` CHECK YOK (sent 528.734 · cancelled 42.077 · pending 2) · **`email_templates` adı EMS'de DOLU** (ziyaretçi / kampanya).
+>   - **2.9 canlı `claude_readonly`** (salt okuma, VPN / WARP'a dokunulmadan bağlandı — YON-17): LOGIN · `rolconfig` **NULL** (yani
+>     `default_transaction_read_only` AYARLI DEĞİL) · SELECT 98 tablo · CONNECT + USAGE var, CREATE yok · sequence usage 0 · DEFAULT
+>     PRIVILEGES: `leena_v401_db_user` → public tablolar → `claude_readonly=r`.
+>   - **2.10:** `contacts` dil kolonu yok · `expos.country_code` var · `core_countries` yalnız code + name (230) · `core_sectors` id / slug /
+>     name (26) · `products.category` serbest metin (227 ürün, 10 değer).
+>   - **Testler:** **613 → 655/655** (34 → 38 suite) — PG14 iki koşu suite suite AYNI + PG **17.10** geçici kümede 1 koşu AYNI (`initdb
+>     --no-locale`, soketsiz; koşu sonrası silindi). Yeni: `test_b2_scope.js` (13 — matris 6 rol × 22 uç = 132 hücre) · `test_ref.js` (6) ·
+>     `test_b3_comm.js` (16) · `test_b2_premig.js` (3; ≤ 058 şema) · `test_migrate.js` R50-R53 (059-061 gerçek CLI; R46-R49 ≤ 058'e dondu).
+>     Kod değişikliğinden ÖNCE: ilk 12 suite 296 ✅ + test_migrate R46 / R48 kırmızı (bekleyen küme 059-061'i de gördü — desen).
+>   - **B2.7 MATRİS** (testte birebir; 409 = kapı / kapsam / dış duvar · 400 = kapıdan geçti, gövde geçersiz · 403 YOK):
+>
+>     | uç | Owner | Finance | Project | Sales own | Sales Ops (TR) | external |
+>     |---|---|---|---|---|---|---|
+>     | kontrat sayfalı / liste | 200 | 200 | 409 | 200 (kendi) | 200 (ofis) | 200 (kendi, daraltılmış) |
+>     | kontrat detay (kendi / ofis içi) | 200 | 200 | 409 | 200 | 200 | 409 (başkasının) |
+>     | kontrat detay (başka ofis / kişi) | 200 | 200 | 409 | 409 | 409 | 409 |
+>     | ödemeler · plan okuma | 200 | 200 | 409 | 200 | 200 | 409 |
+>     | ödeme yazma · durum yazma | 400 | 400 | 409 | 409 | 409 | 409 |
+>     | teklifler · müşteriler | 200 | 409 | 200 | 200 | 200 | 200 (kendi) |
+>     | convert kuyruğu | 200 | 409 | 200 | 200 (kendi LEENA) | 200 (ofis) | 409 |
+>     | temsilci liste · detay · ekstre | 200 | 200 | 409 | 200 (kendi) | 409 | 409 |
+>     | ledger · komisyon raporu · nakit öngörü | 200 | 200 | 200 | 200 | 200 | 409 |
+>     | kullanıcılar | 200 | 409 | 409 | 409 | 409 | 409 |
+>     | EMS (temsilci uç) | 200 | 200 | 200 | 200 | 200 | 409 |
+>     | referans okuma (/api/reference) | 200 | 200 | 200 | 200 | 200 | 200 |
+>     | reference-data oku / yaz | 200 / 201 | 200 / 409 | 200 / 409 | 200 / 409 | 200 / 409 | 409 / 409 |
+>
+>   - **Dış kullanıcı (testte):** kendi kontratları = teklif sahibi (K3) + Agent bağı (K4); liste / detayda yasak alan **0** (22 alan
+>     taraması) · şablon Finance'a çevrilse de kapsam own + ekstre / ledger 409 (TAVAN) · kişi başı ezme API 409 + DB reddi · tür değişmez ·
+>     bağ koparılamaz.
+>   - **B3 (testte):** kişisiz Send 422 (draft kalır) · echo satırı (campaign_id NULL · alıcı · reply-to = satışçı · ek = belge · unsubscribe
+>     yok) · bayraksız → pending (canlı davranışı) · PDF sha256 = bayt özeti, yapı geçerli, içerik (numara · firma · kişi · kalemler ·
+>     toplamlar · Türkçe karakter), imzadan sonra AYNI bayt, taslak önizleme saklanmaz · üç dil yolu (contact / expo_country / default) ·
+>     şablon düzeltme sürüm 2 + denetim + sonraki gönderim yeni metni kullanır · gövde HTML kaçışı · worker ekleri (base64 → aynı bayt;
+>     NULL satır → eski davranış) · günlük kapsamı (own / office) · takip (vadesi geçen sunucuda; done terminal).
+>   - **PDF bağımsız doğrulama (yerel):** poppler `pdftotext` / `pdfinfo` Türkçe karakterleri (ş ğ ı İ Ş Ğ) ve yapıyı doğru okudu.
+>   - **Playwright** (`tests/b2_tour.js`, Chromium, yerel test DB, EMAIL_ECHO=1): **6/6** — Owner Reference data'dan sektör → firma formunda
+>     → firma o sektörle · Sales Send formu (alıcı + vade +7) → echo + PDF + günlük + takip (PDF indirilir, `%PDF-1.4`) · My follow-ups →
+>     Done · dış kullanıcı: Finance sekmesi YOK, yalnız kendi kontratı, "External view" (ödeme / komisyon / bakiye yok), finans ucu 409 ·
+>     Templates 3 dil · 390 px taşma yok · sayfa hatası 0. Tur iki betik hatası yakaladı (büyük / küçük harf eşleşmesi; temizlik sırası) —
+>     ürün hatası değil, betik düzeltildi.
+>   - **TABAN 342.00** testte (B2 · B3 · B1-b suite'leri) + staging'de (salt okuma, migration öncesi) ✅ · **TABAN-2** staging'de EŞİT ✅.
+> - **REF-02 LİSTESİ (seçmeli alanlar — kaynak):**
+>   - **ui2 — tablodan (API):** ülke (core_countries) · ofis · para birimi · fuar · hesap · gider kategorisi / tipi · tedarikçi · temsilci ·
+>     rol · şablon · ürün · kişi · yıl (kontratlardan) · tedarikçi türü (API sabiti — CHECK) · birim tipi (API sabiti `catalog.js:40`).
+>     **Bu dilimde tabloya alınan:** sektör (firma formu — yeni alan) · dil (kişi — yeni alan) · ürün kategorisi (`admin-catalog.html:60` +
+>     `admin-product.html:35` serbest metindi → seçim) · ülke / sektör pasifleme.
+>   - **ui2 — koda gömülü dizi (→ UI kuyruğu; hepsi DB CHECK kümesi, serbest metin değil):** hesap türü `finance-accounts.html:57` (LED-03) ·
+>     temsilci türü `finance-agents.html:28` · ödeme yöntemi `finance-expenses.html:28` + `finance-drafts.html:29` (SEM-01) · kontrat durumu
+>     `finance-contracts.html` STATUSES · taslak durum süzgeci `finance-drafts.html:49` · teklif durumu yedeği `sales-quotes.html:54`.
+>   - **EMS public/ (alt ajan taraması, salt okuma; → UI kuyruğu, EMS bu pakette dokunulmaz):** `visitor_type` 7 değer **9 yerde** gömülü
+>     (badge-templates:213/:457 · bulk-badge-print:84 · form-builder:276 · import:198 · qrscanner:235 · visitorlog:217/:759) · **qrscanner:266
+>     177 ülke ADI gömülü** (ad saklanıyor, kod değil; yedek 'Nigeria') · ödeme yöntemi (agent-statement:142 · contract-detail:230) · kontrat
+>     durumu (contract-detail:229 · contract-list:128/170) · fuar durumu + organizatör rolü (expo-form:108/129 · expo-list:124/134) · partner rolü
+>     (expo-partners:118) · origin listeleri birbirini tutmuyor (checkins:178 · visitorlog:206 · form-builder:306) · dil en/fr (form-builder:417 ·
+>     reactivation:620) · kampanya koşulları (email-campaigns:228 · reactivation:1914) · **serbest metin:** sales-agents grup / takım / ülke
+>     datalist'i (:146-148) · visitorlog düzenle ülke alanı.
+> - **YON-05 (çürüyen varsayımlar):** "canlı claude_readonly'de default_transaction_read_only=on" → YOK (`rolconfig` NULL) · "ADR-005/016
+>   core_* kopyası" → ell-docs'ta core_*'ı anan ADR **YOK**; ADR-016 kampanya alıcı tamamlama takibidir (core_* ile ilgisiz) · "`email_templates`
+>   tablosu" → ad EMS'de dolu · "LEENA PDF kütüphanesi (§2.8)" → yok · "convert çekirdeğinde bölge" → yoktu · "HMAC yolunda bölge (B2.4
+>   'iç ve HMAC aynı fonksiyon')" → HMAC sözleşmesi v1 müşteri ülkesi TAŞIMIYOR (`API_CONVERT_v1`; `validateConvert`) · "Sales ana sayfası" →
+>   yoktu (Sales girişi kuyruktu).
+> - **SAPMA (Prompt 2, numaralı):**
+>   1. Dış kullanıcı duvarı `authMiddleware`'de İZİN LİSTESİ: quotes · customers · contracts · reference · communications · follow-ups;
+>      gerisi (EMS dahil) dış kullanıcıya 409 EXTERNAL_NOT_ALLOWED. EMS uçlarının iç kullanıcı davranışı / kapıları DEĞİŞMEDİ ("EMS
+>      dokunulmaz"); dış kullanıcının EMS'e girmemesi B2.3 tavanının en kilitli okuması.
+>   2. 021 CHECK yerine tür-eşleşme trigger'ı + ertelenmiş "dış kullanıcının external temsilci bağı zorunlu" kısıt trigger'ı + tür değişmez
+>      trigger'ı (iç ↔ dış = yeni kullanıcı).
+>   3. Dış davette şablon ZORUNLU (ROLE_REQUIRED): B9 gereği kod rol ADI seçemez; tavan zaten daraltır.
+>   4. Yeni kod `contracts.write` (Finance all · Office Manager office): "payments (kontrat altı)" + "eski kapısız uçlar kapanır" →
+>      ödeme / ters kayıt / durum / transfer / atama / plan yazımları tek kodla kapandı.
+>   5. Eski organizer token'ı (user_id YOK) kapılı kontrat / temsilci / ekstre uçlarında 409 NOT_USER_SESSION (YET-02 köprüsü). Klasik EMS
+>      sayfalarının kontrat ekranları (`contract-*.html`, `agent-statement.html`, `sales-agents.html`) ui2 oturumuyla çalışır, klasik girişle 409.
+>   6. Temsilci OKUMASI (liste + detay + ekstre) kapandı (hedef: temsilcinin ofisi + bağlı kullanıcı); temsilci YAZIMI (POST / PUT) kapısız
+>      KALDI → kütükte AÇIK.
+>   7. Kontrat "own" = Agent / SR temsilcisinin kullanıcısı + LEENA teklif sahibi (D2 türetme); SD dahil değil. Ofis = Agent → SR → teklif.
+>   8. Dış kontrat görünümü alan BEYAZ LİSTESİ (liste 10 · detay 14 + kalem 13); EUR karşılıkları ve kur da dışarıda.
+>   9. Kuyruk: "yalnız all, dar kapsam 409" kalktı → office: ofis kodu eşleşen satırlar (kodsuz LIFFY satırı dışarıda) · own: kendi LEENA teklifleri.
+>   10. B2.4 HMAC: sözleşme v1 müşteri ülkesi taşımaz → çekirdekteki denetim girdisi olan (iç) yolda çalışır; HMAC davranışı DEĞİŞMEDİ (E4,
+>       "LIFFY tarafı değişmez"). Tabloda satırı olmayan ofis SATAMAZ.
+>   11. B2.5 uyarısı yanıtta `warnings` (OTHER_OPEN_QUOTE: sayı + numaralar; sahip adı yok — kapsam sızmaz): açılış · düzeltme · detay.
+>   12. Şablon adı **Sales Operations** (İngilizce arayüz); + B3 okuma kodları (communications.read / followups.read office).
+>   13. Sales'e "Contracts" grubu (sales-contracts / sales-contract) — dış kullanıcının tek kontrat ekranı; iç kullanıcıda "Open in Finance".
+>       Teklifteki kontrat bağlantısı Sales › Contract'a gider. Sales sekmesinin girişi My follow-ups (B3.4).
+>   14. `languages` sistem geneli (core_* emsali, organizer_id yok); tohuma Arapça (REQ "Languages in daily use"). Ülke varsayılan dili BOŞ.
+>   15. Ürün kategorisi tablo + FK (ON UPDATE CASCADE); kolon adı / tipi değişmedi.
+>   16. Referans yönetimi TEK uç kümesi `/api/reference-data` (denetimli). Ledger'ın mevcut referans yazma uçları (para birimi, gider / gelir
+>       kategorisi) DOKUNULMADI ve denetim YAZMIYOR → kütükte AÇIK.
+>   17. Şablon tablosu `sales_email_templates`; gövde DÜZ METİN (HTML'e kaçışla) — şablon HTML taşıyamaz; bilinmeyen yer tutucu 400.
+>   18. Takip Send isteğinin parçası (`follow_up_due`, UI'da +7 ön-dolu, boş = takip yok); yanıtta `suggested_follow_up_due`.
+>   19. Teslim durumu SAKLANMAZ (D2): email_queue.status'tan türetilir; `bounced` gözlenemez (G9); `email_queue_id` yumuşak bağ.
+>   20. EMAIL_ECHO: kuyruk satırı status **'echo'** (worker yalnız 'pending' okur).
+>   21. PDF bağımlılıksız yazıcıyla (npm bağımlılığı EKLENMEDİ; deterministik; Helvetica gömülmez; WinAnsi + Türkçe glif farkları; kapsam dışı
+>       karakter '?'); etiketler İngilizce; satıcı tüzel kişi bilgisi yok → ofis + satışçı.
+>   22. Gönderen = worker'ın `SENDER_EMAIL`'i (bugünkü sistem adresi); ayrı satış adresi env'i eklenmedi; görünen ad worker zinciri (satırda
+>       `expo_id` dolu → fuar adı, `CAMPAIGN_SENDER_NAME` varsa o).
+>   23. Dil 2. adım: "yerel kitle" bayrağı yok → fuarın ülkesi = firmanın ülkesi ise o ülkenin varsayılan dili.
+>   24. Kişi zorunluluğu yalnız 061 uygulanmışsa (premig'de B1-b davranışı). Kişisiz taslakta Send düğmesi pasif + uyarı.
+>   25. Communication kartı: firma (firma + teklifleri + kontratları; satır başına kapsam) · teklif · kontrat (kontrat + kaynak teklifi) —
+>       Sales › Contract ve Finance › Contract'ta.
+>   26. Hüküm değiştirdiği test beklentileri / kurulumları (satırda hüküm numarasıyla): `test_b1b_quotes` N1 + kurulum (bölge izinleri B2.4,
+>       kişi B3.1, temizlik) · `test_ui2_ui0` G2 · `test_ui2_ledger_pages` U3 · `test_ui2_p2_pages` S5 · `test_users_admin` A1 / R1 / R2 / U9 / X1
+>       + T35 kurulumu · `test_p3_convert` T6 / Q2 · `test_cash_forecast` / `test_agent_office` / `test_schedule` / `test_commissions` kurulum
+>       token'ı (B2.2 → Owner kullanıcı token'ı, `tests/helpers/ownerToken.js`) · `test_migrate` R46-R49 ≤ 058 dondurma (desen).
+>   27. `setup_test_db.js`: `core_sectors` stub'ı + 11. DB `ell_comm_test_b1b` (≤ 058).
+>   28. `tests/b1b_tour.js` güncellenmedi (Send akışı değişti) — yerini `tests/b2_tour.js` aldı (zincirde değil). Playwright modülü yine
+>       `liffy-local-miner/node_modules`'tan (salt kullanım).
+>   29. ADR-016 core_* ile ilgisiz → SUPERSEDED notu yalnız ADR-005'e (zaten SUPERSEDED) + ADR-023 kesim maddesine; ADR-016'ya dokunulmadı (🔶).
+>   30. Ledger okuma uçları iç kullanıcıya kapısız KALDI (Paket 2 hükmü `ledger.js:23-25`; B2.2 listesinde değil) — matriste Project / Sales /
+>       Sales Ops ledger 200 → kütükte AÇIK.
+>   31. Staging salt-okunur rolü canlıdan SIKI: `ALTER ROLE … SET default_transaction_read_only = on` (prompt §6.2 istedi; canlıda yok — YON-05).
+>   32. Sales Operations / Sales kontrat detayında komisyon bölümünü görür (alan gizleme YOK — REQ §3.1 amendment "field-level hiding only for
+>       commission, later") — dış görünüm hariç.
+> - **🔶 Sentez'e:**
+>   1. Dış kullanıcı EMS duvarı izin listesiyle (SAPMA 1) — EMS iç kapıları AÇIK kalırken yeterli mi.
+>   2. `contracts.write` tek kod (SAPMA 4) — REQ "Change Sales Contract Status — Project department by default": Project şablonuna eklensin mi.
+>   3. Klasik organizer girişiyle kontrat ekranları 409 (SAPMA 5) — kesimde klasik giriş kullanıcıları ui2 girişine geçer; kabul mü.
+>   4. Temsilci yazma uçları (SAPMA 6) + ledger okuma uçları (SAPMA 30) + ledger referans denetimi (SAPMA 16) — ayrı YET dilimi mi.
+>   5. PDF'te satıcı tüzel kişi (unvan / adres / vergi no) + ayrı satış gönderen adresi (SAPMA 21 / 22) — ofis başına referans verisi mi.
+>   6. "ADR-005/016 SUPERSEDED" — ADR-016 core_* değil; kastedilen ADR hangisi (SAPMA 29).
+>   7. Sales Operations'ın kontrat detayında komisyonu görmesi (SAPMA 32) — alan gizleme dilimi ne zaman.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:**
+>   - Staging'de 059-061 dry-run + apply + NOTICE'ler (Suer) · `EMAIL_ECHO` env'i (Suer ekler; CC Render env'ini okuyamaz) · cc-external hesabı
+>     (Suer açar) · staging Playwright turu (push sonrası) · staging salt-okunur rol (Suer SQL'i koşar).
+>   - Worker'ın gerçek SendGrid gönderimi (ek + reply-to) — yalnız `workerExtras` birim testi; canlı / staging worker koşmadı.
+>   - Gerçek PDF görüntüleyicide (Chrome PDFium / Acrobat) görsel kontrol — yalnız poppler metin + yapı doğrulaması.
+>   - Kod değişikliğinden önce tam 613 koşusu (ilk 12 suite + test_migrate koşuldu).
+>   - Gerçek EMS rotaları test DB'sinde (duvar sahte EMS ucuyla sınandı).
+>   - YON-06 (status.render.com) bu turda bakılmadı · 390 px yalnız Sales home / teklif / dış kontrat listesi.
+>   - Canlı `claude_readonly` rolünün parola / bağlantı sınırı ayrıntısı (yalnız pg_roles / grant görünümü).
+> - **Bilinçle yapılmayanlar:** veri-girişi freelancer formu (Suer kararı bekleniyor) · rol / yetki ekranı cilası · EMS kapıları · B4 inbound ·
+>   8 e-postalık operasyonel zincir · WhatsApp · pazarlama kampanyası · temsilci yazma kapısı · ledger okuma kapısı · çok dilli PDF · teklif
+>   kopyalama · sahip devri · UI cila · LIFFY / liffy-ui değişikliği · köprü sökme · canlı DB'ye yazma · VPN / WARP ayarı · ell-docs'taki oturum
+>   dışı değişiklikler (`leena/CLAUDE.md`, `leena/todo.md`) dokunulmadı, commit'lenmedi.
+> - **UI kuyruğu (karar 7 + bu tur):** kontrat başlığında ISO zaman damgası (`finance-contract.html` `contract_date`) · teklif kopyalama · sahip
+>   devri · 390 px liste / kuyruk · REF-02 gömülü dizilerin API'den okunması (yukarıdaki liste) · çok dilli teklif PDF'i · Communication kartında
+>   sayfalama (bugün son 200).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -6819,6 +7148,13 @@
 >   **★SIRADAKİ (bu kazanır) = Prompt 2: B2 + B3 — Sentez kriterleri BEKLENİYOR; Prompt 2 direktif gelmeden BAŞLATILMAZ.** Sentez'e açık
 >   🔶: B1-b 5 soru ([defter:2026-11-05 B1-b: TEKLİF · SEND · SIGN]) + staging 2 soru ([defter:2026-11-05 B1-b STAGING'DE]); YET-KAPSAM
 >   B2 ile (karar 5). Sonra Prompt 3 (Paket 5) → kesim provası ×2 → kesim. Canlı `main` DONUK (`5c4c34b`, YON-16).
+>   5 Kas: Sentez → **PROMPT 1b KABUL + 7 KARAR + PROMPT 2 DİREKTİFİ** → ✅ **AYNEN** — [defter:2026-11-05 SENTEZ: PROMPT 1b KABUL + 7 KARAR +
+>   PROMPT 2 DİREKTİFİ]. Prompt 2 (B2 + REF + B3) → ✅ **STAGING'E HAZIR** (LEENA `b67b9fc`; 655/655 — PG14 ×2 + PG17.10; matris 6 × 22;
+>   Playwright 6/6) — [defter:2026-11-05 PROMPT 2: B2 + REF + B3]. **★SIRADAKİ (bu kazanır) = Suer: tek SUER BLOĞU (staging salt-okunur rol
+>   SQL'i · `EMAIL_ECHO=1` · push LEENA `eliza-next` + ell-docs · staging migrate 059-061 · cc-external daveti) → CC: araç hesaplarıyla staging
+>   Playwright turu + salt-okunur teyit → Suer ≤ 3 sonuç ekranı (Reference data → firma formu · teklif Communication kartı · Takiplerim) →
+>   ONAY → Prompt 2 KAPALI → Prompt 3 = Paket 5 raporlama (kriter Sentez'den) → kesim provası ×2 → kesim.** Sentez'e açık 🔶: Prompt 2 — 7 soru.
+>   Canlı `main` DONUK (`5c4c34b`, YON-16). Veri-girişi freelancer: Suer kararı bekleniyor (REQ amendment 2026-11-05).
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:

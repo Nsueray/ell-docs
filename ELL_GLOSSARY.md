@@ -219,6 +219,34 @@ An external company or individual who sells Elan Expo's exhibition space on a co
 - In Zoho: stored in Sales_Agents module
 - Note: Sales Agent ≠ Sales Rep. Agent is external/partner. Rep is internal/employee.
 
+- **External user (2026-11-05 — Prompt 2, YET-13..15):** a Sales Agent (external agency or freelancer) MAY get a LEENA login as an
+  **external user** (`users.user_type = 'external'`): linked to its external sales-agent record (required), an office (required), scope
+  fixed to **own**, finance hidden (own contracts shown without payments / commission / balance). Most agents stay records without a
+  login. Internal staff are **internal users**. [defter:2026-11-05 PROMPT 2: B2 + REF + B3]
+
+### Sales Operations (role template)
+
+The sixth system permission template (Sentez: "Satış Operasyon"): reads the contract list and the convert queue of **its own office**,
+plus communications and follow-ups (read); **no writes**. Permanent replacement for the YET-10 per-user override. (YET-18)
+
+### Communication (log entry)
+
+One row of the **communication log** (`communications`) attached to exactly one target — a customer company, a quote or a contract:
+direction (out / in / note), channel (email / phone / meeting / whatsapp / note), time, user, summary. E-mails sent from ELIZA (e.g.
+the quote e-mail on Send) write a row automatically; people add phone / meeting / WhatsApp / note entries by hand. Append-only. The
+delivery status of an e-mail row is derived from the e-mail queue (queued / sent / failed / echo), not stored. (ILT-03)
+
+### Follow-up
+
+A dated to-do on a company, quote or contract with an owner, a due date, a note and a status (open / done — done is final). Sending a
+quote suggests a follow-up 7 days later. "My follow-ups" is the Sales home page; overdue = open and due before today (derived). (ILT-04)
+
+### EMAIL_ECHO
+
+Staging-only environment flag (twin of INVITE_ECHO): e-mails that ELIZA would send are written to the queue with status `echo` and
+their rendered content, but are **never sent** (the worker only picks `pending`). Screens show an "echo" badge. Not set in production.
+(ILT-05)
+
 ### Country Manager
 
 An Elan Expo manager responsible for a specific country office.
