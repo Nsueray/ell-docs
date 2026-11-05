@@ -14,6 +14,9 @@
 
 ### 1.1 Üç servis, iki uygulama, bir çatı
 
+> ⛔ **SUPERSEDED (2026-11-05 — ADR-023):** "iki uygulama / LIFFY ayrı uygulama + ayrı DB" topolojisi hedef değil — LIFFY'nin satış
+> çekirdeği LEENA'ya birleşir; LIFFY geçici madencilik / kampanya aracıdır, kesimden sonra ayrı DB kalmaz. Metin silinmedi. [defter:2026-11-05 MİMARİ KARAR: BİRLEŞME]
+
 ELL üç isimli bileşenden oluşur, ama mimari olarak **iki uygulama + bir branding çatısıdır**:
 
 **LEENA — ana gövde (identity provider + operasyon + finance + intelligence).** Production'da çalışan sistem. Visitor management, floor plan, check-in, AI query engine, WhatsApp bot, finance, customer/contract dünyası burada. Aynı zamanda ELL'in **kimlik sağlayıcısı**: users, permissions, hierarchy, audit log, JWT üretimi LEENA'da merkezi. Tek PostgreSQL veritabanı; cross-modül sorgu yoğun (visitor + contract + revenue + floor plan) olduğu için tek DB zorunlu.

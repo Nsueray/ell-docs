@@ -1,6 +1,23 @@
 # ELL — Durum Defteri (Tek Yaşayan Belge) — v2
 
-> ## 🔴 2026-06-19 — MİMARİ KARAR DEĞİŞİKLİĞİ (HER ŞEYDEN ÖNCE OKU)
+> ## 🔴 2026-11-05 — MİMARİ KARAR: BİRLEŞME (HER ŞEYDEN ÖNCE OKU — ADR-023)
+>
+> **KARAR (Suer 5 Kas, Sentez v3):** LIFFY'nin satış çekirdeği (teklif, takip, e-posta alıp verme, kontrata çevirme, katalog,
+> müşteri/kişi) **LEENA/ui2'ye BİRLEŞİR**. 19 Haz 2026 "iki sistem / iki DB, tek cross-DB sınır LIFFY ↔ LEENA" kararı bu maddelerde
+> **SUPERSEDED**. Gerekçe: (a) e-posta itibarı ayrı uygulama/DB gerektirmez (tek uygulama, birden çok SendGrid hesabı); (b) güven
+> izolasyonu yetki matrisi + kapsamla sağlanır; (c) kod ayrılığı mimari gerekçe değildir.
+> - **LIFFY** = GEÇİCİ madencilik / kampanya aracı. Madencilik, benzer firma bulma, kampanya motoru, 80K kişi verisi bu adımda
+>   TAŞINMAZ; nihai kader envanter (`docs/audits/LIFFY_ENVANTER_2026-11-05.md`) sonrası karar. Kalıcı ayrı DB YOK, yeni köprü YOK.
+> - **Köprü** (HMAC servis kimliği, outbox, convert_requests, fuar yayını) kesime kadar DURUR, kesimde sökülür.
+> - **Çalışma biçimi YON-16:** her şey STAGING'de; canlı `main` kod olarak DONUK (`5c4c34b`); hotfix sınırı kütükte.
+> - **Plan:** Prompt 1 (P4-KAPANIŞ + B1) → Prompt 2 (B2 dış kullanıcı duvarı + B3) → Prompt 3 (Paket 5) → kesim provası ×2 → kesim.
+>   DENEME-0 İPTAL (Elahe B1 kabul turuna katılır) · tek giriş ve UI-1 ayrı iş olarak İPTAL · tasarım fazı kesimden sonra.
+> - Tam metin: `decisions/ADR-023-liffy-sales-core-merge.md`. Çelişkide bu blok kazanır (19 Haz bloğunun ELIZA-terk maddeleri GEÇERLİ).
+
+> ## 🔴 2026-06-19 — MİMARİ KARAR DEĞİŞİKLİĞİ (HER ŞEYDEN ÖNCE OKU) — ⛔ SUPERSEDED (kısmen, 2026-11-05 — ADR-023)
+>
+> ⛔ **5 Kas:** "LIFFY ayrı DB + ayrı servis" ve "tek cross-DB sınır LIFFY ↔ LEENA" maddeleri SUPERSEDED — satış çekirdeği LEENA'ya
+> birleşiyor ([defter:2026-11-05 MİMARİ KARAR: BİRLEŞME]). ELIZA-terk ve "finans LEENA DB'de" maddeleri GEÇERLİ. Metin silinmedi.
 >
 > **ELIZA ayrı sistem/database olarak terk edildi.** Eski ELIZA backend/DB disposable Zoho
 > mirror + raporlama prototipidir; verisi LEENA'ya migrate edilmeyecek. `eliza_73du` üstündeki
@@ -6160,6 +6177,137 @@
 >   - Trigger, test ve kod yazılmadı.
 >   - `leena/CLAUDE.md` + `leena/todo.md`: dokunulmadı, commit'lenmedi, stash'lenmedi (Sentez notu; ayrı ölçüm).
 
+> ## ✅ 2026-11-05 — P4-KAPANIŞ (KAPI-2, Sentez 5 Kas; LEENA `05bd86f`, dal `eliza-next`; staging'e hazır — push + migrate Suer'de)
+>
+> - **Ne yapıldı (Prompt 1 §2, ★ listesi aynen):**
+>   - **GOC-05:** bağlama ekranı (`utils/migration.js` `bindExpenses`) artık yalnız `account_id` ETİKETİ yazar — `ledger_entries` 0.
+>     Göç kodu (`scripts/zoho/lib/apply.js`) batch satırlarına (ödeme / bağsız gelir / gider / payout) hiçbir koşulda hareket yazmaz
+>     (ofis varsayılan hesabı olsa bile; ilk koşu + fark koşusu aynı kod). LED-12 iddiasını zorlayan DB trigger'ı YOK (ölçüldü);
+>     tek zorlayan test I3'e göç istisnası. Ekran metinleri "reporting label only". Ödeme bağlama yolu kodda yok (teyit).
+>   - **LED-22:** `053_payments_payouts_immutable` — payments + commission_payouts: UPDATE / TRUNCATE statement reddi + DELETE satır
+>     koruyucusu (mevcut 036 / 052 fonksiyonları; test bayrağı `ell.allow_ledger_reset`; GOC-04 geri alma yalnız kendi batch'i).
+>   - **LED-23 (kuruş kuralı, yeni ID):** `utils/balance.js` tek ifade — |bakiye_eur| < 1.00 → settled; Finance özeti açık alacak /
+>     fazla ödemeye girmez, tolerans sayacı ayrı (RAP-02); kontrat sayfalı liste + detay `balance_state`; bakiye değişmez.
+>   - **OFS-07:** `054_ofs07_office_question_closed` (veri değiştiren — YON-12) not parçasını göçmüş kontratlardan çıkarır; göç kodu +
+>     mutabakat "closed (OFS-07)". Batch sayacı (counts) tarihsel kalır.
+>   - **TABAN-2 (GOC-07):** **AF489555**, ölçüldü — değer LEENA `CLAUDE.md` (repo PRIVATE, `gh api … .visibility` = private).
+>   - **ui2:** Finance › Agents (liste, salt okuma) + Agent detayı (`GET /api/sales-agents/:id` yeni uç: tür · ofis · aktiflik · Zoho kaydı ·
+>     kullanıcı · bağlı tedarikçiler · kontrat sayıları · ekstre aynı kaynaktan — MOT-01) · Supplier detayı: tür (employee) · diğer adlar ·
+>     bağlı temsilci · göçmüş gider sayacı (GOC-05: ledger dışında → ödeme geçmişinde yok, sayaçta var).
+> - **Commit:** LEENA `eliza-next` `8161678` (main merge — aşağıda SAPMA 2) → **`05bd86f`** "P4-KAPANIŞ". **PUSH YOK** (Suer).
+> - **Ölçülenler:**
+>   - **Repo:** ell-docs HEAD `02166e0` = origin/main · LEENA main `5c4c34b` = origin/main · eliza-next `905280f` = origin (main'i İÇERMİYORDU;
+>     merge-base `9980d75`; `git diff 9980d75 main` BOŞ — ağaç aynı) · liffyv1 `10047ee` · liffy-ui `b78231b` · LEENA son migration 052 ·
+>     test tabanı **548/548** (29 suite).
+>   - **Canlı (claude_readonly, `BEGIN READ ONLY`, db `leena_v401_db`):** TABAN 342.00 ✅ (SLICE_CTES) · son migration 052 (4 Kas) ·
+>     payments / payouts / contracts trigger 0 (`pg_trigger`; information_schema salt-okuma rolüne göstermiyor) · batch #2 applied,
+>     ofis-sorusu sayacı 452, not taşıyan kontrat 452 · ledger_entries 0 · kontrat 3.931 (batch #2 3.928).
+>   - **Staging (pano, `leena_staging_db`, PG 17.11, salt okuma):** TABAN 342.00 ✅ · son migration 052 (28 Eki) · kontrat 3.933 (batch #2 3.928,
+>     max id 7862) · ledger 1.304 = göç **1.300** (ödeme 1.138 = kontrat 1.028 + bağsız 110 · gider 24 · payout 138) + 4 · katalog / teklif /
+>     firma / kişi tablosu YOK · `convert_requests` 15 kolon (`office_code`, `needs_agent` dahil) · `idx_contracts_source_quote_id` partial
+>     UNIQUE (`WHERE source_quote_id IS NOT NULL`) · `contracts.company_id` uuid · `sellable_territories` Turkey → TR (1) · yayında yalnız
+>     404 "Deneme 2026" · payments / payouts trigger 0 · ofis-sorusu notu 452 · Sales şablonu commissions.read / contracts.read / sales.read
+>     = own · kayıt defteri 23 · kullanıcılar Owner 1 + Finance (pasif) 1 + servis 1 · LIFFY kaynaklı kontrat 4 (max 7862).
+>   - **TABAN-2 ölçütü** (GOC-07 aynen; yorumlar SAPMA 8): küme canlıda **4** · staging 4 · en küçük LEENA id canlı **6482** / staging **6483**
+>     → aynı AF (**AF489555**) · SR earned (SLICE_CTES) canlı = staging (değer CLAUDE.md'de).
+>   - **Kuruş:** batch #2'de |bakiye_eur| ∈ (0, 1.00) canlı **57** (+28 / −29) = staging 57 (+28 / −29); kontrat para biriminde 25 (+14 / −11)
+>     → > 0 → LED-23 yazıldı. "Outstanding" gösteren yüzeyler (ölçüldü): Finance özeti `routes/ledger.js` receivables (tek toplayan) ·
+>     kontrat listesi / detay yalnız bakiye GÖSTERİR (süzgeç yok) · nakit öngörü plan satırı kalanıyla çalışır (göçmüş kontratta plan yok).
+>   - **Fuar takvimi + G42** (G42 LEENA `CLAUDE.md`'de BULUNDU: kampanya gönderim günü deploy yalnız 22:00–07:00 Casablanca): canlıda
+>     bugün..+8 hafta: **Best5 / Mega Clima / Electricity Algeria 2026 — 17–20 Kas** (Zoho göçü fuarları, LEENA ziyaretçi 0) · `test` 18–20 Kas ·
+>     aktif e-posta kampanyası 0. Staging ek: "Deneme 2026" 1–3 Ara. YON-16: canlıya deploy YOK → pencere yalnız hotfix için (17–20 Kas
+>     hotfix 22:00–07:00 Casablanca). YON-06: status.render.com "All Systems Operational" (5 Kas, CC ölçtü).
+>   - **Testler:** **563/563** (30 suite) — PG14'te 2 temiz koşu aynı + PG **17.10** geçici kümede 1 koşu. Yeni: `test_p4_closing.js` (9) ·
+>     `test_migrate.js` R38-R41 (053 + 054 gerçek CLI; R34-R37 ≤ 052'ye dondurma) · `test_zoho_migration.js` M2b / M3b.
+> - **YON-05 (çürüyen varsayımlar):**
+>   - "eliza-next main'i içerir" → İÇERMİYORDU (main'deki merge commit `5c4c34b`); normal merge `8161678`, içerik farkı 0.
+>   - "ui2'de temsilci detayı var mı" → YOKTU (nav `agents` = klasik köprü).
+>   - "LED-12 dolu ⇔ hareket" DB'de zorlanıyor mu → HAYIR (yalnız test I3).
+>   - "ofis-sorusu sayaç mı bayrak mı" → SAKLANAN (not + counts JSON), türetilmiş değil.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging'in izlediği dal Render panelinden (İşletim Notu §1 `eliza-next` diyor — tarihsel) · 053 / 054'ün
+>   staging'de dry-run + apply'ı (Suer) · ui2 ekranlarının staging'de görünümü · TABAN-2 kontratının ui2 detayındaki M1 (`computeCommission`)
+>   değeri (yalnız SLICE_CTES ölçüldü; ödemesi tam → oran 1, aynı değer beklenir) · staging `payments` / `commission_payouts` satır sayısı
+>   (053 NOTICE'i basacak).
+> - **Bilinçle yapılmayanlar:** staging'deki 1.300 göç hareketi SİLİNMEDİ (tazelemede gider — YON-14) · canlıya hiçbir şey (YON-16) ·
+>   `expenses` LED-22 trigger'ına alınmadı (hüküm) · kontrat 4 temizliği · Suer işleri (SD toplu atama, hesap açma — kesime kadar canlıda
+>   hesap açılmaz, YON-16) · eski sayfasız `GET /api/contracts`'a `balance_state` eklenmedi (KURAL 2) · `leena/CLAUDE.md` + `leena/todo.md`
+>   (oturum dışı fark; dokunulmadı, commit'lenmedi, stash'lenmedi).
+
+> ## ✅ 2026-11-05 — B1-a: KATALOG + MÜŞTERİ (ADR-023 ilk adım; LEENA `222ac41`; B1b = Prompt 1b)
+>
+> - **Ne yapıldı:** Prompt 1 §3 envanter (`docs/audits/LIFFY_ENVANTER_2026-11-05.md`) + §4.0 BM yaması (`ELL_BILGI_MIMARISI_v4.md` §1 + §4.4) +
+>   §4.1 katalog + §4.2 müşteri + §4.7 yetki (bu iki alan için) + §4.8 ekranlar. **Bölünme (promptun "SIĞMAZSA" kuralı):** 4.3 teklif ·
+>   4.4 send · 4.5 sign + çevirme · 4.6 kuyruk → **Prompt 1b**.
+>   - `055_catalog` — products (kod ZORUNLU + kiracıda tekil · m2 | unit · vergi 0–100 · RF bayrağı ÜRÜNDE · Zoho kimliği · silinmez) +
+>     product_prices (varsayılan = ofissiz TEK · ofis fiyatı · kiracının para birimi FK · fiyat ≥ 0) + `catalog.write` (admin, şablonsuz).
+>   - `056_catalog_seed` — LIFFY tohum JSON'undan ÜRETİLDİ (`scripts/catalog/build_seed_sql.js`, JSON sha256 başlıkta), idempotent;
+>     aktif Owner'lı kiracıya. `utils/catalog.js` `resolvePrice` (KAT-01: ofis + birim → varsayılan + birim → NO_PRICE; kur çevirmesi yok;
+>     0 fiyat geçerli + işaret; pasif ürün INACTIVE).
+>   - `057_customers` — companies (LED-03; ülke ZORUNLU, ofis + vergi no isteğe bağlı; kiracı × normalize ad × ülke tekil; silinmez) +
+>     contacts (e-posta ZORUNLU — SAT-01 · telefon E.164 — B14; firma × e-posta tekil; silinmez) + `contracts.customer_company_id`
+>     (yeni nullable FK — yazan kod yok, B1b bağlar) + `sales.write` → Sales şablonu (own; YET-04).
+>   - Uçlar `/api/catalog` · `/api/customers` (ret 409 + kod · denetim aynı transaction · 055 / 057 yoksa 503 NOT_MIGRATED).
+>   - ui2: **Admin › Catalog** (Products + Product) · **Sales › Customers** (liste + detay / kişiler) — nav.json tek kaynak, iki yönlü test yeşil.
+> - **Commit:** LEENA `eliza-next` **`222ac41`**. ell-docs bu kayıt (ADR-023 + envanter + BM + kütük + yol haritası + konsolide + sözlük,
+>   tek commit). **PUSH YOK** (Suer).
+> - **Ölçülenler:**
+>   - **LIFFY (kod + canlı DB salt okuma; pano, db `liffy`, PG 17.9):** 36 tablo · 34 rota dosyası · 31 ekran · 3 kullanıcı (owner / manager /
+>     sales_rep, ofissiz) · teklif 3 (`quote_af_seq` son 100002) · son 90 gün: teklif 1, kampanya 0, madencilik 0 · kişi 80.855 · LIFFY ürün
+>     228 / fiyat 205. Send e-posta / PDF / bağlantı ÜRETMİYOR; `OFFICE_UNKNOWN` LIFFY'de BULAMADIM. Ayrıntı envanter belgesinde.
+>   - **Tohum (test DB'de gerçek CLI):** 227 ürün · 204 fiyat (188 varsayılan + 16 ofis) · 24 fiyatsız · RF 4 (`KRF`, `LRF`, `REG-001`,
+>     `RF 350`) · 0 fiyat 30 · pasif 2 · ikinci koşu +0 / +0.
+>   - **Testler:** **580/580** (32 suite) — PG14 2 temiz koşu aynı + PG17.10 1 koşu. Yeni: `test_b1_catalog_customers.js` (11) ·
+>     `test_b1_premig.js` (2; yeni kod + ≤ 054 şema → yeni uçlar 503, mevcut uçlar aynen) · `test_migrate.js` R42-R45 (055-057 gerçek CLI;
+>     R38-R41 ≤ 054'e dondurma). **Playwright turu** `tests/b1_tour.js` (Chromium, yerel test DB): **5/5** — Catalog sayaçları (227 / 24 / 4)
+>     → ürün fiyat listesi → yeni firma formu → kişi (+905321234567) → aynı e-posta 409 ekranda → 390 px taşma yok · sayfa hatası 0.
+>   - TABAN 342.00 testte (T1) ✅.
+> - **YON-05 (çürüyen varsayımlar):** "~40 rota dosyası" → 34 · "LIFFY Send PDF üretiyorsa" → Send hiçbir şey göndermiyor (yalnız durum) ·
+>   "OFFICE_UNKNOWN LIFFY sebep kodu" → LIFFY kodunda yok (LEENA'nın kodu) · "katalog 23 fiyatsız" → LEENA'da 24 (DZ ofisi yok).
+> - **SAPMA (Prompt 1, numaralı — P4-KAPANIŞ + B1-a):**
+>   1. LEENA yerel yolu `~/Desktop/Leena_Projesi/Leena_v401_monorepo` (prompt `~/Projects/…`); push bloğu gerçek yolla.
+>   2. eliza-next main'i içermiyordu, ff olmadı → normal merge `8161678` (ağaç farkı 0).
+>   3. Staging'in izlediği dal Render panelinden ölçülemedi; staging DB (052 + batch #2 + Deneme 2026) eliza-next çizgisiyle tutarlı.
+>   4. GOC-05 / LED-22'nin TERSİNE ÇEVİRDİĞİ eski beklentiler (`test_zoho_migration.js`): M2 hareket 5 → 0 · M11 payout hareketi 1 → 0 ·
+>      G1 batch dışı ödeme silme hatası FK → LED-22 · G2 bağlama hareketi 2 → 0 (+ etiket sayısı 2) · B2 geri almada silinen hareket 7 → 0;
+>      `test_ledger.js` I3'e göç istisnası (hüküm 2a). CLAUDE.md "assertion değiştirilmez" kuralına karşı: davranışı hüküm değiştirdi.
+>   5. Paket ilerlemesini sabitleyen beklentiler güncellendi: R34-R37 ≤ 052, R38-R41 ≤ 054 dondurma (desen) · kayıt defteri 23 → 25 ·
+>      role_permissions 31 → 32 · Sales alt menüsü + Customers (ledger_pages U3, ui0 G2) · Admin alt menüsü + Catalog (p2_pages S5).
+>   6. 8 suite'in fikstürü payments / payouts'u bayraksız siliyordu → `tests/helpers/moneyReset.js` (kurulum; assertion aynı).
+>   7. LED-22 test bayrağı yeni bayrak değil, mevcut `ell.allow_ledger_reset` (052 deseni; ürün kodunda 0 — testli).
+>   8. TABAN-2 ölçüt yorumları: "L4 farkı 0" = tam eşitlik · "SD boş" = SD kişisi + sd_pct + sd_pct_pending boş (gevşek okumayla da küme 4,
+>      aynı en küçük id) · "ödemesi tam" = Σ ödeme (kontrat para birimi) = revenue ve sentetik yok · "tek internal SR" = SR internal + agent yok ·
+>      oran = COALESCE(sr_pct, varsayılan) > 0.
+>   9. LED-23 eşiği EUR bakiyede (outstanding yüzeyleri EUR'dur); kural evrensel okundu (yalnız göç değil) — 🔶.
+>   10. Eski sayfasız `GET /api/contracts` dizisine `balance_state` eklenmedi (KURAL 2).
+>   11. nav `agents` id'si klasik köprü kaldı (etiket "Agents (classic)"); ui2 listesi `agent-list`. Ekstre ui2 detayında satır içi —
+>       klasik ekstreye bağlantı yok (UI-02: klasik bağlantı yalnız nav.json'dan, kayıt parametresi taşımaz).
+>   12. `GET /api/sales-agents/:id` liste ucuyla aynı kapı (izin kapısı yok — YET-02 deseni).
+>   13. OFS-07 sayaç anahtarı `office_question` adıyla kaldı (canlı batch counts uyumu); anlamı "DZ/IQ → Turkey, karar verildi".
+>   14. 054 `updated_at`'e dokunmaz.
+>   15. B1 bölündü (promptun kuralı): 4.1 + 4.2 burada, 4.3–4.6 Prompt 1b.
+>   16. Katalog: `code` ZORUNLU + `unit_type` m2 | unit (LIFFY 050 emsali) · vergi NULL → 0 · LIFFY `product_prices.source` alınmadı.
+>   17. DZ ofis fiyatı (CNS-008) atlandı → 204 fiyat / 24 fiyatsız (JSON 205 / 23).
+>   18. Fiyat satırı silinebilir (liste fiyatı ana veri; teklif satırı donmuş kopya taşıyacak) — ürün silinmez.
+>   19. Yeni kolon adı `contracts.customer_company_id` (bileşik FK organizer_id + id).
+>   20. Kişi tekilliği firma × e-posta (promptta tanımlı değildi).
+>   21. Telefon: boşluk / tire / parantez atılır, `+` zorunlu, ülke tahmini yok.
+>   22. Admin sekmesi `users.read` ister → Sales kullanıcısı Admin › Catalog'u menüde görmez (katalog okuma API'si sales.read ile açık;
+>       teklif editörü B1b'de buradan okur).
+>   23. Sales sekmesinin alt etiketi nav.json'da hâlâ `liffy` (UI-0 testleri + tasarım fazı) — 🔶.
+>   24. Playwright turu yalnız B1-a kapsamı; oturum token'ı localStorage'a yazıldı (giriş ekranı tur konusu değil).
+>   25. CC canlı salt-okunur DB için WARP'ı geçici kapattı (G4), iş bitince açtı.
+>   26. LIFFY kod envanteri salt-okuma ajanına yaptırıldı (file:line'lı), DB sayımları CC'nin.
+>   27. Staging DB bağlantısı da panodan alındı (prompt yalnız LIFFY'yi saymıştı; 5 Kas emsali, K4 maskeli, pano boşaltıldı).
+> - **🔶 Sentez'e:** (1) YET-KAPSAM → B2 ile teyidi · (2) LED-23 evrensel mi, yalnız göçmüş kontrat mı (SAPMA 9) · (3) TABAN-2 ölçüt
+>   yorumları (SAPMA 8) · (4) Sales sekmesi `liffy` alt etiketi (SAPMA 23) · (5) Prompt 1b kapsamı = 4.3–4.6 + Elahe kabul turu ·
+>   (6) LEENA teklif dizisi başlangıcı 200000 (LIFFY son 100002) — B1b'de uygulanacak.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** 055–057'nin staging'de dry-run + apply'ı ve NOTICE'leri (Suer) · staging ekran turu · Elahe daveti +
+>   kendi hesabıyla akış (B1b'ye kaldı — teklif yok) · LIFFY canlıda kişi / şirket kayıtlarının içeriği (bilinçle; yalnız sayı) · LIFFY ve
+>   LEENA katalog kodlarının satır satır kıyası.
+> - **Bilinçle yapılmayanlar:** teklif / send / sign / çevirme / kuyruk (B1b) · Elahe daveti (B1b turunda) · madencilik · kampanya · 80K kişi ·
+>   takip · gelen e-posta · dış kullanıcı duvarı (B2) · köprü sökme · LIFFY / liffy-ui değişikliği · canlı deploy · tasarım / cila ·
+>   LIFFY staging silme.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -6317,6 +6465,13 @@
 >   (7) defter / kütük.
 >   Suer işleri değişmedi: SD toplu atama (801) · hesap açma GOC-05 düzeltmesinden SONRA. `leena/CLAUDE.md` + `leena/todo.md`
 >   dokunulmaz; ayrı ölçüm (Sentez).
+>   🔴 **5 Kas — MİMARİ KARAR: BİRLEŞME (ADR-023)** — [defter:2026-11-05 MİMARİ KARAR: BİRLEŞME]. Önceki sıra (YON-15) bu kararla
+>   değişti; DENEME-0 + LIFFY staging hattı İPTAL / ASKIDA.
+>   P4-KAPANIŞ → ✅ **STAGING'E HAZIR** (LEENA `05bd86f`; 563/563) — [defter:2026-11-05 P4-KAPANIŞ]. B1-a → ✅ **STAGING'E HAZIR**
+>   (LEENA `222ac41`; 580/580; Playwright 5/5) — [defter:2026-11-05 B1-a: KATALOG + MÜŞTERİ].
+>   **★SIRADAKİ (bu kazanır) = Suer: tek push bloğu (LEENA `eliza-next` + ell-docs push → staging migrate 053–057) + staging ekran turu
+>   (ONAY / İTİRAZ) → CC push sonrası salt-okunur teyit kaydı → Prompt 1b (B1b: teklif → send → sign → çevirme → kuyruk + Elahe kabul turu)
+>   → Prompt 2 (B2 + B3) → Prompt 3 (Paket 5) → kesim provası ×2 → kesim.** Canlı `main` DONUK (`5c4c34b`, YON-16).
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:

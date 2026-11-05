@@ -60,6 +60,10 @@ ledger) yeniden inşa etmek. LEENA/LIFFY/ELIZA, Zoho'nun çevresindeki yardımc�
 değerli ama motorun kendisi değil. **Ticari çekirdek üç sistemin hiçbirinde yok.**
 
 ### 1.2 Mimari (2026-06-19 kararıyla GÜNCELLENDİ — eski "3 DB" superseded)
+
+> ⛔ **SUPERSEDED (2026-11-05 — ADR-023, birleşme):** bu bölümün "LIFFY ayrı DB + ayrı servis / dış halka" ve "tek cross-DB sınır"
+> hükümleri geçersiz — LIFFY'nin satış çekirdeği LEENA'ya birleşir; dış kullanıcı LEENA'da kapsam + finans görünmezliği duvarıyla
+> ayrılır (B2). Köprü kesime kadar durur. Metin tarihsel olarak aşağıda, silinmedi. [defter:2026-11-05 MİMARİ KARAR: BİRLEŞME]
 - **2 DB ayrı kalır: LIFFY + LEENA.** Eski **eliza DB aktif mimariden çıkarıldı** (Zoho
   mirror, disposable). Cross-DB ölçümü zaten gerçek-join+real-time = 0 gösteriyordu; yeni
   karar "her şeyi tek DB'ye merge et" değil, **ELIZA mirror'ı atıp finance'i LEENA'da
@@ -73,6 +77,10 @@ değerli ama motorun kendisi değil. **Ticari çekirdek üç sistemin hiçbirind
 - **Over-engineering YASAK:** SSO için basit paylaşılan secret — RS256/JWKS/saga DEĞİL.
 
 ### 1.3 İki halka modeli (senin kararın + requirements satır 351-363 ilkesi)
+
+> ⛔ **SUPERSEDED (2026-11-05 — ADR-023, birleşme):** bu bölümün "LIFFY ayrı DB + ayrı servis / dış halka" ve "tek cross-DB sınır"
+> hükümleri geçersiz — LIFFY'nin satış çekirdeği LEENA'ya birleşir; dış kullanıcı LEENA'da kapsam + finans görünmezliği duvarıyla
+> ayrılır (B2). Köprü kesime kadar durur. Metin tarihsel olarak aşağıda, silinmedi. [defter:2026-11-05 MİMARİ KARAR: BİRLEŞME]
 ```
 DIŞ HALKA — LIFFY                       İÇ HALKA — Ana uygulama
 (freelancer/güvenilmez satış ekibi)     (güvenilir proje ekibi + sen)

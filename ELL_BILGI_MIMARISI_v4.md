@@ -1,5 +1,12 @@
 # ELL — Bilgi Mimarisi (Information Architecture) v4
 
+> ## v4 YAMASI-2 (2026-11-05 — ADR-023 BİRLEŞME; UI-01 "önce BM, sonra ekran")
+>
+> LIFFY'nin satış çekirdeği LEENA'ya birleşiyor. **LEENA'ya giren (B1):** katalog · firma / kişi (B1-a, 5 Kas) · teklif · çevirme · kuyruk
+> (B1b). **LIFFY'de kalan — kesime kadar:** madencilik · benzer firma · kampanya / sequence · 80K kişi verisi · takip / gelen e-posta.
+> §1 sahiplik tablosu ve §4.4 buna göre yamalandı; §0 / §3'teki "iki DB, tek cross-DB sınır" dili **kesime kadar** geçerlidir (köprü
+> durur), hedef değil. [defter:2026-11-05 MİMARİ KARAR: BİRLEŞME]
+
 > ## v4 YAMASI (2026-10-22, Sentez — UI-0 / UI-01)
 >
 > **Yalnız §4 değişti:** ui2 Finance alt menü eşlemesi eklendi (§4.1) — Executive / Contracts / Money /
@@ -83,9 +90,10 @@ Karışıklığın kaynağı: **bazı kavramlar birden fazla app'te ama farklı 
 
 | Kavram | Kullanıcıya görünen alan | Fiziksel sahip |
 |---|---|---|
-| **Lead** | Sales / LIFFY | LIFFY DB |
-| **Contact + Company** | Sales / LIFFY | LIFFY DB |
-| **Quote** | Sales / LIFFY (AF `Q{ISO}-{seq}`) | LIFFY DB |
+| **Lead** | Sales / LIFFY — **kesime kadar** (madencilik / kampanya; ADR-023) | LIFFY DB |
+| **Contact + Company** | Sales / **LEENA (B1)** — LIFFY kayıtları kesime kadar | **LEENA DB** (`companies`, `contacts` — B1-a 5 Kas); LIFFY `persons` / `affiliations` kesime kadar |
+| **Quote** | Sales / **LEENA (B1b)** — LIFFY teklifleri kesime kadar (AF `Q{ISO}-{seq}`) | **LEENA DB** (B1b); LIFFY DB kesime kadar |
+| **Katalog (ürün + fiyat listesi)** | Admin › Catalog · teklif editörü — **LEENA (B1-a)**; LIFFY kataloğu kesime kadar | **LEENA DB** (`products`, `product_prices`) |
 | **Sales Contract** | Finance / ELIZA tab 🔴 (AF `Q`→`A`, aynı sequence) | **LEENA DB** |
 | **Payment / Revenue** | Finance / ELIZA tab 🔴 (frozen FX) | **LEENA DB** |
 | **Commission** | Finance / ELIZA tab 🔴 (computed, per-row override) | **LEENA DB** |
@@ -223,7 +231,7 @@ ui2'de Finance alt menüsü yukarıdaki bölümlerden türetilir ve **dört grup
 |---|---|---|
 | **Admin** · Migration | Sentez Paket 4 §2 (geri alma) + §4 (mutabakat) · GOC-04 | **Batches** — göç batch'leri, canlı sayımlar, açık işler, onay metinli geri alma |
 | Admin · Migration | Sentez §3 Komisyon · GOC-01 | **SD unassigned** — Zoho SD oranı bekleyen kontratlar; toplu SD ataması |
-| Admin · Migration | Sentez §3 Giderler · GOC-03 / LED-12 | **Unbound expenses** — hesapsız göç giderleri; hesaba toplu bağlama (gider hareketi yazılır) |
+| Admin · Migration | Sentez §3 Giderler · GOC-03 / GOC-05 | **Unbound expenses** — hesapsız göç giderleri; hesaba toplu bağlama (YALNIZ raporlama etiketi — ledger hareketi YAZILMAZ, GOC-05, P4-KAPANIŞ 5 Kas) |
 | Admin · Migration | Sentez §3 Gelirler · GOC-02 / RAP-02 | **Unlinked income** — kontrata bağlanamayan Zoho geliri (salt okuma) |
 
 - Neden Admin (Finance değil): dördü de göç temizliği ve Owner işidir (`migration.read` / `migration.write` sistem şablonlarına
@@ -232,6 +240,19 @@ ui2'de Finance alt menüsü yukarıdaki bölümlerden türetilir ve **dört grup
 - Finance › Contracts aynı ekran kalır; göç sonrası satır sayısı için sayfalama + süzgeç (yıl · fuar · ofis · statü · göçmüş) eklendi.
 
 ---
+
+### 4.4 ui2 Sales + Admin › Catalog + Finance › Agents (yama — ADR-023 B1-a + P4-KAPANIŞ, 5 Kas; UI-01)
+
+| ui2 alanı · grubu | dayandığı bölüm | ekran |
+|---|---|---|
+| **Sales** · Customers | §1 Contact + Company (LEENA, B1) · §3 bölüm 3 "Contacts & Companies" | **Customers** — firma listesi + detay (kişiler alt listesi, e-posta zorunlu — SAT-01) |
+| **Admin** · Catalog | §1 Katalog (LEENA, B1) · KAT-01 / KAT-02 | **Products** — ürün + fiyat listesi (varsayılan / ofis × para birimi); yazma `catalog.write` (Owner) |
+| **Finance** · Contracts | §4 "Commissions & Agents" (Agent registry Finance'ta yaşar) · §5 | **Agents** — temsilci listesi + detay (tür · ofis · Zoho kaydı · bağlı tedarikçi · kontrat sayısı · ekstre); klasik düzenleme ekranı köprü ("Agents (classic)") |
+| Sales · Quotes (B1b) | §3 bölüm 4 "Pipeline & Quotes" (teklif kısmı) | Prompt 1b: teklif listesi + düzenleyici · send · sign · çevirme; Handoff › Convert queue "signed-bekleyen" satırları |
+
+- Sales sekmesinin boş-durumu kalktı: Customers grubu + Handoff. Admin › Catalog Owner işidir (sistem şablonlarına verilmedi); satış
+  ekranları kataloğu `sales.read` ile okur.
+- LIFFY'de kalan bölümler (§3: İşim / Action Screen · Prospecting · pipeline board) kesime kadar LIFFY'dedir; nihai kader envanter sonrası (ADR-023).
 
 ## 5. "Sales agent nerede?" — net cevap
 
