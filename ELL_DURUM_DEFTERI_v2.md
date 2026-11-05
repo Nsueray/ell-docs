@@ -6622,6 +6622,20 @@
 >   Suer) · araç hesabı / tur verisi silinmedi (tazelemede gider — YON-14) · canlı DB okunmadı · VPN / WARP'a dokunulmadı (YON-17) ·
 >   `leena/CLAUDE.md` + `leena/todo.md` dokunulmadı.
 
+> ## ✅ 2026-11-05 — B1 KAPALI (B1-a + B1-b) — Suer ONAY (18:20)
+>
+> - **Ne yapıldı:** Suer staging'de iki adrese baktı: kontrat **7863** (ATR-200000 — `finance-contract.html?contract=7863`) ve
+>   **Convert queue** (`sales-convert-queue.html`). Sonuç: "beklendiği gibi" → **ONAY (Suer, 5 Kas 18:20)**. Böylece **B1 (B1-a + B1-b)
+>   KAPALI**. Kayıtlar: [defter:2026-11-05 B1-a: KATALOG + MÜŞTERİ] · [defter:2026-11-05 P4-KAPANIŞ + B1-a: STAGING'DE] ·
+>   [defter:2026-11-05 B1-b: TEKLİF · SEND · SIGN] · [defter:2026-11-05 B1-b STAGING'DE]. Kod değişikliği YOK.
+> - **Commit:** ell-docs bu kayıt (yalnız defter). LEENA değişmedi (`eliza-next` = `c5ad2ee`). **PUSH YOK** (Suer).
+> - **Ölçülenler:** bu turda yeni ölçüm yok. Staging ekran sonucu Suer'in gözlemi; sayılar önceki kayıtta (TABAN 342.00 · TABAN-2 eşit ·
+>   brüt 3930.00 · converted 3 / needs agent 1).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** ONAY sonrası staging DB yeniden okunmadı (değişiklik beklenmiyor) · araç hesabı cc-staging hâlâ AKTİF
+>   (iş bitince Suer pasifler — YON-16 ek satırı) · Sentez 🔶 soruları açık (B1-b 5 + staging 2).
+> - **Bilinçle yapılmayanlar:** Prompt 2 başlatılmadı (direktif yok) · tur verisi (CC Tool Co, QTR-200000, ATR-200000) silinmedi —
+>   tazelemede gider (YON-14) · `leena/CLAUDE.md` + `leena/todo.md` dokunulmadı.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -6801,6 +6815,10 @@
 >   **★SIRADAKİ (bu kazanır) = Suer: 2 adrese bakış (staging kontrat 7863 + kuyruk) → ONAY → B1 KAPALI → Sentez 🔶 cevapları (B1-b 5 +
 >   staging 2) → Prompt 2 (B2 + B3; YET-KAPSAM B2 ile) → Prompt 3 (Paket 5) → kesim provası ×2 → kesim.** Prompt 2 direktifsiz
 >   BAŞLATILMAZ. Canlı `main` DONUK. Staging DB için pano İSTENMEZ (Suer, 5 Kas).
+>   5 Kas 18:20: Suer **ONAY** (kontrat 7863 + Convert queue) → ✅ **B1 (B1-a + B1-b) KAPALI** — [defter:2026-11-05 B1 KAPALI].
+>   **★SIRADAKİ (bu kazanır) = Prompt 2: B2 + B3 — Sentez kriterleri BEKLENİYOR; Prompt 2 direktif gelmeden BAŞLATILMAZ.** Sentez'e açık
+>   🔶: B1-b 5 soru ([defter:2026-11-05 B1-b: TEKLİF · SEND · SIGN]) + staging 2 soru ([defter:2026-11-05 B1-b STAGING'DE]); YET-KAPSAM
+>   B2 ile (karar 5). Sonra Prompt 3 (Paket 5) → kesim provası ×2 → kesim. Canlı `main` DONUK (`5c4c34b`, YON-16).
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
