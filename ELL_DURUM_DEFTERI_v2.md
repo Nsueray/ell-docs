@@ -7782,6 +7782,25 @@
 >   ölçülmedi (yerel testte `test_p3c.js` L1 + `p3c_tour.js` W1 ölçüldü) · R7'nin staging verisindeki görünümü (Owner ekranı Suer'de).
 > - **Bilinçle yapılmayanlar:** 3d kuralı (sqm > 0) bu turda koda GİRMEDİ (Suer: 3d'de) · Prompt 3d başlatılmadı (Suer ONAY'ı bekleniyor).
 
+> ## ✅ 2026-11-06 — PROMPT 3c 1. BÖLÜM KAPALI — Suer ONAY (15:57) · Suer notları AYNEN
+>
+> - **Ne yapıldı:** Suer staging'de R7 Overview'a baktı (üç bölüm, Owner açılışı) · migrate 065 (kayıt 67) · tur 3/3 · sqm dağılımı alındı →
+>   **ONAY (Suer, 6 Kas 15:57)** → **Prompt 3c 1. bölüm KAPALI**. Kayıtlar: [defter:2026-11-06 PROMPT 3c (PAKET 5a 2. YARI) 1. BÖLÜM: GÜVENLİK +
+>   S1–S4 + R7] · [defter:2026-11-06 PROMPT 3c 1. BÖLÜM STAGING'DE]. Kod değişikliği YOK. ell-docs `257c072` push'u 3d sonunda, birleşik (Suer).
+>   Doğrulama (bu tur, GitHub erişimi döndü): ell-docs `origin/main` = `5d14471` → önceki turun push'u DOĞRULANDI.
+> - **Suer (6 Kas, AYNEN):**
+>
+>   ```
+>   1- "0 yazanlar ya sponsorluk ya ekstra malzeme sözleşmesidir. zoho esnek olmadığı için hepsini aynı gösteriyor.
+>      alan satışı değildir."
+>   2- "evet elizadan elifin ekim ayındaki ödemesi giren sözleşmelerini çıkartmışsım." → kabul (d) kaynağı
+>      (ELIZA_Payments_2026-10_Elif_AY.xlsx) TEYİTLİ, (d) kapalı.
+>   ```
+>
+> - **Sonuç:** kabul (d) KAPALI (kaynak teyitli). Not 1 → S1 kuralı Prompt 3d'de: `sqm` = 0 olan göçmüş kontrat ALAN DIŞI (m² = 0, ayrı sayaç) —
+>   3c'de "yedek yalnız sqm > 0; 0 / NULL m²'siz sayacında" diye yazılan not bu kuralla DEĞİŞİR (kütük RAP-04, 3d kaydı).
+> - **Commit:** ell-docs bu kayıt (yalnız defter). **PUSH YOK**.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
