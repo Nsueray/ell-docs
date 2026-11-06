@@ -7754,6 +7754,34 @@
 > - **Bilinçle yapılmayanlar:** R3 · R8 (Prompt 3d) · ülke backfill'i (S2: yok) · `sqm` saklama (S1: türetilir) · UX hattı Orchestrator kuyruğuna
 >   alınmadı (Sentez şartı 2) · `leena/todo.md` (oturum dışı) dokunulmadı.
 
+> ## ✅ 2026-11-06 — PROMPT 3c 1. BÖLÜM STAGING'DE: migrate 065 (kayıt 67) · staging turu 3/3 · S1 yedek dağılımı ölçüldü
+>
+> - **Ne yapıldı:** Suer SUER BLOĞU adım 1–2'yi yaptı ("tamam": push `e051c80` / `5d14471`, staging migrate 065 OK, kayıt 67) + ek ölçüm istedi.
+>   CC uygulandığını ölçtü, araç hesaplarıyla staging turunu koştu (salt okur — staging'e YAZILMADI), ek ölçümü yaptı. Kod değişikliği YOK.
+>   Kayıt: [defter:2026-11-06 PROMPT 3c (PAKET 5a 2. YARI) 1. BÖLÜM: GÜVENLİK + S1–S4 + R7].
+> - **Commit:** ell-docs bu kayıt + kütük RAP-04 notu (Suer'in 3d kuralı). LEENA değişmedi (`e051c80`). **PUSH YOK**.
+> - **Ölçülenler (6 Kas):**
+>   - Staging: kayıt **67** (son `065_contract_company_country`) · `contracts.company_country_code` VAR, 3.934 kontratın **0**'ında dolu (backfill yok ✓) ·
+>     `/ui2/nav.json` = `e051c80`'deki dosya (sha1 aynı) → LEENA push'u staging'in servis ettiği kodla doğrulandı · `owner-home.html` 200.
+>   - **Staging turu 3/3:** a1 R7 kapsamı — cc-staging (contracts.read own) 409 OUT_OF_SCOPE · cc-external 409 EXTERNAL_NOT_ALLOWED · cc-staging R2 yeni
+>     sayaçları (göç m²) taşıyor, kapsam own · a2 ekran — Owner olmayan araç hesaplarının ui2 girişi Owner sayfasına GİTMİYOR (eski açılış), owner-home
+>     kapsam dışı mesajı, sayfa / konsol hatası 0 · b1 kayıt 67 · TABAN kontrat 4 SR **342.00** ✅ · TABAN-2 AF489555 SR = LEENA CLAUDE.md değeri, **EŞİT** ✅
+>     (değer basılmadı — GOC-07). İlk koşuda `index.html` "load" beklemesi zaman aşımına düştü (bu makinede bazı dış alan adları çözülemiyordu) →
+>     gezinme `domcontentloaded` ile beklendi; ürün hatası değil.
+>   - **Ek ölçüm — S1 yedeğini kullanan kontratlarda `contracts.sqm`** (salt okuma; sayılan = Transferred / Cancelled dışı; göçmüş + m² kalemi yok):
+>
+>     | aralık | yedeği kullanan | sqm > 0 | sqm = 0 | sqm NULL (yedeğe girmez) | Σ m² (sqm > 0) | LEENA'da doğan m²'siz |
+>     |---|---|---|---|---|---|---|
+>     | 2026-01-01..10-27 | 160 | 3 | 157 | 0 | 30,00 | 2 |
+>     | 2019-01-01..2027-12-31 | 577 | 51 | 526 | 5 | 756,00 | 3 |
+>
+>     → Suer kuralı (3d): **yedek yalnız sqm > 0**; 0 / NULL m²'siz sayacında kalır (RAP-02). 2026 penceresinde m² aynı kalır (yedek katkısı yalnız
+>     o 3 kontratın 30 m²'si), m²'siz sayacı 2 → 159 olur. Kütük RAP-04'e not.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** GitHub bu makineden ERİŞİLEMEDİ (DNS / zaman aşımı — YON-17 gereği ağ ayarına dokunulmadı) → `origin` ref'leri
+>   okunamadı; ell-docs push'u (`5d14471`) DOĞRULANMADI (LEENA'nınki staging koduyla doğrulandı) · Owner açılışı staging'de Owner araç hesabı olmadığından
+>   ölçülmedi (yerel testte `test_p3c.js` L1 + `p3c_tour.js` W1 ölçüldü) · R7'nin staging verisindeki görünümü (Owner ekranı Suer'de).
+> - **Bilinçle yapılmayanlar:** 3d kuralı (sqm > 0) bu turda koda GİRMEDİ (Suer: 3d'de) · Prompt 3d başlatılmadı (Suer ONAY'ı bekleniyor).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -7987,6 +8015,9 @@
 >   **★SIRADAKİ (bu kazanır) = Suer: push (LEENA + ell-docs) · staging migrate 065 → CC araç hesaplarıyla staging turu + salt-okunur teyit →
 >   Suer ekranı: R7 Owner ana sayfası (R3 + R8 ekranları 3d'de) → ONAY → Prompt 3d = R3 + R8 (YON-18) → 3d ONAY → Prompt 4 = Paket 5b →
 >   kesim provası ×2 → kesim.** UX hattı: Sentez üzerinden, tasarım fazında (Orchestrator kuyruğunda DEĞİL). Canlı `main` DONUK (`5c4c34b`).
+>   6 Kas: Prompt 3c 1. bölüm → ✅ **STAGING'DE** — migrate 065 (kayıt 67) · staging turu 3/3 · S1 yedek dağılımı (160'ın 3'ü sqm > 0) — [defter:2026-11-06
+>   PROMPT 3c 1. BÖLÜM STAGING'DE]. **★SIRADAKİ (bu kazanır) = Suer ekranı R7 (Owner ana sayfası) → ONAY → Prompt 3d = R3 + R8 + S1 kuralı (yedek yalnız
+>   sqm > 0) (YON-18) → 3d ONAY → Prompt 4 = Paket 5b → kesim provası ×2 → kesim.** Canlı `main` DONUK (`5c4c34b`).
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
