@@ -7620,6 +7620,25 @@
 > - **Bilinçle yapılmayanlar:** `leena/CLAUDE.md` / `leena/todo.md`'ye dokunulmadı (oturum dışı; bağlantı dizesi satırı dahil) · ell-docs geçmişi yeniden
 >   yazılmadı (push yasak) · Prompt 3c başlatılmadı (Suer ONAY'ı bekleniyor).
 
+> ## ✅ 2026-11-06 — GÜVENLİK: ell-docs leena/CLAUDE.md İZLEMEDEN ÇIKTI (ölü kimlik) · TABAN-2 geçmişi BIRAKILDI (Prompt 3c §0)
+>
+> - **Ne yapıldı:** Suer 6 Kas Prompt 3c §0. (a) ell-docs HEAD `leena/CLAUDE.md:85`'teki bağlantı dizesinden YALNIZ kullanıcı adı + host okundu
+>   (ayrıştırıcı önce sahte girdide sınandı — şifre hiçbir dalda basılmadı, K4): kullanıcı **`leena_v401_db_user`** · host Render iç adı
+>   (`dpg-d2smvl75…-a`) · veritabanı `leena_v401_db` · şifre alanı DOLU (değer okunmadı). Kullanıcı **Faz A listesinde** — girişi kaldırıldı
+>   ([defter:2026-10-21 FAZ A TAMAMLANDI]) → **ÖLÜ KİMLİK**, rotasyon gerekmez. Atıf ölçümü: ell-docs izlenen dosyalarında `leena/CLAUDE.md`'ye
+>   işlevsel atıf YOK (README / dizin / bağlantı yok); 20 geçiş yalnız defterdeki tarihsel kayıtlarda → YON-01 gereği yeniden yazılmadı.
+>   `git rm --cached leena/CLAUDE.md` + yeni `.gitignore` (`leena/CLAUDE.md` satırı + gerekçe yorumu). Mac'teki çalışma kopyası (Eylül
+>   değişiklikleri) YERİNDE: öncesi / sonrası md5 aynı, 2.369 satır. (b) TABAN-2 geçmişi: Suer kararı BIRAK — kütük GOC-07'ye not.
+>   (c) `b450517` PG17 koşusu Prompt 3c testlerine dahil.
+> - **Commit:** ell-docs bu kayıt (yalnız `.gitignore` + `leena/CLAUDE.md` izlemeden çıkış + kütük GOC-07 notu + defter) — ürün koduna dokunulmadı.
+>   **PUSH YOK** (Suer). Geçmiş YENİDEN YAZILMADI, force push YOK.
+> - **Ölçülenler:** yukarıda (kullanıcı / host / Faz A eşleşmesi · atıf sayımı · md5).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** şifrenin canlıda gerçekten geçersiz olduğu bağlanarak DENENMEDİ (kimlik okunmadı; Faz A kaydına dayanıldı —
+>   kullanıcının girişi kaldırıldığı için şifre ne olursa olsun bağlanamaz) · `leena/CLAUDE.md` satırı ell-docs GEÇMİŞİNDE kalır (`76fbf8d`'den
+>   `140c03f`'e kadar).
+> - **Bilinçle yapılmayanlar:** geçmiş temizliği (Suer: bırak) · `leena/todo.md` (oturum dışı değişiklik — dokunulmadı, izlenmeye devam) ·
+>   `.gitignore`'a `.DS_Store` eklenmedi (istenmedi).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
