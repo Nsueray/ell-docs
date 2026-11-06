@@ -7028,6 +7028,22 @@
 >   değişikliği (Convert queue menü gözlemi dahil) · Prompt 3 başlatılmadı · tur verisi silinmedi (tazelemede gider — YON-14) · VPN / WARP'a
 >   dokunulmadı · `leena/CLAUDE.md` + `leena/todo.md` dokunulmadı.
 
+> ## ✅ 2026-11-06 — PROMPT 2 KAPALI (B2 + REF + B3) — Suer ONAY (11:08)
+>
+> - **Ne yapıldı:** Suer staging'de üç ekrana baktı: (a) Admin › Reference data → "Test sektor" eklendi, Sales › Customers firma formunda
+>   görünüyor · (b) QTR-200001 sayfası: PDF açıldı, Communication'da echo e-posta (tr, reply-to satışçı, ek) · Follow-ups 2026-11-13 açık ·
+>   (c) Sales ana sayfası My follow-ups 1 açık. Sonuç → **ONAY (Suer, 6 Kas 11:08)**. Böylece **Prompt 2 (B2 + REF + B3) KAPALI**. Kayıtlar:
+>   [defter:2026-11-05 SENTEZ: PROMPT 1b KABUL + 7 KARAR + PROMPT 2 DİREKTİFİ] · [defter:2026-11-05 PROMPT 2: B2 + REF + B3] ·
+>   [defter:2026-11-06 PROMPT 2 STAGING'DE]. Kod değişikliği YOK.
+> - **Suer kararı (6 Kas):** araç hesapları **cc-staging** ve **cc-external** AKTİF kalır (Prompt 3 turu için); pasifleme Suer'de (YON-16 ek satırı).
+> - **Commit:** ell-docs bu kayıt (yalnız defter). LEENA değişmedi (`eliza-next` = `b67b9fc`). **PUSH YOK** (Suer).
+> - **Ölçülenler:** bu turda yeni CC ölçümü yok. Ekran sonucu Suer'in gözlemi; sayılar önceki kayıtta (63 · TABAN 342.00 · TABAN-2 eşit · echo 1).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** ONAY sonrası staging DB yeniden okunmadı — Suer'in eklediği "Test sektor" satırı ve denetim kaydı CC
+>   tarafından sayılmadı · Sentez 🔶 soruları açık (Prompt 2: 7 + staging 1).
+> - **Bilinçle yapılmayanlar:** Prompt 3 başlatılmadı (direktif yok) · tur verisi (QTR-200001 / QTR-200002, CC Tool Contact, CC External Client,
+>   "Test sektor") silinmedi — tazelemede gider (YON-14) · araç hesapları pasiflenmedi (Suer kararı) · `leena/CLAUDE.md` + `leena/todo.md`
+>   dokunulmadı.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -7223,6 +7239,10 @@
 >   **★SIRADAKİ (bu kazanır) = Suer ≤ 3 ekran (Reference data → firma formu · tur teklifi QTR-200001 Communication + PDF + Follow-ups ·
 >   My follow-ups) → ONAY → Prompt 2 KAPALI → Prompt 3 = Paket 5 raporlama (kriter Sentez'den; ONAY'sız BAŞLATILMAZ) → kesim provası ×2 →
 >   kesim.** Sentez'e açık 🔶: Prompt 2 — 7 soru + staging 1 (Convert queue menüsü dış kullanıcıda). Canlı `main` DONUK (`5c4c34b`).
+>   6 Kas 11:08: Suer **ONAY** (3 ekran) → ✅ **PROMPT 2 (B2 + REF + B3) KAPALI** — [defter:2026-11-06 PROMPT 2 KAPALI].
+>   **★SIRADAKİ (bu kazanır) = Prompt 3: Paket 5 raporlama — Sentez kriterleri BEKLENİYOR; direktif gelmeden BAŞLATILMAZ.** Araç hesapları
+>   cc-staging + cc-external AKTİF (Prompt 3 turu için; pasifleme Suer'de). Sentez'e açık 🔶: Prompt 2 — 7 soru + staging 1. Sonra kesim
+>   provası ×2 → kesim. Canlı `main` DONUK (`5c4c34b`, YON-16).
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
