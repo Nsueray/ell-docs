@@ -7433,6 +7433,18 @@
 >   (Suer kararı) · Prompt 3b BAŞLATILMADI (Suer ONAY'ı bekleniyor; ONAY gelince Sentez beklenmez — YON-18) · `leena/CLAUDE.md` +
 >   `leena/todo.md` dokunulmadı.
 
+> ## ✅ 2026-11-06 — PROMPT 3 (1)+(2) KAPALI (YET-KAPSAM-2 + TÜZEL KİŞİLİK) — Suer ONAY (12:37)
+>
+> - **Ne yapıldı:** Suer staging'de üç ekrana baktı: (a) Admin › Users › cc-staging Effective listesi doğru · (b) QTR-200003 PDF satıcı +
+>   Bank details · (c) "(locked)" + echo. Sonuç → **ONAY (Suer, 6 Kas 12:37)** → **Prompt 3 (1)+(2) KAPALI**. Kayıtlar:
+>   [defter:2026-11-06 SENTEZ: PROMPT 2 KABUL + 8 KARAR + PROMPT 3 DİREKTİFİ] · [defter:2026-11-06 PROMPT 3 (1)+(2): YET-KAPSAM-2 +
+>   TÜZEL KİŞİLİK] · [defter:2026-11-06 PROMPT 3 (1)+(2) STAGING'DE]. Kod değişikliği YOK.
+> - **İTİRAZ-notu (Suer, 3b'de düzeltilecek):** PDF satıcı bloğunda uzun unvan / adres "…" ile KESİLİYOR — kesme YOK, satır KAYDIR
+>   (To bloğu dahil).
+> - **Sıradaki:** YON-18 — ONAY'la Prompt 3b (Paket 5a) Sentez beklenmeden BAŞLAR (Suer 6 Kas 12:37 direktifi).
+> - **Commit:** ell-docs bu kayıt (yalnız defter). LEENA değişmedi (`eliza-next` = origin = `7428770`). **PUSH YOK** (Suer).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** ONAY sonrası staging yeniden okunmadı · Sentez 🔶 (Prompt 3: 2 soru) açık.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -7645,6 +7657,9 @@
 >   yok) · TABAN 342.00 + TABAN-2 125.46 — [defter:2026-11-06 PROMPT 3 (1)+(2) STAGING'DE]. **★SIRADAKİ (bu kazanır) = Suer ≤ 3 ekran
 >   (Admin › Users › cc-staging Effective · QTR-200003 PDF · QTR-200003 sayfası locked + echo) → ONAY → Prompt 3b = Paket 5a HEMEN
 >   (YON-18) → Prompt 4 = Paket 5b → kesim provası ×2 → kesim.** Sentez'e açık 🔶: Prompt 3 — 2 soru. Canlı `main` DONUK (`5c4c34b`).
+>   6 Kas 12:37: Suer **ONAY** (3 ekran) → ✅ **PROMPT 3 (1)+(2) KAPALI** — [defter:2026-11-06 PROMPT 3 (1)+(2) KAPALI]. İTİRAZ-notu: PDF
+>   satıcı / To bloğunda uzun metin kesilmesin, kaydırılsın (3b'de). **★SIRADAKİ (bu kazanır) = Prompt 3b: Paket 5a (R1–R8 + RAP metrik
+>   tanımları) — BAŞLADI (YON-18) → Prompt 4 = Paket 5b (3b ONAY'ı ile) → kesim provası ×2 → kesim.** Canlı `main` DONUK (`5c4c34b`).
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
