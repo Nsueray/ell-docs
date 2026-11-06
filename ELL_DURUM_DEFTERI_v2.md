@@ -7304,7 +7304,7 @@
 >     suppliers.read all · Office Manager commissions.read / contracts.write / ledger.read office + suppliers.read all · Project budget.read
 >     all · Sales commissions.read own.
 >   - **TABAN 342.00** — staging kontrat 4 (`AF-TEST-LINES-001`) SR = **342.00** ✅ + testte (B1 · P3) ✅ · **TABAN-2** staging AF489555
->     (id 6483) SR = **125.46** ✅ (SLICE_CTES, salt okuma).
+>     (id 6483) SR ölçüldü, **EŞİT** ✅ (SLICE_CTES, salt okuma; değer LEENA CLAUDE.md — GOC-07).
 >   - **Önceki kapılar (git diff, `b67b9fc`):** `GET /api/cash-forecast` · `GET /api/commissions` · ledger `GET /accounts` · `/summary`
 >     yalnız authMiddleware (her oturum) idi; temsilci POST / PUT kapısızdı.
 >   - **Klasik sayfalar (KURAL 2):** `public/contract-detail.html` (`:233` ledger/accounts — null'da alanları gizler · `:238`
@@ -7423,7 +7423,7 @@
 >       Currency EUR · Send sonrası tüzel kişi değişikliği 409 NOT_DRAFT · DB: sent + legal_entity_id = 1 · echo kuyruğu `from_name` =
 >       tüzel kişi adı, reply-to cc-staging.
 >     - b1 Convert queue: cc-staging alt menüsünde VAR · cc-external'da YOK (Contracts / Quotes duruyor) · uç dışa 409 EXTERNAL_NOT_ALLOWED.
->     - c1 kayıt 65 · izin 34 · **TABAN** kontrat 4 SR **342.00** ✅ · **TABAN-2** AF489555 (6483) SR **125.46** ✅ · c2 sayfa / konsol
+>     - c1 kayıt 65 · izin 34 · **TABAN** kontrat 4 SR **342.00** ✅ · **TABAN-2** AF489555 (6483) SR ölçüldü, **EŞİT** ✅ (değer LEENA CLAUDE.md — GOC-07) · c2 sayfa / konsol
 >       hatası 0 (beklenen 409 konsol satırı 9).
 > - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Suer'in Shell'deki migrate çıktısı (DRY-RUN / COMMIT / NOTICE satırları) CC'ye gelmedi — yalnız SON
 >   durum ölçüldü ve beklentiyle aynı · staging'de Finance / Office Manager / Project kullanıcısı yok → M2 matrisinin o satırları yalnız
@@ -7530,7 +7530,7 @@
 >   Meriem Houmaid · Semih Seckin · Jude Chime · Sinerji (birer). R5 Ekim tam ay: 49 ödeme / 99.661,51 € (hepsi göçmüş; 25 Eki sonrası 1).
 >   → Kabul (d) **bir temsilci için sağlandı** (Hind Karim · Amaka Okwumabua · BENGU); genel eşitlik iki Zoho kaynağının farklı kayıt kümesi
 >   olmasından sağlanmıyor → 🔶 3.
-> - **TABAN 342.00** testte (P3b · B1 · P3) ✅ · staging TABAN 342.00 + TABAN-2 125.46 bu turun başında ölçüldü (Prompt 3 (1)+(2) STAGING'DE) —
+> - **TABAN 342.00** testte (P3b · B1 · P3) ✅ · staging TABAN 342.00 + TABAN-2 EŞİT (değer LEENA CLAUDE.md — GOC-07) bu turun başında ölçüldü (Prompt 3 (1)+(2) STAGING'DE) —
 >   bu turda staging'e yazılmadı.
 > - **Testler:** **675 → 701/701** (40 → 42 suite) — PG14 iki koşu suite suite AYNI + PG **17.10** geçici kümede 1 koşu AYNI (701/701). Yeni:
 >   `test_p3b_reports.js` (20 — dönem / kova / CSV / wrap birimi · R2 el hesabı + eksen + kapsam · R4 el hesabı + ledger özetiyle EŞİTLİK ·
@@ -7569,6 +7569,56 @@
 >   staging, ağ dahil) · R8 bulguları alt ajan ölçümü, 3c'de yeniden okunacak · canlı DB okunmadı.
 > - **Bilinçle yapılmayanlar:** R3 · R7 · R8 (Prompt 3c) · grafik kütüphanesi · rapor oluşturucu / doğal dil / push (Paket 5b) · m² `sqm` yedeği ·
 >   ülke göçü · yeni EMS ekranı · `leena/CLAUDE.md` + `leena/todo.md` (oturum dışı) stage edilmedi.
+
+> ## ✅ 2026-11-06 — PROMPT 3b 1. YARI STAGING'DE: push · migrate 064 (kayıt 66) · staging turu 5/5 · ek ölçümler a–d · R5 kontratsız ödeme sayacı · GOC-07 ihlali düzeltildi
+>
+> - **Ne yapıldı:** Suer SUER BLOĞU adım 1–2'yi yaptı ("tamam" + 4 ek ölçüm isteği). CC uygulandığını ÖLÇTÜ, araç hesaplarıyla staging turunu koştu
+>   (raporlar salt okur — staging'e YAZILMADI), istenen a–d ölçümlerini yaptı. Ölçüm iki düzeltme doğurdu (aşağıda): R5'e kontratsız ödeme
+>   sayacı (LEENA `b450517`) ve ell-docs'taki TABAN-2 değerinin kaldırılması (bu kayıtla aynı commit). Kayıtlar: [defter:2026-11-06 PROMPT 3b (PAKET 5a)
+>   1. YARI: R1 + R2 + R4 + R5 + R6].
+> - **Commit:** LEENA `eliza-next` **`b450517`** (R5 sayacı + test + CLAUDE.md test sayısı). ell-docs bu kayıt + defterde 4 TABAN-2 değeri → "EŞİT"
+>   + kütük RAP-09 notu. **PUSH YOK** (Suer).
+> - **Ölçülenler (6 Kas):**
+>   - **Push / migrate:** `origin/eliza-next` = `657d2ee` · ell-docs `origin/main` = `890bb0b` · staging `/ui2/nav.json` = `657d2ee`'deki dosya (sha1 aynı) ·
+>     staging kayıt **66** (son `064_expo_m2_target`) · `expo_budgets.m2_target` VAR · bütçe 0.
+>   - **Staging turu** (scratchpad betiği; cc-staging + cc-external): **5/5** — b1 kapsam (aşağıda) · c1 komisyon alanı 0 (ilk koşuda betiğin süzgeci
+>     `share_pct`'yi yanlış pozitif saydı; düzeltilmiş süzgeçle yeniden ölçüldü) · d1 cc-external R2 / R4 / R5 + dışa aktarım 409 EXTERNAL_NOT_ALLOWED
+>     (JSON) · cc-staging R2 CSV satırı = ekrandaki satır · e1 ekranlar (cc-staging Performance "Scope: own", alt menüde Performance; cc-external'da yok;
+>     sayfa / konsol hatası 0) · f1 kayıt 66 + kolon.
+>   - **(a) R5 Ekim 49 ↔ kabul (d) 48:** fark TEK kayıt — ödeme **#4301 · 2026-10-26 · A854455 · ELAN EXPO · €1.510,00 · göçmüş** (Zoho kimlikli; batch #2
+>     ham tarihi 27 Eki, CSV 25 Eki'de alınmıştı). Ekran tam ay (49), kabul (d) CSV tarihine kadar (48). **Ek bulgu:** staging'de Ekim'de ödeme
+>     tablosunda **60** satır var; **11'i kontratsız** (€16.445,80 — göçün kontrata bağlanamayan Zoho ödeme denetimi satırları,
+>     `payments_contract_required_check`). R5 bunları temsilciye atfedemediği için **SAYAÇSIZ** dışarıda bırakıyordu → **RAP-02 ihlali, düzeltildi**:
+>     R5 yanıtına `unlinked` sayacı (yalnız tüm kapsam + süzgeçsiz görünüm; kapsamlı / süzgeçli görünümde null) + ekranda not (Admin › Migration ›
+>     Unlinked income). **Kabul (d) yeniden:** Zoho Revenues Ekim (≤ 25 Eki) **34 satırın 34'ü LEENA'da** — 29'u kontrat ödemesi, **5'i kontratsız ödeme**,
+>     eşleşmeyen **0**. Önceki kayıttaki "Zoho-yalnız 5" bu 5 kontratsız ödemeydi (yanlış teşhis — YON-05). LEENA fazlası: Received_Payment'tan gelen
+>     19 kontrat ödemesi + Revenues'ta karşılığı olmayan 6 kontratsız ödeme.
+>   - **(b) kapsam kodu:** R2 / R4 / R5 `contracts.read` + YET-03 ile süzülür (`routes/analytics.js` `canRead = perms.requirePermission('contracts.read')`;
+>     `utils/metrics.js` `factsCte` → `contractScopeSql`) — `sales.read` DEĞİL. cc-staging: `contracts.read` = **own** (Sales şablonu), kişi başı
+>     ezme TEK satır `sales.read = all` (teklif / firma okuması). → **"yalnız kendi satırları" beklentisi DOĞRU**, düzeltme gerekmedi. Ölçüm: cc-staging'in
+>     kendi kontratı DB'de 1 (ATR-200000 — QTR-200000 sahibi) · R2 2019–2027: 1 satır "No representative", 1 kontrat, €3.930,00 · R4: 1 açık €3.930,00 ·
+>     R5 Ekim: 0 · tüm kapsamdaki kontrat (aynı aralık, hariç tutulmayan) 2.173.
+>   - **(c) komisyon sütunları:** cc-staging'de `sensitive_finance.read` YOK · R2 / R4 / R5 yanıtlarında komisyon alanı **0** (raporlar komisyon sütunu
+>     taşımıyor — bu yarıda komisyon sütunlu rapor yok) · kontrat 7863 detayında komisyon alanı yok, `commission_hidden: true`.
+>   - **(d) ell-docs `leena/CLAUDE.md` + `leena/todo.md`:** commit dışı değişiklik **oturum dışı** — dosya zamanı **2026-09-07 17:24** (bu oturum 6 Kas);
+>     son commit'leri `bd4dc78` (20 Tem) / `8083f95` (20 May). İçerik: CLAUDE.md +1.802 satır (LEENA CLAUDE.md'nin Eylül kopyası — finans bölümü +
+>     EMS şeması), todo.md +287 satır (Ağustos–Eylül fuar / SIEMA maddeleri). Bu oturumda stage edilmedi, dokunulmadı. TABAN-2 değeri bu iki dosyada YOK.
+>   - **(d) TABAN-2 değeri ell-docs'ta — GOC-07 İHLALİ (CC):** GOC-07 (`ELL_LOCKED_KARARLAR_OZET.md:396`) "değer YALNIZ LEENA PRIVATE CLAUDE.md'ye;
+>     ell-docs'a yalnız '<id>, ölçüldü, değer LEENA CLAUDE.md'". Bu oturumda CC değeri defterde **4 yere** yazdı — commit'ler `49c3269` · `567d942` ·
+>     `890bb0b`, **üçü de push edildi**; ell-docs **PUBLIC** (`gh api … .visibility` = public; LEENA private). Çalışma ağacında 4 yer "EŞİT (değer
+>     LEENA CLAUDE.md — GOC-07)" yapıldı (bu commit); geçmişte değer KALIR → geçmiş temizliği Suer kararı (🔶).
+>   - **Ek bulgu — ell-docs PUBLIC'te bağlantı dizesi:** HEAD `leena/CLAUDE.md:85`'te `kullanıcı:şifre@` biçiminde 1 psql bağlantı dizesi (commit `76fbf8d`,
+>     2026-05-02 "Add all ELL system docs"). Değer basılmadı / okunmadı (K4). LEENA `CLAUDE.md:154-155` eski şifrenin Faz A'da geçersizlendiğini yazıyor —
+>     ell-docs kopyasının aynı eski satır olduğu **DOĞRULANMADI**. K4 SIZ sınıfı (public repoda zaten açık) → kayıt, duruş yok.
+> - **Testler:** **701 → 702/702** (`test_p3b_reports.js` +1: R5c kontratsız ödeme sayacı + veri kesimi). PG14 1 tam koşu 702/702 (42 suite) · PG17 bu düzeltme için KOŞULMADI.
+> - **SAPMA:** 16. **R5 kontratsız ödeme sayacı** (RAP-02 düzeltmesi — ön-onaylı; kütük RAP-09 notu). 17. **GOC-07 ihlali** (CC hatası) — değer ileriye dönük
+>    kaldırıldı, geçmiş Suer'de. 18. Önceki kayıttaki kabul (d) "Zoho-yalnız 5" teşhisi yanlıştı (kontratsız ödemelerdi) — bu kayıt düzeltir.
+> - **🔶 Sentez / Suer'e:** 5. ell-docs geçmişinden TABAN-2 değeri temizlensin mi (public; 3 commit — force push gerektirir)? 6. ell-docs HEAD
+>   `leena/CLAUDE.md:85` bağlantı dizesi: HEAD'den silinsin + Faz B geçmiş temizliği listesine alınsın mı (oturum dışı commit edilmemiş değişiklikle aynı dosya)?
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** R5 sayacının staging'de görünümü (düzeltme push edilmedi) · ell-docs bağlantı dizesinin geçersiz olup olmadığı ·
+>   PG17'de düzeltme koşusu.
+> - **Bilinçle yapılmayanlar:** `leena/CLAUDE.md` / `leena/todo.md`'ye dokunulmadı (oturum dışı; bağlantı dizesi satırı dahil) · ell-docs geçmişi yeniden
+>   yazılmadı (push yasak) · Prompt 3c başlatılmadı (Suer ONAY'ı bekleniyor).
 
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
@@ -7779,7 +7829,7 @@
 >   kesim.** Sentez'e açık 🔶: Prompt 3 — 2 soru. Araç hesapları cc-staging + cc-external AKTİF. Canlı `main` DONUK (`5c4c34b`, YON-16).
 >   6 Kas: Prompt 3 (1)+(2) → ✅ **STAGING'DE** — Suer adım 1–3 · migrate 062-063 (kayıt 65) · tüzel kişi ELAN EXPO FUARCILIK + Turkey
 >   varsayılanı + EUR hesap belgede · staging Playwright 7/7 (QTR-200003 PDF satıcı + banka · Sales'te Commission yok · dışta Convert queue
->   yok) · TABAN 342.00 + TABAN-2 125.46 — [defter:2026-11-06 PROMPT 3 (1)+(2) STAGING'DE]. **★SIRADAKİ (bu kazanır) = Suer ≤ 3 ekran
+>   yok) · TABAN 342.00 + TABAN-2 EŞİT — [defter:2026-11-06 PROMPT 3 (1)+(2) STAGING'DE]. **★SIRADAKİ (bu kazanır) = Suer ≤ 3 ekran
 >   (Admin › Users › cc-staging Effective · QTR-200003 PDF · QTR-200003 sayfası locked + echo) → ONAY → Prompt 3b = Paket 5a HEMEN
 >   (YON-18) → Prompt 4 = Paket 5b → kesim provası ×2 → kesim.** Sentez'e açık 🔶: Prompt 3 — 2 soru. Canlı `main` DONUK (`5c4c34b`).
 >   6 Kas 12:37: Suer **ONAY** (3 ekran) → ✅ **PROMPT 3 (1)+(2) KAPALI** — [defter:2026-11-06 PROMPT 3 (1)+(2) KAPALI]. İTİRAZ-notu: PDF
@@ -7791,6 +7841,11 @@
 >   staging migrate 064) → CC: araç hesaplarıyla staging turu (Sales R2 kendi satırları · external rapor 409) + salt-okunur teyit → Suer 3 ekran
 >   (R2 bir temsilci · R5 Ekim · R4) → ONAY → Prompt 3c = R3 + R7 + R8 (Sentez beklenmez, YON-18) → 3c ONAY → Prompt 4 = Paket 5b → kesim
 >   provası ×2 → kesim.** Sentez'e açık 🔶: Prompt 3b — 3 · Prompt 3 — 2. Canlı `main` DONUK (`5c4c34b`, YON-16).
+>   6 Kas: Prompt 3b 1. yarı → ✅ **STAGING'DE** — push · migrate 064 (kayıt 66) · staging turu 5/5 · ek ölçümler a–d · R5 kontratsız ödeme sayacı
+>   (LEENA `b450517`, push bekliyor) · kabul (d) Zoho Revenues Ekim 34/34 LEENA'da · GOC-07 ihlali düzeltildi (geçmiş Suer'de) — [defter:2026-11-06
+>   PROMPT 3b 1. YARI STAGING'DE]. **★SIRADAKİ (bu kazanır) = Suer: push (LEENA + ell-docs) → Suer 3 ekran (R2 Elif AY · R5 Ekim · R4) → ONAY →
+>   Prompt 3c = R3 + R7 + R8 (YON-18) → 3c ONAY → Prompt 4 = Paket 5b → kesim provası ×2 → kesim.** Açık 🔶: Prompt 3b — 3 + 2 (ell-docs geçmişi:
+>   TABAN-2 değeri · bağlantı dizesi) · Prompt 3 — 2. Canlı `main` DONUK (`5c4c34b`, YON-16).
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
