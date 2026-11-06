@@ -257,6 +257,18 @@ The quote PDF's seller block and bank details come from it; bank details are fie
 documents" (there is no separate bank table). Not to be confused with **Office** (where people work) or **Company** (the customer).
 (REF-04 · KAT-08 · ILT-06)
 
+### Reporting period axis — fiscal / edition / collection
+
+Reports state which date a period filters on. **Fiscal** = the contract date (when the sale was signed). **Edition** = the expo's
+start date (which fair the sale belongs to — e.g. "Mega Clima Nigeria 2026"). **Collection** = the payment date (when money came
+in). The same numbers can differ between axes; the screen always names the axis. (RAP-07)
+
+### Aging (yaşlandırma)
+
+How long an open balance has been due, in buckets: not due yet · 0–30 · 31–60 · 61–90 · 90+ days. Counted from the first
+instalment of the contract's payment schedule that payments have not yet covered; without a schedule, from the contract date.
+Balances under €1.00 count as settled and are not aged. (RAP-08, RAP-10)
+
 ### Country Manager
 
 An Elan Expo manager responsible for a specific country office.

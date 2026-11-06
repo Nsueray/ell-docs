@@ -7445,6 +7445,131 @@
 > - **Commit:** ell-docs bu kayıt (yalnız defter). LEENA değişmedi (`eliza-next` = origin = `7428770`). **PUSH YOK** (Suer).
 > - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** ONAY sonrası staging yeniden okunmadı · Sentez 🔶 (Prompt 3: 2 soru) açık.
 
+> ## ✅ 2026-11-06 — PROMPT 3b (PAKET 5a) 1. YARI: R1 + R2 + R4 + R5 + R6 · metrik tanımları · PDF kaydırma (LEENA `657d2ee`; staging'e hazır)
+>
+> - **Kriter kaynağı:** Sentez (3) PAKET 5a + METRİK TANIMLARI + R1–R8 + KABUL — [defter:2026-11-06 SENTEZ: PROMPT 2 KABUL + 8 KARAR + PROMPT 3
+>   DİREKTİFİ] (aynen orada). Başlatma: Suer 6 Kas 12:37 ONAY + Prompt 3b direktifi (YON-18) — [defter:2026-11-06 PROMPT 3 (1)+(2) KAPALI].
+> - **Ne yapıldı:** SIĞMAZSA kuralı direktifteki çizgiyle uygulandı: **bu tur R1 + R2 + R4 + R5 + R6** (+ metrik modülü + 064 + Suer'in PDF
+>   İTİRAZ-notu); **R3 + R7 + R8 → Prompt 3c**.
+>   - **Metrik tek kaynağı** `utils/metrics.js` (yeni): `factsCte` (kontrat başına olgu, kontrat kapsamı UYGULANMIŞ — `routes/contracts.js`
+>     `contractScopeSql` dışa açıldı) · `AGG` · `COUNTERS` (RAP-02) · `resolvePeriod` · `agingBucketSql`. Kütük RAP-04..RAP-11.
+>   - **R1** `utils/exportList.js` (yeni): `?export=csv|xlsx` — aynı uç + aynı süzgeç + aynı kapsam, sayfalama / tavan YOK (`req.exportAll`;
+>     `LIMIT NULL`), CSV BOM + formül enjeksiyonu koruması, Excel sayı hücresi. Bağlanan uçlar: kontrat (liste + sayfalı) · teklif · firma ·
+>     convert kuyruğu · ledger hesap / transfer / gider / tedarikçi · temsilci · gider taslağı · kullanıcı · katalog ürün + üç rapor ucu.
+>     Ekran: `components.js` `C.exportLinks` (tek bileşen, indirme tek dinleyicide) → 13 liste sayfası + 3 rapor sayfası.
+>   - **R2** `routes/analytics.js` `GET /performance` + `ui2/sales-performance.html` (Sales › Performance): dönem × eksen (fiscal | edition) ×
+>     ofis × temsilci × fuar · kırılım temsilci | fuar | ülke | ofis · kontrat · m² · brüt · net taban · €/m² · pay % · önceki döneme fark ·
+>     aylık eğilim (CSS çubuk — `C.bar`, grafik kütüphanesi yok) · sayaçlar.
+>   - **R4** `GET /collections` + `ui2/finance-collections.html` (Finance › Collections): açık bakiye (LED-23) · 5 yaş kovası · fuar ×
+>     temsilci · ödemesiz kontratlar · 30 gün içindeki vadeler (plandan) · aksiyon listesi (açık bakiye azalan, TAVANSIZ).
+>   - **R5** `GET /payments-by-agent` + `ui2/finance-payments-agent.html` (Finance › Payments by agent): ay × temsilci × ödeme (tarih · firma ·
+>     fuar · AF · tutar işlem birimi + EUR · kontrat toplamı · bugüne kadar ödenen · not) · Σ + adet · **veri kesimi** notu DB'den türetilir
+>     (son uygulanmış Zoho batch'inin `source_ref`'i — staging `2026-10-27`).
+>   - **R6** `064_expo_m2_target.sql` (`expo_budgets.m2_target`, CHECK ≥ 0; ikinci tablo YOK) + `routes/ledger.js` bütçe uçları (revizyon
+>     alanı; 064 öncesi m² hedefi 503 NOT_MIGRATED) + `salesProgress` (satılan m² / brüt RAP tanımlarıyla, ilerleme %, önceki edisyon =
+>     göçün `expoKey` ad + yıl anahtarı, "+%15 öner" YALNIZ öneri) + `ui2/finance-budget.html` "Sales targets" bölümü.
+>   - **PDF İTİRAZ-notu:** `utils/pdf.js` `wrap()` (kelime sınırından, gerekirse karakterden böler) → `utils/quotePdf.js` To + From blokları
+>     ve banka satırları KAYDIRIR, kesmez.
+>   - nav.json: Sales › Overview › Performance · Finance › Executive › Collections + Payments by agent (üçü `contracts.read`, `internalOnly`).
+>     `index.js` `/api/analytics` bağlandı.
+> - **Commit:** LEENA `eliza-next` **`657d2ee`** (44 dosya). ell-docs bu kayıt (defter + kütük RAP-04..11 + sözlük, tek commit).
+>   **PUSH YOK** (Suer). 064 **YAZILDI, ÇALIŞTIRILMADI**.
+> - **Ölçülenler (ön ölçüm, dosya:satır / staging salt okuma — 6 Kas):**
+>   - Mevcut rapor SQL'leri: açık alacak `routes/ledger.js` `/summary` (revenue_eur − Σ amount_eur + `utils/balance.js` LED-23) · komisyon
+>     `utils/commissionSlices.js` SLICE_CTES · taban `routes/contracts.js:436` `COMMISSIONABLE_BASE_EXPR` · bütçe `routes/ledger.js`
+>     `budgetView` (gelir = tahsilat). R2 / R4 / R6 bunların ÜSTÜNE kuruldu; R4 açık bakiyesi ledger özetiyle testte EŞİT.
+>   - **m² kaynağı (staging):** kalem 7.820 · ürün kodlu 5.358 · katalogla eşleşen 5.313 (tam ve normalize eşleşme aynı) · m² kalemi 3.318 /
+>     3.306 kontrat · Σ 74.893,50 · Zoho `sqm` dolu 3.923 kontrat (Σ 76.973) · **619 kontratta yalnız `sqm` var, m² kalemi yok** (kodsuz
+>     kalemler) · 55 kontratta ikisi farklı. Ürün tablosu: m2 20 · birim 203 · RF 4.
+>   - **Ülke:** müşteri ülkesi yalnız `customer_company_id` üzerinden — staging 3.934 kontratın 1'inde dolu → göçmüş kontrat "Country unknown".
+>   - **Temsilci:** SR 3.640 · Agent 291 · temsilcisiz 3. Durum: Active 3.355 · Cancelled 527 · On Hold 10 · Transferred 42.
+>   - `expo_budgets` revizyon + kilit (LED-09) şeması; staging'de bütçe 0 · plan kalemi 14 (2 kontrat) · fuar 214 (187'sinde edition_year,
+>     202'sinin adında yıl — göç anahtarı `scripts/zoho/lib/plan.js:95` `expoKey`).
+>   - Göç batch'i: staging 1 (id 2, zoho, `source_ref` 2026-10-27, applied) · göçmüş ödemelerde en ileri tarih **2027-09-25** (ileri tarihli
+>     Zoho kayıtları — R5 o ayda gösterir).
+>   - **R8 (alt ajan ölçümü, salt okuma — 3c'de doğrulanacak):** `public/reports.html` → `GET /api/reports/summary` kısmi kayıt raporu
+>     (30 günlük günlük kayıt trendi `routes/reports.js:175-185`, kaynak / tür / ülke kırılımı, kayıtlı ↔ giriş yapan) · tam küme XLSX
+>     `GET /api/visitors/export` (LIMIT yok, `routes/visitors.js:1146-1187`) · ui2 Operations sekmesi yer tutucu (`nav.json:6`), EMS rapor
+>     bağlantısı yok · klasik sayfalar `localStorage.selectedExpoId` ister.
+>   - **Süreler (yerel süreç → staging DB, internet üzerinden):** R2 yıl 3,9 sn · R2 2019–2026 fuar kırılımı 3,7 sn · R4 7,2 sn (1,1 MB;
+>     2.080 açık kontrat) · R5 Ekim 1,7 sn · R4 CSV 4,2 sn (2.080 satır) · R2 Excel 3,6 sn.
+> - **Kabul (c) — R2 "bu yıl, 27 Eki'ye kadar" temsilci kırılımı ↔ Zoho Sales_Contracts CSV (25 Eki dışa aktarımı; ELIZA /sales ekranına
+>   erişim YOK → SAPMA 11):** sayılan = Transferred / Cancelled DEĞİL (göçün `STATUS_MAP`'i), EUR = Grand Total ÷ Exchange Rate (göçle aynı).
+>   Eşleşme kayıt kimliğiyle (CSV `zcrm_<id>` ↔ `contracts.zoho_record_id`).
+>
+>   | temsilci | Zoho n | Zoho € | LEENA n | LEENA € | Δ n | Δ € | neden |
+>   |---|---|---|---|---|---|---|---|
+>   | Elif AY | 65 | 432.632,35 | 66 | 432.632,35 | +1 | 0,00 | Zoho'da sözleşme tarihi BOŞ → göç Created Time kullandı (`plan.js:440-441`), 1 |
+>   | Anka Fuarcılık | 25 | 188.451,21 | 25 | 188.451,21 | 0 | 0,00 | — |
+>   | BENGU DOGRUER | 33 | 94.919,09 | 34 | 113.519,09 | +1 | 18.600,00 | LEENA'da doğan kontrat (Zoho kimliği yok) = TABAN fikstürü kontrat 4 |
+>   | ELAN EXPO | 149 | 97.097,73 | 153 | 100.096,75 | +4 | 2.999,02 | tarih boş → Created Time 3 · CSV'den sonra (26–27 Eki) 1 |
+>   | Meriem Houmaid | 34 | 94.238,10 | 34 | 94.238,14 | 0 | 0,04 | kuruş yuvarlaması |
+>   | Sinerji Int. | 12 | 82.590,00 | 12 | 82.590,00 | 0 | 0,00 | — |
+>   | Jude Chime | 42 | 58.214,83 | 42 | 58.214,84 | 0 | 0,01 | kuruş |
+>   | Sarah Hamza | 19 | 56.172,16 | 19 | 56.172,16 | 0 | 0,00 | — |
+>   | Joanna Jiang | 9 | 52.047,50 | 9 | 52.047,50 | 0 | 0,00 | — |
+>   | Amaka Okwumabua | 17 | 48.010,75 | 17 | 48.010,75 | 0 | 0,00 | — |
+>   | Emircan Çakmak | 21 | 47.324,10 | 21 | 47.324,10 | 0 | 0,00 | — |
+>   | Raji Zainab | 16 | 43.692,90 | 16 | 43.692,90 | 0 | 0,00 | — |
+>   | Cynthia Okeke | 15 | 30.493,56 | 15 | 30.493,55 | 0 | −0,01 | kuruş |
+>   | Semih Seckin | 9 | 25.006,59 | 9 | 25.006,61 | 0 | 0,02 | kuruş |
+>   | Hind Karim | 6 | 20.897,44 | 6 | 20.897,43 | 0 | −0,01 | kuruş |
+>   | Franklin Mwaniki | 8 | 8.414,12 | 8 | 8.414,13 | 0 | 0,01 | kuruş |
+>   | (temsilcisiz) | 0 | 0,00 | 1 | 13.800,00 | +1 | 13.800,00 | LEENA'da doğan (Zoho kimliği yok) — staging deneme kontratı |
+>   | Ashrae Ghana · Caroline Muthoni · Gershonu · Damilola Olori | 1 · 4 · 1 · 7 | 4.110,00 · 3.465,04 · 1.350,00 · 1.323,71 | aynı | aynı | 0 | 0,00 | — |
+>   | Suer1 | 0 | 0,00 | 1 | 5.064,00 | +1 | 5.064,00 | LEENA'da doğan (Zoho kimliği yok) — staging deneme kontratı |
+>   | **TOPLAM** | **493** | **1.390.451,18** | **501** | **1.430.914,26** | **+8** | **+40.463,08** | 3 LEENA-doğan (37.464,00) + tarih kuralı 4 + CSV sonrası 1 (2.999,02) + kuruş (0,06) |
+>
+>   İptal her iki tarafta AYNI dışarıda (Zoho dönemde Cancelled 49 = R2 iptal sayacı 49). Devir: R2 sayacı 1, Zoho dönemde Transferred Out 0.
+>   → **Göç verisinde fark YOK**; farkların hepsi sayılı ve nedenli (göç tarih kuralı · dışa aktarım tarihi · staging deneme kontratları).
+> - **Kabul (d) — R5 Ekim ↔ Zoho Revenues CSV (≤ 25 Eki):** Revenues = Zoho **Payment_Audit** modülü (`scripts/zoho/lib/fields.js:87-98`);
+>   LEENA ödemeleri ise göçte **Received_Payment** alt formundan geldi (GOC-02). CSV'de kontrat bağı yok → eşleşme aynı tarih + para birimi +
+>   tutar. R5 Ekim (≤ 25 Eki) 48 ödeme ↔ Revenues Ekim 34 satır: **29 birebir eşleşti** · Zoho-yalnız 5 (12.620,80 €) · LEENA-yalnız 19.
+>   **Temsilci bazında TAM eşit:** Hind Karim 1 / 1.831,50 · Amaka Okwumabua 1 / 1.750,00 · BENGU DOGRUER 1 / 350,00. Kısmi: ELAN EXPO 18 / 9.807,94
+>   (15 eşleşti) · Elif AY 10 / 53.513,30 (6) · Anka 4 / 8.044,23 (2) · Emircan Çakmak 3 / 7.022,60 (2) · Sarah Hamza 6 / 7.201,47 (1) · eşleşmesiz:
+>   Meriem Houmaid · Semih Seckin · Jude Chime · Sinerji (birer). R5 Ekim tam ay: 49 ödeme / 99.661,51 € (hepsi göçmüş; 25 Eki sonrası 1).
+>   → Kabul (d) **bir temsilci için sağlandı** (Hind Karim · Amaka Okwumabua · BENGU); genel eşitlik iki Zoho kaynağının farklı kayıt kümesi
+>   olmasından sağlanmıyor → 🔶 3.
+> - **TABAN 342.00** testte (P3b · B1 · P3) ✅ · staging TABAN 342.00 + TABAN-2 125.46 bu turun başında ölçüldü (Prompt 3 (1)+(2) STAGING'DE) —
+>   bu turda staging'e yazılmadı.
+> - **Testler:** **675 → 701/701** (40 → 42 suite) — PG14 iki koşu suite suite AYNI + PG **17.10** geçici kümede 1 koşu AYNI (701/701). Yeni:
+>   `test_p3b_reports.js` (20 — dönem / kova / CSV / wrap birimi · R2 el hesabı + eksen + kapsam · R4 el hesabı + ledger özetiyle EŞİTLİK ·
+>   R5 el hesabı · R6 hedef + önceki edisyon + öneri + R2'yle EŞİTLİK · R1 tam küme + enjeksiyon + kapsam · kodda formül sızıntısı yok · PDF
+>   kaydırma · TABAN) · `test_p3b_premig.js` (3, şema ≤ 063 — yeni `_p3r` test DB'si) · `test_migrate.js` (n) R58–R60 (064 gerçek CLI).
+>   Playwright yerel (`tests/p3b_tour.js`, zincirde değil): **6/6**.
+> - **SAPMA (Prompt 3b, numaralı — "ön-onaylı" = YON-18):**
+>   1. **Bölme:** R3 + R7 + R8 → Prompt 3c (SIĞMAZSA; direktifin çizgisi). Suer turu bu yarıda R7 olmadan: **R2 · R5 · R4**.
+>   2. **Ön-onaylı — ort. €/m² = m² kalemlerinin neti ÷ m²** (RAP-06). Sentez "ort €/m²" dedi, tabanı belirtmedi; brüt (vergi + RF dahil) ya da
+>      tüm taban (birim ürünler dahil) m² fiyatını şişirirdi.
+>   3. **Ön-onaylı — m² YALNIZ kalemden** (Sentez kuralı); Zoho `sqm` yedek olarak kullanılmadı → 619 göçmüş kontrat m²'siz, sayaçta. 🔶 1.
+>   4. **Ön-onaylı — ülke = müşteri firmasının ülkesi**; göçmüş kontratlarda firma bağı yok → "Country unknown" kovası. 🔶 2.
+>   5. **Ön-onaylı — R4 / R5 kapısı `contracts.read` + kapsam** (Sales kendi bakiyesini / ödemesini API'de görür; Finance sayfaları alan kapısıyla).
+>   6. **Ön-onaylı — R5 iptal / devir kontratlarının ödemelerini de gösterir** (gerçek para; RAP-03 kara listesi kontrat toplamlarına uygulanır).
+>   7. **Ön-onaylı — R6 satış bloğu yalnız kontrat kapsamı "all" olana** (Owner / Finance); Project (budget.read var, contracts.read yok) null.
+>   8. **Ön-onaylı — R1 kapsamı:** 13 liste + 3 rapor ekranı. Detay alt listeleri (kontrat ödemeleri, ekstreler, tedarikçi geçmişi), admin
+>      referans / göç / bölge / şablon listeleri ve EMS → UI kuyruğu. Dışa aktarım sütunları = API satırının düz alanları (seçilmiş sütun seti yok).
+>   9. **Ön-onaylı — R4 aksiyon listesi ekranda TAVANSIZ** (staging 2.080 satır, 1,1 MB) — performans iyileştirmesi (tek olgu sorgusu / sayfalama)
+>      ayrı dilim.
+>   10. **Ön-onaylı — rapor uçlarında tarihler METİN** (YYYY-MM-DD): pg sürücüsü `date`'i yerel saat diliminde `Date`'e çevirip JSON'da günü
+>       kaydırıyor (yerel +03'te ölçüldü). Eski uçlar değiştirilmedi (Render UTC'de kayma yok).
+>   11. **Kabul (c)/(d) kaynağı:** ELIZA /sales ve geçici ödeme ekranına erişim YOK → Zoho CSV (25 Eki; direktifin izin verdiği yol).
+>   12. **PDF:** yalnız To / From / banka satırları kaydırır (Suer'in notu); kalem açıklaması / kodu, Expo satırı ve Notes hâlâ `fit` (kesme) — UI kuyruğu.
+>   13. **Test beklentisi güncellemeleri (hüküm numaralı):** `test_ui2_ledger_pages.js` U3 Sales alt menüsü 5 → 6 bağlantı (R2) ·
+>       `test_migrate.js` (m) ≤ 063'e donduruldu (064 gerçek dizine girince "DRY-RUN OK: 2" kayardı) + (n) eklendi.
+>   14. `index.js`'e rota bağlandı (açılış dosyası — KAPI-2 alanı; staging-yalnız birleşme dalı, YON-16).
+>   15. **Ön-onaylı — sıra:** Suer "Prompt 4 (Paket 5b) 3b ONAY'ı ile başlar" dedi; 3b bölündüğü için Prompt 4, 5a'nın TAMAMI bitince (3c ONAY'ı)
+>       başlar — 5b'nin girdisi 5a'nın RAP tanımları + ekranlarıdır. 3b ONAY'ı gelince 3c Sentez beklenmeden başlar (YON-18).
+> - **🔶 Sentez'e:**
+>   1. m²: göçmüş kontratta m² kalemi yoksa Zoho `sqm` YEDEK olarak sayılsın mı (619 kontrat; tüm kontratlarda Σ `sqm` 76.973 − Σ kalem m² 74.893,5 = 2.079,5)?
+>   2. Ülke: göçmüş kontratlar için Zoho "Country. of Company" alanı göçe eklensin mi (yoksa R2 ülke sekmesi göç verisinde boş kalır)?
+>   3. Kabul (d) referansı: "Ödeme Takip" için Zoho'nun hangi kaynağı esas — Received_Payment (LEENA'nın taşıdığı) mı, Payment_Audit (Revenues) mi?
+>   4. (açık) Prompt 3: görünen ad · Office Manager sensitive_finance.read.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging'de 064 KOŞULMADI · staging Playwright (R2 Sales araç hesabıyla kendi satırları · external 409) SUER
+>   BLOĞU sonrasına · ELIZA ekranları (erişim yok) · Excel dosyası gerçek Excel'de açılmadı (SheetJS ile okundu) · Render içi süre (ölçüm yerel →
+>   staging, ağ dahil) · R8 bulguları alt ajan ölçümü, 3c'de yeniden okunacak · canlı DB okunmadı.
+> - **Bilinçle yapılmayanlar:** R3 · R7 · R8 (Prompt 3c) · grafik kütüphanesi · rapor oluşturucu / doğal dil / push (Paket 5b) · m² `sqm` yedeği ·
+>   ülke göçü · yeni EMS ekranı · `leena/CLAUDE.md` + `leena/todo.md` (oturum dışı) stage edilmedi.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -7660,6 +7785,12 @@
 >   6 Kas 12:37: Suer **ONAY** (3 ekran) → ✅ **PROMPT 3 (1)+(2) KAPALI** — [defter:2026-11-06 PROMPT 3 (1)+(2) KAPALI]. İTİRAZ-notu: PDF
 >   satıcı / To bloğunda uzun metin kesilmesin, kaydırılsın (3b'de). **★SIRADAKİ (bu kazanır) = Prompt 3b: Paket 5a (R1–R8 + RAP metrik
 >   tanımları) — BAŞLADI (YON-18) → Prompt 4 = Paket 5b (3b ONAY'ı ile) → kesim provası ×2 → kesim.** Canlı `main` DONUK (`5c4c34b`).
+>   6 Kas: Prompt 3b 1. yarı (R1 + R2 + R4 + R5 + R6 · RAP-04..11 · PDF kaydırma) → ✅ **STAGING'E HAZIR** (LEENA `657d2ee`; 701/701 — PG14 ×2 +
+>   PG17.10; Playwright 6/6; kabul (c) 26 temsilcinin 15'i birebir + 6'sı kuruş, toplam fark +8 kontrat hepsi nedenli · (d) 3 temsilci tam) —
+>   [defter:2026-11-06 PROMPT 3b (PAKET 5a) 1. YARI: R1 + R2 + R4 + R5 + R6]. **★SIRADAKİ (bu kazanır) = Suer: SUER BLOĞU (push LEENA + ell-docs ·
+>   staging migrate 064) → CC: araç hesaplarıyla staging turu (Sales R2 kendi satırları · external rapor 409) + salt-okunur teyit → Suer 3 ekran
+>   (R2 bir temsilci · R5 Ekim · R4) → ONAY → Prompt 3c = R3 + R7 + R8 (Sentez beklenmez, YON-18) → 3c ONAY → Prompt 4 = Paket 5b → kesim
+>   provası ×2 → kesim.** Sentez'e açık 🔶: Prompt 3b — 3 · Prompt 3 — 2. Canlı `main` DONUK (`5c4c34b`, YON-16).
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
