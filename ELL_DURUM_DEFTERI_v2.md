@@ -7395,6 +7395,44 @@
 >   (ofisten türetilir — D2) · klasik sayfalara (public/) dokunulmadı · `leena/CLAUDE.md` + `leena/todo.md` (oturum dışı değişiklik)
 >   stage edilmedi · ekran görüntüsü (yalnız yerel tur, staging'de değil).
 
+> ## ✅ 2026-11-06 — PROMPT 3 (1)+(2) STAGING'DE: Suer adım 1–3 · migrate 062-063 (kayıt 65) · tüzel kişi girişi · staging Playwright 7/7
+>
+> - **Ne yapıldı:** Suer SUER BLOĞU adım 1–3'ü yaptı ("tamam"): push · staging migrate 062-063 · Admin › Reference data'dan tüzel kişi +
+>   ofis varsayılanı + banka ayrıntısı. CC uygulandığını ÖLÇTÜ (aşağıda), sonra araç hesaplarıyla staging Playwright turu + salt-okunur teyit.
+>   Kayıtlar: [defter:2026-11-06 SENTEZ: PROMPT 2 KABUL + 8 KARAR + PROMPT 3 DİREKTİFİ] · [defter:2026-11-06 PROMPT 3 (1)+(2): YET-KAPSAM-2 +
+>   TÜZEL KİŞİLİK]. Kod değişikliği YOK.
+> - **Commit:** ell-docs bu kayıt (yalnız defter). LEENA değişmedi (`eliza-next` = origin = `7428770`). **PUSH YOK** (Suer).
+> - **Ölçülenler (6 Kas, CC):**
+>   - **Push:** `origin/eliza-next` = `7428770` · ell-docs `origin/main` = `49c3269` (ikisi de yerel ile eşit) · staging'in servis ettiği
+>     `/ui2/nav.json` sha1 = `7428770`'teki dosyanınkiyle AYNI (`internalOnly` 1 öğe) → staging yeni kodu koşuyor.
+>   - **Staging DB (salt okuma, `claude_readonly`, `default_transaction_read_only = on`):** kayıt **65** (son `063_legal_entities`) · izin
+>     **34** · sistem şablonu satırı **48** (SUER BLOĞU beklentisiyle aynı) · yeni satırlar: Finance agents.write / payments.write /
+>     sensitive_finance.read all · Office Manager payments.write / sensitive_finance.read office · Project contracts.write all · 4 yeni kolon
+>     (quotes / contracts legal_entity_id · email_queue from_name · offices default_legal_entity_id) · `legal_entities` **1**: "ELAN EXPO
+>     FUARCILIK TİCARET LİMİTED ŞİRKETİ" · TR · aktif · adres / vergi no / e-posta / telefon / web DOLU · ofis Turkey varsayılanı = o ·
+>     diğer 5 ofis boş · hesap 1 ("test11", EUR) → tüzel kişi 1 · belgede göster · banka adı / hesap no / SWIFT DOLU (değerler basılmadı) ·
+>     son 1 günde denetim `reference.create` 2 + `reference.update` 3.
+>   - **Staging Playwright** (scratchpad betiği, repoya girmez; ekran görüntüsü yok; şifre / token / IBAN çıktıya basılmadı): **7/7**
+>     - a1 cc-staging (Sales, Turkey) /me'de payments.write · agents.write · sensitive_finance.read YOK · ödeme / plan 409 payments.write ·
+>       atama 409 contracts.write · temsilci açma 409 agents.write · ledger hesap + nakit 409 ledger.read · komisyon raporu 409 · kendi
+>       kontratı ATR-200000 (7863) 200, komisyon alanı 0 + `commission_hidden`.
+>     - a2 ekran: Finance › ATR-200000 bölümleri line-items · payments · communication — **Commission YOK**. (İlk koşuda bekleme yarışı:
+>       seçici "Loading…" durumunu yakaladı → salt-okunur yeniden kontrolde geçti; ürün hatası değil, Prompt 2 b-turu emsali.)
+>     - a3 yeni taslak **QTR-200003** (CC Tool Co · Turkey) Turkey ofisinin tüzel kişisiyle açıldı (detay + seçici).
+>     - a4 Send → "(locked)" · donmuş PDF: satıcı = tüzel kişi · Bank details · Beneficiary · banka / IBAN / SWIFT DB'deki hesapla AYNI ·
+>       Currency EUR · Send sonrası tüzel kişi değişikliği 409 NOT_DRAFT · DB: sent + legal_entity_id = 1 · echo kuyruğu `from_name` =
+>       tüzel kişi adı, reply-to cc-staging.
+>     - b1 Convert queue: cc-staging alt menüsünde VAR · cc-external'da YOK (Contracts / Quotes duruyor) · uç dışa 409 EXTERNAL_NOT_ALLOWED.
+>     - c1 kayıt 65 · izin 34 · **TABAN** kontrat 4 SR **342.00** ✅ · **TABAN-2** AF489555 (6483) SR **125.46** ✅ · c2 sayfa / konsol
+>       hatası 0 (beklenen 409 konsol satırı 9).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Suer'in Shell'deki migrate çıktısı (DRY-RUN / COMMIT / NOTICE satırları) CC'ye gelmedi — yalnız SON
+>   durum ölçüldü ve beklentiyle aynı · staging'de Finance / Office Manager / Project kullanıcısı yok → M2 matrisinin o satırları yalnız
+>   yerel testte · convert dondurma staging'de denenmedi (QTR-200003 imzalanmadı — kontrat yaratırdı; yerel E5 + Playwright T2 ölçtü) ·
+>   gerçek e-posta (görünen adın gelen kutusunda hali) — echo · worker süreci.
+> - **Bilinçle yapılmayanlar:** QTR-200003 imzalanmadı · tur verisi silinmedi (tazelemede gider — YON-14) · araç hesapları pasiflenmedi
+>   (Suer kararı) · Prompt 3b BAŞLATILMADI (Suer ONAY'ı bekleniyor; ONAY gelince Sentez beklenmez — YON-18) · `leena/CLAUDE.md` +
+>   `leena/todo.md` dokunulmadı.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -7602,6 +7640,11 @@
 >   ayrıntısı) → CC: araç hesaplarıyla staging Playwright + salt-okunur teyit → Suer ≤ 3 ekran → ONAY → Prompt 3b = Paket 5a (R1–R8 + RAP
 >   metrik tanımları; kriter Sentez'de HAZIR — ONAY gelince Sentez beklenmeden başlar, YON-18) → Prompt 4 = Paket 5b → kesim provası ×2 →
 >   kesim.** Sentez'e açık 🔶: Prompt 3 — 2 soru. Araç hesapları cc-staging + cc-external AKTİF. Canlı `main` DONUK (`5c4c34b`, YON-16).
+>   6 Kas: Prompt 3 (1)+(2) → ✅ **STAGING'DE** — Suer adım 1–3 · migrate 062-063 (kayıt 65) · tüzel kişi ELAN EXPO FUARCILIK + Turkey
+>   varsayılanı + EUR hesap belgede · staging Playwright 7/7 (QTR-200003 PDF satıcı + banka · Sales'te Commission yok · dışta Convert queue
+>   yok) · TABAN 342.00 + TABAN-2 125.46 — [defter:2026-11-06 PROMPT 3 (1)+(2) STAGING'DE]. **★SIRADAKİ (bu kazanır) = Suer ≤ 3 ekran
+>   (Admin › Users › cc-staging Effective · QTR-200003 PDF · QTR-200003 sayfası locked + echo) → ONAY → Prompt 3b = Paket 5a HEMEN
+>   (YON-18) → Prompt 4 = Paket 5b → kesim provası ×2 → kesim.** Sentez'e açık 🔶: Prompt 3 — 2 soru. Canlı `main` DONUK (`5c4c34b`).
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
