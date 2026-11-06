@@ -7868,6 +7868,64 @@
 >   R3.
 > - **Bilinçle yapılmayanlar:** R3 (3e) · yeni EMS ekranı · `/api/visitors/export` düzeltmesi (EMS kodu — karar bekliyor) · `leena/todo.md` (oturum dışı).
 
+> ## ✅ 2026-11-06 — PROMPT 3d 1. BÖLÜM STAGING'DE: push doğrulandı · staging turu 3/3 · salt-okunur teyit
+>
+> - **Ne yapıldı:** Suer SUER BLOĞU'nu yaptı ("tamam — push 398e7fe / 335d3db"). CC push'u ölçtü, araç hesaplarıyla staging turunu koştu (salt
+>   okur — staging'e YAZILMADI). Kod değişikliği YOK. Kayıt: [defter:2026-11-06 PROMPT 3d (PAKET 5a SON) 1. BÖLÜM: S1 KURALI + R7 EKLERİ + R8].
+> - **Commit:** ell-docs bu kayıt (HOTFIX kaydıyla aynı commit). **PUSH YOK**.
+> - **Ölçülenler (6 Kas):**
+>   - Push: LEENA `origin/eliza-next` = `398e7fe` · ell-docs `origin/main` = `335d3db` (`257c072` dahil) · staging `/ui2/nav.json` = `398e7fe`'deki
+>     dosya → staging yeni kodu servis ediyor · LEENA `main` = `origin/main` = `5c4c34b` (donuk, YON-16).
+>   - **Staging turu 3/3:** a1 API — cc-staging Collections 200 (kapsam own; milat öncesi kovası alanı var, varsayılan dışarıda) · R7 409 OUT_OF_SCOPE ·
+>     R2 üç sayaç (göç m² · alan dışı · bilinmeyen) toplamda + satırda · cc-external Collections 409 · a2 ekran — cc-staging Collections milat öncesi
+>     notu ("before 2019-01-01") · Operations (cc-staging'de `operations.read` YOK) sekme görünmez / sayfa erişim yok · cc-external üst sekmede Operations
+>     yok · sayfa / konsol hatası 0 (beklenen 409 dışında) · b1 kayıt **67** (son `065` — 3d'de migration yok) · `company_country_code` dolu 0 · TABAN
+>     kontrat 4 SR **342.00** ✅ · TABAN-2 AF489555 SR = LEENA CLAUDE.md değeri, **EŞİT** ✅ (değer basılmadı — GOC-07).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Operations › Expos ekranı ve R8 bağlantıları staging'de araç hesabıyla açılamaz (iki araç hesabında da
+>   `operations.read` yok — Owner ekranı Suer'de) · klasik `/reports.html`'in ui2 oturumuyla staging'de açılışı · R7 LIFFY sütununun staging görünümü
+>   (Owner ekranı Suer'de).
+> - **Bilinçle yapılmayanlar:** Prompt 3e (R3) başlatılmadı — Suer 3 ekran + ONAY bekleniyor.
+
+> ## ✅ 2026-11-06 — HOTFIX (YON-16 b — yetki atlatma): `GET /api/visitors/export` fuar sahipliği denetimi (dal `71f4902` · eliza-next `1c156e5`)
+>
+> - **Kriter kaynağı:** Suer 6 Kas direktifi (3d push turunun ardından; "kural karar vermiştir, ön-onaylı") · **YON-16 (b)** "güvenlik (sır, yetki
+>   atlatma); ayrı dal, aynı gün birleşme dalına" · bulgu: [defter:2026-11-06 PROMPT 3d (PAKET 5a SON) 1. BÖLÜM: S1 KURALI + R7 EKLERİ + R8] madde 7 🔶.
+> - **Ne yapıldı:**
+>   - Dal `hotfix/visitors-export-org-scope`, tabanı `main` = `origin/main` = `5c4c34b` (ölçüldü). Tek davranış değişikliği — `routes/visitors.js` export
+>     ucu (`:1146`): `expo_id` doğrulamasından sonra `SELECT id FROM expos WHERE id = $1 AND organizer_id = $2` (rapor özeti ucuyla AYNI yüklem,
+>     `routes/reports.js:19-22`); satır yoksa AYNI red: **403 `{ error: 'Access denied to this expo' }`** (`routes/reports.js:24-26`). Olmayan fuar da
+>     aynı 403 (öncesi: 200 + boş dosya). Eksik `expo_id` → 400 ve token yok → 401 DEĞİŞMEDİ.
+>   - Dosyalar: `routes/visitors.js` (+11) · yeni `tests/test_hotfix_export_scope.js` · `package.json` (yalnız test zincirine kayıt). Başka dosya /
+>     özellik YOK.
+>   - Test — iki organizasyonlu fikstür. Test DB finans aynası, `visitors` tablosu YOK (YON-09) → fikstür kendi şemasında (`hfx_export_scope`), ucun
+>     havuzu `search_path` ile okur; `expos` / `organizers` gerçek stub. H1 kendi fuarı → 200 + yalnız o fuarın 2 ziyaretçisi · H2 başka organizasyonun
+>     fuarı → 403, gövde + durum `/api/reports/summary` ile BİREBİR, dosyada öteki ziyaretçi yok · H3 öteki organizasyon kendi fuarını alır (aşırı engel
+>     yok) · H4 olmayan fuar → 403 · H5 400 / 401 değişmedi · H6 süzgeç (search) çalışıyor. **Kırmızı-önce:** düzeltmesiz kodda H2 + H4 DÜŞTÜ
+>     (organizasyon 1'in token'ı organizasyon 2'nin fuarından 1 ziyaretçiyi dışa aktardı; olmayan fuar 200) → düzeltmeyle 6/6.
+>   - Birleşme dalı (aynı gün): `eliza-next`'e `--no-ff` merge **`1c156e5`** — tek çakışma `package.json` test zinciri satırı (eliza-next zinciri AYNEN +
+>     sonuna hotfix testi); `visitors.js` + test hotfix dalıyla bayt bayt aynı (diff 0 satır) · **`d570fc5`** LEENA CLAUDE.md (KURAL 4, EMS tarafı: uç
+>     notu + açık bulgu + beklenen 728/728).
+> - **Commit:** LEENA `hotfix/visitors-export-org-scope` **`71f4902`** (tek commit, `main` üstü → ff edilebilir) · `eliza-next` **`1c156e5`** (merge) +
+>   **`d570fc5`** (CLAUDE.md). ell-docs bu kayıt + 3d staging kaydı + ★ + kütük YON-16 uygulama notu. **PUSH YOK**.
+> - **Ölçülenler:**
+>   - `main` tam takım (hotfix dalında, PG 14.18): **554/554 · 30 suite** (önceki 29 suite 548 + hotfix 6) · exit 0. Günlükteki 4 "❌" satırı webhook
+>     testlerinin beklenen ret LOG satırı (test sonucu değil).
+>   - `eliza-next` tam takım (merge sonrası, PG 14.18): **722 → 728/728 · 44 → 45 suite**, iki koşu suite suite AYNI · exit 0.
+>   - Geriye uyum: iki giriş yolu da token'a `organizer_id` yazar — `routes/auth.js:48-55` (ilk commit `00c6919`'dan beri) + `routes/userAuth.js:94-98`
+>     → geçerli hiçbir token meşru erişimini kaybetmez · ucu çağıran iki klasik sayfa (`public/visitorlog-paginated.html:547`,
+>     `public/conference-sessions.html:267`) seçili fuarı gönderir; fuar listesi organizatöre süzülü (`routes/expos.js`) · servis kimliği bu uca giremez
+>     (`middleware/serviceAuth.js:34` ALLOWED) · `authMiddleware`'in eliza-next farkı `req.organizer_id` atamasını değiştirmiyor (yalnız dış kullanıcı
+>     duvarı).
+>   - **Aynı sınıf, kapsam dışı bulgu (🔶 — DÜZELTİLMEDİ, direktif "tek değişiklik"):** `GET /api/visitors/paginated` JWT dalı
+>     (`middleware/dualAuth.js:30-41` → `routes/visitors.js:66-108`; `limit` tavansız) ve `GET /api/visitors/conference-topics` (`:1304-1365`) fuar
+>     sahipliğini denetlemiyor — uç gövdelerinde `organizer_id` geçen satır 0 (`main`).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** **§1 canlı etki büyüklüğü** (organizasyon · ziyaretçisi olan organizasyon · fuar sayısı) — canlı salt-okunur
+>   bağlantı iki denemede `Connection terminated unexpectedly` (G4 imzası: IP izin listesi; genel internet çalışıyor); YON-17 gereği ağ ayarına
+>   dokunulmadı → Suer'e tek satır soru · PG17 koşusu (direktif PG14) · canlı deploy + canlı doğrulama (SUER BLOĞU) · staging'de hotfix (eliza-next
+>   push'u sonrası).
+> - **Bilinçle yapılmayanlar:** `/paginated` + `/conference-topics` (aynı sınıf — ayrı karar) · `main`'deki CLAUDE.md (hotfix dalı "tek değişiklik";
+>   KURAL 4 notu birleşme dalında, `main`'e eliza-next ile gelir) · push.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -8110,6 +8168,11 @@
 >   ell-docs, `257c072` dahil) → CC: araç hesaplarıyla staging turu + salt-okunur teyit → Suer 3 ekran (R8 bağlantı + dışa aktarım · R4 milat kovası ·
 >   R7 LIFFY sütunu) → ONAY → Prompt 3e = R3 (YON-18) → 3e ONAY → PAKET 5a KAPALI → Prompt 4 = Paket 5b → kesim provası ×2 → kesim.** Açık 🔶:
 >   `/api/visitors/export` organizatör denetimi. Canlı `main` DONUK (`5c4c34b`, YON-16).
+>   6 Kas: Suer push `398e7fe` / `335d3db` → ✅ **PROMPT 3d 1. BÖLÜM STAGING'DE** (tur 3/3, salt-okunur teyit) — [defter:2026-11-06 PROMPT 3d 1. BÖLÜM
+>   STAGING'DE]. **HOTFIX (YON-16 b)** `/api/visitors/export` fuar sahipliği → dal `71f4902` + eliza-next `1c156e5` — [defter:2026-11-06 HOTFIX (YON-16 b
+>   — yetki atlatma)]. **★SIRADAKİ (bu kazanır) = Suer: hotfix push → `main` ff + push → Render deploy → canlı doğrulama (CC gözlem + ölçüm) ∥ Suer 3
+>   ekran (3d) → ONAY → Prompt 3e = R3 (YON-18) → 3e ONAY → PAKET 5a KAPALI → Prompt 4 = Paket 5b → kesim provası ×2 → kesim.** Açık 🔶: `/paginated` +
+>   `/conference-topics` aynı sınıf. Canlı `main` `5c4c34b` → hotfix push'u sonrası `71f4902` (YON-16 b istisnası; başka kod gitmez).
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
