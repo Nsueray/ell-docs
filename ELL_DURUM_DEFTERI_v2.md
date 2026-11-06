@@ -7639,6 +7639,52 @@
 > - **Bilinçle yapılmayanlar:** geçmiş temizliği (Suer: bırak) · `leena/todo.md` (oturum dışı değişiklik — dokunulmadı, izlenmeye devam) ·
 >   `.gitignore`'a `.DS_Store` eklenmedi (istenmedi).
 
+> ## ✅ 2026-11-06 — PROMPT 3b 1. YARI KAPALI — Suer ONAY (14:31)
+>
+> - **Ne yapıldı:** Suer staging'de üç ekrana baktı: R2 Elif AY 66 kontrat · €432.632,35 · R5 Ekim 49 · €99.661,51 + kontratsız 11 (€16.445,80)
+>   sayacı · R4 Excel 2.080 satır × 15 sütun (Orchestrator gerçek dosyayı okudu). → **ONAY (Suer, 6 Kas 14:31)** → **Prompt 3b 1. yarı KAPALI**.
+>   Kayıtlar: [defter:2026-11-06 PROMPT 3b (PAKET 5a) 1. YARI: R1 + R2 + R4 + R5 + R6] · [defter:2026-11-06 PROMPT 3b 1. YARI STAGING'DE].
+>   Kod değişikliği YOK. YON-18: Prompt 3c ONAY'la başladı (Suer direktifi, aynı mesaj).
+> - **Commit:** ell-docs bu kayıt (Sentez S1–S5 bloğuyla aynı). LEENA değişmedi (`eliza-next` = origin = `b450517`). **PUSH YOK**.
+> - **⚠️ ÖLÇÜLMEDİ:** ONAY sonrası staging yeniden okunmadı; Excel dosyasını CC açmadı (Orchestrator okudu).
+
+> ## ✅ 2026-11-06 — SENTEZ: S1–S5 + UX HATTI — AYNEN (KB 890bb0b)
+>
+> - **Kaynak:** Suer'in 6 Kas 14:31 "PROMPT 3c" mesajı §1 içindeki Sentez metni, AYNEN. Bu blok [defter:2026-11-06 PROMPT 3b (PAKET 5a) 1. YARI:
+>   R1 + R2 + R4 + R5 + R6] 🔶 1–3'ün + [defter:2026-11-06 SENTEZ: PROMPT 2 KABUL + 8 KARAR + PROMPT 3 DİREKTİFİ] sonrası Prompt 3 🔶 1–2'nin cevabıdır.
+>
+>   ```
+>   SENTEZ → ORCHESTRATOR — S1–S5 + UX HATTI (6 Kas). KB 890bb0b push sonrası çekilir.
+>   S1 = a. Göçmüş kontratta m² kalemi yoksa Zoho m² alanı (contracts.sqm) yedek; okuma anında türetilir,
+>   saklanmaz (D2); metrikte "göç m²" işaretli ve sayısı raporda (RAP tanımına not). Kalemli kontratta yalnız kalem.
+>   S2 = a. Şirket ülkesi göç betiğine; sonraki prova getirir, backfill yok. Ülke boşsa "unknown" sayımı raporda kalır.
+>   S3 = SUER (6 Kas): Zoho'da iki yer (kontrat-altı Received Payments = kontratın ödemeleri · Revenues = nakit
+>   akışı/gelen para); Finans kontrat ödemesine kontrat-altı formdan bakıyor. İSTEK: biri girilince diğerinde de
+>   görünsün. LEENA'da bu ZATEN TEK KAYIT (LED-04, GOC-02): payments tek tablo; kontratlı ödeme hem kontrat
+>   altında hem gelir/nakit listesinde; kontratsız = bağsız gelir, sonradan bağlanır. Çift giriş yok. Kütüğe RAP
+>   notu: "gelir listesi = payments'ın ikinci görünümü". Kabul (d) ölçütü YANLIŞ KURULMUŞ: karşılaştırma Zoho
+>   Revenues'la değil, direktifteki gibi ELIZA geçici ekranıyla (Received_Payment'ı okur): R5 Ekim × temsilci Σ ve
+>   adet = ELIZA /finance aynı süzgeç. Zoho Revenues'daki kontratlı kayıtlar göçte zenginleştirme (GOC-02), ikinci
+>   sayım değil — fark raporda sayıyla.
+>   S4 = tüzel kişilik ADI görünen ad ("Elan Expo Turkey"); adres mevcut SENDER_EMAIL; reply-to satışçı. E-posta
+>   adresi görünen ad OLMAZ.
+>   S5 = kalsın. Office Manager sensitive_finance.read (office): kendi ofisinin komisyonlarını görür; başka ofisi görmez.
+>   İki tutarsızlık (49/48 · sales.read=all ezmesiyle "yalnız kendi satırları"): CC ölçümü sonucuna göre BEKLENTİ
+>   düzeltilir, kod değil (ön-onay). Araç hesabı ezmesi raporda kapsamı "all" yapıyorsa, "yalnız kendi satırları"
+>   kabulü cc-external ya da ezmesiz bir Sales araç hesabıyla ölçülür.
+>   Ön-onaylı SAPMA'lar (€/m² tanımı, R4 sınırsız liste + süre): KABUL; R4 7,2 sn hızlandırma UI kuyruğunda.
+>   UX HATTI: ONAY, üç şartla. (1) UX Ideas çıktısı bana Suer üzerinden gelir, ben kriter (UX-NN) yazarım;
+>   kod/prompt oradan Orchestrator'a gitmez. (2) Uygulama tasarım fazında, kesimden sonra (Suer 5 Kas); 3c/4
+>   akışını durdurmaz, Orchestrator kuyruğuna girmez. (3) Eski kararlarla çelişen UX önerisi veto değil ama hüküm
+>   değişikliği gerektirir — kütüğe SUPERSEDED notuyla, Suer kararıyla.
+>   Prompt 3c (R3 R7 R8) 3b ONAY'ıyla hemen; Prompt 4 (5b) 3c'den sonra.
+>   ```
+>
+> - **Bağlantı (Suer direktifi):** "49/48 ve kapsam ölçümleri 3b turunda kapandı (kod değişmedi; beklenti doğru çıktı)" — [defter:2026-11-06 PROMPT 3b 1. YARI
+>   STAGING'DE] (a) + (b): 49 = tam ay, 48 = CSV tarihine kadar (fark #4301); raporlar `contracts.read` ile süzülür, cc-staging own — "yalnız kendi
+>   satırları" beklentisi doğruydu. S4 ve S5 Prompt 3'te zaten öyle uygulanmıştı (değişiklik yok).
+> - **Uygulama:** Prompt 3c kaydında (S1 · S2 · S3 · S4 testi; S5 değişiklik yok).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
