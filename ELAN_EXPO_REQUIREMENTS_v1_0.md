@@ -116,6 +116,10 @@
 >   Widening needs an ADR. Most agents remain records without a login.
 > - **Still valid until Suer decides:** freelance DATA ENTRY (Part 2.1 channel 4, ~line 297: "No system logins; they submit through a
 >   public form") — the external-user model above does not cover data-entry freelancers.
+> - **Amendment 2026-11-06 (Suer decision 5 Nov, Sentez Prompt 3 — ledger "2026-11-06 — SENTEZ: PROMPT 2 KABUL + 8 KARAR + PROMPT 3
+>   DİREKTİFİ"; rule YET-25):** the line above is SUPERSEDED as well (second supersession of ~line 297). A freelance DATA ENTRY user
+>   also signs in with an account, under a NARROW permission template; there is NO public form. The template's content (codes and
+>   scope) is a separate slice and still open.
 
 > **Amendment 2026-10-25 (P1b-2 reference data from the Zoho export — ledger
 > `ELL_DURUM_DEFTERI_v2.md` "2026-10-25 — PAKET 3 P3-2 + P1b-2"; rule LED-17 note in

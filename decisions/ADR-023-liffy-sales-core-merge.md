@@ -65,4 +65,19 @@ Faz A restore + rollback.js. Prova ≥ 2 kez, canlının taze kopyasında.
 > `html_content`) · FK `convalidated = true` · 059-061 tek runner işleminde (süre ölçülmedi). Kesimde: ADD COLUMN nullable (yalnız
 > katalog) + FK doğrulama taraması (heap üzerinden; tablo kilidi ShareRowExclusive — worker yazımını o süre bekletir) süresi PROVADA
 > ölçülür; uzunsa FK `NOT VALID` eklenir, `VALIDATE CONSTRAINT` ayrı adımda (kilit daha hafif) koşulur. Karar provada.
+> **Teyit (Sentez 6 Kas, Prompt 3 KESİM NOTU):** provada süre ölçülür; **> 60 sn ise** FK `NOT VALID` + `VALIDATE CONSTRAINT` ayrı adım.
+> **Prova raporunda ZORUNLU satır:** "061 `email_queue` FK süresi: … sn (karar: tek adım | NOT VALID + VALIDATE)".
+>
+> **Kesim maddesi (Sentez 6 Kas, Prompt 3 karar 3 = a):** klasik (organizer token'lı) giriş kullanıcıları kesimde ui2 girişine (`users`)
+> geçer (SEM-05). Kesim tasarımına adım: **"klasik token'lı kullanıcı listesi + geçiş günü"** — kesimden önce canlıda klasik girişle
+> çalışan kişilerin listesi (ad · e-posta · kullandığı ekranlar), her biri için `users` daveti + şablon, ve geçiş günü (o günden sonra
+> klasik giriş yalnız EMS köprüsü — YET-02). Liste provada çıkarılır.
+>
+> **Karar 6 cevabı (Sentez 6 Kas):** core_* emekliliği yalnız **ADR-005**'i ilgilendirir; ADR-016'ya DOKUNULMAZ. "ADR-005/016" ifadesi
+> Sentez hatasıydı (ölçülmeden ELIZA chat'ten alındı). Yukarıdaki maddedeki 🔶 kapandı.
+>
+> **Kesim notu (Prompt 3 — 062 / 063, CC, 6 Kas):** 062 yalnız kayıt defteri + sistem şablonu SATIRI ekler (veri değiştirmez). 063
+> `email_queue`'ya `from_name text` (NULLABLE, varsayılansız, FK'sız → yalnız katalog; tarama yok) ekler; `quotes` / `contracts` /
+> `accounts` / `offices`'e NULLABLE FK kolonları (yeni kolon tamamen NULL → doğrulama taraması tablo boyutunca, `email_queue`'ya FK YOK).
+> Canlı `contracts` boyutu bu turda ölçülmedi (staging 3.934 satır).
 

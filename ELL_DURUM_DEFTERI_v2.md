@@ -7044,6 +7044,357 @@
 >   "Test sektor") silinmedi — tazelemede gider (YON-14) · araç hesapları pasiflenmedi (Suer kararı) · `leena/CLAUDE.md` + `leena/todo.md`
 >   dokunulmadı.
 
+> ## ✅ 2026-11-06 — SENTEZ: PROMPT 2 KABUL + 8 KARAR + PROMPT 3 DİREKTİFİ — AYNEN (KB @ 20d9394)
+>
+> - **Kaynak:** Suer'in 6 Kas mesajındaki Sentez metni ("PROMPT 3 DİREKTİFİ (TAM)"), AYNEN. Bu blok [defter:2026-11-05 PROMPT 2: B2 + REF + B3]
+>   kaydının 7 🔶 sorusunun + [defter:2026-11-06 PROMPT 2 STAGING'DE] kaydının 1 🔶 sorusunun (Convert queue menüsü dış kullanıcıda → karar 8)
+>   cevabıdır.
+>
+>   ```
+>   SENTEZ → ORCHESTRATOR — PROMPT 3 DİREKTİFİ (TAM): PROMPT 2 KABUL + 8 KARAR + YET-KAPSAM-2 + TÜZEL KİŞİLİK + PAKET 5a + HIZ KURALI + PAKET 5b (6 Kas). KB @ 20d9394 okundu. DEVAM.
+>   (Bu blok önceki "PROMPT 3 DİREKTİFİ" ve "EK" bloklarını birleştirir; biri daha önce geldiyse tekrar eden bölümü yoksay.)
+>
+>   PROMPT 2: KABUL. SAPMA 1–32 + staging bulguları HEPSİ KABUL. Karar 6
+>   (staging claude_readonly, default_transaction_read_only=on) teyit;
+>   canlıdaki rol için aynı ayar Faz B kuyruğuna. REQ amendment ek satır
+>   (Suer 5 Kas): veri girişi yapan freelancer da hesapla girer, dar
+>   şablonla (genel form YOK) — REQ 297 ikinci kez SUPERSEDED.
+>
+>   8 KARAR:
+>   1=a. Dış duvar izin listesiyle yeterli; EMS iç kapıları ayrı dilim,
+>     kütükte AÇIK (YET).
+>   2=DÜZELTME (b-varyantı): tek kod değil, İKİ kod — `contracts.write`
+>     (durum: On Hold/Cancelled/Transferred, transfer bağı, not) ve
+>     `payments.write` (kontrat altı ödeme kaydı). Finance: ikisi all ·
+>     Office Manager: ikisi office · Project: contracts.write all,
+>     payments.write YOK (REQ "durum değişikliği Project'te"; ödemeyi
+>     Finance yazar). YET-KAPSAM-2'de.
+>   3=a. Klasik giriş kullanıcıları kesimde ui2 girişine (SEM-05); kesim
+>     tasarımına madde: "klasik token'lı kullanıcı listesi + geçiş günü".
+>   4=a. YET-KAPSAM-2 (küçük KAPI-2, Prompt 3'ün İLK bölümü, aynı prompt):
+>     temsilci yazma uçları kapılı (agents.write: Owner/Finance all) ·
+>     ledger okuma uçları kapılı (ledger.read — Finance all, Office
+>     Manager office, Project/Sales YOK) · ledger referans yazma denetimi
+>     (YET-08) · karar 2 kod ayrımı · karar 7 alan gizleme · karar 8.
+>   5=SUER KARARI: a + değiştirilebilir → TÜZEL KİŞİLİK bölümü (aşağıda).
+>   6=a. Yalnız ADR-005. ADR-016'ya dokunulmaz; "005/016" ifadesi Sentez
+>     hatasıydı (ölçülmeden ELIZA chat'ten alındı) — deftere böyle.
+>   7=a. YET-KAPSAM-2'de `view_sensitive_finance` (B42): kontrat
+>     detayında komisyon bölümü (SR/SD/agent oranı, earned) yalnız bu
+>     bayrakla; Owner/Finance şablonunda var, Sales/Sales Operations'ta
+>     yok; Sales kendi komisyonunu "Komisyonlarım" (commissions.read own)
+>     ekranından görür, kontrat detayından değil.
+>   8=a. Convert queue dış kullanıcıya nav'da gizli; imzası kendi kontrat
+>     listesine düşer.
+>
+>   KESİM NOTU teyit: 061 canlıda email_queue (~570k) — provada süre
+>   ölçülür; >60 sn ise NOT VALID + VALIDATE ayrı adım; prova raporunda
+>   zorunlu satır.
+>
+>   HIZ KURALI (Suer 6 Kas; YON-18):
+>   - ÖN-ONAY: Orchestrator'ın a/b/öneri sorularında öneri kütükteki bir
+>     hükümle uyumluysa BEKLEMEDEN uygulanır, "ön-onaylı SAPMA" olarak
+>     raporlanır; Sentez kapanışta geri alabilir (bedel kabul). Yalnız iş
+>     kararları (Suer) ve kütükle çelişen seçenekler durur — onlar da
+>     varsayılanla devam eder, cevap gelince düzeltilir.
+>   - Sentez sıradaki paketin kriterlerini mevcut prompt koşarken verir;
+>     tur ONAY'ı alınır alınmaz sonraki prompt başlar, Sentez beklenmez.
+>   - Suer turu paket başına en çok 3 ekran; gerisi araç hesabıyla CC.
+>
+>   ══ PROMPT 3 = (1) YET-KAPSAM-2 + (2) TÜZEL KİŞİLİK + (3) PAKET 5a ══
+>   Tek prompt, tek Suer turu sonda; SIĞMAZSA böl: (1)+(2) / (3).
+>   Canlı DONUK (YON-16).
+>
+>   (2) TÜZEL KİŞİLİK (legal entity) — karar 5, Suer:
+>   - legal_entities: ad · kısa ad · ülke · adres · vergi no · e-posta ·
+>     telefon · web · aktif. Suer'in 6–7 şirketi (Elan Expo Turkey, Maroc,
+>     West Africa…) — Suer girer, REF ekranından (reference.write).
+>   - Banka hesapları: ayrı tablo AÇILMAZ (D2) — mevcut ledger `accounts`
+>     tablosuna legal_entity_id + "belgede göster" bayrağı + eksik alanlar
+>     (banka adı, IBAN/hesap no, SWIFT, para birimi — ÖLÇ, varsa ekleme).
+>     IBAN sır değil, belgeye basılır.
+>   - offices.default_legal_entity_id (ofisin kendi ülkesi varsayılan).
+>   - quotes.legal_entity_id: taslakta ofisin varsayılanıyla dolar,
+>     taslakta değiştirilebilir (Nigeria ofisi, Türkiye tüzel kişisiyle
+>     teklif verebilir — Suer örneği); Send'de kilitlenir; convert
+>     contracts.legal_entity_id'ye DONAR. Göçmüş kontratlarda NULL
+>     (ofisten türetilir, yazılmaz).
+>   - PDF satıcı bloğu + banka bilgisi = teklifin tüzel kişisi + o tüzel
+>     kişinin "belgede göster" hesabı (teklif para birimine uyan; yoksa
+>     ilk aktif). Gönderen adresi (SAPMA 22): tüzel kişinin e-postası
+>     "görünen ad" olarak; reply-to satışçı kalır.
+>   - İleride fatura / application form aynı alanı okur (kütüğe not).
+>   Kütük: REF-04 (tüzel kişilik) · KAT/ILT'ye "belge tüzel kişisi".
+>
+>   (3) PAKET 5a — SABİT RAPOR EKRANLARI (katman 1; ELIZA TAŞI 9 + Zoho'da
+>   fiilen kullanılan raporlar + REQ §2.8 "Owner'ın 3 günlük görünümü").
+>   Katman 2 (rapor oluşturucu, doğal dil, push, yapay zeka içgörü) =
+>   Paket 5b, aşağıda.
+>
+>   METRİK TANIMLARI (kütüğe RAP grubuna, tek kaynak — ekranlar bunu
+>   okur, kendi hesabını yapmaz):
+>   - m² = Σ kalem adedi, ürün unit_type = m2 (RF ve birim ürünler
+>     hariç). Kontrat m² = o kontratın kalemlerinden.
+>   - Gelir = brüt (TAH-05); komisyon tabanı = net RF hariç (K7) —
+>     raporda ikisi ayrı sütun, karıştırılmaz.
+>   - Dönem ekseni: "fiscal" = contract_date · "edition" = fuar ·
+>     tahsilat = payment_date. Üçü ayrı süzgeç, ekranda adı yazılı.
+>   - Ödenen = payments Σ (LED); kapalı = LED-23; açık bakiye = brüt −
+>     ödenen, settled hariç.
+>   - Temsilci atfı = SR (internal) ya da agent (external); SD ayrı.
+>   - Tüm sayılar sunucuda (RAP-02); dışa aktarım süzülmüş kümenin
+>     TAMAMI (satır tavanı yok — ELIZA 20 satır dersi).
+>
+>   EKRANLAR (ui2; hepsi kapsam duvarından — B2.2; dış kullanıcı rapor
+>   GÖRMEZ; komisyon sütunları view_sensitive_finance):
+>   R1 Dışa aktarım bileşeni: her ui2 listesinde CSV/Excel (sunucu
+>      üretir, süzgeç + kapsam uygulanmış tam küme). ELIZA D13.
+>   R2 Sales › Performance (ELIZA D04 + Zoho "Sales" raporları): dönem
+>      (bugün/hafta/ay/yıl/özel) × ofis × temsilci × fuar; sütunlar:
+>      kontrat sayısı · m² · brüt gelir · net taban · ort €/m² · pay % ·
+>      önceki döneme fark; kırılım sekmeleri temsilci / fuar / ülke;
+>      aylık eğilim tablosu (grafik yok — tasarım fazı; CSS çubuk kabul).
+>   R3 Expo dizini + fuar detayı (D02/D03): fuar başına hedef/gerçek
+>      m² ve gelir, kontrat sayısı, firma listesi, ülke dağılımı,
+>      temsilci dağılımı, aylık satış; önceki edisyonla kıyas (ad+yıl
+>      anahtarı — göçte kullanılan); Operations'taki mevcut fuar
+>      sayfasına sekme olarak (yeni sayfa açma, UI-03).
+>   R4 Finance › Collections (D05, finance-summary'nin genişlemesi):
+>      açık bakiye fuar × temsilci × firma; yaşlandırma kovaları (0–30 /
+>      31–60 / 61–90 / 90+ gün, kontrat tarihinden; ödeme planı varsa
+>      vadeden) · ödemesiz kontratlar · önümüzdeki 30 gün vadeler
+>      (plandan) · aksiyon listesi (açık bakiye azalan) · dışa aktarım.
+>      LED-23 settled hariç.
+>   R5 Finance › Payments by agent (Zoho "Ödeme Takip" raporları; ELIZA
+>      geçici ekranının kalıcı yeri): ay × temsilci × ödemeler — tarih,
+>      firma, fuar, AF, tutar (kontrat para birimi + EUR), kontrat toplamı,
+>      bugüne kadar ödenen, not; Σ + adet; Excel. Göç verisi 27 Eki'de
+>      biter — ekranda "veri kesimi" notu (kesime kadar).
+>   R6 Hedefler (D06 + R05): expo_targets — fuar başına m² hedefi +
+>      gelir hedefi (mevcut expo_budgets gelir hedefiyle TEK kaynak;
+>      ikinci tablo açılmaz, m² kolonu eklenir); ilerleme %; "önceki
+>      edisyon +%15 öner" düğmesi (öneri, Owner kaydeder; otomatik yazım
+>      yok). Cluster YOK (ELIZA B12 SİL).
+>   R7 Owner ana sayfası (D01 War Room; REQ §2.8 üç günlük görünüm):
+>      (1) fuar başına satış hızı — m² + gelir, hedefe %; (2) kişi ve
+>      ofis başına veri-girişi aktivitesi — son 7 gün: eklenen firma/
+>      kişi, açılan teklif, gönderilen e-posta (communications), imza;
+>      (3) fuar başına açık bakiye. Kartlar + listeler; sayılar R2/R4'ün
+>      aynı sorgularından.
+>   R8 Ziyaretçi kayıt raporları (Zoho'da Yaprak'ın en çok kullandığı):
+>      ÖLÇ — LEENA EMS'te fuar başına ziyaretçi kayıt/huni ekranı var mı
+>      (dosya:satır); varsa Operations'tan bağlantı + dışa aktarım,
+>      yoksa Paket 5b'ye madde. Bu pakette yeni EMS ekranı YAPILMAZ.
+>   Kapsam dışı 5a: rapor oluşturucu · doğal dil/yapay zeka · push/
+>   e-posta raporları · grafik kütüphanesi · WhatsApp · risk motoru
+>   (ELIZA R04 — 5b adayı).
+>
+>   KABUL (Prompt 3): staging'de (a) YET-KAPSAM-2 matris güncel (yeni
+>   kodlar × 6 rol), Sales kontrat detayında komisyon bölümü yok,
+>   external nav'da kuyruk yok; (b) tüzel kişilik: bir teklif PDF'inde
+>   seçilen tüzel kişinin satıcı bloğu + banka bilgisi; (c) R2 "bu yıl,
+>   27 Eki'ye kadar" temsilci kırılımı ile ELIZA /sales aynı dönem:
+>   kontrat sayısı ve brüt gelir temsilci başına karşılaştırma tablosu
+>   raporda (fark varsa nedeni: göç kesimi, transfer, iptal — sayı);
+>   (d) R5 Ekim × bir temsilci = ELIZA geçici ekranı (Σ ve adet); (e) R7
+>   açılıyor, sayılar R2/R4 ile aynı; TABAN 342.00 + TABAN-2; testler;
+>   rapor + SAPMA + 🔶. Suer turu: R7, R2 (bir temsilci), R5 (Ekim) —
+>   3 ekran.
+>
+>   Belge: kütük RAP grubu (metrik tanımları RAP-03+) · YET-19+ · REF-04 ·
+>   YON-18 · sözlük (fiscal/edition, yaşlandırma, tüzel kişilik) · REQ
+>   amendment ek satır.
+>
+>   ══ PAKET 5b — RAPOR OLUŞTURUCU · DOĞAL DİL · PUSH · ARAMA (Prompt 4;
+>   Prompt 3 ONAY'ından HEMEN sonra, Sentez beklenmez; SIĞMAZSA böl:
+>   5b.1+5b.4 / 5b.2+5b.3) ══
+>   Girdi: RAP metrik tanımları (5a), teknoloji turu hükmü 21 Eki
+>   (yapay zeka rapor TANIMINI kurar, sistem koşar), REQ §2.8.
+>   5b.1 Rapor oluşturucu (Zoho tarzı): modül seç (contracts · quotes ·
+>     payments · expenses · commission_payouts · companies · contacts ·
+>     communications · expos) → alan seç (BEYAZ LİSTE alan sözlüğünden —
+>     tek kaynak, RAP tanımlarıyla aynı; kapsam duvarı + view_sensitive_
+>     finance alan düzeyinde uygulanır) → süzgeç (eşit / aralık / liste /
+>     boş) → grupla (en çok 2 boyut; toplam sum/count/avg/min/max) →
+>     sırala → çalıştır (tablo, sayfalı) → Excel (tam küme) → kaydet
+>     (saved_reports: tanım JSON, sahip, kişisel | paylaşımlı; paylaşımlı
+>     rapor da okuyanın kapsamıyla koşar). Sunucu SQL'i beyaz listeden
+>     ÜRETİR; ham SQL hiçbir yerde kabul edilmez. Tarih dönemleri: bugün/
+>     hafta/ay/yıl/özel + fiscal/edition ekseni.
+>   5b.2 Doğal dil: kullanıcı soruyu yazar → yapay zeka 5b.1'in rapor
+>     TANIMINI (JSON) üretir, SQL DEĞİL → kullanıcı tanımı görür,
+>     düzeltir, çalıştırır, kaydeder. Modele giden: şema sözlüğü +
+>     soru; VERİ GİTMEZ. Sağlayıcı Anthropic, anahtar K4; staging'de sahte
+>     sağlayıcı (sabit cevaplar) — testler buna. Yanlış/eksik tanımda
+>     model değil kullanıcı düzeltir (teknoloji turu hükmü).
+>   5b.3 Push raporlar: kayıtlı rapor + takvim (günlük/haftalık/aylık,
+>     saat, ofis saat dilimi) + alıcılar (kullanıcılar) → e-posta
+>     (mevcut transactional yol; EMAIL_ECHO staging) — Excel eki + kısa
+>     özet. REQ başlangıç seti: Owner sabah özeti (dünkü imzalar,
+>     ödemeler, açık bakiye uyarıları) · haftalık ekip performansı ·
+>     haftalık ofis özeti. WhatsApp YOK (ELIZA botu kesime kadar; sonra
+>     ayrı). Alıcı yalnız kendi kapsamındaki satırları alır.
+>   5b.4 Genel arama: tek kutu (firma, kişi, teklif no, kontrat/AF,
+>     fuar) → kapsamlı sonuç listesi; basit metin eşleşmesi + indeks;
+>     dış kullanıcıya yalnız kendi kayıtları.
+>   Kapsam dışı 5b: yapay zeka içgörü (trend/anomali/aksiyon/sentez —
+>     5c, ölçülü değil) · grafik kütüphanesi · WhatsApp · ELIZA R04 risk.
+>   Kabul: staging'de (a) Suer bir rapor kurar (ör. "2026 fuar başına
+>     brüt gelir ve m², temsilciye göre") → tablo + Excel; aynı rapor
+>     Sales araç hesabıyla koşunca yalnız kendi satırları; (b) doğal dil:
+>     sahte sağlayıcı sabit soru → beklenen tanım; (c) push: haftalık
+>     özet echo kuyruğunda, ek + özet; TABAN'lar; testler; rapor + SAPMA.
+>   Suer turu: 5b.1 (bir rapor kurar) + 5b.4 (bir arama) — 2 ekran.
+>   ```
+>
+> - **Karar 6 notu (Sentez'in kendi düzeltmesi, deftere böyle):** core_* emekliliği YALNIZ ADR-005'i ilgilendirir; ADR-016'ya dokunulmaz.
+>   Prompt 2 direktifindeki "ADR-005/016" ifadesi Sentez hatasıydı — ölçülmeden ELIZA chat'ten alınmıştı. (Prompt 2 YON-05 bulgusu
+>   bunu ölçmüştü: ADR-016 core_* ile ilgisiz — kampanya alıcı tamamlama.) ADR-023 kesim bölümündeki 🔶 kapandı.
+> - **Karar 6 teyidi (canlı rol):** staging `claude_readonly` `default_transaction_read_only = on` teyit; canlıdaki rol için AYNI ayar
+>   **Faz B kuyruğuna** (Prompt 2 §2.9 ölçümü: canlı `rolconfig` NULL). Bu turda canlıya dokunulmadı.
+> - **Uygulandı (bu tur, aynı ell-docs commit'i):** kütük YET-19..YET-25 + "YET — AÇIK (Prompt 3)" + YET-14 / "YET — AÇIK (Prompt 2)" /
+>   SEM-05 notları · REF-04 · ILT-06 · KAT-08 · YON-18 · REQ amendment ek satırı (veri-girişi freelancer — REQ 297 ikinci kez
+>   SUPERSEDED) · ADR-023 kesim maddeleri (061 teyidi + prova raporu zorunlu satırı · karar 3 klasik token'lı kullanıcı listesi + geçiş
+>   günü · karar 6 cevabı · 062 / 063 kesim notu) · sözlük "Legal Entity". **Prompt 3b'ye kalan belge:** RAP metrik tanımları (RAP-04+ —
+>   bugünkü RAP-03 "kara liste" hükmü dolu olduğundan numara 04'ten başlar) · sözlük fiscal / edition · yaşlandırma — Paket 5a ile AYNI commit'te.
+
+> ## ✅ 2026-11-06 — PROMPT 3 (1)+(2): YET-KAPSAM-2 + TÜZEL KİŞİLİK (LEENA `7428770`; staging'e hazır)
+>
+> - **Ne yapıldı:** Sentez Prompt 3'ün (1) YET-KAPSAM-2 ve (2) TÜZEL KİŞİLİK bölümleri, tek oturum. **SIĞMAZSA kuralı uygulandı:**
+>   (3) Paket 5a (R1–R8 + RAP metrik tanımları) **Prompt 3b**'ye bölündü (bağlam bütçesi; (1)+(2) kendi başına bir migration çifti, 2 yeni
+>   suite ve bir Playwright turu taşıyor). Suer turu Sentez'in "tek tur sonda" planından ayrılır: (1)+(2)'nin turu ≤ 3 ekran (aşağıda),
+>   5a'nın turu (R7 · R2 · R5) Prompt 3b'nin sonunda.
+>   - **(1) YET-KAPSAM-2** (`062_yet_kapsam_2.sql` + `utils/permissions.js` · `routes/contracts.js` · `salesAgents.js` · `ledger.js` ·
+>     `commissions.js` · `cashForecast.js` · ui2 `nav.json` · `shell.js` · `finance-contract.html`):
+>     - **Karar 2:** ödeme kaydı · ters kayıt · ödeme planı (POST `/:id/payments` · `/:id/payments/:pid/reverse` · `/:id/schedule` ·
+>       `/:id/schedule/default`) `payments.write` (`routes/contracts.js:104`); durum + transfer `contracts.write` (aynen). Komisyon ATAMASI
+>       `contracts.write` + `sensitive_finance.read` (`canWriteAssignment`, `routes/contracts.js` `PUT /:id/assignment`). 062: Finance
+>       payments.write / agents.write / sensitive_finance.read all · Office Manager payments.write + sensitive_finance.read office · Project
+>       contracts.write all.
+>     - **Karar 4:** temsilci POST / PUT `agents.write` (`routes/salesAgents.js:20,166,197`) · ledger hesap / ekstre / transfer / gider
+>       okumaları `ledger.read` + satır süzgeci (`routes/ledger.js:269,357,492,584`) · tedarikçi `suppliers.read` (`:732,743,802`) · bütçe
+>       `budget.read` (`:906`) · özet `ledger.read` + kapsam all (`:1010`) · nakit öngörü `ledger.read` + all (`routes/cashForecast.js:180`) ·
+>       komisyon raporu `commissions.read` + all (`routes/commissions.js:52`) · ledger referans yazımları denetimde (`refAudit`,
+>       `routes/ledger.js:59` — 5 çağrı yeri).
+>     - **Karar 7:** kontrat detayından komisyon alanları SUNUCUDA silinir + `commission_hidden: true` (`routes/contracts.js:107-112, :635`);
+>       `finance-contract.html` bölümü çizmez.
+>     - **Karar 8:** nav.json `convert-queue` → `internalOnly: true`; `shell.js` alt menüde dış oturumda gizler (`:70-71, :165`).
+>     - **062 penceresi (push → migrate):** `perms.requirePermissionOr(code, fallback)` + `permissionRegistered(code)` (`utils/permissions.js`)
+>       — kod kayıt defterinde yoksa eski davranış (ödeme → contracts.write · temsilci yazımı kapısız · komisyon bölümü görünür).
+>   - **(2) TÜZEL KİŞİLİK** (`063_legal_entities.sql` + `routes/referenceData.js` · `quotes.js` · `utils/quotePdf.js` · `convertCore.js` ·
+>     `salesMail.js` · `email_worker.js` · ui2 `admin-reference.html` · `sales-quote.html`):
+>     - 063: `legal_entities` (silinmez / TRUNCATE yok trigger'ı · organizatörde ad tekil) · `accounts` +5 kolon (legal_entity_id ·
+>       show_on_documents · bank_name · account_number · swift; belgede gösterilen hesap tüzel kişi + hesap no ister — CHECK) ·
+>       `offices.default_legal_entity_id` · `quotes.legal_entity_id` (gönderilmiş teklifte değişmez — trigger) · `contracts.legal_entity_id` ·
+>       `email_queue.from_name`.
+>     - REF ekranı 3 yeni tür: **Legal entities** (ekle + 8 alan düzelt, reference.write) · **Office default entity** · **Bank details on
+>       documents** (yazım ledger.write + hesap kapsamı). Alan meta'sı sunucudan (ekran alan listesi gömmez — REF-01).
+>     - Teklif: açılışta ofis varsayılanı · taslakta seçici · Send'de kilit · PDF satıcı + banka bloğu · kuyrukta `from_name` = tüzel kişi
+>       adı (worker görünen ad olarak kullanır; NULL → eski davranış) · convert kontrata dondurur (`routes/quotes.js:753` →
+>       `utils/convertCore.js:199-200`).
+> - **Commit:** LEENA `eliza-next` **`7428770`** (30 dosya). ell-docs bu kayıt (defter + kütük + REQ + ADR-023 + sözlük, tek commit).
+>   **PUSH YOK** (Suer). Migration 062 / 063 **YAZILDI, ÇALIŞTIRILMADI** (Suer koşar).
+> - **Ölçülenler:**
+>   - **Staging (salt okuma, `claude_readonly`, BEGIN READ ONLY — 6 Kas):** kayıt **63** (son `061_sales_communication`) · izin defteri **31**
+>     (payments.write / agents.write / sensitive_finance.read YOK) · `legal_entities` YOK · `accounts` kolonları id · organizer_id · name ·
+>     account_type · **currency** · office_id · person_id · is_office_default · is_active · notes · created_by · created_at (banka adı / IBAN /
+>     SWIFT YOK — para birimi VAR) · hesap 1 (bank EUR, ofis 1, aktif) · ofis 6 (1 TR Turkey · 2 MA Morocco · 3 NG Nigeria · 4 KE Kenya ·
+>     5 CN China · 6 AF TEST OFFICE pasif) · şablon satırı 42 · teklif 3 · kontrat 3.934 · `email_queue` ek kolonları reply_to +
+>     attachment_document_id (from_name YOK) · rol satırları: Finance budget.read / commissions.read / contracts.write / ledger.read /
+>     suppliers.read all · Office Manager commissions.read / contracts.write / ledger.read office + suppliers.read all · Project budget.read
+>     all · Sales commissions.read own.
+>   - **TABAN 342.00** — staging kontrat 4 (`AF-TEST-LINES-001`) SR = **342.00** ✅ + testte (B1 · P3) ✅ · **TABAN-2** staging AF489555
+>     (id 6483) SR = **125.46** ✅ (SLICE_CTES, salt okuma).
+>   - **Önceki kapılar (git diff, `b67b9fc`):** `GET /api/cash-forecast` · `GET /api/commissions` · ledger `GET /accounts` · `/summary`
+>     yalnız authMiddleware (her oturum) idi; temsilci POST / PUT kapısızdı.
+>   - **Klasik sayfalar (KURAL 2):** `public/contract-detail.html` (`:233` ledger/accounts — null'da alanları gizler · `:238`
+>     sales-agents) · `public/sales-agents.html` · `public/agent-statement.html` bu uçları çağırır; kontrat / temsilci OKUMALARI Prompt 2'den
+>     beri klasik token'la 409 NOT_USER_SESSION — Prompt 3 buna ledger/accounts + temsilci yazımını ekler. Kesimde karar 3 (ui2'ye geçiş).
+>     `PUT /:id/assignment`'ı YALNIZ `public/contract-detail.html` çağırır (ui2'de atama ekranı yok).
+>   - **"Proje atar" gerekçesi ölçüldü → BULUNAMADI:** kütükte Project'in komisyon ataması yaptığına dair hüküm yok; KAT-04 notu tersini
+>     söyler ("convert SR'ı oransız yazar → oranı Finans girer"). REQ:917 "Project department confirms the assignment" STAND atamasıdır
+>     (kat planı), komisyon değil. → atama hassas koda bağlandı (SAPMA 4).
+>   - **Testler:** **655 → 675/675** (38 → 40 suite) — PG14 iki temiz koşu suite suite AYNI + PG **17.10** geçici kümede 1 koşu AYNI (675/675).
+>     Yeni: `test_p3_yk2_le.js` (13: K kod ayrımı · A temsilci · L ledger okuma + L2 denetim · S alan gizleme · N nav · **M2 matris** ·
+>     E1–E5 tüzel kişilik · B TABAN) · `test_p3_yk2_le_premig.js` (3, şema ≤ 061 — `_p2r`) · `test_migrate.js` (m) R54–R57 (gerçek CLI,
+>     062-063 `_p2r` kopyasında; (l) ≤ 061'e donduruldu) · `setup_test_db.js` 12. DB `_p2r`.
+>     **Kararsız test gözlemi (kod değil, zaman):** ara koşulardan birinde `test_p3_convert.js` H3 (+301 sn ileri zaman damgası → 401
+>     beklenir) 201 döndü: test `now`'u bir kez alıyor, önceki istek (convert) > 1 sn sürünce sunucu saatiyle fark 300'e iniyor. `middleware/`
+>     bu turda DEĞİŞMEDİ; test mantığına dokunulmadı (kural) — tekrar koşularda geçti. UI kuyruğu değil, test kuyruğu adayı (🔶 değil, not).
+>   - **M2 MATRİSİ (Kabul a — yeni kodlar × 6 sistem şablonu + dış kullanıcı; testte birebir; 400 = kapıdan geçti, gövde geçersiz · 409 =
+>     kapı / kapsam / dış duvar · C = komisyon bölümü gelir · H = gizli · 403 YOK):**
+>
+>     | rol | ödeme W | plan W | durum W | atama W | temsilci C | temsilci U | ledger hesap | ledger özet | bütçe | tedarikçi | komisyon rap. | nakit | kontrat komisyon |
+>     |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+>     | Owner | 400 | 400 | 400 | 400 | 400 | 400 | 200 | 200 | 200 | 200 | 200 | 200 | C |
+>     | Finance | 400 | 400 | 400 | 400 | 400 | 400 | 200 | 200 | 200 | 200 | 200 | 200 | C |
+>     | Project | 409 | 409 | 400 | 409 | 409 | 409 | 409 | 409 | 200 | 409 | 409 | 409 | 409 |
+>     | Office Manager | 400 | 400 | 400 | 400 | 409 | 409 | 200 (ofis) | 409 | 409 | 200 | 409 | 409 | C |
+>     | Sales | 409 | 409 | 409 | 409 | 409 | 409 | 409 | 409 | 409 | 409 | 409 | 409 | H |
+>     | Sales Operations | 409 | 409 | 409 | 409 | 409 | 409 | 409 | 409 | 409 | 409 | 409 | 409 | H |
+>     | External | 409 | 409 | 409 | 409 | 409 | 409 | 409 | 409 | 409 | 409 | 409 | 409 | 409 |
+>
+>     Prompt 2'nin 6 × 22 matrisi (`test_b2_scope.js` M1) hükümle güncel: Project durum yazımı 400 · Project / Sales / Sales Operations
+>     ledger / komisyon raporu / nakit 409.
+>   - **Tüzel kişilik (testte):** Owner girer, Sales 409 · geçersiz e-posta 400 · banka "belgede göster" Sales 409 (ledger.write), tüzel
+>     kişisiz / numarasız hesap 400 (CHECK) · teklif TR → ofis varsayılanı, NG (varsayılansız) boş → taslakta TR tüzel kişisi seçilir ·
+>     bilinmeyen 400 · Send → PDF satıcı + banka (EUR teklifte EUR hesabı; USD teklifte USD hesabı) · kuyrukta from_name = tüzel kişi adı,
+>     reply-to satışçı · Send sonrası API 409 NOT_DRAFT + DB trigger · Sign → `contracts.legal_entity_id` dondu · tüzel kişi silinmez,
+>     pasiflenince seçeneklerden düşer · tüzel kişisiz teklif eski düzen (banka yok).
+>   - **Pencere (≤ 061, testte):** ödeme Finance 400 / Project 409 contracts.write · temsilci yazımı kapısız (Finance + Sales 201) · Sales
+>     komisyonu görür · ledger.read kapısı pencerede de kapalı (kod 044'ten beri var) · REF tüzel kişi türleri 404 · teklif seçenekleri
+>     legal_ready false · legal_entity_id yok sayılır · Send PDF ofis bloğu, banka yok · kuyruk satırı from_name'siz · şemaya 062-063 izi 0.
+>   - **Playwright** (`tests/p3_tour.js`, Chromium, yerel test DB, EMAIL_ECHO=1; zincirde değil): **4/4** — T1 Owner Reference data'dan
+>     tüzel kişi + alanlar · ofis varsayılanı · banka ayrıntısı (DB'de aynı) · T2 Sales teklifi ofis tüzel kişisiyle açılır → Send → ekranda
+>     "(locked)" · PDF satıcı + banka · echo kuyruğu görünen ad · T3 Sales kendi kontratının Finance detayında Commission YOK, Finance'te
+>     VAR · T4 dış kullanıcı alt menüsünde Convert queue YOK, iç Sales'te VAR · sayfa / konsol hatası 0. PDF bağımsız doğrulama (poppler
+>     `pdftotext` / `pdfinfo`): A4 · PDF 1.4 · Türkçe karakterler (ş İ) doğru.
+> - **SAPMA (Prompt 3, numaralı — "ön-onaylı" = YON-18 kapsamında beklemeden uygulandı):**
+>   1. **Ön-onaylı — gönderen görünen adı = tüzel kişinin ADI** (Sentez: "tüzel kişinin e-postası görünen ad olarak"). E-posta dizesini
+>      görünen ad yapmak (`"info@x.com" <noreply@leena.app>`) sahtecilik kalıbıdır, spam filtreleri işaretler. Adres worker'ın sistem
+>      adresi kalır; reply-to satışçı. 🔶 1.
+>   2. **Ön-onaylı — kod adı `sensitive_finance.read`** (Sentez: `view_sensitive_finance`, B42) — B22 biçimi `<modül>.<eylem>`.
+>   3. **Ön-onaylı — Office Manager'a `sensitive_finance.read` office.** Sentez "Owner/Finance var, Sales/Sales Operations yok" dedi, OM'yi
+>      saymadı. OM zaten `commissions.read` office ile ofisinin komisyon ekstresini okuyor ve Prompt 2'de ofis içi atamayı yapıyordu
+>      (contracts.write office) — kesmek geriye uyumsuzluk olurdu (KURAL 2). 🔶 2.
+>   4. **Ön-onaylı — komisyon ATAMASI `contracts.write` + `sensitive_finance.read`.** Karar 2 contracts.write'ı "durum, transfer bağı, not"
+>      diye saydı, atamayı saymadı. Atama karar 7'nin gizlediği alanları (oran) YAZAR; KAT-04 notu "oranı Finans girer". Sonuç: Finance all ·
+>      OM office atar, Project ATAYAMAZ. 062 başlığındaki ilk gerekçe ("needs_agent'ı Proje atar") ölçüldü → kütükte YOK, düzeltildi.
+>   5. **Ön-onaylı — ödeme PLANI yazımı `payments.write`'ta** (Sentez "kontrat altı ödeme kaydı" dedi). Plan = vade kalemleri, ödemenin
+>      parçası; Project planı yazmaz.
+>   6. **Ön-onaylı — ledger özeti · nakit öngörü · komisyon raporu kapsam ALL ister** → Office Manager 409 OUT_OF_SCOPE. Bu üç uç tek
+>      toplu sayı döndürür, satır süzgeci yok; ofis süzgeçli görünüm Paket 5a raporlarında (R4).
+>   7. **Ön-onaylı — "Komisyonlarım" ayrı ekran AÇILMADI:** Sales kendi komisyonunu mevcut temsilci ekstresinden görür (Finance › Agents,
+>      own kapsamı yalnız kendi kaydı). Ayrı ekran UI kuyruğuna.
+>   8. **Ön-onaylı — 062 penceresi eski davranış:** payments.write / agents.write / sensitive_finance.read kayıt defterinde yoksa
+>      (push → migrate arası) eski yol. Temsilci yazımı o pencerede KAPISIZ kalır (önceki hal) — kısa pencere, kilitlenmeden iyidir.
+>   9. **Ön-onaylı — "Bank details on documents" yazımı `ledger.write`** (reference.write değil) + hesap kapsamı: banka ayrıntısı bir para
+>      hesabının alanıdır (LED); tüzel kişinin kendisi reference.write.
+>   10. **Ön-onaylı — teklifin ofisi değişince tüzel kişisi KENDİLİĞİNDEN DEĞİŞMEZ** (satışçının bilinçli seçimini ezmez; seçici ekranda).
+>   11. **Ön-onaylı — ledger `/currencies` ve `/reference` listeleri açık** (ledger.read dışında): form seçenekleri (kontrat / teklif
+>       ekranları para birimi listesini okur).
+>   12. **Klasik token etkisi:** nakit öngörü · komisyon raporu · ledger okumaları artık kapılı → klasik (organizer) token 409
+>       NOT_USER_SESSION (YET-02 köprüsü; Prompt 2'deki kontrat okumasıyla aynı). Karar 3 kesimde kapatır.
+>   13. **Test beklentisi güncellemeleri (Sentez 5 Kas not 4 — hüküm numaralı, test satırında yorum):** `test_users_admin.js` R1 kayıt
+>       defteri 31 → 34 · Finance şablonu 13 → 16 kod (R2 / U9) · klasik token ve şablonsuz kullanıcı ledger OKUMASINDA da 409 (YET-21) ·
+>       temsilci yazımı klasik token'la 409 (YET-20) · `test_p3_convert.js` T6 şablon satırı 42 → 48 · `test_ref.js` R1 9 → 12 tür (10
+>       yazılabilir) · `test_b2_scope.js` M1 Project / Sales / Sales Operations satırları + S1 contracts.write satırı 3 · `test_migrate.js`
+>       (l) ≤ 061'e donduruldu (yeni migration gerçek dizine girince (l)'nin "son sürüm" beklentisi kayardı) + (m) eklendi.
+>   14. **Bölme:** (3) Paket 5a → Prompt 3b (SIĞMAZSA kuralı; Sentez'in izin verdiği bölme).
+> - **🔶 Sentez'e:**
+>   1. Görünen ad: tüzel kişinin ADI kalsın mı (SAPMA 1), yoksa e-posta dizesi mi?
+>   2. Office Manager `sensitive_finance.read` office (SAPMA 3) — kalsın mı?
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging'de 062 / 063 KOŞULMADI (Suer koşar) — NOTICE sayıları staging ölçümünden HESAPLANDI (aşağıda
+>   SUER BLOĞU), çalıştırılarak görülmedi · staging Playwright turu (araç hesaplarıyla) migrate sonrasına · gerçek e-posta gönderimi
+>   (görünen adın gelen kutusunda nasıl göründüğü) — echo yolu, SendGrid'e gitmedi · canlı `contracts` boyutu (063 FK doğrulaması — kesim
+>   notu) · canlı DB bu turda okunmadı · `email_worker.js` değişikliği (from_name → görünen ad) yalnız birim düzeyinde (`workerExtras`)
+>   sınandı, worker süreci koşulmadı.
+> - **Bilinçle yapılmayanlar:** Paket 5a (Prompt 3b) · RAP metrik tanımları + sözlük fiscal / edition / yaşlandırma (Prompt 3b, 5a ile
+>   aynı commit) · Paket 5b (Prompt 4 — Prompt 3 ONAY'ından sonra) · "Komisyonlarım" ekranı · EMS iç kapıları (karar 1 — ayrı dilim) ·
+>   veri-girişi freelancer şablonu · fatura / application form (tüzel kişiyi ileride okur) · göçmüş kontratlara tüzel kişi YAZILMADI
+>   (ofisten türetilir — D2) · klasik sayfalara (public/) dokunulmadı · `leena/CLAUDE.md` + `leena/todo.md` (oturum dışı değişiklik)
+>   stage edilmedi · ekran görüntüsü (yalnız yerel tur, staging'de değil).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -7243,6 +7594,14 @@
 >   **★SIRADAKİ (bu kazanır) = Prompt 3: Paket 5 raporlama — Sentez kriterleri BEKLENİYOR; direktif gelmeden BAŞLATILMAZ.** Araç hesapları
 >   cc-staging + cc-external AKTİF (Prompt 3 turu için; pasifleme Suer'de). Sentez'e açık 🔶: Prompt 2 — 7 soru + staging 1. Sonra kesim
 >   provası ×2 → kesim. Canlı `main` DONUK (`5c4c34b`, YON-16).
+>   6 Kas: Sentez → **PROMPT 2 KABUL + 8 KARAR + PROMPT 3 DİREKTİFİ** → ✅ **AYNEN** — [defter:2026-11-06 SENTEZ: PROMPT 2 KABUL + 8 KARAR +
+>   PROMPT 3 DİREKTİFİ] (Prompt 2 🔶 7 + staging 1 cevaplandı; HIZ KURALI YON-18). Prompt 3 bölündü: (1)+(2) YET-KAPSAM-2 + tüzel kişilik →
+>   ✅ **STAGING'E HAZIR** (LEENA `7428770`; 675/675 — PG14 ×2 + PG17.10; M2 matris 7 × 13; Playwright 4/4) — [defter:2026-11-06
+>   PROMPT 3 (1)+(2): YET-KAPSAM-2 + TÜZEL KİŞİLİK]; (3) Paket 5a → Prompt 3b. **★SIRADAKİ (bu kazanır) = Suer: SUER BLOĞU (push LEENA
+>   `eliza-next` + ell-docs · staging migrate 062-063 · Reference data'dan en az bir tüzel kişi + Turkey ofis varsayılanı + EUR hesabın banka
+>   ayrıntısı) → CC: araç hesaplarıyla staging Playwright + salt-okunur teyit → Suer ≤ 3 ekran → ONAY → Prompt 3b = Paket 5a (R1–R8 + RAP
+>   metrik tanımları; kriter Sentez'de HAZIR — ONAY gelince Sentez beklenmeden başlar, YON-18) → Prompt 4 = Paket 5b → kesim provası ×2 →
+>   kesim.** Sentez'e açık 🔶: Prompt 3 — 2 soru. Araç hesapları cc-staging + cc-external AKTİF. Canlı `main` DONUK (`5c4c34b`, YON-16).
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:

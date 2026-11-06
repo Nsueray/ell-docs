@@ -247,6 +247,16 @@ Staging-only environment flag (twin of INVITE_ECHO): e-mails that ELIZA would se
 their rendered content, but are **never sent** (the worker only picks `pending`). Screens show an "echo" badge. Not set in production.
 (ILT-05)
 
+### Legal Entity (tüzel kişilik)
+
+One of the group's registered companies that **issues** documents — e.g. Elan Expo Turkey, Elan Expo Maroc, Elan Expo West Africa
+(`legal_entities`: name, short name, country, address, tax number, e-mail, phone, web, active). The Owner enters them in Admin ›
+Reference data. An office has a **default** legal entity; a quote starts with its office's default, can be changed while it is a
+draft (a Nigeria office may quote through the Turkish company), is locked when sent, and the contract **freezes** it on convert.
+The quote PDF's seller block and bank details come from it; bank details are fields on a ledger money **account** flagged "show on
+documents" (there is no separate bank table). Not to be confused with **Office** (where people work) or **Company** (the customer).
+(REF-04 · KAT-08 · ILT-06)
+
 ### Country Manager
 
 An Elan Expo manager responsible for a specific country office.
