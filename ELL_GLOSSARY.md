@@ -269,6 +269,18 @@ How long an open balance has been due, in buckets: not due yet · 0–30 · 31�
 instalment of the contract's payment schedule that payments have not yet covered; without a schedule, from the contract date.
 Balances under €1.00 count as settled and are not aged. (RAP-08, RAP-10)
 
+### Migrated m² (göç m²)
+
+For a contract imported from Zoho that has no m² line items, reports use Zoho's own m² field (`contracts.sqm`) instead, and flag it as
+"migrated m²" with a separate count. Contracts that have m² lines — and every contract created in ELIZA — use only their lines.
+Average price per m² is always computed from m² lines only. (RAP-04 note, Sentez S1)
+
+### Received Payments vs Revenues (Zoho) → Payments (ELIZA)
+
+Zoho kept payments in two places: **Received Payments** under each sales contract (the contract's payments) and the **Revenues**
+module (cash coming in). ELIZA has ONE record for both: a **payment**. A payment linked to a contract shows under the contract and in
+the income / cash lists; a payment without a contract is "unlinked income" until someone links it. There is no double entry. (RAP-12)
+
 ### Country Manager
 
 An Elan Expo manager responsible for a specific country office.

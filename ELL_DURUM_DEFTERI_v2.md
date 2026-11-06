@@ -7685,6 +7685,75 @@
 >   satırları" beklentisi doğruydu. S4 ve S5 Prompt 3'te zaten öyle uygulanmıştı (değişiklik yok).
 > - **Uygulama:** Prompt 3c kaydında (S1 · S2 · S3 · S4 testi; S5 değişiklik yok).
 
+> ## ✅ 2026-11-06 — PROMPT 3c (PAKET 5a 2. YARI) 1. BÖLÜM: GÜVENLİK + S1–S4 + R7 (LEENA `e051c80`; staging'e hazır)
+>
+> - **Kriter kaynağı:** Sentez (3) R7 + KABUL (e) — [defter:2026-11-06 SENTEZ: PROMPT 2 KABUL + 8 KARAR + PROMPT 3 DİREKTİFİ] · Sentez S1–S5 —
+>   [defter:2026-11-06 SENTEZ: S1–S5 + UX HATTI]. Başlatma: Suer 6 Kas 14:31 (YON-18).
+> - **Ne yapıldı:** SIĞMAZSA kuralı direktifin çizgisiyle: **bu bölüm §0 + §1 (S1–S4) + R7** (+ R2 yıl tekrarı); **R3 + R8 → Prompt 3d**.
+>   - **§0 güvenlik:** ayrı commit `1353de0` — [defter:2026-11-06 GÜVENLİK: ell-docs leena/CLAUDE.md İZLEMEDEN ÇIKTI]; (b) GOC-07 notu aynı commit'te;
+>     (c) `b450517`'nin PG17 koşusu bu bölümün koşusuna dahil (aşağıda).
+>   - **S1** `utils/metrics.js`: m² kalemi olmayan GÖÇMÜŞ kontratta `contracts.sqm` yedek (`m2_migrated` bayrağı) · kalemli ya da LEENA'da doğan
+>     kontratta yalnız kalem · `m2_lines` (€/m² paydası — RAP-06 yalnız kalem) · sayaç `migrated_m2_contracts` + `migrated_m2` (R2 notu ekranda) ·
+>     kolon hazırlığı denetimi (`hasCol`) — eski şemada yedek kapalı. R2 / R6 / R7 aynı olgudan.
+>   - **S2** `065_contract_company_country.sql` (`contracts.company_country_code` char(2) FK core_countries; NULL doğar, backfill YOK) — gerekçe ölçüldü:
+>     göçmüş kontratta müşteri firma bağı yok + kolon yok + göç kontratı açık kolon listesiyle yazar (`scripts/zoho/lib/apply.js` `bulk`).
+>     Göç: `fields.js` `company_country: { label: 'Country. of Company' }` · `raw.js` normalize · `plan.js` ad ya da ISO kodu → core_countries
+>     (eşleşmeyen NULL + sayaç `company_country_unmatched`) · `apply.js` kolon yalnız 065 varsa yazılır. Metrik: ülke = müşteri firması ?? göç
+>     ülkesi; boşsa "Country unknown" sayılı kalır.
+>   - **S3:** kütük RAP-12 ("gelir listesi = payments'ın ikinci görünümü"). Kabul (d) ölçütü düzeltildi (aşağıda tablo).
+>   - **S4:** kod değişikliği YOK (Prompt 3'te öyle uygulanmıştı: `utils/email.js:73-79` From = { email: SENDER_EMAIL, name: tüzel kişi adı },
+>     worker satırdaki `from_name`'i geçirir) — yeni birim testi (SendGrid saplamasıyla gerçek `sendEmailWithReplyTo`).
+>   - **S5:** değişiklik yok.
+>   - **R7** `GET /api/analytics/owner-home` + `ui2/owner-home.html` (Finance › Executive › **Overview**): (1) bitmemiş fuarlar — kontrat · m² ·
+>     brüt · €/m² · son 30 gün · hedefe % (R6 bütçesi) · (2) son 7 gün kişi × ofis: eklenen firma / kişi, açılan teklif, gönderilen e-posta
+>     (communications email/out), imza (teklif `signed_at`) + ofis toplamı · (3) fuar başına açık bakiye (R4 tanımı). Kapsam ALL (Owner / Finance);
+>     diğerleri 409 OUT_OF_SCOPE. **Açılış:** nav.json `ownerLanding` + `shell.js` `ui2Landing` — Owner ui2 girişinde R7'ye; diğer roller DEĞİŞMEDİ.
+>   - **R2 yıl tekrarı:** fuar adı yılı taşıyorsa `edition_year` eklenmez (R2 + R4 + R7 etiketleri, dışa aktarım dahil).
+> - **Commit:** LEENA `eliza-next` **`e051c80`** (18 dosya). ell-docs: `1353de0` (güvenlik) · `c82190c` (3b ONAY + Sentez S1–S5 AYNEN) · bu kayıt
+>   (+ kütük RAP-04 notu · RAP-12 · sözlük). **PUSH YOK**. 065 **YAZILDI, ÇALIŞTIRILMADI**.
+> - **Ölçülenler:**
+>   - Çerçeve: LEENA `eliza-next` = origin = `b450517` · ell-docs = origin = `140c03f` · staging R5 notu yayında.
+>   - Göç alan haritası: Zoho kontratında "Country. of Company" alanı haritada YOKTU (`scripts/zoho/lib/fields.js:74`'teki ülke fuarındır) ·
+>     `apply.js:119-128` açık kolon listesi.
+>   - Açılış: `ui2/shell.js:85-93` `ui2Landing` (nav.json `landing` sırası) · aktivite kaynakları: `companies` / `contacts` (`created_by` uuid,
+>     `created_at`) · `quotes` (`owner_user_id`, `created_at`, `signed_at` date) · `communications` (`user_id`, `channel`, `direction`, `created_at`).
+>   - **Kabul (d) — Sentez S3 ölçütüyle (ELIZA geçici ekranı):** Zoho dışa aktarım klasöründe (`~/Downloads/zoho_export_2026-10-25/`) Received_Payment
+>     dışa aktarımı YOK (6 dosya: Expenses · Expos · Products · Revenues · Sales_Agents · Sales_Contracts; Sales_Contracts'taki "N. Date/Amount/Type"
+>     sütunları serbest metin, en çok 88 kontratta dolu — kullanılmadı). `~/Downloads/ELIZA_Payments_2026-10_Elif_AY.xlsx` (ELIZA geçici ekranının
+>     dışa aktarımı, 5 Kas 14:22) bulundu — salt okuma:
+>
+>     | kaynak | ödeme adedi | Σ EUR |
+>     |---|---|---|
+>     | ELIZA geçici ekran (Ekim × Elif AY) | 10 | 53.513,30 |
+>     | LEENA R5 staging (Ekim × Elif AY, agent_id 138) | 10 | 53.513,30 |
+>     | eşleşme (tarih + AF) | 10 / 10 | tutar farkı 0 · LEENA-yalnız 0 |
+>
+>     → **Kabul (d) SAĞLANDI.** Zoho Revenues karşılaştırması (önceki kayıt) ikinci sayım değil, zenginleştirme (S3) — orada da Ekim 34/34 LEENA'daydı.
+>   - **S1 staging etkisi** (yeni metrik kodu yerelde, staging DB salt okuma): 2026-01-01..10-27 m² **5.539,00 → 5.569,00** (+30) · göç m² kullanan
+>     **160** kontrat, toplamı yalnız **30 m²** (çoğunda Zoho `sqm` = 0 — standsız kontrat) · m²'siz kontrat 162 → **2** · €/m² DEĞİŞMEDİ (207,08 —
+>     yalnız kalem) · brüt değişmedi (1.430.914,26). 2019–2027: m² 34.111,00 · göç m² 577 kontrat / 756 m² · €/m² 219,14.
+>   - **Kabul (e):** R7 fuar satırı = R2 (kontrat · m² · brüt · €/m²) ve R7 açık bakiye = R4 — testte birebir (`test_p3c.js` R7).
+>   - **TABAN 342.00** testte ✅ (P3c · P3b · B1 · P3). TABAN-2 bu bölümde staging'de ölçülmedi (staging'e yazılmadı; değer LEENA CLAUDE.md — GOC-07).
+> - **Testler:** **702 → 715/715** (42 → 43 suite) — PG14 iki koşu suite suite AYNI + PG **17.10** 1 koşu AYNI (715/715) (b450517 dahil — §0-c). Yeni:
+>   `test_p3c.js` (9: S1 kalemli / kalemsiz / karışık + LEENA kontratı · S2 ülke · yıl tekrarı · R7 = R2 / R4 · aktivite · kapsam · Owner açılışı ·
+>   S4 · TABAN) · `test_zoho_migration.js` M3c (S2 göç eşlemesi fikstürle) · `test_migrate.js` (n) ≤ 064'e donduruldu + (o) R61–R63 (065 gerçek
+>   CLI) · `test_p3b_premig.js` PQ2 + R7 ve ülke kırılımı (≤ 063). Playwright yerel `tests/p3c_tour.js`: **2/2**.
+> - **SAPMA (Prompt 3c, numaralı — "ön-onaylı" = YON-18):**
+>   1. **Bölme:** R3 + R8 → Prompt 3d (direktifin çizgisi). Suer turu bu bölümde: R7 + (R3 / R8 yok) → 3 ekranın ikisi 3d'de.
+>   2. **Ön-onaylı — R7 yeri:** Finance › Executive › "Overview" (yeni öğe, ilk sırada) + Owner açılışı. Diğer roller açılışı DEĞİŞMEDİ.
+>   3. **Ön-onaylı — R7 fuar kümesi:** bitiş (yoksa başlangıç) tarihi bugün ya da sonra olan fuarlar ("aktif + gelecek"); "satış hızı" = toplam +
+>      son 30 gün.
+>   4. **Ön-onaylı — R7 aktivite tanımları:** "açılan teklif" = teklif oluşturma (sahip) · "imza" = teklif `signed_at` (sahip) — LIFFY'den HMAC'le
+>      gelen kontrat imzası bu sayıma GİRMEZ (LEENA teklifi yok) · "gönderilen e-posta" = iletişim günlüğü email/out (Send + elle kayıt).
+>   5. **Ön-onaylı — R7 kapsamı ALL:** Finance da görür (contracts.read all); ofis kapsamlı görünüm yok (409).
+>   6. **065 gerekti** (direktif "beklenen YOK" dedi) — gerekçe yukarıda; göç uygulayıcısı 065 yoksa kolonu atlar (pencere güvenli).
+>   7. **S2 göç ülkesi `contracts`'ta** (müşteri firması oluşturulmadı — göç firma kaydı açmıyor); LEENA kontratında müşteri firmasının ülkesi önceliklidir.
+>   8. **S4 kod değişikliği yok** — yalnız test (Prompt 3'teki uygulama Sentez S4 ile aynıydı).
+>   9. **Test beklentisi:** `test_migrate.js` (n) ≤ 064'e donduruldu (065 gerçek dizine girince "DRY-RUN OK: 1" kayardı) — (m) emsali.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging'de 065 KOŞULMADI · staging turu SUER BLOĞU sonrasına · ELIZA /finance ekranına canlı erişim yok — dışa aktarım dosyasıyla ölçüldü · R3 / R8 (3d).
+> - **Bilinçle yapılmayanlar:** R3 · R8 (Prompt 3d) · ülke backfill'i (S2: yok) · `sqm` saklama (S1: türetilir) · UX hattı Orchestrator kuyruğuna
+>   alınmadı (Sentez şartı 2) · `leena/todo.md` (oturum dışı) dokunulmadı.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -7911,6 +7980,13 @@
 >   PROMPT 3b 1. YARI STAGING'DE]. **★SIRADAKİ (bu kazanır) = Suer: push (LEENA + ell-docs) → Suer 3 ekran (R2 Elif AY · R5 Ekim · R4) → ONAY →
 >   Prompt 3c = R3 + R7 + R8 (YON-18) → 3c ONAY → Prompt 4 = Paket 5b → kesim provası ×2 → kesim.** Açık 🔶: Prompt 3b — 3 + 2 (ell-docs geçmişi:
 >   TABAN-2 değeri · bağlantı dizesi) · Prompt 3 — 2. Canlı `main` DONUK (`5c4c34b`, YON-16).
+>   6 Kas 14:31: Suer **ONAY** → ✅ **PROMPT 3b 1. YARI KAPALI** · Sentez S1–S5 + UX hattı AYNEN (açık 🔶'lar cevaplandı; S5 kalsın, S4 öyleydi) ·
+>   güvenlik: ell-docs `leena/CLAUDE.md` izlemeden çıktı (ölü kimlik), TABAN-2 geçmişi bırakıldı — [defter:2026-11-06 GÜVENLİK: ell-docs leena/CLAUDE.md
+>   İZLEMEDEN ÇIKTI]. Prompt 3c 1. bölüm (S1–S4 + R7) → ✅ **STAGING'E HAZIR** (LEENA `e051c80`; 715/715 — PG14 ×2 + PG17.10; Playwright 2/2;
+>   kabul (d) ELIZA ölçütüyle 10/10 · kabul (e) testte) — [defter:2026-11-06 PROMPT 3c (PAKET 5a 2. YARI) 1. BÖLÜM: GÜVENLİK + S1–S4 + R7].
+>   **★SIRADAKİ (bu kazanır) = Suer: push (LEENA + ell-docs) · staging migrate 065 → CC araç hesaplarıyla staging turu + salt-okunur teyit →
+>   Suer ekranı: R7 Owner ana sayfası (R3 + R8 ekranları 3d'de) → ONAY → Prompt 3d = R3 + R8 (YON-18) → 3d ONAY → Prompt 4 = Paket 5b →
+>   kesim provası ×2 → kesim.** UX hattı: Sentez üzerinden, tasarım fazında (Orchestrator kuyruğunda DEĞİL). Canlı `main` DONUK (`5c4c34b`).
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
