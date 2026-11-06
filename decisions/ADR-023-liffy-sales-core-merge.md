@@ -58,4 +58,11 @@ Faz A restore + rollback.js. Prova ≥ 2 kez, canlının taze kopyasında.
 >   `core_sectors` · `languages` · `currencies` · `product_categories` · gider / gelir kategorileri). eliza-legacy'nin core_* kopyaları
 >   kesimden sonra okunmaz (Paket 6 kapatma ile birlikte). Not: ADR-005 (ELIZA write policy) zaten SUPERSEDED; ADR-016 core_* ile
 >   ilgisizdir (kampanya alıcı tamamlama) — Sentez'in "ADR-005/016" atfı 🔶 olarak soruldu.
+>
+> **Kesim maddesi (Suer 6 Kas — 061 ve büyük `email_queue`):** 061 `email_queue`'ya iki NULLABLE kolon (`reply_to`,
+> `attachment_document_id` + `quote_documents` FK) ekler. Canlıda tablo büyük (Suer: ~570k satır / ~16 GB — bu turda canlı
+> boyut CC tarafından ÖLÇÜLMEDİ). Staging ölçümü (6 Kas, salt okuma): 570.815 satır · toplam 3.123 MB (heap 115 MB; gerisi TOAST
+> `html_content`) · FK `convalidated = true` · 059-061 tek runner işleminde (süre ölçülmedi). Kesimde: ADD COLUMN nullable (yalnız
+> katalog) + FK doğrulama taraması (heap üzerinden; tablo kilidi ShareRowExclusive — worker yazımını o süre bekletir) süresi PROVADA
+> ölçülür; uzunsa FK `NOT VALID` eklenir, `VALIDATE CONSTRAINT` ayrı adımda (kilit daha hafif) koşulur. Karar provada.
 

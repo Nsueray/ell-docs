@@ -6965,6 +6965,69 @@
 >   devri · 390 px liste / kuyruk · REF-02 gömülü dizilerin API'den okunması (yukarıdaki liste) · çok dilli teklif PDF'i · Communication kartında
 >   sayfalama (bugün son 200).
 
+> ## ✅ 2026-11-06 — PROMPT 2 STAGING'DE: Suer adım 0–4 · salt-okunur rol · cc-external · staging Playwright (a 4/4 · b 4/4) · CC salt-okunur teyit
+>
+> - **Ne yapıldı:**
+>   - **Suer (5–6 Kas):** adım 0 staging salt-okunur rol `claude_readonly` (rolcanlogin t · `default_transaction_read_only=on`) · adım 1
+>     `EMAIL_ECHO=1` (Render env) · adım 2 push (LEENA `eliza-next` `b67b9fc` · ell-docs `17dc1cf`) · adım 3 staging migrate: DRY-RUN OK 3 →
+>     COMMIT 3 (059 / 060 / 061) → "Nothing to apply", kayıt **63**; NOTICE'ler beklenenle aynı (users 4 internal · external agents 36 ·
+>     languages 4 · sectors 26 · product_categories 10 · templates 3 · email_queue 570.813 satır) · adım 4 davet: cc-external@elan-expo.com,
+>     external, Sales, Turkey, temsilci ABOU-HASSAN RONZA.
+>   - **CC:** `~/.ell-cc/staging-db.url` yeni rolle güncellendi (aynı host / port / db; şifre panodan, basılmadı; pano boşaltıldı — 0) ·
+>     doğrulama `SELECT 1` = 1 · `default_transaction_read_only` = on · current_user claude_readonly · yazma denemesi 25006 ile reddedildi.
+>     Önceki dosyadaki ana staging kullanıcısı artık CC makinesinde YOK. → B1-b staging 🔶 1 (ayrı salt-okunur rol) KAPANDI.
+>   - **cc-external** daveti kabul edildi: pano maskeli okundu (yalnız şekil: staging origin · `/ui2/invite.html` · token 43 karakter; maske önce
+>     sahte girdide sınandı) · `invite/check` 200 (e-posta eşleşti) → `invite/accept` 200 · şifre rastgele 32 karakter `~/.ell-cc/cc-external.pw`
+>     (600) · pano boşaltıldı (0) · giriş 200. **/me:** user_type **external** · Sales · Turkey · `external: true` · alanlar yalnız `["sales"]` ·
+>     7 kod (sales.read / .write · contracts.read · communications.read / .write · followups.read / .write) HEPSİ **own** · finans kodu **0**
+>     (Sales şablonundaki commissions.read tavanda düştü).
+>   - **EMAIL_ECHO davranışla ÖLÇÜLDÜ** (env okunmadı): tur Send'i → `email_queue` satırı status **echo**, `sent_at` NULL (gönderilmedi) + ekranda
+>     "echo — staging, not sent" rozeti.
+> - **Staging Playwright** (araç hesapları; Chromium; betik scratchpad'de — staging'e yazar, repoya konmadı; ekran görüntüsü YOK):
+>   - **(a) cc-staging 4/4:** CC Tool Co (staging B1-b, TR) firmasına kişi "CC Tool Contact (Prompt 2)" (dil tr; araç adresi
+>     cc-staging+prompt2@elan-expo.com; test44 kişisi KULLANILMADI) → taslak **QTR-200001** (fuar listesinde yalnız satışa açık olan · Turkey ·
+>     1 kalem, 4 adet) → Send formu: alıcı + takip vadesi **+7 gün ön-dolu** (2026-11-13) → Send: sent · **echo** · dil **tr (contact)** ·
+>     reply-to cc-staging@elan-expo.com · PDF donduruldu (Quotation-QTR-200001.pdf, 3.117 bayt, `%PDF-1.4`, donmuş — önizleme değil) ·
+>     Communication: email · out · echo · gövde "Sayın CC Tool Contact (Prompt 2)" · Follow-ups kartı +7 gün → Sales ana sayfası **My follow-ups**'ta
+>     görünür · **imza YOK** (teklif sent kaldı).
+>   - **(b) cc-external 4/4:** üst sekme yalnız **Sales** (Finance YOK) · `/api/ledger/summary` · `/api/commissions` · `/api/contracts/4/payments` ·
+>     `/api/users` · `/api/reference-data/sectors` · `/api/convert-queue` → **409 EXTERNAL_NOT_ALLOWED** (6/6) · kontrat listesi **0** (temsilcinin
+>     kontratı yok) + ekran boş-durum · kontrat 4 → **409 OUT_OF_SCOPE** · müşteri 0 / teklif 0 (test44 ve CC Tool Co GÖRÜNMEZ) → kendi firması
+>     "CC External Client (staging Prompt 2)" (TR) + taslak **QTR-200002** (Send YOK) → listeler 1 firma / 1 teklif · Finance kontrat ekranı
+>     "You do not have access to Finance." · kendi kontratı olmadığından daraltılmış detay staging'de ÖLÇÜLEMEDİ (yerel testte ölçüldü).
+>   - **(c)** 390 px taşma yok (Sales home · tur teklifi · dış teklif listesi) · sayfa / konsol hatası **0** (beklenen 409 konsol satırı 7, ayrı).
+>   - İlk koşu iki BETİK hatası verdi (`<option>` görünürlük beklemesi; nav / liste okunmadan önce ölçüm) — ürün hatası değil; (a) TEKRAR KOŞULMADI
+>     (ikinci echo satırı doğmasın), yalnız b1 / b2 ekran ölçümü salt okuma betiğiyle yinelendi: sekmeler `["Sales"]`, Contracts "0 contracts".
+> - **CC salt-okunur teyit** (staging, **claude_readonly**, `transaction_read_only = on`):
+>   - `schema_migrations` **63** (son `061_sales_communication`) · **TABAN** kontrat 4 SR earned **342.00** ✅ · **TABAN-2** AF489555 (id 6483) =
+>     LEENA CLAUDE.md değeri, **EŞİT** ✅
+>   - cc-external: aktif · **external** · Sales · Turkey · şifreli · `user_permissions` **0** · temsilci bağı id 173 · cc-staging: internal · ezme 1
+>     (sales.read all — YET-10 reçetesi, değişmedi)
+>   - roles **6** (Owner · Finance · Project · Office Manager · Sales · **Sales Operations**) · permissions **31** · languages **4** ·
+>     product_categories **10** · sales_email_templates **3**
+>   - communications **1** (out · email · kuyruk + belge bağlı) · follow_ups **1** (open, 2026-11-13) · quote_documents **1** (QTR-200001, sha256
+>     `71974e31…`, `sha256(bytes)` ile EŞİT) · email_queue `echo` **1** (campaign_id NULL · reply_to = cc-staging · ek dolu · sent_at NULL ·
+>     alıcı araç adresi · konu "Teklif QTR-200001 — Deneme 2026")
+>   - teklifler: QTR-200000 signed (B1-b) · **QTR-200001 sent** · **QTR-200002 draft** (sahibi cc-external) · denetim (12 saat): company.create 1 ·
+>     contact.create 1 · quote.create 2 · line_add 1 · send 1 · user.invite 1 · invite_accept 1
+>   - `email_queue` staging boyutu: 570.815 satır · toplam **3.123 MB** (heap 115 MB) · 061 FK `convalidated = true`
+>   - **HTTP (tokensız):** `/health` · `nav.json` · sales-home / sales-contracts / admin-reference / admin-templates / sales-ui.js → **200** ·
+>     `/api/communications` · `/api/follow-ups` · `/api/reference-data` · `/api/sales-templates` · teklif PDF · `/api/contracts` → **401**
+>   - **nav.json** sha256 staging = `b67b9fc` (`7fe7d658…`; `c5ad2ee` `21ae1d4e…` değil) → staging `eliza-next` `b67b9fc`'yi çalıştırıyor
+> - **Kesim tasarımı (Suer, 6 Kas — ADR-023'e madde):** 061 canlıda büyük `email_queue`'ya (Suer: ~570k satır / ~16 GB) iki nullable kolon + FK
+>   ekler — ADD COLUMN (katalog) + FK doğrulama süresi PROVADA ölçülür; uzunsa `NOT VALID` + ayrı `VALIDATE CONSTRAINT`. Karar provada.
+> - **Commit:** ell-docs bu kayıt (defter + ADR-023). LEENA kod değişikliği YOK (`eliza-next` = `b67b9fc`). **PUSH YOK** (Suer).
+> - **YON-05:** davette seçilen temsilci ABOU-HASSAN RONZA (id 173) **external_agency** — Suer notundaki "external_freelance" değil (her iki tür
+>   dış kullanıcıya bağlanabilir; tur etkilenmedi). Temsilcinin ofisi Nigeria, kullanıcının ofisi Turkey (kapsam own — fark etkisiz).
+> - **Gözlem (UI kuyruğu):** dış kullanıcının Sales alt menüsünde "Convert queue" bağlantısı görünüyor (öğe izni sales.read) ama uç 409
+>   EXTERNAL_NOT_ALLOWED → ekranda hata durumu. Öğe dış kullanıcıya gizlenmeli (ya da kuyruk dış kullanıcıya own süzgeçle açılmalı) — 🔶.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** canlı `email_queue` boyutu ("~16 GB" Suer'in rakamı) · 061'in staging'deki uygulama süresi (üç migration
+>   tek işlem; süre kaydı yok) · dış kullanıcının daraltılmış kontrat DETAYI staging'de (kendi kontratı 0) · gerçek gönderim (echo) · Suer'in
+>   ekran turu (a / b / c) · araç hesaplarının pasiflenmesi (iş bitince Suer).
+> - **Bilinçle yapılmayanlar:** imza (QTR-200001 sent kaldı — talimat) · dış kullanıcının teklifi Send edilmedi · ekran görüntüsü · kod
+>   değişikliği (Convert queue menü gözlemi dahil) · Prompt 3 başlatılmadı · tur verisi silinmedi (tazelemede gider — YON-14) · VPN / WARP'a
+>   dokunulmadı · `leena/CLAUDE.md` + `leena/todo.md` dokunulmadı.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -7155,6 +7218,11 @@
 >   Playwright turu + salt-okunur teyit → Suer ≤ 3 sonuç ekranı (Reference data → firma formu · teklif Communication kartı · Takiplerim) →
 >   ONAY → Prompt 2 KAPALI → Prompt 3 = Paket 5 raporlama (kriter Sentez'den) → kesim provası ×2 → kesim.** Sentez'e açık 🔶: Prompt 2 — 7 soru.
 >   Canlı `main` DONUK (`5c4c34b`, YON-16). Veri-girişi freelancer: Suer kararı bekleniyor (REQ amendment 2026-11-05).
+>   6 Kas: Prompt 2 → ✅ **STAGING'DE** — Suer adım 0–4 · migrate 059-061 (kayıt 63) · salt-okunur rol + cc-external · staging Playwright
+>   (a) 4/4 · (b) 4/4 · teyit (TABAN 342.00 · TABAN-2 eşit · echo 1 · nav.json = `b67b9fc`) — [defter:2026-11-06 PROMPT 2 STAGING'DE].
+>   **★SIRADAKİ (bu kazanır) = Suer ≤ 3 ekran (Reference data → firma formu · tur teklifi QTR-200001 Communication + PDF + Follow-ups ·
+>   My follow-ups) → ONAY → Prompt 2 KAPALI → Prompt 3 = Paket 5 raporlama (kriter Sentez'den; ONAY'sız BAŞLATILMAZ) → kesim provası ×2 →
+>   kesim.** Sentez'e açık 🔶: Prompt 2 — 7 soru + staging 1 (Convert queue menüsü dış kullanıcıda). Canlı `main` DONUK (`5c4c34b`).
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
