@@ -281,6 +281,19 @@ Zoho kept payments in two places: **Received Payments** under each sales contrac
 module (cash coming in). ELIZA has ONE record for both: a **payment**. A payment linked to a contract shows under the contract and in
 the income / cash lists; a payment without a contract is "unlinked income" until someone links it. There is no double entry. (RAP-12)
 
+### Non-area contract (alan dışı kontrat)
+
+A contract that sells no floor space — a sponsorship or extra-material agreement. Zoho stored these with m² = 0, so an imported
+contract without m² lines and with Zoho m² = 0 is non-area; an ELIZA contract is non-area when all its lines are known catalogue
+products and none is an m² product. Non-area contracts count with 0 m², do not enter the average price per m², and have their own
+counter — they are not "m² unknown". (RAP-04, Suer business rule 6 Nov)
+
+### Before the payment start (milat öncesi)
+
+Contracts dated before 2019-01-01 — the start date of payments imported from Zoho (older payments were synthetic). Their open
+balances form a separate bucket in Collections and on the Owner overview; the action list and per-expo lists leave them out by default
+(a filter shows them). Totals and stored data do not change. (RAP-08 note)
+
 ### Country Manager
 
 An Elan Expo manager responsible for a specific country office.

@@ -7801,6 +7801,73 @@
 >   3c'de "yedek yalnız sqm > 0; 0 / NULL m²'siz sayacında" diye yazılan not bu kuralla DEĞİŞİR (kütük RAP-04, 3d kaydı).
 > - **Commit:** ell-docs bu kayıt (yalnız defter). **PUSH YOK**.
 
+> ## ✅ 2026-11-06 — PROMPT 3d (PAKET 5a SON) 1. BÖLÜM: S1 KURALI + R7 EKLERİ + R8 (LEENA `398e7fe`; staging'e hazır)
+>
+> - **Kriter kaynağı:** Sentez (3) R3 / R8 — [defter:2026-11-06 SENTEZ: PROMPT 2 KABUL + 8 KARAR + PROMPT 3 DİREKTİFİ] · Suer 6 Kas 15:57 Prompt 3d
+>   direktifi + Suer notları — [defter:2026-11-06 PROMPT 3c 1. BÖLÜM KAPALI]. YON-18.
+> - **Ne yapıldı:** SIĞMAZSA kuralı direktifin çizgisiyle: **bu bölüm 1 (S1 kuralı) + 2 (R7 ekleri) + R8**; **R3 → Prompt 3e** (Paket 5a, R3 ONAY'ıyla KAPANIR).
+>   - **S1 Suer iş kuralı** (`utils/metrics.js` `m2_source` = lines | migrated | non_area | unknown): göçmüş + m² kalemsiz → `sqm` > 0 göç m² ·
+>     = 0 **alan dışı** (m² 0, €/m² paydası dışı) · NULL bilinmeyen; LEENA kontratı → kalemli ve tüm kalemlerin ürünü bulunmuş + m² yok → alan dışı,
+>     kalemsiz / ürünsüz kalemli → bilinmeyen. Sayaçlar `migrated_m2_contracts` · `non_area_contracts` · `unknown_m2_contracts` (eski anahtar
+>     `no_m2_lines` = bilinmeyen, geriye uyum) — R2 toplam + SATIR başına + dışa aktarım sütunu · R6 / R7 aynı olgu. 3c'de yazılan "yedek yalnız
+>     sqm > 0; 0 / NULL m²'siz" notu bu kuralla DEĞİŞTİ (kütük RAP-04).
+>   - **R7a LIFFY imzası:** aktivitede ayrı sütun "Signed in LIFFY" — `convert_requests` succeeded + kaynak 'leena' değil (NULL = eski LIFFY); kişi =
+>     kontratın SR / Agent kullanıcısı, yoksa "No ELIZA user" satırı (RAP-02, kütük RAP-09 notu).
+>   - **R7b / R4 milat öncesi** (ön-onaylı SAPMA, Suer itiraz edebilir): `MILAT = 2019-01-01` (GOC-02) · R4'te kova `pre_milat` (yaşlandırılmaz) + sayaç
+>     · aksiyon listesi, fuar / temsilci kırılımı VARSAYILAN dışarıda, `?include_pre_milat=1` ile görünür (ekranda not + "show them / hide them") ·
+>     R7 "fuar başına açık bakiye" aynı tanımla dışarıda + ayrı sayaç · TOPLAM açık bakiye DEĞİŞMEZ (ledger özetiyle eşitlik testi korunur).
+>   - **R8:** 3c alt-ajan ön ölçümü CC tarafından YENİDEN OKUNDU ve doğrulandı — `public/reports.html:196` `localStorage.selectedExpoId` okur ·
+>     `GET /api/reports/summary` (`routes/reports.js:11`, organizatör denetimi `:20-21`) · `GET /api/visitors/export` (`routes/visitors.js:1146`, sorgu
+>     tavansız `:1153-1159`). → **Operations canlı:** nav.json Operations alanı `operations-expos.html` (status live, `operations.read`) + grup / öğe
+>     "Expos" (internalOnly); `ui2/operations-expos.html` fuar listesi (`/api/expos`) — satırda **"Registration report"** (fuarı `selectedExpoId` +
+>     `selectedExpoName`'e kurar, klasik `/reports.html`'i açar) + **"Export visitors"** (`/api/visitors/export?expo_id=` ham dosya; `components.js`
+>     indirme dinleyicisine `data-format="raw"`). Yeni EMS ekranı YOK. Boş-durum yer tutucusu `ui2/operations.html` SİLİNDİ (atıf yalnız testlerde —
+>     hükümle güncellendi; `tests/ui0_compare.js` listesi de).
+>   - **5b'ye madde (R8'de eksik kalan, ad ad):** haftalık kayıt kırılımı · form başına kırılım · gerçek `origin` kırılımı (reports.html'deki "origin"
+>     aslında `source`) · ekranda tarih aralığı süzgeci (uç `start_date` / `end_date` alıyor, sayfa sunmuyor) · 30 günlük günlük trend sabit
+>     (`routes/reports.js:175-185` tarih süzgecini uygulamıyor) · huninin sertifika adımı · `/api/reports/export` CSV yalnız özet (günlük trend / kaynak yok) ·
+>     klasik sayfalar ui2'den `selectedExpoId` ile açılıyor — ui2 içi kayıt raporu yok.
+> - **Commit:** LEENA `eliza-next` **`398e7fe`** (17 dosya). ell-docs bu kayıt + kütük RAP-04 (Suer iş kuralı AYNEN) · RAP-08 / RAP-10 milat notu ·
+>   RAP-09 LIFFY notu · sözlük (alan dışı kontrat · milat öncesi). **PUSH YOK** (ell-docs `257c072` dahil, 3d sonunda birleşik). Migration YOK.
+> - **Ölçülenler:**
+>   - Çerçeve: LEENA `eliza-next` = origin = `e051c80` · ell-docs origin `5d14471` (önceki push doğrulandı; `257c072` + sonrası push bekliyor).
+>   - **Staging, yeni kod yerelde + staging DB salt okuma** — S1 sayaç tablosu (2026-01-01..10-27, sayılan kontrat 501):
+>
+>     | sayaç | beklenen (Suer) | ölçülen |
+>     |---|---|---|
+>     | göç m² (sqm > 0) | 3 / 30,00 m² | **3 / 30,00** |
+>     | alan dışı (sqm = 0 / LEENA m²'siz ürünlü) | 157 | **157** |
+>     | bilinmeyen | 2 | **2** |
+>     | toplam m² · €/m² | — | 5.569,00 · 207,08 (değişmedi) |
+>
+>   - **Milat öncesi (R4, staging):** toplam açık **2.080 / €10.136.810,63** (DEĞİŞMEDİ) · **milat öncesi 1.191 kontrat / €7.952.072,54** · varsayılan
+>     aksiyon listesi 889 satır (= 2.080 − 1.191) · R7 fuar başına açık toplamı €2.184.738,09 (= toplam − milat öncesi) · AfuExpo 2015 109 / €788.496,99
+>     (Suer'in rakamıyla aynı) · ilk beş: Azerbaijan AfuExpo 2015 109 · AZERBAIJAN RECEXPO 2017 51 · MOROCCO FOOD EXPO 2018 49 · AZERBAIJAN RECEXPO 2018 42
+>     · Iraq HvacExpo 2015 41.
+>   - R7 staging (son 7 gün): LIFFY imzası 1 · LEENA imzası 1 · bitmemiş fuar 12.
+>   - `operations.read` şablonları: Project all · Office Manager office (+ Owner).
+>   - **Güvenlik bulgusu (EMS, kapsam dışı — 🔶):** `GET /api/visitors/export` fuarın organizatöre ait olduğunu DENETLEMİYOR (`routes/visitors.js:1146-1159`
+>     yalnız `expo_id`); `GET /api/reports/summary` denetliyor. Staging'de 2 organizatör var. Kiracılar arası dışa aktarım riski → EMS iç kapıları dilimi
+>     (YET-25) ya da hotfix sınırı (YON-16 b) — Suer / Sentez kararı.
+> - **Testler:** **715 → 722/722** (43 → 44 suite) — PG14 iki koşu suite suite AYNI + PG **17.10** 1 koşu AYNI (722/722). Yeni: `test_p3d.js` (7: S1 yedi fikstür ·
+>   satır sayaçları + CSV sütunu · milat öncesi kova (toplam değişmez, varsayılan dışarıda, süzgeçle görünür) · R7 LIFFY imzası (NULL / liffy sayılır,
+>   leena sayılmaz, SR'sız "No ELIZA user") · R7 = R4 · R8 bağlantı · TABAN). Hüküm güncellemeleri (Prompt 3d R8): `test_ui2_ledger_pages.js` U3
+>   (Operations alt menüsü) · `test_ui2_ui0.js` G2 (Operations canlı) · `test_ui2_ui0_render.js` R14 (yer tutucu kontrolü kalktı). Playwright yerel
+>   `tests/p3d_tour.js`: **3/3**.
+> - **SAPMA (Prompt 3d, numaralı — "ön-onaylı" = YON-18):**
+>   1. **Bölme:** R3 → Prompt 3e (direktifin çizgisi). Suer turu bu bölümde R8 + R4 milat kovası; R3 ekranı 3e'de.
+>   2. **Ön-onaylı — milat öncesi kovası** (direktifte ön-onaylı SAPMA; Suer itiraz edebilir) — temsilci kırılımı da varsayılan dışarıda (aksiyon / fuar
+>      listesiyle tutarlı).
+>   3. **Ön-onaylı — Operations › Expos** R3'ten önce açıldı (R8 bağlantısının yeri; fuar detayı + R3 sekmesi 3e'de). Liste klasik `/api/expos` ucunu
+>      okur (staging'de çalışıyor; test DB'de EMS kolonları olmadığı için turda saplama).
+>   4. **Ön-onaylı — `operations.html` silindi** (UI-0b silme emsali: tek atıf testlerdeydi).
+>   5. **Ön-onaylı — LIFFY imzasının kişisi** = kontratın SR / Agent kullanıcısı (convert isteği servis kullanıcısıyla gelir).
+>   6. Sayaç adı `no_m2_lines` korundu (= bilinmeyen; geriye uyum) + yeni `unknown_m2_contracts`.
+> - **🔶 Sentez / Suer'e:** 7. `/api/visitors/export` organizatör denetimi (yukarıdaki güvenlik bulgusu) — hotfix mi, EMS kapıları dilimi mi?
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging turu SUER BLOĞU sonrasına · klasik `/reports.html`'in ui2 oturumuyla staging'de açılışı (yerel turda saplama) ·
+>   R3.
+> - **Bilinçle yapılmayanlar:** R3 (3e) · yeni EMS ekranı · `/api/visitors/export` düzeltmesi (EMS kodu — karar bekliyor) · `leena/todo.md` (oturum dışı).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -8037,6 +8104,12 @@
 >   6 Kas: Prompt 3c 1. bölüm → ✅ **STAGING'DE** — migrate 065 (kayıt 67) · staging turu 3/3 · S1 yedek dağılımı (160'ın 3'ü sqm > 0) — [defter:2026-11-06
 >   PROMPT 3c 1. BÖLÜM STAGING'DE]. **★SIRADAKİ (bu kazanır) = Suer ekranı R7 (Owner ana sayfası) → ONAY → Prompt 3d = R3 + R8 + S1 kuralı (yedek yalnız
 >   sqm > 0) (YON-18) → 3d ONAY → Prompt 4 = Paket 5b → kesim provası ×2 → kesim.** Canlı `main` DONUK (`5c4c34b`).
+>   6 Kas 15:57: Suer **ONAY** → ✅ **PROMPT 3c 1. BÖLÜM KAPALI** (kabul (d) kapalı; sqm 0 = alan dışı — Suer iş kuralı). Prompt 3d 1. bölüm (S1 kuralı · R7
+>   ekleri · R8) → ✅ **STAGING'E HAZIR** (LEENA `398e7fe`; 722/722 — PG14 ×2 + PG17.10; Playwright 3/3; staging S1 3 / 157 / 2 · milat öncesi 1.191 /
+>   €7.952.072,54) — [defter:2026-11-06 PROMPT 3d (PAKET 5a SON) 1. BÖLÜM: S1 KURALI + R7 EKLERİ + R8]. **★SIRADAKİ (bu kazanır) = Suer: push (LEENA +
+>   ell-docs, `257c072` dahil) → CC: araç hesaplarıyla staging turu + salt-okunur teyit → Suer 3 ekran (R8 bağlantı + dışa aktarım · R4 milat kovası ·
+>   R7 LIFFY sütunu) → ONAY → Prompt 3e = R3 (YON-18) → 3e ONAY → PAKET 5a KAPALI → Prompt 4 = Paket 5b → kesim provası ×2 → kesim.** Açık 🔶:
+>   `/api/visitors/export` organizatör denetimi. Canlı `main` DONUK (`5c4c34b`, YON-16).
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
