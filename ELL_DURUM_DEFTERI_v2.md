@@ -8473,7 +8473,8 @@
 >   Paket 5b (rapor oluşturucu · doğal dil · push · arama; uçtan uca, YON-19) → Sentez'e 5a + 5b kapanışı.** Suer: hotfix 2 `main` push (tek satır, bekliyor).
 >   9 Kas (4): **PROMPT 4 (PAKET 5b) STAGING'DE** — `d8af0d2` + `a1c7878`; 066 staging'de (68 kayıt); kabul (a) rapor = R2 BİREBİR · (b) sahte sağlayıcı · (c) echo + ek —
 >   [defter:2026-11-09 PROMPT 4 (PAKET 5b): RAPOR OLUŞTURUCU · DOĞAL DİL · PUSH · ARAMA STAGING'DE]. **★SIRADAKİ (bu kazanır) = 5b ONAY → Sentez'e 5a + 5b kapanışı;
->   sonraki paket Sentez kriteriyle (EMS kapıları dilimi + kesim provası ×2 → kesim).** Suer: hotfix 2 `main` push (tek satır, bekliyor).
+>   sonraki paket Sentez kriteriyle (EMS kapıları dilimi + kesim provası ×2 → kesim).** Hotfix 2 `main` push'u GÖZLENDİ (GitHub: 15:52:24Z `a35c3b6..f05d14c`);
+>   canlı `/health` 200 + kimliksiz `/manual` · `/terminals` · `/topics` 401 (16:45Z) — "HOTFIX 2 CANLIDA" kaydı Suer'in "deploy live — f05d14c" teyidiyle.
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
