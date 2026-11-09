@@ -8111,6 +8111,40 @@
 > - **PAKET 5a KAPANIŞ ADAYI:** R1–R8 tamam (R1 · R2 · R4 · R5 · R6 → 3b; R7 → 3c / 3d; R8 → 3d; R3 → bu kayıt). 3e ONAY'ıyla **PAKET 5a KAPALI** → Prompt 4
 >   (Paket 5b).
 
+> ## ✅ 2026-11-09 — PROMPT 3e ONAY (şartlı → Ş1–Ş3 kapandı) · PAKET 5a KAPALI
+>
+> - **Kriter kaynağı:** Orchestrator 9 Kas "3e ONAY — ŞARTLI" (Ş1 · Ş2 · Ş3; Suer turu yok — YON-19) · [defter:2026-11-09 PROMPT 3e (PAKET 5a SON): R3 FUAR
+>   DETAYI STAGING'DE].
+> - **Ne yapıldı:**
+>   - **Ş1** (canlı `a35c3b6` + 3d ONAY): zaten yazılıydı — [defter:2026-11-09 HOTFIX CANLIDA] (ell-docs `d1981f5`; kayıt başlığı + "HOTFIX CANLIDA" + "3d ONAY
+>     → PROMPT 3d KAPALI" satırları).
+>   - **Ş2** (önceki edisyon anahtarı, staging salt okuma, 213 fuar): adında yıl geçen **201** · `edition_year` dolu 187 · başlangıç tarihi dolu 190 · hiç yıl
+>     bilgisi yok 4 · `edition_year` ↔ addaki yıl çelişkisi **0**. Önceki edisyonunu bulan: 3e öncesi R6 **84** · 3e (`edition_year` → ad → tarih) **90** ·
+>     "yıl soyulmuş ad + yıl" (addaki yıl, yoksa tarih) **89** (kaybettiği tek eşleşme "test" → "test") · yalnız addaki yıl 84. Kontratlı 152 fuarda: 67 · **72** ·
+>     **72** · 67. → **Kazanç YOK — anahtar DEĞİŞMEDİ** (sayıyla bırakıldı). 3e kazancı (84 → 90, kaybeden 0): Morocco Siema Expo → Morocco Siema Expo 2024 ·
+>     Mega HoReCa Nigeria → Mega Horeca Nigeria 2025 · Mega Clima Ghana 2026 → Mega Clima Ghana · Morocco Siema Expo 2026 → Morocco Siema Expo · Mega
+>     Horeca Nigeria 2027 → Mega HoReCa Nigeria · test → test.
+>   - **Ş3** kurulum + Owner turu:
+>     - (a) Staging admin bağlantısı (Suer "External Database URL panoda hazır"): pano → `~/.ell-cc/staging-db-admin.url` (600) · pano boşaltıldı · değer
+>       basılmadı (maske önce sahte girdide sınandı — K4) · `current_user` **leena_staging_db_user** / `current_database()` **leena_staging_db** ✅.
+>     - (b) **`cc-owner@elan-expo.com`** (Owner araç hesabı): kullanıcı + davet satırı `routes/users.js` davet yoluyla aynı INSERT'ler (`createInvite` +
+>       `writeAudit` 'user.invite', aktör NULL, not "CC tool account (YON-19 setup b)") · şifre staging uygulamasının kendi `/api/user-auth/invite/accept`
+>       ucuyla (200 — bcrypt hash'i uygulama üretti; elle hash YOK) · giriş 200 · `/me` `is_owner` true · şifre `~/.ell-cc/cc-owner.pw` (600) · davet e-postası
+>       kuyruğa ALINMADI. **Ön-onaylı SAPMA:** `is_owner = true` + Owner rolü INSERT'te verildi (uygulamanın davet ucu her zaman `false` yazar; Owner'ı
+>       yalnız mevcut Owner yükseltebilir — Suer turu yok, YON-19).
+>     - (c) **Owner turu (gerçek oturum, cc-owner):** 5 fuarda (9 · 1 · 365 · 219 · 13) **R3 = R2 = R6 EŞİT** (kontrat · m² · brüt · taban · €/m² · sayaçlar ·
+>       ilerleme) · kapsam all · hedefler görünür (staging'de bütçe yok → "No target set" + R6 bağı) · ekran: liste 213 satır → Morocco Siema Expo 2026
+>       detayı (158 kontrat · €909.049,86 · önceki edisyon Morocco Siema Expo, +9 kontrat / +€153.192,93) · firma Excel'i 114 satır · Visitors sekmesi ·
+>       hata 0 · R3 ucu 0,7–0,8 sn. Klasik `/api/expos` 5,4 sn → Sales sekmesi başlığı R3 yanıtından (`a1950b8`; R3 açılmazsa listeye düşer).
+> - **Commit:** LEENA eliza-next **`a1950b8`** (push → staging 16:01:59Z, `ui2/operations-expos.html` bayt bayt aynı) · ell-docs bu kayıt + ★ + kütük YON-19 notu.
+>   **PUSH: CC (YON-19).**
+> - **Ölçülenler:** yukarıda · `test_p3e` 17/17 · `test_p3d` 7/7 · `test_ui2_ui0` 23/23 · yerel tur 3/3 (`a1950b8` sonrası).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** hedef / gerçek bölümü gerçek veriyle (staging'de aktif bütçe 0).
+> - **Bilinçle yapılmayanlar:** önceki edisyon anahtarına "en yakın önceki yıl" kuralı (🔶 aşağıda — Ş2'nin karar kuralı dışında).
+> - **🔶 Sentez'e:** "önceki edisyon = aynı ad, EN YAKIN önceki yıl" (iki yılda bir / 2020 boşluğu): 213 fuarda 90 → **105** (+15, kaybeden 0, değişen 0;
+>   kontratlı 72 → 85) — ör. Basrah FoodExpo 2016 → 2014 · Nigeria Build Expo 2021 → 2019 · Morocco Siema Expo 2022 → 2019. R3 + R6 tek tanım; karar Sentez'in.
+> - **→ PAKET 5a KAPALI** (R1–R8: R1 · R2 · R4 · R5 · R6 → 3b · R7 → 3c / 3d · R8 → 3d · R3 → 3e). Sıradaki: **Prompt 4 = Paket 5b** (YON-19: uçtan uca).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -8370,6 +8404,9 @@
 >   [defter:2026-11-09 PROMPT 3e (PAKET 5a SON): R3 FUAR DETAYI STAGING'DE]. **★SIRADAKİ (bu kazanır) = Suer: hotfix 2 `main` push (tek satır) ∥ 3e ONAY →
 >   PAKET 5a KAPALI → Prompt 4 = Paket 5b (Suer'e dönmeden uçtan uca, YON-19) → kesim provası ×2 → kesim.** Bekleyen kurulum: "pano hazır" → staging
 >   admin bağlantısı + cc-owner. Açık 🔶 (EMS kapıları dilimi): C kalanı · E sınıfı · `limit` · `/import` şablon kimliği.
+>   9 Kas (3): Orchestrator "3e ONAY — ŞARTLI" → Ş1 (zaten yazılı) · Ş2 (anahtar kazancı yok — değişmedi) · Ş3 (admin bağlantısı + cc-owner + Owner turu R3 = R2
+>   = R6) → **PAKET 5a KAPALI** — [defter:2026-11-09 PROMPT 3e ONAY (şartlı → Ş1–Ş3 kapandı) · PAKET 5a KAPALI]. **★SIRADAKİ (bu kazanır) = Prompt 4 =
+>   Paket 5b (rapor oluşturucu · doğal dil · push · arama; uçtan uca, YON-19) → Sentez'e 5a + 5b kapanışı.** Suer: hotfix 2 `main` push (tek satır, bekliyor).
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
