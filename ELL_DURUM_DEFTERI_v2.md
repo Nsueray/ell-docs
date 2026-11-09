@@ -7992,6 +7992,125 @@
 >   YOK" — 🔶 EMS kapıları dilimi; öncelik D1 · D2 · C9 / C10 → D3) · `main`'deki CLAUDE.md (hotfix dalı yalnız kod + test; KURAL 4 notu birleşme
 >   dalında, `main`'e eliza-next ile gelir) · push.
 
+> ## ✅ 2026-11-09 — HOTFIX CANLIDA (`a35c3b6`) · PROMPT 3d KAPALI (ONAY — CC turu esas) · YON-19 (CC push · staging migration · staging turu)
+>
+> - **Kriter kaynağı:** Suer 9 Kas direktifi ("beni aradan çıkart, hızlandır") — kütük **YON-19** (YON-16'nın Suer-turu / push hükmünü daraltır) ·
+>   YON-16 (b) · [defter:2026-11-06 HOTFIX (YON-16 b — yetki atlatma)].
+> - **Ne yapıldı:**
+>   - **Push ölçüldü (GitHub repository activity):** 14:37:11Z `hotfix/visitors-export-org-scope` açıldı (`a35c3b6`) · 14:37:13Z `main`
+>     `5c4c34b..a35c3b6` · 14:37:16Z `eliza-next` `398e7fe..56627f0` · ell-docs `origin/main` = `3cd5963`. Yerel `main` ff (`a35c3b6`).
+>   - **Canlı:** `https://leena.app/health` 200 (14:43:24Z) · kimliksiz `/api/visitors/export` · `/paginated` · `/conference-topics` → **401** · 10 dk
+>     izleme 14:43:55–14:53:54Z **182 / 182 ölçüm 200** (502 penceresi yok → cutover izlemeden önce). → **HOTFIX CANLIDA.**
+>   - **3d ONAY:** YON-19 (3) — CC'nin 6 Kas staging turu (3/3) esas → **PROMPT 3d KAPALI**; Suer ekran turu yapılmaz.
+>   - **YON-19 belgelendi:** kütük + LEENA CLAUDE.md "Sabit sınırlar" (`7d986bb`): push (eliza-next + `hotfix/*` + ell-docs `main` → CC; LEENA
+>     `main` → Suer) · migration (canlı: yazılır, Suer koşar · staging: CC koşar).
+>   - **KURULUM:** (c) yapıldı. (a) staging admin bağlantısı (`~/.ell-cc/staging-db-admin.url`) + (b) `cc-owner@elan-expo.com` araç hesabı —
+>     Suer "pano hazır" yazınca; bu tur sonuna kadar **gelmedi** → BEKLİYOR.
+> - **Commit:** ell-docs bu kayıt (hotfix 2 + 3e kayıtlarıyla aynı commit) · LEENA `7d986bb` (CLAUDE.md). **PUSH: ell-docs CC (YON-19 (1)).**
+> - **Ölçülenler:** yukarıdaki push zaman damgaları · canlı 200 / 401 · 182 / 182 · `/health` gövdesi yalnız `{status, timestamp}` (sürüm işareti
+>   YOK) · GitHub'da deployment kaydı YOK (Render deploy durumu yazmıyor).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** `a35c3b6`'nın canlıda koştuğu DOĞRUDAN — sürüm işareti yok, Render Events'e erişim yok; kanıt dolaylı (push
+>   14:37:13Z → 6 dk sonra 200, 10 dk kesintisiz). Hotfix sahiplik kontrolünün canlı davranışı (JWT ister — canlı hesabı yok; test44 kullanılmaz;
+>   Suer'in konsol komutu sonucu bu tura gelmedi) · canlı etki sayıları (Suer'in Shell sorgusu sonucu gelmedi; IP kuralı değişmez).
+> - **Bilinçle yapılmayanlar:** kurulum (a) / (b) pano gelmeden · canlıya JWT'li istek.
+
+> ## ✅ 2026-11-09 — HOTFIX 2 (YON-16 b — yetki atlatma, yazma tarafı): `/manual` · `/import` · terminal açma / klon · terminal konu listeleri (dal `f05d14c` · eliza-next `0f3cc96`)
+>
+> - **Kriter kaynağı:** Suer 9 Kas direktifi madde 3 · YON-16 (b) · ölçüm [defter:2026-11-06 HOTFIX (YON-16 b — yetki atlatma)] D1 · D2 · C9 / C10 · D3–D4.
+>   Kapsam dışı (direktif): C kalanı · E sınıfı · `/paginated` `limit` → EMS kapıları dilimi.
+> - **Ne yapıldı:**
+>   - Dal `hotfix/visitors-write-org-scope`, tabanı `main` = `origin/main` = **`a35c3b6`** (ölçüldü).
+>   - **Tek yardımcı:** `utils/expoOwnership.js` — `isExpoOwnedBy(expo, organizer)` + `rejectUnlessExpoOwned` (rapor özeti ucuyla AYNI sorgu + AYNI 403
+>     `{error:'Access denied to this expo'}`; `routes/visitors.js`'teki yardımcı buraya taşındı — `/export` · `/paginated` · `/conference-topics` aynen).
+>   - **D1 `POST /api/visitors/manual` (JWT):** `organizer_id` TOKEN'dan (gövdedeki yok sayılır) + fuar sahipliği → 403. Scanner-terminal yolu aynen
+>     (fuar + organizasyon terminal satırından).
+>   - **D2 `POST /api/visitors/import` (JWT):** fuar sahipliği → 403 (QR yenileme + e-posta kuyruğu yabancı fuar için imkânsız). bulk_print yolu aynen.
+>   - **C9 / C10 `POST /api/terminals` + `/clone/:id`:** hedef fuar (klonda `expo_id` yoksa kaynak terminalin fuarı) sahiplik → 403; anahtar verilmez.
+>   - **D3–D4 `GET /api/conference-certificates/topics` + `/blocked-topics`:** terminalin `organizer_id`'si fuarın sahibi değilse BOŞ liste (fuar düzeyinde
+>     süzgeç — kendi fuarında yanıt bayt bayt aynı). Seçim gerekçesi: staging ölçümünde ziyaretçi / sertifika `organizer_id` ↔ fuar sahibi uyumsuzluğu 0;
+>     fuar düzeyi süzgeç kendi fuarındaki sayıları hiç değiştirmez.
+>   - **Klasik ekranların gövdesi değişmeden çalışır:** `public/qrscanner.html:936-940` (JWT: `expo_id` + `organizer_id || '1'`) · `public/import.html:405-431`
+>     · `public/terminals.html:330` / `:446` (`expo_id`) — testte M1 · I1 · T1 · T4 aynı gövdeyle.
+>   - **Test** `tests/test_hotfix_write_scope.js` (17; iki organizasyonlu fikstür, kendi şeması `hfx_write_scope`): M1–M5 · I1–I4 · T1–T4 · K1–K4.
+>     **Kırmızı-önce** (`a35c3b6`, düzeltmesiz): **10 DÜŞTÜ / 7 geçti** — M2 organizasyon 1, organizasyon 2'nin ziyaretçisini e-postayla güncelledi ve
+>     **QR kodunu aldı** · M3 gövdedeki `organizer_id` satıra yazıldı · M4 olmayan fuara kayıt · **I2 org 2 ziyaretçisinin QR'ı yenilendi + 1 e-posta kuyruğa
+>     girdi + import log yazıldı** · I3 · **T2 yabancı fuara terminal + anahtar** · T3 · T4 yabancı fuara klon · **K2 yabancı fuarın konu adları + sayıları** ·
+>     K3 Cool Plus engelli konular → düzeltmeyle **17 / 17**. Değişmeyenler (geçen 7): M1 · M5 · I1 · I4 · T1 · K1 · K4.
+>   - **Birleşme dalı (aynı gün):** `eliza-next` `--no-ff` merge **`0f3cc96`** — tek çakışma `package.json` test zinciri (eliza-next zinciri AYNEN +
+>     sonuna yeni test); route / util / test dosyaları dalla bayt bayt aynı (diff 0) · **`7d986bb`** LEENA CLAUDE.md (KURAL 4, EMS: uç notları + 752 + YON-19).
+>   - **PUSH (YON-19 (1)):** `hotfix/visitors-write-org-scope` → origin (yeni dal `f05d14c`) · `eliza-next` `56627f0..7d986bb`. **`main` push'u SUER'de**
+>     (SUER BLOĞU tek satır) — FF-OK: `origin/main` `a35c3b6` → `f05d14c`.
+> - **Commit:** LEENA dal **`f05d14c`** (tek commit, `a35c3b6` üstü) · eliza-next **`0f3cc96`** + **`7d986bb`**. ell-docs bu kayıt + kütük YON-16 notu.
+> - **Ölçülenler:**
+>   - `main` tam takım (dalda, PG 14.18): **578 / 578 · 31 suite** (önce 561 · 30) · exit 0.
+>   - `eliza-next` (merge sonrası): PG14 **752 / 752 · 46 suite** ×2 suite suite AYNI · PG **17.10** 752 / 752 AYNI · exit 0.
+>   - Staging (`claude_readonly`) tutarlılık: terminal 52 (fuar sahibi ≠ terminal organizasyonu **0**; türler scanner 47 · bulk_print 5) · ziyaretçi 112.832
+>     (fuar sahibi ≠ **0**; `organizer_id` NULL 6 — hepsi fuarsız) · sertifika 931 (≠ **0**) · organizasyon 2 (fuar: org 1 213 · org 2 1).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** canlıda aynı tutarlılık (canlı salt-okunur bağlantı G4; IP kuralı değişmez) · hotfix 2'nin canlı deploy'u + canlı
+>   doğrulaması (Suer `main` push'u sonrası) · fuarsız 6 ziyaretçinin kaynağı.
+> - **Bilinçle yapılmayanlar:** C kalanı (campaigns · emailTemplates ×2 · exhibitors · forms ×3 · unsubscribes · callcenter `/admin/import`) · E sınıfı
+>   (`/public` · leads ×3 · expos `/slug`) · `/paginated` `limit` tavanı → EMS kapıları dilimi. **Yeni bulgu (🔶, aynı dilime):** `/import`'un e-posta şablonu
+>   kimliği (`template_id` / `existing_template_id`) organizasyona süzülmeden okunuyor (`routes/visitors.js` import — `SELECT * FROM email_templates WHERE
+>   id = $1`). **Davranış notu:** `/manual` JWT yolunda `expo_id` yoksa artık 403 (öncesi: fuarsız ziyaretçi satırı yazılırdı).
+
+> ## ✅ 2026-11-09 — PROMPT 3e (PAKET 5a SON): R3 FUAR DETAYI STAGING'DE — PAKET 5a KAPANIŞ ADAYI (LEENA `5328405` + `8c71cf8`)
+>
+> - **Kriter kaynağı:** Sentez (3) R3 AYNEN — "Expo dizini + fuar detayı (D02/D03): fuar başına hedef/gerçek m² ve gelir, kontrat sayısı, firma listesi,
+>   ülke dağılımı, temsilci dağılımı, aylık satış; önceki edisyonla kıyas (ad+yıl anahtarı — göçte kullanılan); Operations'taki mevcut fuar sayfasına
+>   sekme olarak (yeni sayfa açma, UI-03)" [defter:2026-11-06 SENTEZ: PROMPT 2 KABUL + 8 KARAR + PROMPT 3 DİREKTİFİ] + Suer 9 Kas direktifi madde 4 (R3 ilk
+>   sekme · ülke müşteri firması → `company_country_code` → bilinmiyor · üç m² sayacı · R6 bağ · `metrics.js` tek kaynak · grafik yok). YON-18 · YON-19.
+> - **Ne yapıldı:**
+>   - **Uç** `GET /api/analytics/expo/:id` (`routes/analytics.js`, kapı R2 ile aynı: `contracts.read` + kapsam duvarı + dış kullanıcı 409): toplam (kontrat ·
+>     m² · brüt · taban · €/m² · ödenen · açık) + RAP-02 sayaçları (göç m² · alan dışı · bilinmeyen · hariç · temsilcisiz · ürünsüz kalem · tarihsiz) +
+>     hedef / gerçek + ilerleme % (aktif bütçe revizyonu, R6) + önceki edisyon (toplam + fark) + firma listesi (müşteri firmasına göre; firmasızda ada göre;
+>     AF numaraları · temsilci · ödenen · açık) + ülke (müşteri firması → `company_country_code` → "Country unknown") + temsilci ("No representative") +
+>     aylık (kontrat tarihi — fiscal). `?export=csv|xlsx&list=companies|countries|agents|monthly` → listenin TAMAMI (R1).
+>   - **Tek kaynak:** sayılar `utils/metrics.js` (`factsCte` + `AGG` + `COUNTERS`; `facts`'e `customer_company_id` eklendi). **`previousEdition()`** — önceki
+>     edisyon bulucu `routes/ledger.js` R6'dan `metrics.js`'e taşındı: R3 ve R6 TEK tanım.
+>   - **Ekran** `ui2/operations-expos.html` — AYNI sayfa: `?expo=<id>` fuar detayı; sekmeler **Sales (R3)** (ilk) · Visitors (R8 bağlantıları; liste satırında da
+>     duruyor) · "← All expos". Özet kartları + Target vs actual (R6 bağı `finance-budget.html?expo=`) + Previous edition + Companies + By country + By
+>     representative + Monthly sales + RAP-02 notu. CSS çubuk; grafik YOK. Liste satırı detaya gider. `nav.json` DEĞİŞMEDİ.
+>   - **Test** `tests/test_p3e.js` (17, zincirde `test_p3d.js`'ten sonra) · Playwright `tests/p3e_tour.js` (yerel, zincir dışı).
+>   - **Migration YOK** (şema değişmedi) → staging'de koşulacak migration olmadı.
+> - **Commit:** LEENA eliza-next **`5328405`** (R3) + **`8c71cf8`** (R3 olguları yalnız bu fuar + önceki edisyon için kurulur — `factsCte` where süzgeci;
+>   tanım aynı, staging'de tüm kontratları taramaz). **PUSH (YON-19):** `7d986bb..5328405` → staging yeni kodu 15:15:14Z'de servis etti
+>   (`ui2/operations-expos.html` `5328405` ile BAYT BAYT aynı · `/api/analytics/expo/1` kimliksiz 401, bilinmeyen uç 404) · `5328405..8c71cf8` → staging yeniden deploy 15:43:03Z (statik dosya Last-Modified 15:14:31 → 15:42:39 GMT); tur tekrarı aynı sonuç. ell-docs bu kayıt + kütük (YON-19 · YON-16 notu · RAP ortak not).
+> - **Ölçülenler:**
+>   - Testler **752 → 769 / 769** (46 → 47 suite) — PG14 iki koşu suite suite AYNI + PG **17.10** AYNI. Yerel tur **3 / 3** (Y1 satır → detay, ilk sekme
+>     "Sales (R3)", hedef %50.0 + R6 bağı, önceki edisyon, dört liste, firma Excel'i · Y2 Visitors sekmesi R8 · Y3 operations.read'siz kullanıcı giremez,
+>     hata 0). Test fikstüründe R3 = R6 satış bloğu (E9) = R2 "By expo" (E10) BİREBİR; ülke zinciri (E5): TR · NG · MA (Zoho ülkesi) · bilinmiyor.
+>   - **Staging turu (araç hesapları, salt okuma):** cc-staging (Sales, kapsam own) 4 fuarda (9 · 1 · 219 · 13) R3 200 · R3 = R2 kendi kapsamı **EŞİT** (0
+>     kontrat — kendi kontratı yok) · hedefler gizli · önceki edisyon etiketleri görünüyor (9 → "Morocco Siema Expo", 1 → "Morocco Siema Expo 2024") · R6
+>     409 (budget.read yok) · cc-external R3 / R2 / R6 **409** · ekran: iki hesap da Operations'a giremez ("You do not have access to Operations" —
+>     operations.read yok) · sayfa / konsol hatası 0.
+>   - **Owner-eşdeğeri ölçüm (yeni kod YEREL + staging DB salt okuma; kimlik / izin kapısı saplama, gerçek kullanıcı kimliği YOK):** **R3 = R2 "By expo" 152 / 152 fuarda BİREBİR** (kontrat · m² · brüt · taban · €/m² · üç m² sayacı; tarihsiz kontrat 0) · R2 toplamı 3365 kontrat /
+>     €16.466.426,98 − R3 toplamları 3363 / €16.461.476,98 = **2 kontrat / €4.950,00 = fuarsız kontrat** (R2'de "No expo" satırı — ölçüldü) · **R3 = R6** 5 fuarda
+>     (9 · 1 · 365 · 219 · 13: kontrat · m² · brüt · taban · €/m² · önceki edisyon AYNI) · önceki edisyon 152 fuarın 72'sinde bulundu · örnek Morocco Siema
+>     Expo 2026: 158 kontrat · m² 3195.00 · brüt €909.049,86 · taban €812.342,59 · €/m² 242.51 · alan dışı 48 · firma 114 · temsilci 8 · ay 12 · önceki
+>     edisyon "Morocco Siema Expo" brüt €755.856,93 · **ülke dağılımı staging'de %100 "Country unknown"**: 3934 kontratın müşteri firması 1, `company_country_code`
+>     dolu 0 — 065 "backfill yok; bir sonraki Zoho göç koşusu doldurur" (`migrations/065_contract_company_country.sql:25`, `scripts/zoho/lib/plan.js:587`)
+>     → kesimdeki göçle dolar. Süre: 152 fuar + 5 R6, yerelden 290 sn.
+>   - **Salt-okunur teyit:** kayıt **67** (son `065` — 3e migration yok) · TABAN kontrat 4 SR **342.00** ✅ · TABAN-2 AF489555 SR = LEENA CLAUDE.md değeri,
+>     **EŞİT** ✅ (değer basılmadı — GOC-07) · kontrat 3934 · fuar 214 · aktif bütçe revizyonu **0** · tarihsiz kontrat 0 · yabancı fuar terminali 0.
+> - **SAPMA (Prompt 3e, numaralı — "ön-onaylı" = YON-18):**
+>   1. **Ön-onaylı — fuar detayı aynı sayfada** (`?expo=`) — "yeni sayfa açma" (UI-03) + Operations'ta ayrı fuar sayfası yoktu (3d'de liste açıldı).
+>   2. **Ön-onaylı — hedef / ilerleme yalnız TÜM kapsamda** (R6 ve R7 emsali: hedef fuarın tamamına göredir, kapsamlı toplamla kıyaslanmaz); kapsamlı
+>      kullanıcıda gizli + ekranda not.
+>   3. **Ön-onaylı — önceki edisyon tek tanım + yıl sırası göçle hizalandı** (`edition_year` → addaki yıl → başlangıç tarihi; göç `to_char(start_date)`
+>      okur — `scripts/zoho/lib/apply.js:46`). R6 DAVRANIŞ DEĞİŞİKLİĞİ: eski R6 mevcut fuarın yılını yalnız addan alıyordu (`expoOfOrganizer` yalnız id + ad
+>      döner). Staging ölçümü: 213 fuarın **6**'sı önceki edisyonunu ARTIK buluyor (ör. "Morocco Siema Expo" → "Morocco Siema Expo 2024", "Mega HoReCa
+>      Nigeria" → "Mega Horeca Nigeria 2025"), kaybeden **0**, değişen **0**. Test E11 bunu sınar.
+>   4. **Ön-onaylı — dizine (liste) sayı sütunu eklenmedi:** sayılar detayda; fuarlar arası karşılaştırma R2 "By expo"da (aynı olgu).
+>   5. Firma listesi müşteri firmasına göre gruplu (firması olmayan kontrat adına göre) · açık bakiye R4 tanımı (milat öncesi DAHİL — R4 toplamı gibi).
+> - **🔶 Sentez / Suer'e:** 1. Project şablonunda `operations.read` var, `contracts.read` yok → Operations › Expos detayında Sales (R3) sekmesi 409 mesajı
+>   gösterir (Visitors sekmesi çalışır). Project R3'ü görsün mü (ör. kapsamlı `contracts.read`)? Varsayılan: hayır (sayılar kontrat verisi).
+>   2. Staging'de aktif bütçe hedefi 0 → hedef / gerçek bölümü gerçek veriyle görülemedi (testte ölçüldü; Owner R6'dan hedef girince görünür).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** **cc-owner turu** (kurulum (a) / (b) "pano hazır" bekliyor) — yerine yukarıdaki owner-eşdeğeri ölçüm · Owner ekranının
+>   staging görüntüsü · hedef / gerçek ekranı gerçek veriyle (staging'de bütçe 0) · Suer ekranı yok (YON-19 (3)).
+> - **Bilinçle yapılmayanlar:** grafik (Sentez 5a) · dizin sayı sütunu (SAPMA 4) · Paket 5b · migration (gerekmedi).
+> - **PAKET 5a KAPANIŞ ADAYI:** R1–R8 tamam (R1 · R2 · R4 · R5 · R6 → 3b; R7 → 3c / 3d; R8 → 3d; R3 → bu kayıt). 3e ONAY'ıyla **PAKET 5a KAPALI** → Prompt 4
+>   (Paket 5b).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -8245,6 +8364,12 @@
 >   → Render deploy gözlemi → Shell sorgusu (canlı etki) → canlı doğrulama (3 uç) → 3 ekran (R8 · R4 milat kovası · R7 LIFFY) → ONAY → Prompt 3e = R3 → 3e
 >   ONAY → PAKET 5a KAPALI → Prompt 4 = Paket 5b → kesim provası ×2 → kesim.** Açık 🔶 (EMS kapıları dilimi): D1 `/manual` · D2 `/import` · C9 / C10
 >   terminal açma → D3 · E1 `/public` · `/paginated` `limit`. Canlı `main` `5c4c34b` → push sonrası `a35c3b6` (YON-16 b istisnası; başka kod gitmez).
+>   9 Kas (2): Suer YON-19 ("beni aradan çıkart") → CC push / staging migration / staging turu · **HOTFIX CANLIDA** (`a35c3b6`) · **PROMPT 3d KAPALI** —
+>   [defter:2026-11-09 HOTFIX CANLIDA] · **HOTFIX 2** (D1 `/manual` · D2 `/import` · C9 / C10 terminal · D3–D4 terminal konuları) → dal `f05d14c` +
+>   eliza-next `0f3cc96` — [defter:2026-11-09 HOTFIX 2 (YON-16 b — yetki atlatma, yazma tarafı)] · **PROMPT 3e (R3) STAGING'DE** `5328405` —
+>   [defter:2026-11-09 PROMPT 3e (PAKET 5a SON): R3 FUAR DETAYI STAGING'DE]. **★SIRADAKİ (bu kazanır) = Suer: hotfix 2 `main` push (tek satır) ∥ 3e ONAY →
+>   PAKET 5a KAPALI → Prompt 4 = Paket 5b (Suer'e dönmeden uçtan uca, YON-19) → kesim provası ×2 → kesim.** Bekleyen kurulum: "pano hazır" → staging
+>   admin bağlantısı + cc-owner. Açık 🔶 (EMS kapıları dilimi): C kalanı · E sınıfı · `limit` · `/import` şablon kimliği.
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
