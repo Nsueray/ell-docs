@@ -7886,45 +7886,111 @@
 >   (Owner ekranı Suer'de).
 > - **Bilinçle yapılmayanlar:** Prompt 3e (R3) başlatılmadı — Suer 3 ekran + ONAY bekleniyor.
 
-> ## ✅ 2026-11-06 — HOTFIX (YON-16 b — yetki atlatma): `GET /api/visitors/export` fuar sahipliği denetimi (dal `71f4902` · eliza-next `1c156e5`)
+> ## ✅ 2026-11-06 — HOTFIX (YON-16 b — yetki atlatma): ziyaretçi uçlarında fuar sahipliği — `/export` (6 Kas) + `/paginated` · `/conference-topics` (9 Kas) (dal `a35c3b6` · eliza-next `af5d674`)
 >
-> - **Kriter kaynağı:** Suer 6 Kas direktifi (3d push turunun ardından; "kural karar vermiştir, ön-onaylı") · **YON-16 (b)** "güvenlik (sır, yetki
->   atlatma); ayrı dal, aynı gün birleşme dalına" · bulgu: [defter:2026-11-06 PROMPT 3d (PAKET 5a SON) 1. BÖLÜM: S1 KURALI + R7 EKLERİ + R8] madde 7 🔶.
+> - **Kriter kaynağı:** Suer 6 Kas direktifi (3d push turunun ardından; "kural karar vermiştir, ön-onaylı") + **Suer 9 Kas "HOTFIX GENİŞLET — aynı kural,
+>   aynı dal, canlı push'tan ÖNCE (tek deploy)"** · **YON-16 (b)** "güvenlik (sır, yetki atlatma); ayrı dal, aynı gün birleşme dalına" · bulgu:
+>   [defter:2026-11-06 PROMPT 3d (PAKET 5a SON) 1. BÖLÜM: S1 KURALI + R7 EKLERİ + R8] madde 7 🔶. 9 Kas: Suer "Tur ONAY (Suer ekranları push sonrası)" —
+>   [defter:2026-11-06 PROMPT 3d 1. BÖLÜM STAGING'DE] turu onaylı; 3 ekran canlı push'tan sonra.
 > - **Ne yapıldı:**
->   - Dal `hotfix/visitors-export-org-scope`, tabanı `main` = `origin/main` = `5c4c34b` (ölçüldü). Tek davranış değişikliği — `routes/visitors.js` export
->     ucu (`:1146`): `expo_id` doğrulamasından sonra `SELECT id FROM expos WHERE id = $1 AND organizer_id = $2` (rapor özeti ucuyla AYNI yüklem,
->     `routes/reports.js:19-22`); satır yoksa AYNI red: **403 `{ error: 'Access denied to this expo' }`** (`routes/reports.js:24-26`). Olmayan fuar da
->     aynı 403 (öncesi: 200 + boş dosya). Eksik `expo_id` → 400 ve token yok → 401 DEĞİŞMEDİ.
->   - Dosyalar: `routes/visitors.js` (+11) · yeni `tests/test_hotfix_export_scope.js` · `package.json` (yalnız test zincirine kayıt). Başka dosya /
->     özellik YOK.
->   - Test — iki organizasyonlu fikstür. Test DB finans aynası, `visitors` tablosu YOK (YON-09) → fikstür kendi şemasında (`hfx_export_scope`), ucun
->     havuzu `search_path` ile okur; `expos` / `organizers` gerçek stub. H1 kendi fuarı → 200 + yalnız o fuarın 2 ziyaretçisi · H2 başka organizasyonun
->     fuarı → 403, gövde + durum `/api/reports/summary` ile BİREBİR, dosyada öteki ziyaretçi yok · H3 öteki organizasyon kendi fuarını alır (aşırı engel
->     yok) · H4 olmayan fuar → 403 · H5 400 / 401 değişmedi · H6 süzgeç (search) çalışıyor. **Kırmızı-önce:** düzeltmesiz kodda H2 + H4 DÜŞTÜ
->     (organizasyon 1'in token'ı organizasyon 2'nin fuarından 1 ziyaretçiyi dışa aktardı; olmayan fuar 200) → düzeltmeyle 6/6.
->   - Birleşme dalı (aynı gün): `eliza-next`'e `--no-ff` merge **`1c156e5`** — tek çakışma `package.json` test zinciri satırı (eliza-next zinciri AYNEN +
->     sonuna hotfix testi); `visitors.js` + test hotfix dalıyla bayt bayt aynı (diff 0 satır) · **`d570fc5`** LEENA CLAUDE.md (KURAL 4, EMS tarafı: uç
->     notu + açık bulgu + beklenen 728/728).
-> - **Commit:** LEENA `hotfix/visitors-export-org-scope` **`71f4902`** (tek commit, `main` üstü → ff edilebilir) · `eliza-next` **`1c156e5`** (merge) +
->   **`d570fc5`** (CLAUDE.md). ell-docs bu kayıt + 3d staging kaydı + ★ + kütük YON-16 uygulama notu. **PUSH YOK**.
+>   - Dal `hotfix/visitors-export-org-scope`, tabanı `main` = `origin/main` = `5c4c34b` (ölçüldü 6 Kas + 9 Kas; 9 Kas'ta hiçbir şey push'lanmamıştı — dal
+>     uzakta YOK, ell-docs origin `335d3db`). Rapor özeti ucunun yüklemi (`routes/reports.js:19-22`) ve reddi (`:24-26`, **403
+>     `{ error: 'Access denied to this expo' }`**) birebir.
+>   - **Commit 1 `71f4902` (6 Kas):** `GET /api/visitors/export` — `expo_id` doğrulamasından sonra `SELECT id FROM expos WHERE id = $1 AND organizer_id = $2`;
+>     satır yoksa aynı 403. Olmayan fuar da 403 (öncesi: 200 + boş dosya).
+>   - **Commit 2 `a35c3b6` (9 Kas):** kontrol tek yardımcıya taşındı (`rejectUnlessExpoOwned`, `routes/visitors.js` — üç uç bayt bayt aynı denetimi kullanır,
+>     ayrışamaz) + `GET /api/visitors/paginated` (yalnız terminalle kapsanmamış istek = JWT; `bulk_print` terminal dalı DEĞİŞMEDİ — `dualAuth` fuarı
+>     terminalin fuarına zorlar) + `GET /api/visitors/conference-topics`. **`limit` tavanına DOKUNULMADI** (direktif; 🔶 EMS kapıları dilimi).
+>   - Eksik `expo_id` → 400 ve kimliksiz → 401 üç uçta da DEĞİŞMEDİ. Dosyalar: `routes/visitors.js` · `tests/test_hotfix_export_scope.js` · `package.json`
+>     (yalnız commit 1'de, test zincirine kayıt). Başka dosya / özellik YOK.
+>   - Test — iki organizasyonlu fikstür, **6 → 13 kontrol**. Test DB finans aynası, `visitors` / `checkins` / `terminals` YOK (YON-09) → fikstür kendi
+>     şemasında (`hfx_export_scope`), uçların havuzu `search_path` ile okur; `expos` / `organizers` gerçek stub. H1–H6 export · P1 paginated kendi fuarı +
+>     `limit=1` → 1 satır / totalPages 2 (limit değişmedi) · P2 yabancı / olmayan fuar → 403, gövde `/api/reports/summary` ile BİREBİR · P3 terminal dalı
+>     (`bulk_print` anahtarı kendi terminalinin fuarını okur) değişmedi · P4 400 / 401 · C1 conference-topics kendi fuarı · C2 yabancı / olmayan → 403 ·
+>     C3 öteki organizasyon kendi fuarını okur + 400.
+>   - **Kırmızı-önce (her commit için):** commit 1 öncesi kodda H2 + H4 DÜŞTÜ (organizasyon 1'in token'ı organizasyon 2'nin fuarından 1 ziyaretçiyi dışa
+>     aktardı). Commit 2 öncesi kodda (`71f4902`) **P2 + C2 DÜŞTÜ** — organizasyon 1, organizasyon 2'nin ziyaretçisini TAM SATIR olarak listeledi (ad,
+>     e-posta, QR dahil) ve konu adı + kayıt / check-in sayısını aldı → düzeltmeyle 13/13.
+>   - Birleşme dalı (her commit aynı gün): `eliza-next` merge **`1c156e5`** (6 Kas; tek çakışma test zinciri satırı — eliza-next zinciri AYNEN + sonuna
+>     hotfix testi) + **`d570fc5`** CLAUDE.md · merge **`af5d674`** (9 Kas; çakışmasız) + **`56627f0`** CLAUDE.md (KURAL 4, EMS: üç uç notu · açık liste
+>     işareti · `limit` notu · beklenen 735/735). `visitors.js` + test hotfix dalıyla bayt bayt aynı (iki merge'de de diff 0 satır).
+> - **Commit:** LEENA `hotfix/visitors-export-org-scope` **`71f4902` → `a35c3b6`** (iki commit, `main` üstü → ff edilebilir) · `eliza-next` `1c156e5` +
+>   `d570fc5` + **`af5d674` + `56627f0`**. ell-docs `0c6f1d5` (6 Kas) + bu genişletme. **PUSH YOK**.
 > - **Ölçülenler:**
->   - `main` tam takım (hotfix dalında, PG 14.18): **554/554 · 30 suite** (önceki 29 suite 548 + hotfix 6) · exit 0. Günlükteki 4 "❌" satırı webhook
->     testlerinin beklenen ret LOG satırı (test sonucu değil).
->   - `eliza-next` tam takım (merge sonrası, PG 14.18): **722 → 728/728 · 44 → 45 suite**, iki koşu suite suite AYNI · exit 0.
+>   - `main` tam takım (hotfix dalında, PG 14.18): commit 1 **554/554** · commit 2 **561/561 · 30 suite** (önceki 29 suite 548 + hotfix 13) · exit 0.
+>     Günlükteki "❌" satırları webhook testlerinin beklenen ret LOG satırı (test sonucu değil).
+>   - `eliza-next` tam takım (PG 14.18): 6 Kas 728/728 ×2 · **9 Kas 735/735 ×2 · 45 suite**, iki koşu suite suite AYNI · exit 0.
 >   - Geriye uyum: iki giriş yolu da token'a `organizer_id` yazar — `routes/auth.js:48-55` (ilk commit `00c6919`'dan beri) + `routes/userAuth.js:94-98`
->     → geçerli hiçbir token meşru erişimini kaybetmez · ucu çağıran iki klasik sayfa (`public/visitorlog-paginated.html:547`,
->     `public/conference-sessions.html:267`) seçili fuarı gönderir; fuar listesi organizatöre süzülü (`routes/expos.js`) · servis kimliği bu uca giremez
->     (`middleware/serviceAuth.js:34` ALLOWED) · `authMiddleware`'in eliza-next farkı `req.organizer_id` atamasını değiştirmiyor (yalnız dış kullanıcı
->     duvarı).
->   - **Aynı sınıf, kapsam dışı bulgu (🔶 — DÜZELTİLMEDİ, direktif "tek değişiklik"):** `GET /api/visitors/paginated` JWT dalı
->     (`middleware/dualAuth.js:30-41` → `routes/visitors.js:66-108`; `limit` tavansız) ve `GET /api/visitors/conference-topics` (`:1304-1365`) fuar
->     sahipliğini denetlemiyor — uç gövdelerinde `organizer_id` geçen satır 0 (`main`).
-> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** **§1 canlı etki büyüklüğü** (organizasyon · ziyaretçisi olan organizasyon · fuar sayısı) — canlı salt-okunur
->   bağlantı iki denemede `Connection terminated unexpectedly` (G4 imzası: IP izin listesi; genel internet çalışıyor); YON-17 gereği ağ ayarına
->   dokunulmadı → Suer'e tek satır soru · PG17 koşusu (direktif PG14) · canlı deploy + canlı doğrulama (SUER BLOĞU) · staging'de hotfix (eliza-next
->   push'u sonrası).
-> - **Bilinçle yapılmayanlar:** `/paginated` + `/conference-topics` (aynı sınıf — ayrı karar) · `main`'deki CLAUDE.md (hotfix dalı "tek değişiklik";
->   KURAL 4 notu birleşme dalında, `main`'e eliza-next ile gelir) · push.
+>     → geçerli hiçbir token meşru erişimini kaybetmez · üç ucu çağıran klasik sayfalar seçili fuarı gönderir; fuar listesi organizatöre süzülü
+>     (`routes/expos.js`) · servis kimliği bu uçlara giremez (`middleware/serviceAuth.js:34` ALLOWED) · `authMiddleware`'in eliza-next farkı
+>     `req.organizer_id` atamasını değiştirmiyor (yalnız dış kullanıcı duvarı).
+>   - **ÖLÇÜM (9 Kas, salt okuma, DÜZELTME YOK) — `expo_id` alan TÜM uçlarda sahiplik kontrolü** (`main` `5c4c34b` = canlı kod; satır numaraları oraya
+>     göre). Yöntem: `routes/*.js` handler taraması (istemciden fuar kimliği alan 69 handler; 3 yanlış pozitif ayıklandı — `forms.js:59`,
+>     `reactivation.js:286`, `:911` yalnız yorumdaki `:expoId` yüzünden) + taramanın göremediği 10 uç elle (`expos.js` `:id` ×6 · `/slug/:slug` ·
+>     `reports.js:668` `expo_ids` · `conferenceCertificates.js` terminal uçları ×2). Kör nokta denetimi: çift tırnaklı yol / `router.route` / girintili
+>     tanım 0. **Toplam 76:**
+>
+>     | sınıf | adet | anlam |
+>     |---|---|---|
+>     | A — açık kontrol | 36 | `expos.id = $1 AND organizer_id = $2`, yoksa ret (3'ü bu hotfix — canlıya push'la girer) |
+>     | B — dolaylı | 20 | sorgu satırları `organizer_id` ile süzülü → yabancı fuar boş / 0 döner (veri sızmaz) |
+>     | C — YOK, yazım | 11 | kendi kaydına yabancı `expo_id` bağlanır; doğrudan veri dönmez (C9 / C10 → D3'ü açar) |
+>     | D — YOK, başka organizasyonun ziyaretçi verisine erişim | 4 | aşağıda — **en yüksek öncelik** |
+>     | E — kimliksiz (public) | 5 | tasarım gereği kimliksiz; ayrı karar |
+>
+>     **D — YOK (okuma / yazma, başka organizasyonun ziyaretçisi):**
+>     - D1 `routes/visitors.js:535` `POST /api/visitors/manual` — JWT dalında `expo_id` VE `organizer_id` gövdeden (`:547-548`); var olan kayıt yalnız
+>       e-posta + `expo_id` ile bulunur (`:567-570`) → alanları güncellenir (`:575-590`) + **`qr_code` · `badge_id` · `visitor_id` döner** (`:593-598`);
+>       yoksa yabancı fuara yeni ziyaretçi yazılır (`:607-614`). (`scanner` terminal yolu: fuar = terminalin fuarı — C9 ile açılan terminalle aynı sonuç.)
+>     - D2 `routes/visitors.js:636` `POST /api/visitors/import` — JWT dalında `expo_id` gövdeden (`:648`); fuar adı sahipliksiz okunur (`:683`); var olan
+>       kayıt e-posta + `expo_id` (`:814`) → UPDATE (`:845`) + seçenekle **QR yenileme** (`:831-860` — ziyaretçinin rozeti geçersizleşir) + seçenekle
+>       e-posta kuyruğu (`:924` — kendi şablonuyla başka organizasyonun ziyaretçisine e-posta). Döner: sayaçlar.
+>     - D3 `routes/conferenceCertificates.js:878` `GET /topics` + `:861` `GET /blocked-topics` — `terminalAuth`, yalnız terminalin fuarıyla süzer (`:887`,
+>       `:899`; `:863-864`) → C9 ile yabancı fuarda açılan terminalin anahtarıyla o fuarın konu adları + kayıt / sertifika sayıları (= bu hotfix'in
+>       `/conference-topics`'te kapattığı verinin terminal yolu). *Kod okumasıyla ölçüldü; çalıştırılarak sınanmadı.* Bağlam: diğer terminal uçları
+>       terminalin `organizer_id`'siyle de süzer → yabancı ziyaretçiye ulaşmaz (`terminalCheckins.js:136-137, 231, 301, 421`;
+>       `conferenceCertificates.js:585`) · API ile açılan terminal her zaman `scanner` (`kind` `terminals.js`'te hiç geçmiyor) → `/paginated` terminal
+>       dalına (`bulk_print`) GİRİLEMEZ.
+>
+>     **C — YOK, yazım:** C1 `campaigns.js:86` POST kampanya (`:96-98`) · C2 `emailTemplates.js:115` POST (`:138`) · C3 `emailTemplates.js:266` clone
+>     (`:289`) · C4 `exhibitors.js:32` POST (`:38-40`) · C5 `forms.js:328` POST (`:356`) · C6 `forms.js:447` PUT (`:491`) · C7 `forms.js:272` clone
+>     (`:291-303`) · C8 `unsubscribes.js:72` POST (`:87-91`; `expo_id` yalnız üst veri) · **C9 `terminals.js:94` POST** (`:97-123`; yanıtta
+>     `terminal_key` dahil satır döner) · **C10 `terminals.js:52` clone** (`:56`, `:71-76`) · C11 `callcenter.js:1294` `POST /admin/import` (`:1299`,
+>     `:1427-1431`; `callcenter_leads`'te `organizer_id` kolonu YOK — yabancı fuara lead yükler; dry-run yanıtının tam içeriği okunmadı).
+>
+>     **E — kimliksiz:** E1 `visitors.js:218` `POST /public` — e-posta + `expo_id` bilen herkes var olan kaydı günceller ve **tüm satırı** (`RETURNING *`
+>     `:328` → `:515`) + `qr_code` / `badge_id` / `badge_url` (`:516-518`) alır; `expo_id` formun fuarıyla karşılaştırılmaz (`:220`, `:249-254`) ·
+>     E2–E4 `leads.js:18` `/auth` · `:77` `/scan` · `:166` `/list` (bilinen #14 — sunucu oturumu yok) · E5 `expos.js:162` `GET /slug/:slug` (`:167` — ad,
+>     yer, tarih, logo; tasarım).
+>
+>     **A — açık kontrol (36):** `campaignBuilder.js:351` reaktivasyon segmenti (`:372-373`, `:432`) · `campaigns.js:680` fuardan alıcı (`:693-694`) ·
+>     `checkinReports.js:7` check-in raporu (`:16-17`) · `checkins.js:11` check-in yazımı (`:42-49`) · `:464` özet (`:477-478`) · `:553` istatistik
+>     (`:569-570`) · `conferenceCleanup.js:37` / `:84` / `:147` / `:192` konu temizliği (`:43` / `:90` / `:155` / `:210`) · `contracts.js:1109` fuar
+>     transferi (`:1143-1144`) · `emailSend.js:11` / `:141` tekli / toplu gönderim (`:36-39` / `:154-155`; ret 404 "Expo not found" — farklı gövde) ·
+>     `floorplan.js:58` salon yazımı (`:77-78`) · `ledger.js:872` / `:886` bütçe (`expoOfOrganizer` `:874` / `:906`) · `reactivation.js:386` / `:494`
+>     kampanya oluşturma (`:401-402` / `:509-510`) · `:1077` / `:1134` / `:1180` / `:1229` istatistik / durum / kapat / aç (`:1084` / `:1140` / `:1186` /
+>     `:1235`) · `reports.js:11` / `:624` / `:800` kayıt raporu / dışa aktarım / canlı (`:19-25` / `:633-634` / `:809-810`) · `visitors.js:1197`
+>     toplu e-posta (`:1214`) · `webhook.js:37` Zoho kaydı (paylaşılan token + URL organizer↔fuar `:114-121`, ret 400) · `expos.js:117` / `:306` /
+>     `:439` / `:558` / `:579` / `:664` fuar oku / güncelle / klonla / küme / sil / istatistik · **bu hotfix:** `visitors.js:1146` export · `:66`
+>     paginated (JWT) · `:1304` conference-topics.
+>
+>     **B — dolaylı (20):** `campaigns.js:109` kampanya listesi (`:125`) · `checkins.js:186` check-in listesi + ziyaretçi (`:223`, `:374`) ·
+>     `conferenceCertificates.js:938` sertifika istatistiği (`:949`, `:956`) · `contracts.js:368` kontrat listesi (`:372`) · `emailSend.js:292` gönderim
+>     geçmişi (`:305`) · `emailTemplates.js:7` şablonlar (`:20` / `:33`) · `exhibitors.js:15` katılımcılar (`:21`) · `floorplan.js:32` salonlar (`:45`) ·
+>     `forms.js:111` formlar (`:126`) · `ledger.js:562` giderler (`:582`) · `ledger.js:946` bütçe kilidi (`:957`) · `migration.js:92` SD atanmamış (`:94`) ·
+>     `partners.js:34` partnerler (`:41`, expos JOIN) · `reactivation.js:347` token listesi (`:358`) · `:930` istatistik (`:941`, `:952`) · `:973`
+>     bekleyenlere yeniden gönderim (`:1004`) · `reports.js:668` karşılaştırma (`:680-681`) · `terminals.js:9` terminaller (`:19`) · `visitors.js:109`
+>     kaynak değerleri (`:116`) · `visitors.js:1099` içe aktarma günlükleri (`:1107`).
+>
+>     eliza-next'e özgü uçlar (canlıda DEĞİL): tarama ek `expo_id` ucu bulmadı (aynı 69); analitik uçları fuar süzgecini `factsCte` içinde
+>     `c.organizer_id = $1` ile uygular (`utils/metrics.js:98`) → B sınıfı.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** **canlı etki büyüklüğü** (organizasyon · ziyaretçisi olan organizasyon · fuar sayısı) — 6 Kas canlı salt-okunur bağlantı
+>   iki denemede `Connection terminated unexpectedly` (G4 imzası); **Suer 9 Kas: IP kuralı DEĞİŞMEZ, sayılar Suer'in Render Shell sorgusuyla alınır**
+>   (SUER BLOĞU) → ÖLÇÜLMEDİ kalır · D3 zinciri ve C11 dry-run yanıtı çalıştırılarak sınanmadı (kod okuması) · PG17 koşusu (direktif PG14) · canlı deploy +
+>   canlı doğrulama (SUER BLOĞU) · staging'de hotfix (eliza-next push'u sonrası).
+> - **Bilinçle yapılmayanlar:** `/paginated` `limit` tavanı (direktif — EMS kapıları dilimi) · ölçüm listesindeki C / D / E uçları (direktif "ölç, düzeltme
+>   YOK" — 🔶 EMS kapıları dilimi; öncelik D1 · D2 · C9 / C10 → D3) · `main`'deki CLAUDE.md (hotfix dalı yalnız kod + test; KURAL 4 notu birleşme
+>   dalında, `main`'e eliza-next ile gelir) · push.
 
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
@@ -8173,6 +8239,12 @@
 >   — yetki atlatma)]. **★SIRADAKİ (bu kazanır) = Suer: hotfix push → `main` ff + push → Render deploy → canlı doğrulama (CC gözlem + ölçüm) ∥ Suer 3
 >   ekran (3d) → ONAY → Prompt 3e = R3 (YON-18) → 3e ONAY → PAKET 5a KAPALI → Prompt 4 = Paket 5b → kesim provası ×2 → kesim.** Açık 🔶: `/paginated` +
 >   `/conference-topics` aynı sınıf. Canlı `main` `5c4c34b` → hotfix push'u sonrası `71f4902` (YON-16 b istisnası; başka kod gitmez).
+>   9 Kas: "Tur ONAY (Suer ekranları push sonrası)" · **HOTFIX GENİŞLETİLDİ** (aynı kural, aynı dal, tek deploy): `/paginated` (JWT) + `/conference-topics`
+>   → dal `a35c3b6` + eliza-next `af5d674` (735/735 ×2); `expo_id` alan 76 ucun sahiplik ölçümü (A 36 · B 20 · C 11 · D 4 · E 5) — [defter:2026-11-06 HOTFIX
+>   (YON-16 b — yetki atlatma)]. **★SIRADAKİ (bu kazanır) = Suer: zamanlama kontrolü → FF kontrolü → push (hotfix dalı + `main` ff + eliza-next + ell-docs)
+>   → Render deploy gözlemi → Shell sorgusu (canlı etki) → canlı doğrulama (3 uç) → 3 ekran (R8 · R4 milat kovası · R7 LIFFY) → ONAY → Prompt 3e = R3 → 3e
+>   ONAY → PAKET 5a KAPALI → Prompt 4 = Paket 5b → kesim provası ×2 → kesim.** Açık 🔶 (EMS kapıları dilimi): D1 `/manual` · D2 `/import` · C9 / C10
+>   terminal açma → D3 · E1 `/public` · `/paginated` `limit`. Canlı `main` `5c4c34b` → push sonrası `a35c3b6` (YON-16 b istisnası; başka kod gitmez).
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
