@@ -8145,6 +8145,70 @@
 >   kontratlı 72 → 85) — ör. Basrah FoodExpo 2016 → 2014 · Nigeria Build Expo 2021 → 2019 · Morocco Siema Expo 2022 → 2019. R3 + R6 tek tanım; karar Sentez'in.
 > - **→ PAKET 5a KAPALI** (R1–R8: R1 · R2 · R4 · R5 · R6 → 3b · R7 → 3c / 3d · R8 → 3d · R3 → 3e). Sıradaki: **Prompt 4 = Paket 5b** (YON-19: uçtan uca).
 
+> ## ✅ 2026-11-09 — PROMPT 4 (PAKET 5b): RAPOR OLUŞTURUCU · DOĞAL DİL · PUSH · ARAMA STAGING'DE (LEENA `d8af0d2` + `a1c7878`; 066 staging'de)
+>
+> - **Kriter kaynağı:** Sentez (3) PAKET 5b AYNEN — [defter:2026-11-06 SENTEZ: PROMPT 2 KABUL + 8 KARAR + PROMPT 3 DİREKTİFİ] · Orchestrator 9 Kas "PROMPT 4 — PAKET
+>   5b" (madde 1–10; çerçeve §0 — eliza-next = origin `8c71cf8`'den sonra `a1950b8`, ölçüldü) · YON-18 · YON-19 (staging migration + tur CC'de; Suer'e dönülmedi).
+> - **Ön ölçüm (madde 1):** alan sözlüğü girdisi `utils/metrics.js` (`factsCte` · `AGG` · `COUNTERS`) + modül liste uçları (kapsam: kontrat `contractScopeSql` ·
+>   teklif sahip / ofis · firma oluşturan / ofis · iletişim hedef kaydı · gider hesabın ofisi / oluşturanı) · `saved_reports` benzeri tablo YOK · transactional yol
+>   `utils/salesMail.js` `enqueueSalesEmail` (reply_to · ek `quote_documents` · from_name; EMAIL_ECHO=1 → 'echo') + worker `workerExtras` · zamanlayıcı
+>   `email_worker.js` setInterval (kampanya `:904`, çağrı merkezi raporu `:915`) · **staging'de worker YOK** (6 Kas'tan beri 3 satır 'pending') · arama indeksi YOK
+>   (yalnız benzersizlik indeksleri; `ILIKE '%q%'` indekssiz) · `pg_trgm` mevcut, kurulu değil (staging + test) · kodda Anthropic YOK → anahtar env
+>   `ANTHROPIC_API_KEY` (K4: değer basılmaz) · yeni servis açılmadı (YON-16).
+> - **Ne yapıldı:**
+>   - **5b.1** `utils/reportFields.js` — BEYAZ LİSTE alan sözlüğü (TEK kaynak; 9 modül: contracts · payments · quotes · expenses · commission_payouts · companies
+>     · contacts · communications · expos). Kontrat / ödeme sayıları `factsCte`'den (R2 ile AYNI ifade). Tanım JSON (RAP-14) sözlükle doğrulanır; SQL
+>     SÖZLÜKTEN üretilir, her değer parametre, sözlük dışı ad / bilinmeyen anahtar reddedilir. Kapsam modülün izin koduyla (YET-03); hassas alanlar (komisyon
+>     oranları) `sensitive_finance.read` ister. `routes/reportBuilder.js` (`/api/report-builder`): sözlük · çalıştır (sayfalı; `?export=csv|xlsx` TAM küme) ·
+>     kaydet (kişisel | paylaşımlı — paylaşımlı OKUYANIN kapsamıyla koşar) · takvimler · "Run now" · koşu geçmişi + Excel.
+>   - **5b.2** `utils/reportNl.js` — tek sağlayıcı arayüzü: `REPORT_NL_PROVIDER=anthropic` → resmi SDK `@anthropic-ai/sdk` (model `claude-opus-5-5` · yapılandırılmış
+>     çıktı json_schema · sunucu tarafı fallback) · aksi → SAHTE sağlayıcı (sabit soru → sabit tanım; staging + test). Modele YALNIZ sözlük + soru; çıktı yine
+>     doğrulanır; hatalıyı kullanıcı düzeltir (form ya da JSON), model yeniden çağrılmaz.
+>   - **5b.3** `utils/reportPush.js` + worker tiki — takvim (günlük / haftalık / aylık · saat · saat dilimi), `next_run_at` koşullu UPDATE ile TALEP; alıcı başına
+>     AYRI koşu, alıcının kapsamıyla; Excel (rapor başına sayfa) + kısa özet (satır + toplam) → transactional kuyruk (`email_queue.report_run_id`; echo).
+>     Tohumlar: Owner sabah özeti (dünkü imzalar · dünkü ödemeler · 90+ gün açık bakiye) · haftalık ekip performansı · haftalık ofis özeti ("Create starter
+>     schedules", kişi başı, tekrar kurmaz).
+>   - **5b.4** `routes/search.js` (`/api/search`) — firma · kişi · teklif no · kontrat (AF / firma adı) · fuar; grup başına izin + kapsam; dış kullanıcı yalnız
+>     kendi kayıtları (`authMiddleware` dış izin listesine `/api/search`), fuar grubu yok; joker karakterler kaçışlı; sonuç kayda iner.
+>   - **066** `migrations/066_report_builder.sql`: saved_reports · report_schedules (+reports · +recipients) · report_runs · `email_queue.report_run_id` (FK NOT
+>     VALID) · pg_trgm + 7 arama indeksi. **Staging'de CC koştu (YON-19):** dry-run 3,3 sn (email_queue **570.816** satır taranmadı) → apply 1,75 sn → ikinci koşu
+>     "Nothing to apply" · kayıt **68** (son 066). Canlı YOK.
+>   - **Ekran (ui2):** Finance › **Reports** grubu (Report builder · Scheduled reports; iç kullanıcı) · Sales › Overview › **Search**. Grafik YOK.
+> - **Commit / push (YON-19):** LEENA eliza-next **`d8af0d2`** (5b) + **`a1c7878`** (özet: adet tamsayı) · `a1950b8..d8af0d2` → staging 16:38:14Z (`finance-reports.html` bayt
+>   bayt aynı) · `a1c7878` push · bağımlılık `@anthropic-ai/sdk ^1.6.0`. ell-docs bu kayıt + kütük RAP-13..16 + sözlük + ★.
+> - **Ölçülenler:**
+>   - Testler **769 → 797 / 797** (47 → 48 suite) — PG14 iki koşu suite suite AYNI + PG **17.10** AYNI (`a1c7878` sonrası yeniden: 797 / 797 · 48 suite PG14 + PG17.10, suite suite AYNI). Yeni `test_p4.js` (25) +
+>     `test_migrate.js` R64-R66 (066; R61-R63 ≤ 065'e donduruldu — desen). Hüküm güncellemeleri (Prompt 4): `test_ui2_ui0` N4 · `test_ui2_ledger_pages` U1 / U3 ·
+>     `test_ui2_p2_pages` S3 / S4 (Finance 5. grup Reports + Sales › Search; izin kodsuz öğe herkese). Yerel Playwright `tests/p4_tour.js` **5 / 5**.
+>   - **Kabul (a)** staging, cc-owner (gerçek oturum): "2026 fuar başına brüt gelir ve m², temsilciye göre" → **107 grup** · toplam **503 kontrat / €1.435.244,26 /
+>     5.579 m² = R2** · 30 fuar satırı ve 22 temsilci satırı R2 ile BİREBİR · Excel TAM küme 107 satır (X-ELL-Rows 107) · 0,54 sn. Aynı rapor cc-staging (own) →
+>     1 grup = R2 kendi kapsamı (1 kontrat) · cc-external **409**. Ekran: rapor 50 satırlık sayfa, hata 0.
+>   - **Kabul (b)** staging sahte sağlayıcı: sabit soru (TR) → beklenen tanım (contracts · counted · 2026 fiscal · expo × representative · sum brüt + m² +
+>     count), hata 0 · bilinmeyen soru 422 + soru listesi. Gerçek sağlayıcı yolu testte yerel sahte sunucuya: `/v1/messages` · `claude-opus-5-5` · json_schema ·
+>     fallbacks default · **istek gövdesinde fikstür değeri YOK** (firma / AF / fuar / tutar).
+>   - **Kabul (c)** staging: tohumlar 3 kuruldu · "CC 5b tour — weekly summary" (alıcı cc-owner + cc-staging) "Run now" → iki AYRI koşu, kuyrukta **echo** + ek:
+>     cc-owner 107 satır (36 KB xlsx; özet 503 / €1.435.244,26 / 5.579) · cc-staging **1 satır** (kendi kapsamı) · haftalık ekip performansı echo. Testte worker
+>     talebi: vadesi gelen takvim 1 kez koştu, ikinci tur 0.
+>   - **Arama** staging: Owner "AF4895" → 1 kontrat · cc-staging 0 · cc-external 0 (fuar grubu atlandı) · Owner "Nigeria" 227 ms.
+>   - **Salt-okunur teyit:** kayıt **68** (son 066) · TABAN kontrat 4 SR **342.00** ✅ · TABAN-2 AF489555 SR = LEENA CLAUDE.md değeri, **EŞİT** ✅ (değer basılmadı — GOC-07).
+> - **SAPMA (Prompt 4, numaralı — "ön-onaylı" = YON-18):**
+>   1. **Ön-onaylı — dönem ön ayarlarına dün · geçen hafta · geçen ay eklendi** (yalnız rapor oluşturucu; push tohumları göreli dönem ister) — RAP-07 genişler.
+>   2. **Ön-onaylı — saat dilimi takvimde saklanır** (ofiste kolon yok); varsayılan ofis ülkesinden (eşleme), ofissiz kullanıcı UTC (cc-owner).
+>   3. **Ön-onaylı — push zamanlayıcısı worker'da** (mevcut yapı); staging'de worker yok → takvim staging'de kendiliğinden tetiklenmez, "Run now" aynı yolu koşar.
+>   4. **Ön-onaylı — RAP-03 dışlaması kontrat raporunda süzgeç:** alan `counted` + yeni kontrat raporunda varsayılan süzgeç (görünür, kaldırılabilir); doğal dil ekler.
+>   5. **Ön-onaylı — arama Sales › Overview altında** (dış kullanıcı da görür; tek kutu sayfası).
+>   6. **Ön-onaylı — tohumlar kod şablonu** ("Create starter schedules"); migration'da veri tohumu yok.
+>   7. **Ön-onaylı — `email_queue.report_run_id` FK NOT VALID** (KESİM NOTU 061 emsali; canlıda tarama yok).
+>   8. İletişim modülü kapsamı: kontrat hedefinde kaynak teklifin sahibi kapsama alınmadı (`routes/communications.js`'teki kuraldan küçük fark).
+>   9. Bağımlılık: `@anthropic-ai/sdk ^1.6.0` (resmi SDK — doğal dil sağlayıcısı).
+> - **🔶 Sentez / Suer'e:** 1. Staging'de e-posta worker'ı yok → takvimler staging'de tetiklenmez (YON-16 "yeni servis açılmaz"); kesim öncesi takvim provası nasıl?
+>   2. Gerçek sağlayıcı: canlıda `REPORT_NL_PROVIDER=anthropic` + `ANTHROPIC_API_KEY` (Suer; K4) — kesimde mi? 3. Finance'ı olup Sales'i olmayan kullanıcı aramaya
+>   menüden ulaşamaz (URL ile açılır) — kabukta arama kutusu tasarım fazına mı? 4. (5a'dan) "en yakın önceki edisyon" (+15 fuar).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** gerçek Anthropic çağrısı (anahtar yok — istek şekli yerel sahte sunucuyla sınandı) · staging'de takvimin kendiliğinden tetiklenmesi
+>   (worker yok) · gerçek e-posta teslimi (staging echo) · 066 öncesi uç davranışı için ayrı premig testi (kodda 503 MIGRATION_PENDING var, testi yok).
+> - **Bilinçle yapılmayanlar:** yapay zeka içgörü (5c) · grafik kütüphanesi · WhatsApp · ELIZA R04 · ham SQL · kabukta (shell.js) arama kutusu · staging takvim worker'ı.
+> - **5b ONAY bekliyor** → Sentez'e 5a + 5b kapanışı.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -8407,6 +8471,9 @@
 >   9 Kas (3): Orchestrator "3e ONAY — ŞARTLI" → Ş1 (zaten yazılı) · Ş2 (anahtar kazancı yok — değişmedi) · Ş3 (admin bağlantısı + cc-owner + Owner turu R3 = R2
 >   = R6) → **PAKET 5a KAPALI** — [defter:2026-11-09 PROMPT 3e ONAY (şartlı → Ş1–Ş3 kapandı) · PAKET 5a KAPALI]. **★SIRADAKİ (bu kazanır) = Prompt 4 =
 >   Paket 5b (rapor oluşturucu · doğal dil · push · arama; uçtan uca, YON-19) → Sentez'e 5a + 5b kapanışı.** Suer: hotfix 2 `main` push (tek satır, bekliyor).
+>   9 Kas (4): **PROMPT 4 (PAKET 5b) STAGING'DE** — `d8af0d2` + `a1c7878`; 066 staging'de (68 kayıt); kabul (a) rapor = R2 BİREBİR · (b) sahte sağlayıcı · (c) echo + ek —
+>   [defter:2026-11-09 PROMPT 4 (PAKET 5b): RAPOR OLUŞTURUCU · DOĞAL DİL · PUSH · ARAMA STAGING'DE]. **★SIRADAKİ (bu kazanır) = 5b ONAY → Sentez'e 5a + 5b kapanışı;
+>   sonraki paket Sentez kriteriyle (EMS kapıları dilimi + kesim provası ×2 → kesim).** Suer: hotfix 2 `main` push (tek satır, bekliyor).
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:

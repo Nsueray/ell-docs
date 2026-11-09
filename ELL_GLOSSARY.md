@@ -294,6 +294,27 @@ Contracts dated before 2019-01-01 — the start date of payments imported from Z
 balances form a separate bucket in Collections and on the Owner overview; the action list and per-expo lists leave them out by default
 (a filter shows them). Totals and stored data do not change. (RAP-08 note)
 
+### Report definition (rapor tanımı)
+
+The saved description of a custom report in ELIZA's report builder: which module (contracts, payments, quotes …), which fields, filters,
+period, grouping (at most two levels) and totals. It is data, not a query — the server checks it against the field dictionary and builds the
+query itself. A shared report runs with the scope of whoever opens it. (RAP-13, RAP-14)
+
+### Field dictionary (alan sözlüğü)
+
+The fixed list of fields the report builder may use, with their meaning (gross revenue, m², net base …). It is the same definition the
+fixed reports use, so a custom report and the Performance screen give the same numbers. Fields outside the list cannot be used. (RAP-13)
+
+### Scheduled report (push rapor)
+
+A saved report e-mailed on a schedule (daily, weekly or monthly, at an hour in a time zone) with an Excel attachment and a short summary.
+Each recipient gets their own run with only the records they are allowed to see. (RAP-15)
+
+### Global search (genel arama)
+
+One search box for companies, contacts, quote numbers, contracts (AF number or company) and expos. Results follow the same permission
+scope as the lists; external users find only their own records. (RAP-16)
+
 ### Country Manager
 
 An Elan Expo manager responsible for a specific country office.
