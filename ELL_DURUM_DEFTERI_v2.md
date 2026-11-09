@@ -8209,6 +8209,24 @@
 > - **Bilinçle yapılmayanlar:** yapay zeka içgörü (5c) · grafik kütüphanesi · WhatsApp · ELIZA R04 · ham SQL · kabukta (shell.js) arama kutusu · staging takvim worker'ı.
 > - **5b ONAY bekliyor** → Sentez'e 5a + 5b kapanışı.
 
+> ## ✅ 2026-11-09 — PROMPT 4 ONAY · PAKET 5b KAPALI (kesime kadar staging'de) · HOTFIX 2 `main` push'u ölçüldü (CANLIDA: Suer teyidi bekleniyor)
+>
+> - **Kriter kaynağı:** Orchestrator 9 Kas 21:40 "5b ONAY" (YON-19) · [defter:2026-11-09 PROMPT 4 (PAKET 5b): RAPOR OLUŞTURUCU · DOĞAL DİL · PUSH · ARAMA
+>   STAGING'DE].
+> - **Ne yapıldı:**
+>   - **5b ONAY → PAKET 5b KAPALI** — kod `eliza-next`'te (`d8af0d2` + `a1c7878`), kesime kadar staging'de; canlıya gitmez.
+>   - **Çapraz kontrol (Orchestrator):** kabul (a) 503 kontrat / €1.435.244,26 / 5.579 m² = 3b'deki 501 / €1.430.914,26 / 5.569 + Deneme 2026 (2 / €4.330 /
+>     10 m²) — tutarlı.
+>   - **HOTFIX 2 `main` push'u (CC ölçümü, GitHub + canlı uçlar):** 15:52:24Z `main` `a35c3b6..f05d14c` · canlı `/health` 200 · kimliksiz
+>     `/api/visitors/manual` · `/api/terminals` · `/api/conference-certificates/topics` → 401 (16:45Z). Render deploy olayı GÖZLENEMEDİ (erişim yok; `/health`
+>     sürüm işareti taşımaz) → **"HOTFIX 2 CANLIDA": Suer teyidi bekleniyor** ("deploy live — f05d14c" gelince tamamlanır).
+> - **Commit:** ell-docs bu kayıt + ★. Kod yok. **PUSH: CC (YON-19).**
+> - **Ölçülenler:** yukarıdaki push zaman damgası + canlı 200 / 401 (16:45Z) — bu kayıtta yeni ölçüm yok.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** `f05d14c`'nin canlıda koştuğu DOĞRUDAN (sürüm işareti yok, Render Events erişimi yok).
+> - **Bilinçle yapılmayanlar:** —
+> - **→ Sıradaki: ARA DİLİM** (Sentez kesim provası direktifi gelene kadar; `eliza-next`; Suer'e dönülmez): staging zamanlayıcı süreç içi tiki · `email_queue`'da
+>   6 Kas'tan beri 'pending' 3 satır ölçümü · EMS kapıları C sınıfı + `/import` şablon kimliği · `callcenter_leads` `organizer_id` ölçümü.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -8475,6 +8493,9 @@
 >   [defter:2026-11-09 PROMPT 4 (PAKET 5b): RAPOR OLUŞTURUCU · DOĞAL DİL · PUSH · ARAMA STAGING'DE]. **★SIRADAKİ (bu kazanır) = 5b ONAY → Sentez'e 5a + 5b kapanışı;
 >   sonraki paket Sentez kriteriyle (EMS kapıları dilimi + kesim provası ×2 → kesim).** Hotfix 2 `main` push'u GÖZLENDİ (GitHub: 15:52:24Z `a35c3b6..f05d14c`);
 >   canlı `/health` 200 + kimliksiz `/manual` · `/terminals` · `/topics` 401 (16:45Z) — "HOTFIX 2 CANLIDA" kaydı Suer'in "deploy live — f05d14c" teyidiyle.
+>   9 Kas (5): Orchestrator "5b ONAY" → **PAKET 5b KAPALI** (kesime kadar staging'de) — [defter:2026-11-09 PROMPT 4 ONAY · PAKET 5b KAPALI]. **★SIRADAKİ (bu
+>   kazanır) = ARA DİLİM (eliza-next; Sentez kesim provası direktifi gelene kadar): staging zamanlayıcı tiki · 'pending' 3 satır ölçümü · EMS kapıları C sınıfı +
+>   `/import` şablon kimliği · `callcenter_leads` ölçümü → ara dilim ONAY → Sentez kesim provası ×2 → kesim.** HOTFIX 2 CANLIDA: Suer teyidi bekleniyor.
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
