@@ -8301,6 +8301,101 @@
 >   yoksa fuar üzerinden sahiplik yeterli mi. (3) Kesim provası: staging'e gerçek worker bağlanırsa 3 eski davet satırı (785095–785097) gönderilir (link'ler
 >   kullanılmış / süresi dolmuş) — provadan önce 'echo'ya çekilsin mi. (4) `INVITE_ECHO` iken davet satırı da 'echo' yazılsın mı (bugün 'pending').
 
+> ## ✅ 2026-11-09 — SENTEZ: 5a/5b KABUL + S1–S8 + YON-20 + KESİM PROVASI DİREKTİFİ + EK (Suer, iki cevap) — AYNEN (KB @ 6d3998c)
+>
+> - **Kaynak:** Suer'in 9 Kas "PROMPT 5" mesajı içindeki iki Sentez bloğu (Orchestrator 22:30 "ARA DİLİM ONAY" ile birlikte), AYNEN. Bu bloklar
+>   [defter:2026-11-09 PROMPT 4 ONAY · PAKET 5b KAPALI] + [defter:2026-11-09 ARA DİLİM (eliza-next)] 🔶'lerinin ve 5a 🔶'lerinin cevabıdır.
+>
+>   ```
+>   SENTEZ → ORCHESTRATOR — 5a/5b KABUL + S1–S8 + YON-20 + KESİM PROVASI DİREKTİFİ (9 Kas). KB @ 6d3998c okundu. DEVAM.
+>   KABUL: Paket 5a + 5b KAPALI. Ön-onaylı SAPMA'ların tamamı (R3 yeri · milat öncesi kova · R7 yeri · 065 · 5b 1–9) KABUL.
+>   Hotfix 1–2 YON-16(b) uyumlu. ARA DİLİM (staging zamanlayıcı · pending 3 satır · EMS C) ONAY. "ELAN EXPO" (Suer 6 Kas):
+>   proje ekibinin ortak temsilci kaydı, gerçek hak sahibi; sales_agents türüne `team` (iç ortak) eklenir, raporda "ekip"
+>   rozeti, sıralamaya girer, kişi başı toplamlara dağıtılmaz; ad kalır (RAP-09 notu).
+>   S1 = a (varsayılan; Suer teyidi bekleniyor): 2019 öncesi ödemesiz kontrat "legacy, takip dışı" bayrağı; bakiye saklanır,
+>   tahsilat ekranlarında ayrı kova, dışa aktarımda görünür. Kesim göçü kuralı.
+>   S2 = a. "Aynı ad, en yakın önceki yıl"; boşluk ekranda yazılı.
+>   S3 = b. Kesime kadar sekme Project'e gizli.
+>   S4 = teyit. Staging süreç içi zamanlayıcı; kesimde gerçek worker.
+>   S5 = teyit. Kesim listesine: REPORT_NL_PROVIDER + ANTHROPIC_API_KEY Suer Render'da girer (K4), kesim gününden önce DEĞİL.
+>   S6 = teyit. UI kuyruğu + UX hattı.
+>   S7 EMS-E: E1 /public kayıt yanıtı DARALTILIR (RETURNING * kalkar; yalnız kayıt kimliği + rozet bağlantısı; expo_id formun
+>   fuarıyla eşleşmeli, değilse 400) — C dilimiyle birlikte · E2–E4 leads #14: tasarım, kesimi bloklamaz, UI kuyruğu · E5 slug:
+>   tasarım gereği açık (ad, yer, tarih, logo), KALIR · callcenter_leads.organizer_id: kolon + expo'dan backfill + NOT NULL +
+>   okuma/yazma kapısı — C dilimine dahil (staging; kesim zinciriyle canlıya).
+>   YON-20 (yeni): ell-docs'a CC push'u öncesi OTOMATİK TARAMA — bağlantı dizesi/anahtar desenleri (postgres://, sk-, token=,
+>   IBAN), TABAN değerleri (CLAUDE.md'deki sayılar), e-posta adresleri (kiracı alan adı hariç). Eşleşme → push YOK, rapor.
+>   LEENA PRIVATE için tarama yok ama K4 aynen.
+>   ══ S8 — KESİM PROVASI (ADR-023; Prompt 5; kriterler KES-01+) ══
+>   Amaç: kesim günü ne olacaksa aynısı, canlının TAZE KOPYASINDA, iki kez; ikisi aynı sayıları verince "go". Suer dokunuşu:
+>   prova sonunda tek rapor + ONAY; kesim günü: export (YON-12), main push, Render env, 3 ekran canlıda, Zoho ekibine "yeni
+>   giriş durdu" duyurusu.
+>   KES-01 Veri sahipliği: staging'de Suer'in girdiği/gireceği ana veri (tüzel kişiler, banka hesapları, hedefler, şablon
+>   düzenlemeleri, kayıtlı raporlar) TAŞINMAZ — tazelemede gider; Suer bunları KESİM GÜNÜ canlıda girer (kesim günü listesi).
+>   Prova kopyasında araç hesapları + örnek veri CC'nin.
+>   KES-02 Prova adımları (her prova, ölçülü süreyle):
+>   1. staging ← canlı taze kopya (Faz A restore; süre).
+>   2. migration zinciri 053→son: dry-run → apply (süre; 061/066 NOT VALID + VALIDATE ayrı adım, süreleri; >60 sn olan kesim
+>      günü planında ayrı pencere).
+>   3. ZOHO FARK PARTİSİ: yeni Zoho çekimi (salt-okunur token, 27 Eki sonrası) → artımlı göç (yalnız yeni zoho_record_id; S1
+>      legacy bayrağı; S2; ülke 065; m² alan dışı sayaçları; GOC-05) → mutabakat 16/16 + yeni sayaçlar → rollback.js ile geri
+>      alma PROVASI (bir kez, kopyada) → yeniden uygula.
+>   4. Klasik token kullanıcıları: canlıda kaç, kimler (ad yok, sayı + rol) → kesim günü ui2 davet listesi (Suer davet eder).
+>   5. Worker: leena-email-worker kodu main ile gelir (push raporlar, takip, teklif e-postası); kopyada EMAIL_ECHO; canlıda gerçek.
+>   6. Env listesi (ad, değer yok): yeni/değişen tüm değişkenler (REPORT_NL_PROVIDER, ANTHROPIC_API_KEY, SENDER_EMAIL,
+>      EMAIL_ECHO tanımsız, …) → kesim günü Suer Render'da girer.
+>   7. LIFFY: convert outbox kapatma (DISABLE_CONVERT_OUTBOX), fuar senkron durdurma; liffy-api/ui ASKIYA, DB DONDURULUR
+>      (silinmez, Paket 6). Köprü kodu LEENA'da kalır, sökme Paket 6.
+>   8. ELIZA eski: dokunulmaz, sync devam (zararsız); kapanış Paket 6.
+>   9. Doğrulama: /health · TABAN 342.00 · TABAN-2 · R2/R5/R7 sayıları prova ile aynı · yetki matrisi · 3 ekran (CC araç hesabı).
+>   10. Geri alma planı: Faz A restore + main revert; kopyada BİR KEZ gerçekten koşulur (süre).
+>   KES-03 Prova raporu zorunlu satırlar: her adımın süresi · mutabakat sayıları · DUR listesi (0 olmalı) · geri alma süresi ·
+>   kesim günü dakika planı (başlangıç → bitiş, pencereler) · Suer işleri listesi (export · env · davet · ana veri · duyuru) ·
+>   prova-1 ↔ prova-2 farkı (0 olmalı).
+>   KES-04 Go/no-go: iki prova DUR 0 + aynı sayılar + geri alma kanıtı + Suer ONAY. Kesim tarihi fuar takvimine göre (17–20 Kas
+>   Cezayir fuarları; kesim ya 16 Kas'tan önce ya 21 Kas'tan sonra — prova sonucuna göre Orchestrator önerir, Suer seçer).
+>   YON-06 + YON-12 aynen.
+>   KES-05 Kesim sonrası: Zoho'ya yeni kontrat/ödeme/gider girişi DURUR (Suer duyurur); Zoho salt-okunur referans; ELIZA ayna
+>   çalışır. İlk hafta: hotfix penceresi açık (YON-16 b/a), yeni özellik yok. Paket 6 = ELIZA/Zoho kapanış + köprü sökme +
+>   LIFFY madencilik kararı; tasarım fazı Paket 6 ile paralel.
+>   Kapsam dışı prova: tasarım, madencilik, DENEME, dış kullanıcı daveti. İlk çıktı: PROVA-1 raporu (KES-03 satırlarıyla).
+>   ───
+>   SENTEZ → ORCHESTRATOR — EK (Suer 9 Kas, iki cevap):
+>   S1 = a TEYİT: 2019 öncesi ödemesiz kontratlar eski işler, takip dışı → "legacy" bayrağı + ayrı kova (KES-02/3 göç kuralı).
+>   Kütük GOC.
+>   S2 = CANLIDA TEK KİRACI: Elan Expo'dan başka organizatör yok, hiç olmadı, kesime kadar da olmayacak (Suer). SELECT gereksiz
+>   — canlı etki 0; hotfix'ler yine doğruydu (kural). EMS C/E dilimi KALIR ama öncelik düşer: ara dilimde yapılıyorsa bitsin,
+>   bitmediyse kesim provasını BEKLETMEZ, kesim sonrası ilk küçük dilim. Çok kiracılı satış gündeme gelirse YET'e "kiracı
+>   izolasyonu" paketi (ayrı).
+>   ```
+>
+> - **Uygulama:** kütük KES-01..05 (Sentez AYNEN) · YON-20 · GOC-08 (legacy) · RAP-09 notu (`team`) · RAP-17 (önceki edisyon) · EMS-05+ kuyruğu — bu commit;
+>   ürün işleri (YON-20 taraması · `team` · legacy · S2 · S3 · INVITE_ECHO) + PROVA-1 → [defter:2026-11-09 PROMPT 5 — KESİM PROVASI: PROVA-1].
+
+> ## ✅ 2026-11-09 — ARA DİLİM ONAY · HOTFIX 2 + HOTFIX 3 CANLIDA (`a5bafb1`) · 🔶 cevapları · EMS-05+ kuyruğu
+>
+> - **Kriter kaynağı:** Orchestrator 9 Kas 22:30 "ARA DİLİM ONAY" ("hotfix 2 için de aynı teyit hâlâ bekleniyor — ikisini tek kayıtta kapat") + Suer
+>   "deploy live." (push çıktısıyla: `f05d14c..a5bafb1  origin/hotfix/callcenter-admin-org-scope -> main`) · [defter:2026-11-09 ARA DİLİM (eliza-next)] ·
+>   [defter:2026-11-09 SENTEZ: 5a/5b KABUL + S1–S8 + YON-20 + KESİM PROVASI DİREKTİFİ + EK].
+> - **Ne yapıldı:**
+>   - **ARA DİLİM ONAY** → kapalı (staging zamanlayıcı · 'pending' 3 satır · EMS C sınıfı + `/import` şablon kimliği · hotfix 3 · `callcenter_leads` ölçümü).
+>   - **HOTFIX 2 + HOTFIX 3 CANLIDA:** GitHub `main` push 19:32:04Z `f05d14c..a5bafb1` (Suer) · Suer "deploy live." · canlı (CC, 19:37Z) `/health` 200 ·
+>     kimliksiz `/api/callcenter/admin/dump` 401 · `/api/callcenter/report/send-now` 401 · `/api/campaigns` 401. `a5bafb1`, `f05d14c`'nin üstündedir (hotfix 2
+>     içinde) → hotfix 2'nin bekleyen teyidi de bu kayıtla kapanır. Canlı `main` = **`a5bafb1`** (YON-16 b istisnaları: `a35c3b6` → `f05d14c` → `a5bafb1`).
+>   - **🔶 cevapları (Orchestrator):** (1) şablon bağı sınıfı + (2) `callcenter_leads.organizer_id` (Sentez S7: kolon + backfill + NOT NULL + kapı) + E1 `/public`
+>     daraltma + `/paginated` `limit` tavanı → **KESİM SONRASI İLK DİLİM** (Sentez EK: tek kiracı, provayı bekletmez) = **EMS-05+ kuyruğu** · (3) prova restore'u
+>     staging kuyruğunu zaten siler → moot · (4) **EVET:** `INVITE_ECHO` açıkken davet satırı 'echo' (Prompt 5 0-f) · (5) Sentez kararı (yukarıdaki kayıt).
+>   - **EMS-05+ kuyruğu (kütük EMS-05..08):** EMS-05 şablon bağı (form `email_template_id` · kampanya adımı `template_id` · terminal `badge_template_id`) ·
+>     EMS-06 `callcenter_leads.organizer_id` (kolon + `expos`'tan backfill + NOT NULL + okuma / yazma kapısı) · EMS-07 E1 `/public` (RETURNING * kalkar; yalnız
+>     kayıt kimliği + rozet bağlantısı; `expo_id` formun fuarıyla eşleşmeli, değilse 400) · EMS-08 `/paginated` `limit` tavanı. E2–E4 leads → UI kuyruğu · E5
+>     slug KALIR (Sentez S7).
+> - **Commit:** ell-docs bu kayıt + Sentez kaydı + kütük + YON-20 taraması (`scripts/prepush_scan.py`). Kod (LEENA) yok. **PUSH: CC (YON-19) — YON-20 taramasından
+>   sonra** (pre-push kancası).
+> - **Ölçülenler:** yukarıdaki push zaman damgası + canlı 200 / 401 (19:37Z).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** `a5bafb1`'in canlıda koştuğu DOĞRUDAN (sürüm işareti yok, Render Events erişimi yok — kanıt Suer teyidi + 200 / 401) ·
+>   hotfix 3 sahiplik reddinin canlı davranışı (JWT ister; canlıda hesap açılmaz / yazılmaz).
+> - **Bilinçle yapılmayanlar:** EMS-05..08 (kesim sonrası ilk dilim).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -8575,6 +8670,10 @@
 >   ölçümü — [defter:2026-11-09 ARA DİLİM (eliza-next)]. **★SIRADAKİ (bu kazanır) = Suer: hotfix 3 `main` push (tek satır; FF `f05d14c` → `a5bafb1`) ∥ ara dilim
 >   ONAY → Sentez kesim provası direktifi → kesim provası ×2 → kesim.** Açık 🔶 (EMS kapıları): E sınıfı (Sentez) · `limit` · şablon bağı sınıfı (3 uç grubu) ·
 >   `callcenter_leads` şeması. HOTFIX 2 CANLIDA: Suer teyidi bekleniyor.
+>   9 Kas (7): Sentez 5a/5b KABUL + S1–S8 + YON-20 + KESİM PROVASI (AYNEN) · **ARA DİLİM ONAY** · **HOTFIX 2 + HOTFIX 3 CANLIDA** (`a5bafb1`) · EMS-05+ kuyruğu
+>   (kesim sonrası ilk dilim) — [defter:2026-11-09 SENTEZ: 5a/5b KABUL + S1–S8 + YON-20 + KESİM PROVASI DİREKTİFİ + EK] · [defter:2026-11-09 ARA DİLİM ONAY ·
+>   HOTFIX 2 + HOTFIX 3 CANLIDA]. **★SIRADAKİ (bu kazanır) = Prompt 5 = PROVA-1: 0 küçük ürün işleri (YON-20 · `team` 067 · legacy 068 · S2 · S3 · INVITE_ECHO) +
+>   1 ön ölçüm → Suer TEK adım: canlı taze export → KES-02 1–10 → PROVA-1 raporu → ONAY → PROVA-2 → go/no-go → kesim.**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
