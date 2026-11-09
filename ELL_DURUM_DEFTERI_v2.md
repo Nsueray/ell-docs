@@ -8227,6 +8227,80 @@
 > - **→ Sıradaki: ARA DİLİM** (Sentez kesim provası direktifi gelene kadar; `eliza-next`; Suer'e dönülmez): staging zamanlayıcı süreç içi tiki · `email_queue`'da
 >   6 Kas'tan beri 'pending' 3 satır ölçümü · EMS kapıları C sınıfı + `/import` şablon kimliği · `callcenter_leads` `organizer_id` ölçümü.
 
+> ## ✅ 2026-11-09 — ARA DİLİM (eliza-next): staging rapor zamanlayıcısı (süreç içi tik) · 'pending' 3 satır ölçüldü · EMS kapıları C sınıfı KAPALI + `/import` şablon kimliği · HOTFIX 3 (YON-16 b): call-center admin uçları · `callcenter_leads` ölçümü (LEENA `f1468c4` · dal `a5bafb1` · `849aa20` · `94a06c8` · `e1ba6e3`)
+>
+> - **Kriter kaynağı:** Orchestrator 9 Kas 21:40 "ARA DİLİM" madde 1–5 (Sentez kesim provası direktifi gelene kadar; eliza-next; Suer'e dönülmez) · YON-16 (b)
+>   (hotfix 3 — bu dilimde bulunan yeni D sınıfı açık) · YON-19 · ölçüm [defter:2026-11-06 HOTFIX (YON-16 b — yetki atlatma)] C sınıfı.
+> - **Ne yapıldı:**
+>   - **1. Staging zamanlayıcısı (`f1468c4`):** web süreci içi tik — `utils/reportPush.js:226` `inProcessSchedulerEnabled` + `:233` `startInProcessScheduler`;
+>     `index.js:341` dinlemeye başlayınca `startReportScheduleTick()` (`:346`; hata ölümcül değil). Bayrak `REPORT_SCHEDULER_IN_PROCESS`: '1' açık · '0' kapalı ·
+>     tanımsız → yalnız `EMAIL_ECHO=1` iken açık. Yeni servis YOK (YON-16). Canlıda `EMAIL_ECHO` yok → kapalı; kesimde worker (`email_worker.js` aynı `runDue`).
+>     İki tik zararsız: `runDue` vadesi gelen satırı koşullu UPDATE ile talep eder.
+>     **Staging kanıtı:** üç tohum takvimin (cc-owner: Owner sabah özeti · haftalık ekip · haftalık ofis) saati uygulamanın PUT ucuyla bugün 19:00 UTC'ye alındı
+>     (18:55Z) → **19:00:47Z kendiliğinden tetiklendi** — `report_runs` 4 · 5 · 6: `trigger = schedule` · status echo · Excel eki (sabah özeti 831 satır / 293.742
+>     bayt — 3 sayfa · ofis 1 · ekip 2) · `email_queue` **785103–785105 status echo** (`report_run_id` bağlı, `sent_at` NULL) · `next_run_at` ileri (günlük 10 Kas,
+>     haftalık 16 Kas) — `f1468c4`'ün staging'de koştuğunun da kanıtı. 19:01:36Z saatler özgün değerlerine geri alındı (sabah 07:00 · haftalık Pzt 08:00 UTC).
+>     Staging'de sabah özeti bundan sonra her gün 07:00 UTC'de echo üretir.
+>   - **2. 'pending' 3 satır (staging, salt okuma):** 785095 (22 Eki 10:02Z) · 785096 (5 Kas 14:45Z) · 785097 (6 Kas 07:52Z) — üçü de **davet e-postası** ("You are
+>     invited to ELIZA"; alıcılar maskeli `su…@` · `cc…@` ×2); `utils/invites.js:63-68` `enqueueInviteEmail` her zaman 'pending' yazar. Davet yolunun bayrağı
+>     `INVITE_ECHO` (link yanıtta + logda; `:13`, `:34`); `EMAIL_ECHO` yalnız satış e-postası (`utils/salesMail.js:78`) + push rapor yolunda. → **Hata DEĞİL** (her yol
+>     kendi hükmüyle) → düzeltme yok. Üç davet de kullanılmış + süresi dolmuş (`user_invites` 1–3 `used`; son bitiş 9 Kas 07:52Z); 4. davet (cc-owner) kuyruğa hiç
+>     alınmadı. Staging tiki yalnız rapor takvimlerini koşar — bu satırları göndermez.
+>   - **3. EMS kapıları — C sınıfı KAPALI (11/11):** tek yardımcı `utils/expoOwnership.js` (aynı sorgu + aynı 403 `{error:'Access denied to this expo'}`; olmayan
+>     fuar = yabancı fuar). Bu dilimde (`94a06c8`): **C1** `routes/campaigns.js:96` POST · **C2** `routes/emailTemplates.js:128` POST (kayıt varsayılanı sıfırlamasından
+>     ÖNCE) · **C3** `:291` clone (hedef = gövde, yoksa kaynağın fuarı) · **C4** `routes/exhibitors.js:38` POST · **C5** `routes/forms.js:358` POST · **C6** `:491` PUT ·
+>     **C7** `:291` clone · **C8** `routes/unsubscribes.js:83` POST. Fuar verilmeyen yerde (kampanya · şablon · form · unsubscribe) fuarsız kayıt eskisi gibi
+>     İZİNLİ. **C9 / C10** terminal → hotfix 2 (`f05d14c`) · **C11** call-center `/admin/import` → hotfix 3 (aşağıda).
+>     **`/import` şablon kimliği** (`routes/visitors.js:707-721`): `template_id` + `existing_template_id` yalnız fuarın organizasyonunun şablonlarından okunur;
+>     başka organizasyonun şablonu = bilinmeyen kimlik (e-posta yok — bilinmeyen kimlikte zaten böyleydi).
+>     **Klasik ekran gövdeleri aynen** (testte aynı gövdeyle): `public/email-campaigns.html:386` · `public/email-templates.html:321` + `:349` · `public/floorplan/api.js:131`
+>     · `public/form-builder.html:821` · `public/form-list.html:368` / `:376` · `public/visitorlog-paginated.html:1030` · `public/import.html` · `public/callcenter/admin.html:636`.
+>     **Kırmızı-önce** (`849aa20`, düzeltmesiz): **10 / 10 DÜŞTÜ** — yabancı fuara kampanya · şablon · katılımcı · form · klon yazıldı (201) · **C2 yabancı fuarlı istek
+>     reddedilmeden önce çağıranın kayıt varsayılanını SIFIRLADI** · **C6 form başka organizasyonun fuarına TAŞINDI** · C8 yabancı fuarlı unsubscribe yazıldı ·
+>     **T1 / T2 başka organizasyonun şablonu (konu + gövde) kendi ziyaretçisine e-posta olarak kuyruğa girdi** → düzeltmeyle **10 / 10**.
+>   - **HOTFIX 3 (YON-16 b — yeni bulgu, D sınıfı):** JWT'li call-center admin uçları `?expo=` / gövde `expo_id` alıp o fuarın lead'lerini okuyor / yazıyordu;
+>     `callcenter_leads`'te `organizer_id` yok, organizasyon hesabı açık kayıtla (`POST /api/auth/register`) alınabiliyor → **başka organizasyon izinli fuarın
+>     (9 SIEMA · 18 Madesign) lead listesini indirebiliyordu** (ad · e-posta · telefon; staging kopyasında 33.635 + 7.761 satır, hepsi e-posta + telefonlu).
+>     `GET /admin/dump` (`routes/callcenter.js:1240`) · `POST /admin/import` (C11, `:1307`; dry-run sayıları da) · `POST /report/send-now` (`:1479`; raporu
+>     sahibinin alıcılarına kuyruğa sokar, yanıtta alıcı adresleri + toplamlar) → aynı yardımcı + aynı 403. Dal **`hotfix/callcenter-admin-org-scope`** tabanı
+>     `origin/main` = **`f05d14c`** → **`a5bafb1`** (tek commit) · aynı gün eliza-next `--no-ff` merge **`849aa20`** (tek çakışma `package.json` zinciri — eliza-next
+>     zinciri AYNEN + sonuna yeni test; route + test dalla bayt bayt aynı, diff 0). **Kırmızı-önce** (`f05d14c`): **6 DÜŞTÜ / 4 geçti** — D2 yabancı organizasyon lead
+>     Excel'ini indirdi · S2 raporu kuyruğa soktu (alıcı adresi + toplamlar yanıtta) · I2 dry-run sayıları · I3 lead yazdı · I5 olmayan fuara lead yazdı · I4 zincir
+>     (I3'ün satırı yüzünden kendi yüklemesi 0 yeni) → düzeltmeyle **10 / 10**. **Taramanın kör noktası:** 76'lık tarama `expo_id` / `:expoId` adlarını yakaladı;
+>     call-center `resolveExpoId(req)` (`req.query.expo`) 7 handler'da: JWT 2 (bu hotfix) · ajan / süpervizör anahtarı 4 (`CALLCENTER_KEY` env — tek kiracı, tasarım) ·
+>     kimliksiz 1 (`/expo-meta` — etiket + çağrı metni, lead verisi yok). Başka ad (`expoId` / `event_id` / `fair_id` gövde / sorgu) 0.
+>   - **`callcenter_leads` ölçümü (staging, salt okuma; şema kararı Sentez'in):** 21 kolon, **`organizer_id` YOK**; `expo_id`'de **FK de YOK** (kısıtlar: PK + 3 CHECK);
+>     sahiplik yalnız `expos.organizer_id` üzerinden çıkarılabilir. Satır: fuar 9 (org 1) **33.635** · fuar 18 (org 1) **7.761** — tamamı e-posta + telefonlu. Yan
+>     tablo `callcenter_stuck_claims_backup_20260911` 227 satır (o da organizasyonsuz). Erişim yolları: ajan / süpervizör env anahtarı (tek kiracı) · JWT admin ×3
+>     (artık fuar sahipliği) · fuar izin listesi kodda (`EXPO_SETTINGS`, `:55`). Staging'de organizasyon 2, fuar 20 (lead'i yok).
+> - **Commit:** LEENA eliza-next **`f1468c4`** (tik) · **`849aa20`** (hotfix 3 merge) · **`94a06c8`** (C sınıfı + şablon) · **`e1ba6e3`** (CLAUDE.md, KURAL 4 — EMS uç
+>   notları + 822) · dal **`a5bafb1`**. ell-docs bu kayıt + kütük EMS grubu (EMS-01..04) + YON-16 / RAP-15 notları + ★. **PUSH (YON-19 (1)):** eliza-next ·
+>   `hotfix/callcenter-admin-org-scope` · ell-docs. **`main` push'u SUER'de** — FF-OK: `origin/main` `f05d14c` → `a5bafb1`.
+> - **Ölçülenler:**
+>   - eliza-next PG 14.18 **822 / 822 · 51 suite** ×2 (her koşu `test:setup` sonrası — CLAUDE.md protokolü) suite suite AYNI · PG **17.10** 822 / 822 AYNI · exit 0
+>     (önce 797 · 48 + `test_report_tick` 5 + `test_hotfix_callcenter_scope` 10 + `test_ems_c_scope` 10).
+>   - `main` (hotfix dalı, PG 14.18, main biçimli test DB): **588 / 588 · 32 suite** (önce 578 · 31) · exit 0.
+>   - Staging tutarlılık (salt okuma): yabancı / olmayan fuar bağı `email_campaigns` 0/30 · `email_templates` 0/111 · `expo_exhibitors` 0/1 · `forms` 0/68 ·
+>     `email_unsubscribes` 0/1.486 · `terminals` 0/52 → kendi fuarında düzeltme hiçbir mevcut satırı etkilemez. Şablon bağları: `forms.email_template_id` 52 ·
+>     kampanya adımı `template_id` 63 · terminal `badge_template_id` 44 — yabancı 0.
+>   - **Staging olumsuz tur (cc-staging = organizasyon 1, gerçek oturum; `e1ba6e3` push 19:08:08Z):** C1 · C2 · C4 · C5 · C8 POST'ları olmayan fuarla (99999999) — eski kodda
+     19:08:39Z / 19:09:01Z **500** (FK, satır yok: beş tablonun `expo_id`'si `expos`'a FK'lı — tur iki durumda da zararsız) → **19:09:22Z 403 ×5** (yeni kod) ·
+     organizasyon 2'nin fuarı (20) → **403 ×5, gövde `/api/reports/summary` ile BİREBİR** · tablo sayıları önce = sonra (30 · 111 · 1 · 68 · 1.486; deneme satırı 0).
+>   - Staging zamanlayıcı kanıtı + 3 satır ölçümü yukarıda · staging (`claude_readonly`, read-only on): migration kaydı **68** (son `066` — bu dilimde migration YOK) ·
+>     TABAN kontrat 4 SR **342.00** ✅ · TABAN-2 **EŞİT** ✅ (değer basılmadı — GOC-07) · yabancı fuarlı terminal 0.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** canlıda `/admin/dump`'ın başka organizasyonca kullanılıp kullanılmadığı (uygulama erişim logu yok — G26) · canlı lead sayısı
+>   (canlı salt-okunur bağlantı G4; IP kuralı değişmez — staging kopyası 33.635 + 7.761) · canlıdaki organizasyon sayısı · hotfix 3'ün canlı deploy'u + canlı
+>   doğrulaması (Suer `main` push'u sonrası) · staging'de yabancı organizasyon token'ıyla hotfix 3 turu (staging'de org 2 araç hesabı yok; davranış yerel testte) ·
+>   staging'de PUT / klon / `/import` turu (yerel testte; staging'de yalnız olumsuz POST turu) · gerçek worker ile takvim (kesimde).
+> - **Bilinçle yapılmayanlar:** **E sınıfı** (`/public` · leads ×3 · `/api/expos/slug`) — Sentez kararı, DOKUNULMADI · `/paginated` `limit` tavanı · **şablon bağı
+>   sınıfı (yeni bulgu, 🔶)** — kendi kaydına başka organizasyonun şablon kimliği bağlanabiliyor: `routes/forms.js` POST / PUT `email_template_id` (form gönderiminde
+>   `routes/visitors.js:398` şablonu organizasyonsuz okur — E1 yolu) · `routes/campaigns.js:369` / `:431` adım `template_id` (worker `email_worker.js:654`
+>   organizasyonsuz okur) · `routes/terminals.js:101` / `:141` `badge_template_id`; staging'de mevcut bağ yabancı 0 → direktif kapsamı dışı, ölçüldü, dokunulmadı ·
+>   `callcenter_leads` şeması (`organizer_id` / FK) — Sentez · hotfix dalında CLAUDE.md (hotfix 2 emsali: KURAL 4 notu birleşme dalında).
+> - **🔶 Sentez'e:** (1) şablon bağı sınıfı (3 uç grubu) aynı yardımcıyla kapatılsın mı — aynı dilim deseni. (2) `callcenter_leads`'e `organizer_id` + `expo_id` FK mı,
+>   yoksa fuar üzerinden sahiplik yeterli mi. (3) Kesim provası: staging'e gerçek worker bağlanırsa 3 eski davet satırı (785095–785097) gönderilir (link'ler
+>   kullanılmış / süresi dolmuş) — provadan önce 'echo'ya çekilsin mi. (4) `INVITE_ECHO` iken davet satırı da 'echo' yazılsın mı (bugün 'pending').
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -8496,6 +8570,11 @@
 >   9 Kas (5): Orchestrator "5b ONAY" → **PAKET 5b KAPALI** (kesime kadar staging'de) — [defter:2026-11-09 PROMPT 4 ONAY · PAKET 5b KAPALI]. **★SIRADAKİ (bu
 >   kazanır) = ARA DİLİM (eliza-next; Sentez kesim provası direktifi gelene kadar): staging zamanlayıcı tiki · 'pending' 3 satır ölçümü · EMS kapıları C sınıfı +
 >   `/import` şablon kimliği · `callcenter_leads` ölçümü → ara dilim ONAY → Sentez kesim provası ×2 → kesim.** HOTFIX 2 CANLIDA: Suer teyidi bekleniyor.
+>   9 Kas (6): **ARA DİLİM** — staging zamanlayıcı tiki (tohumlar 19:00:47Z kendiliğinden, echo) · 'pending' 3 satır = davet e-postası (hata değil) · **EMS C
+>   sınıfı KAPALI** (11/11; `94a06c8`) + `/import` şablon kimliği · **HOTFIX 3** call-center admin uçları (dal `a5bafb1`, eliza-next `849aa20`) · `callcenter_leads`
+>   ölçümü — [defter:2026-11-09 ARA DİLİM (eliza-next)]. **★SIRADAKİ (bu kazanır) = Suer: hotfix 3 `main` push (tek satır; FF `f05d14c` → `a5bafb1`) ∥ ara dilim
+>   ONAY → Sentez kesim provası direktifi → kesim provası ×2 → kesim.** Açık 🔶 (EMS kapıları): E sınıfı (Sentez) · `limit` · şablon bağı sınıfı (3 uç grubu) ·
+>   `callcenter_leads` şeması. HOTFIX 2 CANLIDA: Suer teyidi bekleniyor.
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
