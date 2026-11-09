@@ -8396,6 +8396,70 @@
 >   hotfix 3 sahiplik reddinin canlı davranışı (JWT ister; canlıda hesap açılmaz / yazılmaz).
 > - **Bilinçle yapılmayanlar:** EMS-05..08 (kesim sonrası ilk dilim).
 
+> ## ✅ 2026-11-09 — PROMPT 5 (KESİM PROVASI) §0 + §1: küçük ürün işleri (YON-20 · `team` 067 · legacy 068 · S2 · S3 · INVITE_ECHO) + ön ölçüm · HOTFIX 4 (organizatör kaydı kapalı) — Suer'in canlı export'u bekleniyor (LEENA `bb36dd4` · `7c809be` · dal `2db0131`)
+>
+> - **Kriter kaynağı:** Suer 9 Kas "PROMPT 5 — KESİM PROVASI: PROVA-1" §0–§2 · [defter:2026-11-09 SENTEZ: 5a/5b KABUL + S1–S8 + YON-20 + KESİM PROVASI DİREKTİFİ + EK]
+>   (S1 → GOC-08 · S2 → RAP-17 · S3 · YON-20 · RAP-09 `team` · KES-01..05) · YON-16 (b) (hotfix 4) · YON-19. Başlangıç: `eliza-next` = `origin` = `e1ba6e3` (ölçüldü).
+> - **Ne yapıldı (§0 — prova zincirine girecek iş, prova ÖNCESİ):**
+>   - **0-a YON-20** (ell-docs `67ef2d3`): `scripts/prepush_scan.py` + `scripts/install_hooks.sh` → `.git/hooks/pre-push`. Giden commit'lerin mesajı + EKLENEN satırları;
+>     eşleşme maskeli raporlanır, push reddedilir. Öz-test 6 eşleşme / 6 eşleşmeme PASS · uçtan uca (geçici bare repo): sahte bağlantı dizesi + e-posta → push
+>     **REDDEDİLDİ** (3 eşleşme, maskeli; uzak dal değişmedi) · temiz commit → geçti · ell-docs `67ef2d3` + bu kayıt kancadan geçti. **SAPMA:** temel TABAN değeri
+>     engellenmez (Paket 1'den beri açık; Sentez metninde AYNEN geçiyor) — TABAN-N (N ≥ 2) değerleri LEENA CLAUDE.md'den çalışma anında okunur, ell-docs'a yazılmaz ·
+>     çıplak desen adı ("postgres://," "sk-," "token=,") eşleşme değildir (kural metni yazılabilsin) · `Co-Authored-By:` satırı e-posta denetiminden muaf.
+>   - **0-b `team` (067):** `sales_agents_agent_type_check` → `sales_agents_agent_type_v2_check` (+ 'team'; yeni ad — runner'ın yarım-uygulama iz denetimi eski adı
+>     "iz" sayıyordu) · kullanıcısız internal "ELAN EXPO" → team · `routes/salesAgents.js` tür listesi · R2 / R3 "Team" rozeti, R5 "Team record" (`C.agentType`) ·
+>     kendi satırı, sıralamada, kişiye dağıtılmaz · DB: team kullanıcıya bağlanamaz. **Bulgu → düzeltildi:** göç planı SR'yi yalnız `internal`'a eşliyordu
+>     (`scripts/zoho/lib/plan.js:478`) — team olunca fark partisindeki ELAN EXPO kontratları dış acente koluna düşerdi → `isInternalLike` (team = SR).
+>   - **0-c legacy (068):** `contracts.legacy` (sabit varsayılan) + backfill (2019 öncesi VE ödemesiz) · `utils/metrics.js` R4 kovası bayraktan (068 yoksa eski
+>     tarih kuralı) · R4 dışa aktarım `legacy` sütunu · etiket "Legacy (before 2019, unpaid)" (R4 + owner-home) · göç: `scripts/zoho/lib/apply.js` bayrağı partinin
+>     ödemelerinden SONRA koyar, `migrate.js` satırı yazar.
+>   - **0-d S2 (RAP-17):** `M.previousEdition` = aynı taban, EN YAKIN önceki yıl (eşit yılda en küçük id) + `gap_years`; R3 + R6 tek tanım; ekranda "N years
+>     earlier (no edition in between)".
+>   - **0-e S3:** Operations › Expos fuar detayında Sales (R3) sekmesi `contracts.read`'e bağlı (`ui2CanSee`) → Project şablonunda gizli (contracts.read YOK —
+>     ölçüldü), varsayılan sekme Visitors.
+>   - **0-f:** `INVITE_ECHO=1` → davet satırı 'echo' (`utils/invites.js`); bayraksız 'pending' aynen.
+>   - **HOTFIX 4 (YON-16 b — §1 ön ölçümünün bulgusu):** `POST /api/auth/register` (`routes/auth.js:75`, canlı `main`) davetsiz organizatör açıyordu (açık
+>     kayıt → organizatör JWT'si). Kayıt artık doğrulamadan ÖNCE 403; `ALLOW_ORGANIZER_REGISTRATION=1` yeniden açar; mevcut girişler aynen; `login.html` hata
+>     metnini gösterir. Dal **`hotfix/organizer-registration-closed`** = **`2db0131`** (`a5bafb1` üstü) · aynı gün eliza-next merge **`3425f45`** (tek çakışma
+>     `package.json` zinciri; route + test dalla bayt bayt aynı). **Kırmızı-önce** (`a5bafb1`): **3 DÜŞTÜ / 1 geçti** — R1 kayıt 201 + satır · R2 doğrulama 400
+>     (açık) · R4 zincir (R1'in e-postası 409) → düzeltmeyle 4 / 4. `main` push'u SUER'de (FF `a5bafb1` → `2db0131`).
+> - **Ne yapıldı (§1 — ön ölçüm):**
+>   - **Staging'in canlıdan dolum yolu (19 Eki, [defter:2026-10-19]):** Suer Render export'u (`*.dir.tar.gz` 1,42 GB; açık 16,39 GB, ağırlık `email_queue`) →
+>     `pg_restore` 17.10 `--no-owner --no-privileges --jobs 4` → 2. deneme **6 sa 27 dk** (16:21–22:48Z, rc 0) → aynı yol (KES-02/1).
+>   - **Zoho salt-okunur token GEÇERLİ:** `pull.js --probe` 7 sn — kimlik doğrulandı, kapsam üç READ yetkisi, alan eşlemesi engelleyici sorun 0 (modül listesi
+>     401 scope — bilinen, yalnız bilgi). → KES-02/3 yürür.
+>   - **rollback.js:** `scripts/zoho/rollback.js <batch> --dry-run | --apply` (`:18-20` mod zorunlu) → `utils/migration.js:63` `rollbackBatch` (yalnız 'applied'; parti
+>     dışı bağımlı satır varsa DUR, hiçbir şey silinmez; sabit sırayla siler; 'rolled_back'). Canlıda hiç koşulmadı. Not: defterdeki eski "rollback.js 2" satırı
+>     modsuz (betik mod ister).
+>   - **NOT VALID:** 061'de NOT VALID yok (dosya) · staging'de NOT VALID tek FK = 066 `email_queue_report_run_id_fkey` → VALIDATE ayrı adım (KES-02/2).
+>   - **Worker dalı:** `leena-email-worker` → `main`, auto-deploy ([docs/ISLETIM_NOTU_v1.md:12]) → kesimde `main` push'u worker'ı eliza-next koduyla (push raporlar ·
+>     takip · teklif e-postası) yeniden başlatır.
+>   - **Env adları (kod ölçümü; Render env'ini CC okuyamaz):** `eliza-next`'in okuyup canlı `main`'in okumadığı: `REPORT_NL_PROVIDER` · `ANTHROPIC_API_KEY` (S5:
+>     kesim günü Suer) · `REPORT_NL_MODEL` · `REPORT_SCHEDULE_CHECK_MS` (isteğe bağlı) · canlıda TANIMSIZ kalacak: `EMAIL_ECHO` · `REPORT_SCHEDULER_IN_PROCESS` ·
+>     `ALLOW_ORGANIZER_REGISTRATION` · `ANTHROPIC_BASE_URL` (yalnız test). Belgeye göre staging'e özel: `INVITE_ECHO` · `EMAIL_ECHO` · `CORS_EXTRA_ORIGINS` ·
+>     `EXPECTED_DB_NAME`; `LIFFY_HMAC_SECRET` değerleri farklı.
+>   - **Organizatör kaydı AÇIKTI** (yukarıda, hotfix 4). Staging kopyası (canlı 19 Eki): organizers **2** — org 1 (2025-09-05, 213 fuar) · **org 2 (2026-09-17,
+>     1 fuar "Future Pro Summit", 17 Eyl)** → 19 Eki itibarıyla canlıda ikinci bir organizatör VARDI (Sentez EK S2 "hiç olmadı" ile çelişir — taze kopyada yeniden
+>     ölçülecek, KES-02/4).
+> - **Commit:** LEENA eliza-next **`3425f45`** (hotfix 4 merge) · **`bb36dd4`** (§0) · **`7c809be`** (CLAUDE.md, KURAL 4 — kayıt kapalı + 837) · dal **`2db0131`** ·
+>   ell-docs `67ef2d3` (YON-20 + Sentez + ONAY kayıtları) + bu kayıt. **PUSH:** eliza-next · hotfix dalı · ell-docs (YON-20 kancası). `main` → SUER.
+> - **Ölçülenler:**
+>   - eliza-next PG 14.18 **837 / 837 · 53 suite** ×2 (her koşu `test:setup` sonrası) suite suite AYNI · PG **17.10** AYNI · exit 0 (önce 822 · 51 + `test_p5_pre` 8 +
+>     `test_migrate` R67-R69 3 + `test_hotfix_register_closed` 4). Hüküm beklentileri: `test_migrate` R64-R66 ≤ 066'ya donduruldu (kalıp (q)) · `test_p3d` PM1
+>     fikstürü legacy bayrağı taşır (GOC-08; assertion aynen) · `test_p3e` E15 sekme denetimi (S3 = b).
+>   - `main` (hotfix dalı, PG 14.18, main biçimli test DB): **592 / 592 · 33 suite** · exit 0.
+>   - **Staging migrate 067–068 (CC, YON-19):** dry-run 6 sn (DRY-RUN OK 2) → apply 6 sn (COMMIT 2; 068 1,7 sn) → ikinci apply 3 sn "Nothing to apply" · kayıt **70** ·
+>     ELAN EXPO (119) → team · team SR'li kontrat 533 (bağ aynen) · legacy **1.447** / 2019 öncesi 1.448 (ödemeli 1 normal yaşlandırmada) · sayılan legacy (iptal /
+>     transfer hariç) 1.191 · TABAN kontrat 4 SR **342.00** ✅ · TABAN-2 **EŞİT** ✅.
+>   - **S2 staging (yeni kod):** önceki edisyonunu bulan **105 / 213** (beklenen 105) · yıl − 1'e göre kaybeden **0** · değişen 0 · arada boşluk (gap > 1) 15 ·
+>     kontratlı 152 fuarda 85.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Render env adları / değerleri (erişim yok — kod + belge ölçümü) · hotfix 4'ün canlıda davranışı (Suer `main` push'u; canlıda
+>   kayıt denemesi = canlıya yazma, YAPILMAZ) · taze kopyada organizers sayısı / tarihleri (export bekliyor) · staging'de yeni ekranların (Team rozeti · Legacy
+>   kovası · gap · S3) araç hesabıyla turu → KES-02/9.
+> - **Bilinçle yapılmayanlar:** KES-02 adımları 1–10 (Suer'in canlı export'u bekleniyor — §2) · EMS-05+ kuyruğu (kesim sonrası).
+> - **→ §2 SUER TEK ADIM:** canlı taze export (Render › leena_v401_db › Recovery › Create export → indir → "export hazır: <dosya>"); dosya repoya / sohbete /
+>   ell-docs'a KONMAZ, yalnız yol adı.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -8674,6 +8738,9 @@
 >   (kesim sonrası ilk dilim) — [defter:2026-11-09 SENTEZ: 5a/5b KABUL + S1–S8 + YON-20 + KESİM PROVASI DİREKTİFİ + EK] · [defter:2026-11-09 ARA DİLİM ONAY ·
 >   HOTFIX 2 + HOTFIX 3 CANLIDA]. **★SIRADAKİ (bu kazanır) = Prompt 5 = PROVA-1: 0 küçük ürün işleri (YON-20 · `team` 067 · legacy 068 · S2 · S3 · INVITE_ECHO) +
 >   1 ön ölçüm → Suer TEK adım: canlı taze export → KES-02 1–10 → PROVA-1 raporu → ONAY → PROVA-2 → go/no-go → kesim.**
+>   9 Kas (8): **PROMPT 5 §0 + §1 TAMAM** (YON-20 · 067 team · 068 legacy · S2 105/213 · S3 · INVITE_ECHO · Zoho token geçerli) + **HOTFIX 4** organizatör kaydı
+>   kapalı (dal `2db0131`) — [defter:2026-11-09 PROMPT 5 (KESİM PROVASI) §0 + §1]. **★SIRADAKİ (bu kazanır) = Suer: canlı taze export (TEK adım) ∥ hotfix 4 `main`
+>   push (karar Suer'in) → CC: KES-02 1–10 → PROVA-1 raporu.**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
