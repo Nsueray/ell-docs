@@ -8577,6 +8577,55 @@
 >   logları (CC erişimi yok) · Gmail bildirimi (Orchestrator ölçümü; CC bakmadı).
 > - **Bilinçle yapılmayanlar:** canlıya yazma · veri / kişi bilgisinin herhangi bir yere iletilmesi · ad / e-posta'nın ell-docs'a yazılması.
 
+> ## ✅ 2026-11-10 — GUV DİLİMİ (eliza-next, kesim ÖNCESİ — Sentez 10 Kas): 069 erişim logu · başarısız giriş kilidi · güvenlik bildirimleri · kayıt ucu KALDIRILDI · organizatör yalnız Owner davetiyle (LEENA `9093ad7` · `60cc7f9`)
+>
+> - **Kriter kaynağı:** Sentez 10 Kas GUV-02..05 + UYGULAMA C ([defter:2026-11-10 SENTEZ 10 Kas: GÜVENLİK OLAYI HÜKÜMLERİ]) · YON-19 (push eliza-next CC).
+> - **Ne yapıldı:**
+>   - **069_security** (yalnız yeni nesne; mevcut satır DEĞİŞMEZ): `access_log` (3 indeks, FK yok) · `auth_failures` (e-posta DEĞİL HMAC) · `security_events`
+>     + 2 tetikleyici (organizers INSERT → `organizer.created` · users INSERT / UPDATE is_owner·is_service → `owner.created` / `owner.granted` /
+>     `service_user.created` — her yoldan, elle SQL dahil) · izin `security.read` (admin; HİÇBİR şablon vermiyor → varsayılan yalnız Owner).
+>   - **GUV-04 erişim logu** (`utils/accessLog.js`, `index.js` `app.use('/api', …)`): her API isteği bir satır — zaman · yöntem · yol (sorgu dizesi YOK;
+>     UUID / e-posta / uzun belirteç parçası maskeli) · durum · süre · kimlik türü (user · organizer · service · terminal · anonymous) · kullanıcı ·
+>     organizer · terminal · 4xx/5xx JSON'daki `code` · IP (X-Forwarded-For ilk girdi + zincir). Gövde YOK. Bellek tamponu + 2 sn'de bir toplu INSERT;
+>     yazım hatası isteği DÜŞÜRMEZ (sayaç); 069 yoksa sessizce atılır (deploy migration'dan önce yapılabilir). Kapanışta son tampon yazılır.
+>   - **GUV-04 kilit** (`utils/loginGuard.js`): iki giriş yolu (klasik `/api/auth/login` + ui2 `/api/user-auth/login`) ORTAK sayaç — e-posta başına 15 dk'da
+>     5 başarısız → 429 `LOGIN_LOCKED` (15 dk); olmayan e-posta aynı yanıtı alır (sızma yok); kilitliyken şifre denetlenmez; başarılı giriş sayacı siler.
+>   - **GUV-03 bildirim** (`utils/security.js`): tik (staging: web süreci içi, EMAIL_ECHO; canlı: `email_worker.js`) → bekleyen olaylar e-posta (Mode 1;
+>     echo'da 'echo') · alıcı `SECURITY_ALERT_EMAILS` (worker env) ya da tanımsızsa aktif Owner'lar · şifre değişimi olayı (uygulamada şifre SIFIRLAMA
+>     yolu YOK — ölçüldü; en yakın olay) · **409 yoğunluğu eşiği (CC önerisi — SAPMA):** bir hesap 15 dk'da ≥ 10 kapsam dışı 409 (OUT_OF_SCOPE ·
+>     EXTERNAL_NOT_ALLOWED · PERMISSION_REQUIRED) → bir olay; aynı hesap 60 dk sessiz. EMS sahiplik reddi 403'tür (409 değil) → yoğunluğa girmez;
+>     erişim logunda + haftalık özette görünür. · saklama: `access_log` 90 gün · `auth_failures` 1 gün (tik, parti 20.000).
+>   - **Haftalık güvenlik özeti** (Paket 5b push tohumu `security_weekly`, YALNIZ Owner'a kurulur): geçen hafta durum sınıfına göre istek · başarısız /
+>     kilitli girişler (IP × durum) · kullanıcıya göre kapsam dışı ret · güvenlik olayları — rapor modülleri `access_log` + `security_events` (security.read).
+>   - **GUV-02:** `POST /api/auth/register` KALDIRILDI (404; yeniden açma bayrağı da kalktı) · `login.html` kayıt sekmesi / formu / çağrısı kaldırıldı ("davetle")
+>     · **organizatör açma YALNIZ Owner** (`POST /api/security/organizers/invite` — izin kodu YOK, 409 `OWNER_REQUIRED`): kiracı satırı (klasik giriş kapalı —
+>     bcrypt olmayan işaret) + o kiracının ilk Owner kullanıcısı (şifresiz) + 72 sa tek kullanımlık davet + e-posta + denetim kaydı; kabul mevcut
+>     `/ui2/invite.html` yolundan, giriş ui2'den. Ölçülen: mevcut davet yolu yalnız organizasyon İÇİ kullanıcı açıyordu (`routes/users.js` POST /invite);
+>     kiracı açan tek yol kayıt ucuydu → Admin'e eklendi. **SAPMA:** canlıda hotfix 4'ün 403'ü kesime kadar kalır; B24 ("is_owner verme YOK") kuruluş İÇİ
+>     kuraldır — yeni kiracının İLK Owner'ı ondan ayrıdır (Owner davetiyle, olay + e-posta üretir). Yeni kiracıya şablon tohumlanmaz (Owner kısa devresi
+>     yeter) — çok kiracılı satış → ayrı ADR (GUV-02).
+>   - **Owner ekranları (ui2 Liste şablonu, RAP-11):** Admin › Security (`admin-security.html` — 24 sa özeti · güvenlik olayları · erişim logu süzgeci
+>     from/to/durum/kimlik/yol/IP/hata kodu · sayfalama · CSV / Excel tam küme) · Admin › Organizations (`admin-organizations.html` — liste + davet). nav.json
+>     Admin › Security grubu (security.read).
+>   - **GUV-05** kütükte (kontrol listesi; GUV-01 emsal) · **ADR-023** kesim maddeleri: GUV-04 dilimi + `JWT_SECRET` yenileme (kesim günü) + SECURITY_ALERT_EMAILS.
+> - **Yük (canlı kopya 10 Kas, ölçüm):** satır başına **291 bayt** (3 indeks dahil; 200.000 sentetik satırla yerel kopyada ölçüldü, geri alındı). İstek üreten
+>   ölçülebilir kaynaklar son 30 gün: e-posta takip olayı ort. 837 / gün (en çok 15.162) · check-in ort. 26 (311) · yeni ziyaretçi ort. 41 (365) ·
+>   tüm zamanların tepesi: takip 62.217 · check-in 6.578 · ziyaretçi 17.596 / gün. Panel kullanımı ÖLÇÜLEMEZ (erişim logu yoktu — bu dilimin amacı);
+>   **varsayım** ~3.000 istek / gün. → olağan gün ~4.000 istek ≈ 1,2 MB/gün ≈ 105 MB / 90 gün · fuar + kampanya tepe günü ~137.000 istek ≈ 40 MB/gün
+>   (her gün tepe olsa 90 günde ≈ 3,6 GB üst sınır). Ortalama yazım ≈ 1,6 istek/sn; 2 sn'lik toplu INSERT.
+> - **Commit:** LEENA eliza-next **`9093ad7`** (dilim) · **`60cc7f9`** (CLAUDE.md KURAL 4 EMS — kayıt kaldırıldı · kilit · `/api/security` · 859) · push 10:44Z (`7c809be..60cc7f9`) · ell-docs bu kayıt + ADR-023. **PUSH:** eliza-next (YON-19).
+> - **Ölçülenler:** eliza-next PG 14.18 **859 / 859 · 54 suite** ×2 (her koşu `test:setup` sonrası) suite suite AYNI · PG **17.10** AYNI · exit 0 (önce 837 · 53 + `test_guv` 19 + `test_migrate` R70-R72 3). `test_guv` tek başına da 19 / 19.
+> - **Hüküm beklentileri (test satırında yorum):** `test_hotfix_register_closed` R1 / R2 / R4 403 → 404 (GUV-02) · `test_p4` A6 Owner sözlüğü 9 → 11 · P6 takvim 4 → 5
+>   (GUV-03/04) · `test_users_admin` R1 kayıt defteri 34 → 35 (GUV-04) · `test_ui2_p2_pages` S5 Owner Admin alt menüsü + Access log · Organizations (GUV-02/04) ·
+>   `test_migrate` (s) R67-R69 ≤ 068'e donduruldu.
+> - **Bulgu → düzeltildi (test zinciri):** bildirim, organizatörü sonradan silinmiş olayı `email_queue`'ya o organizatörle yazmaya çalışıyordu (FK ihlali)
+>   → organizatör yoksa kuyruk satırı organizatörsüz (G8 kapsıyor).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Render arkasında X-Forwarded-For'un ilk girdisinin istemci IP'si olduğu (Render proxy davranışı CC'ce doğrulanmadı — zincir
+>   de saklanıyor) · panel istek hacmi (varsayım) · istemcinin yarıda kestiği istek (yanıt bitmez → satır yok) · canlıda bildirim e-postasının gerçekten
+>   gönderilmesi (staging echo).
+> - **Bilinçle yapılmayanlar:** canlıya push (kesim zinciri) · `.claude/skills` belgeleri (Mayıs'tan beri finans dilimlerinde güncellenmiyor) · kırmızı-önce
+>   koşusu (yeni modüller — G1 / G4 / G5'in eski davranışı hotfix 4 testinde ve önceki ölçümlerde) · IP başına sınır (hüküm e-posta başına).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -8861,6 +8910,10 @@
 >   10 Kas (9): **HOTFIX 4 CANLIDA** (`2db0131`; kimliksiz register 403) + **org 2 ölçümü** (19 Eki kopyası: yalnız fuar 1 + form 1 — form 68 canlıda hâlâ açık;
 >   devre dışı bırakma SQL'i hazır, staging kuru koşu ROLLBACK) — [defter:2026-11-10 HOTFIX 4 CANLIDA]. **★SIRADAKİ (bu kazanır) = Suer: canlı taze export
 >   (TEK adım) ∥ org 2 kararı (SQL hazır) → CC: KES-02 1–10 (org 2 taze kopyada yeniden) → PROVA-1 raporu.**
+>   10 Kas (10): Sentez GUV AYNEN · **GUV-01** ölçüldü (bugünkü veri: gönderim 0 · e-posta 0 · son giriş ölçülemez) — kapatma SQL'i Suer'de ·
+>   **GUV DİLİMİ** eliza-next `9093ad7` (069 erişim logu · kilit · bildirim · kayıt ucu kaldırıldı · Owner davetiyle kiracı) 859 / 859 —
+>   [defter:2026-11-10 SENTEZ 10 Kas: GÜVENLİK OLAYI HÜKÜMLERİ] · [defter:2026-11-10 GUV DİLİMİ]. **★SIRADAKİ (bu kazanır) = CC: PROVA-1 zinciri
+>   (restore 10:05Z başladı → 053→069 → Zoho fark → … → geri alma) → tek rapor "PROVA-1 + GUV ONAY?" · Suer: GUV-01 SQL teyidi.**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:

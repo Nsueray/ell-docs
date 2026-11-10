@@ -81,3 +81,16 @@ Faz A restore + rollback.js. Prova ≥ 2 kez, canlının taze kopyasında.
 > `accounts` / `offices`'e NULLABLE FK kolonları (yeni kolon tamamen NULL → doğrulama taraması tablo boyutunca, `email_queue`'ya FK YOK).
 > Canlı `contracts` boyutu bu turda ölçülmedi (staging 3.934 satır).
 
+>
+> **Kesim maddeleri (Sentez 10 Kas — GUV, olay GUV-01; CC, eliza-next):**
+> - **GUV-04 erişim logu + giriş kilidi (069) — kesim ÖNCESİ dilim, zincirle canlıya:** `access_log` · `auth_failures` · `security_events` (+2 tetikleyici)
+>   + `security.read` (şablonsuz → Owner). 069 YALNIZ yeni tablo / tetikleyici / kayıt defteri satırı ekler; mevcut satıra dokunmaz (tarama yok). Yazım
+>   web süreci içinde asenkron (log hatası isteği düşürmez); saklama (90 gün) + bildirimler `leena-email-worker`'da (worker `main`'den gelir → kesim
+>   push'uyla başlar). Kesim günü env: `SECURITY_ALERT_EMAILS` worker servisinde (G34; tanımsızsa aktif Owner'lar alır). Yük ve büyüme PROVA-1
+>   raporunda (canlı kopyadan).
+> - **`JWT_SECRET` yenileme (kesim günü, Suer):** klasik organizer token'ı DB'ye bakılmadan doğrulanır → 17 Eyl–kesim arasında verilmiş her token (dış
+>   hesap dahil, GUV-01) süresi dolana kadar (30 gün) geçerli kalır. Kesimde `JWT_SECRET` yenilenir → tüm oturumlar kapanır, herkes yeniden girer
+>   (ui2 davetleri zaten kesim günü listesinde). Abonelikten çıkış imzası JWT'den bağımsız (SEM-07) → gönderilmiş e-postalardaki çıkış linkleri bozulmaz.
+>   Faz A'da (21 Eki) bir kez yapıldı; aynı yol.
+> - **GUV-02:** eliza-next'te `POST /api/auth/register` KALDIRILDI (404); canlıda hotfix 4'ün 403'ü kesime kadar kalır (SAPMA, defter). Yeni kiracı
+>   yalnız Owner davetiyle (Admin › Organizations).
