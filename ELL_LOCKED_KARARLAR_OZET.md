@@ -466,3 +466,30 @@ KES-05 Kesim sonrası: Zoho'ya yeni kontrat/ödeme/gider girişi DURUR (Suer duy
 LIFFY madencilik kararı; tasarım fazı Paket 6 ile paralel.
 Kapsam dışı prova: tasarım, madencilik, DENEME, dış kullanıcı daveti. İlk çıktı: PROVA-1 raporu (KES-03 satırlarıyla).
 ```
+
+### GUV — güvenlik olayı ve kalıcı güvenlik kuralları (yeni grup, 2026-11-10, Sentez 10 Kas)
+
+> Sentez 10 Kas "GÜVENLİK OLAYI HÜKÜMLERİ" — kalıcı kurallar AYNEN (tam metin defterde). [defter:2026-11-10 SENTEZ 10 Kas: GÜVENLİK OLAYI HÜKÜMLERİ]
+
+```
+GUV-02 Kayıt yalnız DAVETLE. Açık kayıt ucu kodda KALMAZ (bayrak değil, kaldırılır); organizatör/kiracı açma yalnız
+Owner'ın Admin'den davetiyle. Çok kiracılı satış gündeme gelirse ayrı ADR.
+GUV-03 Güvenlik bildirimleri (yeni organizatör/owner, şifre sıfırlama, yeni servis kullanıcısı, kapsam dışı 409
+yoğunluğu) → Suer'e e-posta + Paket 5b push "haftalık güvenlik özeti" tohumu; okunmamış e-postaya dayanılmaz.
+GUV-04 ERİŞİM LOGU (G26) KESİM LİSTESİNE GİRER — kesim ÖNCESİ küçük dilim (staging, zincirle canlıya): her API isteği
+için zaman · kullanıcı/servis · organizer · yol · durum kodu · IP; 90 gün saklama; Owner ekranında süzgeç + dışa
+aktarım; kişisel veri gövdesi loglanmaz. Başarısız giriş sayacı + geçici kilit (5/15 dk) aynı dilimde. ADR-023 kesim
+listesine madde.
+GUV-05 Olay sonrası kontrol listesi (bu kayıt emsal): ölç → kapat → delil sakla → bilinemeyeni yaz → kural çıkar; her
+adım deftere.
+Kesim provası direktifi (KES-01..05) aynen; GUV-04 dilimi provadan önce. Hotfix 4 YON-16(b) uyumlu, KABUL.
+```
+- **GUV-01** (OLAY, emsal) — 17 Eyl 2026 17:28Z açık kayıt ucuyla dış organizatör hesabı (org 2): 1 sahte fuar + 1 herkese açık form. Bugünkü veride
+  (10 Kas export) form gönderimi 0 · e-posta 0 · ziyaretçi / terminal / içe aktarma / kampanya 0 · son giriş ölçülemez · 17 Eyl–9 Kas okuma erişimi
+  BİLİNEMEZ. Kapatma SQL'i (silme yok, delil 90 gün) Suer'de. [defter:2026-11-10 SENTEZ 10 Kas: GÜVENLİK OLAYI HÜKÜMLERİ]
+- **GUV-02** — Kayıt yalnız davetle; açık kayıt ucu kodda kalmaz; kiracı açma yalnız Owner davetiyle (Admin). Çok kiracılı satış → ayrı ADR.
+- **GUV-03** — Güvenlik bildirimleri Suer'e e-posta + haftalık güvenlik özeti (push tohumu); okunmamış e-postaya dayanılmaz.
+- **GUV-04** — Erişim logu (G26) kesim listesinde, kesim ÖNCESİ dilim: istek başına zaman · kimlik · organizer · yol · durum · IP; 90 gün; Owner ekranı
+  süzgeç + dışa aktarım; gövde yok. Başarısız giriş sayacı + geçici kilit (5 / 15 dk). ADR-023 kesim maddesi.
+- **GUV-05** — Olay sonrası kontrol listesi: ölç → kapat → delil sakla → bilinemeyeni yaz → kural çıkar; her adım deftere. Emsal GUV-01.
+

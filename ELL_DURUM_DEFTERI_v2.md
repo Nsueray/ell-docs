@@ -8508,6 +8508,75 @@
 > - **Bilinçle yapılmayanlar:** devre dışı bırakma SQL'inin canlıda koşulması (Suer kararı / Suer koşar) · canlı DB'ye okuma bağlantısı (direktif: staging
 >   kopyası, sonra taze kopya) · org 2 hesabıyla giriş denemesi.
 
+> ## ✅ 2026-11-10 — SENTEZ 10 Kas: GÜVENLİK OLAYI HÜKÜMLERİ (GUV grubu) — AYNEN · GUV-01 OLAY KAYDI + ölçüm (bugünkü canlı export) · kapatma SQL'i Suer'de
+>
+> - **Kriter kaynağı:** Suer 10 Kas: "export hazır: ~/Downloads/2026-11-10T09_23Z.dir.tar.gz" + SENTEZ 10 Kas (aşağıda AYNEN) + Orchestrator notu + UYGULAMA A–D
+>   (A GUV-01 ölçümü · B tam restore arka planda · C GUV dilimi · D PROVA-1 zinciri) · [defter:2026-11-10 HOTFIX 4 CANLIDA].
+> - **SENTEZ 10 Kas — AYNEN:**
+>
+> ```
+> SENTEZ → ORCHESTRATOR — GÜVENLİK OLAYI HÜKÜMLERİ (10 Kas). GUV grubu açılır.
+> (1) Sentez taraması: 17 Eyl civarı deneme organizatörü AÇTIRILMADI (sohbet arşivi + 13 Eyl "organizers = 1" ölçümü;
+> kayıt denemesi geçen konuşma yok). Dış kaynaklı kabul edilir.
+> (2) GUV-01 OLAY KAYDI (kütük + defter, kişisel veri yok): Ne: 17 Eyl 2026 17:28Z, açık kayıt ucuyla (POST
+> /api/auth/register, davetsiz) dış organizatör hesabı; 1 sahte fuar + 1 herkese açık form (ad/e-posta/telefon). Nasıl
+> mümkün oldu: çok kiracılı SaaS tasarımı için açık kayıt bırakılmış; bildirim e-postası okunmamış. Kapananlar: hotfix
+> 1–3 (fuar sahipliği) + hotfix 4 (kayıt kapalı). Bilinemeyen: 17 Eyl–9 Kas arası bu hesabın bizim verimize erişimi
+> (sahiplik açıkları açıktı; erişim logu yok — G26). Dürüstçe "bilinemez" yazılır; tahmin yok.
+> ŞİMDİ ÖLÇ (canlı salt-okunur, Suer Render Shell, Orchestrator sorguyu verir; sonuçlar sayı olarak deftere): o
+> organizer_id ile (a) form gönderimleri — bugün (19 Eki kopyası değil); (b) email_queue / kampanya / gönderim satırları
+> (SendGrid'imiz üzerinden e-posta attı mı — itibar riski); (c) ziyaretçi, terminal, içe aktarma, kampanya kayıtları;
+> (d) son giriş zamanı. Sonra devre dışı bırakma SQL'i (hesap pasif, fuar + form kapalı); kayıtlar SİLİNMEZ (delil),
+> 90 gün sonra Suer kararıyla silinir. Form gönderimi >0 ise: üçüncü kişilerin verisi bizim alan adımızda toplanmış
+> demektir — sayı deftere, veri silinir (Suer kararıyla), kimseye iletilmez.
+> (3) KALICI KURALLAR:
+> GUV-02 Kayıt yalnız DAVETLE. Açık kayıt ucu kodda KALMAZ (bayrak değil, kaldırılır); organizatör/kiracı açma yalnız
+> Owner'ın Admin'den davetiyle. Çok kiracılı satış gündeme gelirse ayrı ADR.
+> GUV-03 Güvenlik bildirimleri (yeni organizatör/owner, şifre sıfırlama, yeni servis kullanıcısı, kapsam dışı 409
+> yoğunluğu) → Suer'e e-posta + Paket 5b push "haftalık güvenlik özeti" tohumu; okunmamış e-postaya dayanılmaz.
+> GUV-04 ERİŞİM LOGU (G26) KESİM LİSTESİNE GİRER — kesim ÖNCESİ küçük dilim (staging, zincirle canlıya): her API isteği
+> için zaman · kullanıcı/servis · organizer · yol · durum kodu · IP; 90 gün saklama; Owner ekranında süzgeç + dışa
+> aktarım; kişisel veri gövdesi loglanmaz. Başarısız giriş sayacı + geçici kilit (5/15 dk) aynı dilimde. ADR-023 kesim
+> listesine madde.
+> GUV-05 Olay sonrası kontrol listesi (bu kayıt emsal): ölç → kapat → delil sakla → bilinemeyeni yaz → kural çıkar; her
+> adım deftere.
+> Kesim provası direktifi (KES-01..05) aynen; GUV-04 dilimi provadan önce. Hotfix 4 YON-16(b) uyumlu, KABUL.
+> ```
+>
+> - **Orchestrator notu (kısa):** GUV-01 ölçümü Suer'in Shell'inde DEĞİL, bugünkü canlı export'unda (CC) — Sentez'in "bugün" şartı, Suer'e SQL yüklemez.
+>   Orchestrator ölçümü: 13 Eyl organizers = 1 · 17 Eyl proje dokunuşu yok (fuar kilidi) · Orchestrator sohbetlerinde deneme organizatörü yok · Suer'in
+>   posta kutusunda 17 Eyl 17:28:30Z "New Organizer Registered on Leena EMS" bildirimi (okunmamış), sonrasında başka kayıt bildirimi yok · web'de
+>   "Future Pro Summit" adlı etkinlik yok.
+> - **GUV-01 OLAY KAYDI (kişisel veri YOK):** **Ne:** 17 Eyl 2026 17:28Z, açık kayıt ucuyla (`POST /api/auth/register`, davetsiz) dış organizatör hesabı
+>   (org 2); 1 sahte fuar (expo 20) + 1 herkese açık form (form 68 — ad / e-posta / telefon / deneyim / uzmanlık / iletişim onayı). **Nasıl mümkün oldu:**
+>   çok kiracılı SaaS tasarımı için açık kayıt bırakılmış; bildirim e-postası okunmamış. **Kapananlar:** hotfix 1–3 (fuar sahipliği) + hotfix 4 (kayıt
+>   kapalı, canlı `2db0131`). **Bilinemeyen:** 17 Eyl–9 Kas arası bu hesabın bizim verimize erişimi (sahiplik açıkları açıktı; erişim logu yok — G26) —
+>   **bilinemez**; tahmin yok.
+> - **ÖLÇÜM (CC, bugünkü canlı export — salt okuma, yerel geçici DB):**
+>   - Export: `2026-11-10T09_23Z.dir.tar.gz` 1.421.908.473 B · arşiv başlığı "2026-11-10 09:25:06 +03" · en geç `email_events` 09:22:52Z (bugünkü veri) ·
+>     yeni boş dizine açıldı (18 sn, 15 GB) · yerel geçici PostgreSQL 17.10 kümesine `email_queue` VERİSİ HARİÇ her şey `pg_restore -L` (3 sn, rc 0,
+>     hata 0; 97 tablo; `schema_migrations` son `052_zoho_migration`) · `email_queue` (571.012 satır, 15,94 GB) dump dosyasından akışla sayıldı (4 dk 29 sn).
+>   - **(a) form gönderimi: 0** — form 68 `submission_count` 0 · `form_id` 68'li ziyaretçi 0 · expo 20 ziyaretçi 0. Üçüncü kişi verisi toplanmamış.
+>   - **(b) e-posta: 0** — `email_queue` org 2 = 0 · expo 20 = 0 (571.012 satırda) · 17 Eyl 17:28Z'den beri organizatör / fuar / ziyaretçi / kampanya bağı
+>     OLMAYAN satır 0 · kampanya 0 · `email_logs` 0 → SendGrid'imiz üzerinden bu hesaba bağlanan gönderim YOK.
+>   - **(c)** ziyaretçi 0 · terminal 0 · içe aktarma (`import_jobs` / `import_logs`) 0 · kampanya 0 · check-in 0 · reaktivasyon 0 · ui2 kullanıcı 0 ·
+>     `audit_log` 0. Organizers / expos / forms'a FK veren + `*organizer_id` / `*expo_id` kolonlu **101 kolon** tarandı → yalnız `expos` 1 · `forms` 1.
+>   - **(d) son giriş: ÖLÇÜLEMEZ** — klasik giriş hiçbir satır yazmaz; 97 tablonun hiçbirinde giriş / son görülme kolonu yok; `audit_log` 0; erişim logu
+>     yok (G26). Çıkarım YOK.
+>   - **Yazma izi:** 19 Eki kopyasıyla AYNI — dördü de 17 Eyl 17:28–18:37Z (hesap → fuar → form → form düzenleme); 19 Eki → 10 Kas arası yeni satır yok.
+>     Canlıda form 68 10 Kas 09:27:51Z hâlâ herkese açıktı ([defter:2026-11-10 HOTFIX 4 CANLIDA]).
+> - **KAPAT (GUV-05 adımı; SİLME YOK):** ölçüm biter bitmez Suer'e ayrı satır "ŞİMDİ KOŞ" + SQL (10:04Z; masaüstü bildirimi gönderildi): tek yapıştırma
+>   `BEGIN … COMMIT` — koruma `id = 2` + oluşturma saniyesi · DELİL tabloları `guv01_organizers_20261110` · `guv01_expos_20261110` · `guv01_forms_20261110` ·
+>   hesap pasif (parola özeti → bcrypt olmayan işaret → giriş 401) · fuar `status = 'cancelled'` · form `is_active = false` (form sayfası 404) · terminal +
+>   ui2 kullanıcıları pasif (bugün 0) · COMMIT sonrası doğrulama (beklenen `2 | !dis | cancelled | 0 | 3`). Kuru koşu (sonu ROLLBACK): staging (4 sn) +
+>   bugünkü kopya — koruma 1 · organizatör 1 · fuar 1 · form 1 · terminal 0 · kullanıcı 0. Önceki sürüm (fuar kapatmasız, [defter:2026-11-10 HOTFIX 4
+>   CANLIDA]) bununla değişti. Kayıtlar 90 gün delil; sonra Suer kararıyla silinir.
+> - **Commit:** ell-docs bu kayıt + kütük GUV grubu (GUV-01..05 AYNEN). Kod yok (GUV dilimi ayrı kayıtta).
+> - **Ölçülenler:** yukarıdaki sayılar (export 09:23Z).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Suer'in SQL'i koşup koşmadığı (teyit bekleniyor) · 17 Eyl–9 Kas okuma erişimi (bilinemez — erişim logu yok) · Render HTTP
+>   logları (CC erişimi yok) · Gmail bildirimi (Orchestrator ölçümü; CC bakmadı).
+> - **Bilinçle yapılmayanlar:** canlıya yazma · veri / kişi bilgisinin herhangi bir yere iletilmesi · ad / e-posta'nın ell-docs'a yazılması.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
