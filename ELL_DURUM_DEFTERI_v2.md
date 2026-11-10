@@ -8460,6 +8460,54 @@
 > - **→ §2 SUER TEK ADIM:** canlı taze export (Render › leena_v401_db › Recovery › Create export → indir → "export hazır: <dosya>"); dosya repoya / sohbete /
 >   ell-docs'a KONMAZ, yalnız yol adı.
 
+> ## ✅ 2026-11-10 — HOTFIX 4 CANLIDA (`2db0131`) · "Future Pro Summit" organizatörü (org 2) ölçümü — devre dışı bırakma SQL'i hazır, karar Suer'in
+>
+> - **Kriter kaynağı:** Orchestrator / Suer 10 Kas: "deploy live — 2db0131 (hotfix 4). Canlı sağlık + kimliksiz register 403 → deftere HOTFIX 4 CANLIDA" ·
+>   "Future Pro Summit organizatörü — Suer tanımıyor … ÖLÇ (salt okuma; şimdi staging kopyasında, export gelince taze kopyada yeniden) … Raporda ayrı başlık.
+>   Karar Suer'in: devre dışı bırakma gerekirse canlı SQL'ini yaz (Suer Render Shell'de koşar), sen çalıştırma. PROVA-1 bunu beklemez." ·
+>   [defter:2026-11-09 PROMPT 5 (KESİM PROVASI) §0 + §1] (org 2 bulgusu + hotfix 4).
+> - **Ne yapıldı:**
+>   - **HOTFIX 4 CANLIDA:** GitHub `main` push **2026-11-09 20:11:46Z** `a5bafb1 → 2db0131` (Suer; GitHub activity API) · `origin/main` = **`2db0131`**
+>     (CC fetch 10 Kas). Canlı (CC, 10 Kas 09:22:56Z): `/health` **200** · kimliksiz `POST /api/auth/register` gövde `{}` → **403** `Registration is closed.
+>     Ask your administrator for an account.` · `POST /api/auth/login` gövde `{}` → 400 (aynen) · `/api/callcenter/admin/dump` kimliksiz 401 (hotfix 3 aynen).
+>     Deneme gövdesi bilinçle BOŞ: eski kod boş gövdeye 400 döner, satır yazmaz (`a5bafb1:routes/auth.js` doğrulama dalı) → hotfix canlıda olmasaydı bile
+>     canlıya yazma olmazdı. Canlı `main` = **`2db0131`** (YON-16 b istisnaları: `a35c3b6` → `f05d14c` → `a5bafb1` → `2db0131`).
+>   - **ORG 2 ÖLÇÜMÜ (staging kopyası = canlı 19 Eki; `claude_readonly`, BEGIN READ ONLY):** organizers **2** (org 1 + org 2).
+>     - **Kimlik:** org 2 = özel bir kişi adı + kişisel (gmail) e-posta — **ad / e-posta ell-docs'a YAZILMAZ** (kişisel veri; ell-docs PUBLIC, YON-20); tam
+>       değerler Suer'e sohbette. Oluşturma **2026-09-17 17:28:30Z** · logo yok · yanıt yönlendirme e-postası yok · parola özeti bcrypt.
+>     - **Son giriş: ÖLÇÜLEMEZ** — DB'de giriş izi yok (`organizers`'ta son giriş kolonu yok; hiçbir tabloda login / last_seen kolonu yok; `audit_log` org 2 = 0;
+>       klasik organizatör girişi satır yazmaz; giriş log satırı e-posta basmaz).
+>     - **Fuar:** expo **20** "Future Pro Summit" · Casablanca · `country_code` MA · başlangıç 2026-09-19 21:00Z · bitiş 2026-10-19 21:00Z · `status` announcement ·
+>       `organizer_role` main_organizer · oluşturma **2026-09-17 17:30:33Z** (güncelleme yok).
+>     - **Form:** id **68** "Formulaire immigration Professionnelle" · 6 alan (Full Name · Email Address · Phone Number · Années d'experience · Secteur
+>       d'expertise · Acceptez vous etre contacté) · `is_active` **true** · `submission_count` 0 · e-posta şablonu yok · oluşturma 17:54:49Z · güncelleme
+>       **18:37:26Z**.
+>     - **Satır sayıları:** `organizer_id` = 2 taşıyan ~70 tablo + `expo_id` taşıyan ~43 tablo tarandı → sıfırdan farklı YALNIZ `expos` 1 + `forms` 1.
+>       ziyaretçi 0 · form kaydı 0 · check-in 0 · terminal 0 · kampanya 0 · `email_queue` 0 · `email_logs` 0 · e-posta şablonu 0 · ui2 kullanıcı 0 ·
+>       `audit_log` 0 · finans tabloları 0 · kiracılar arası (org 2 fuarında başka organizatörün satırı) 0.
+>     - **Yazma izi:** dördü de **17 Eyl 17:28–18:37Z** (≈ 70 dk): organizatör → fuar → form oluşturma → form güncelleme. 19 Eki kopyasında sonrası YOK.
+>     - **Canlı bugün (CC, 10 Kas 09:27:51Z, salt okuma GET):** `GET /api/forms/public/68` → **200**, `is_active` true → leena.app formu **hâlâ herkese açık
+>       sunuyor** (rota yalnız SELECT, `routes/forms.js:403-430`).
+>   - **Devre dışı bırakma SQL'i (YAZILDI, KOŞULMADI — canlı = Suer, Render Shell):** tek yapıştırma `BEGIN … COMMIT` + COMMIT sonrası doğrulama (G2 / G46).
+>     Koruma: `id = 2` VE oluşturma saniyesi `2026-09-17 17:28:30` (başka satır eşleşmez) · yedek tablolar `organizers_backup_20261110_org2` +
+>     `forms_backup_20261110_org2` (geri alınabilir) · parola özeti → bcrypt olmayan işaret (`bcrypt.compare` false → giriş 401; yerelde aynı kütüphaneyle
+>     ölçüldü) · org 2 formları `is_active = false` (form sayfası 404) · org 2 terminal + ui2 kullanıcıları pasif (19 Eki'de 0; taze durum için). Silme YOK.
+>     **Staging'de kuru koşu (CC, admin URL, sonu ROLLBACK, 4 sn):** koruma 1 satır · yedek 1 + 1 · organizatör 1 · form 1 (68) · terminal 0 · kullanıcı 0 ·
+>     ROLLBACK → yedek tablo yok (değişiklik kalmadı) · staging form 68 hâlâ 200.
+>   - **Sınır (SQL'in kapatamadığı):** klasik organizatör JWT'si DB'ye bakılmadan doğrulanır (`middleware/authMiddleware.js` — `user_id` yoksa sorgu yok) → SQL
+>     yeni girişi kapatır; son 30 gün içinde alınmış bir token (varsa — son giriş ölçülemez) süresi dolana kadar geçerli kalır (en geç 30 gün). Tam kesme =
+>     `JWT_SECRET` değişimi (herkesin oturumu kapanır) ya da kod kontrolü → karar Suer'in. Ayrıca `POST /api/visitors/public` formun `is_active`'ine bakmaz
+>     (E sınıfı, EMS-07 kuyruğu).
+> - **Commit:** ell-docs bu kayıt + kütük YON-16 hotfix 4 satırı. Kod (LEENA) yok; SQL scratchpad'de (kişisel veri içermez), Suer'e sohbette.
+>   **PUSH: CC (YON-19) — YON-20 taramasından sonra.**
+> - **Ölçülenler:** yukarıdaki push zaman damgası · canlı 200 / 403 / 400 / 401 (09:22:56Z) · canlı form 68 200 (09:27:51Z) · staging org 2 taraması (salt okuma) ·
+>   staging kuru koşu (ROLLBACK).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** org 2'nin 19 Eki SONRASI durumu (form kayıtları, yeni satırlar) → taze kopyada yeniden (KES-02/1 sonrası) · son giriş
+>   (iz yok) · kayıt bildirim e-postası (`a5bafb1:routes/auth.js` kayıtta `ADMIN_EMAIL`'e "New Organizer Registered on Leena EMS" gönderir, env tanımlıysa —
+>   canlı env CC'ce okunamaz) · `2db0131`'in canlıda koştuğu DOĞRUDAN (sürüm işareti yok — kanıt 403 gövdesi, eski kodda bu metin yok).
+> - **Bilinçle yapılmayanlar:** devre dışı bırakma SQL'inin canlıda koşulması (Suer kararı / Suer koşar) · canlı DB'ye okuma bağlantısı (direktif: staging
+>   kopyası, sonra taze kopya) · org 2 hesabıyla giriş denemesi.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -8741,6 +8789,9 @@
 >   9 Kas (8): **PROMPT 5 §0 + §1 TAMAM** (YON-20 · 067 team · 068 legacy · S2 105/213 · S3 · INVITE_ECHO · Zoho token geçerli) + **HOTFIX 4** organizatör kaydı
 >   kapalı (dal `2db0131`) — [defter:2026-11-09 PROMPT 5 (KESİM PROVASI) §0 + §1]. **★SIRADAKİ (bu kazanır) = Suer: canlı taze export (TEK adım) ∥ hotfix 4 `main`
 >   push (karar Suer'in) → CC: KES-02 1–10 → PROVA-1 raporu.**
+>   10 Kas (9): **HOTFIX 4 CANLIDA** (`2db0131`; kimliksiz register 403) + **org 2 ölçümü** (19 Eki kopyası: yalnız fuar 1 + form 1 — form 68 canlıda hâlâ açık;
+>   devre dışı bırakma SQL'i hazır, staging kuru koşu ROLLBACK) — [defter:2026-11-10 HOTFIX 4 CANLIDA]. **★SIRADAKİ (bu kazanır) = Suer: canlı taze export
+>   (TEK adım) ∥ org 2 kararı (SQL hazır) → CC: KES-02 1–10 (org 2 taze kopyada yeniden) → PROVA-1 raporu.**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
