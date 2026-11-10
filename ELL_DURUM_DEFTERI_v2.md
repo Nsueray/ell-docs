@@ -8640,6 +8640,111 @@
 >   en geç 30 günde düşer — kesimde `JWT_SECRET` yenilemesi ADR-023 maddesi) · `POST /api/visitors/public` formun `is_active`'ine bakmaz (EMS-07 kuyruğu).
 > - **Delil:** 90 gün (Sentez) — silme Suer kararıyla (en erken ~8 Şub 2027).
 
+> ## ✅ 2026-11-10 — PROVA-1 (KES-02 1–10, canlı 10 Kas 09:23Z export'unun staging kopyasında): DUR 2 · geri alma kanıtı (kod 0 fark · tam geri yükleme 2 sa 0 dk 37 sn) · GUV turu yeşil
+>
+> - **Kriter kaynağı:** Suer 9 Kas "PROMPT 5 — KESİM PROVASI: PROVA-1" + kütük KES-01..05 (Sentez S8 AYNEN) · Sentez 10 Kas UYGULAMA ("YON-19; Suer'e dönme;
+>   sıra" — tek soru "PROVA-1 + GUV ONAY?") · [defter:2026-11-09 PROMPT 5 (KESİM PROVASI) §0 + §1] · [defter:2026-11-10 GUV DİLİMİ].
+> - **KES-02/1 — staging ← canlı taze kopya** (export Suer 09:23Z, arşiv 1,42 GB · açılmış 15 GB):
+>   - Deneme 1 (reset 10:05:37–43Z · `pg_restore 17 --jobs 4`, 19 Eki yöntemi): 96 tablo + tüm post-data tamam; `email_queue` (15,94 GB, TEK COPY akışı)
+>     14:40:58Z'de koptu (`PQputCopyData … Operation timed out`) → tablo boş, PK + 3 indeks + 7 FK eksik (ölçüldü: şema farkı yalnız bunlar).
+>   - Devam (CC yöntemi, yeniden başlatılabilir): PK 11 sn → veri dosyası 10.000'lik **58 parçaya** bölündü, 4 paralel `\copy` (her parça kendi
+>     transaction'ı; hata → parçanın id'leri sorgulanır, 0 ise yeniden dener — PK mükerreri engeller) **16:32:09–18:05:19Z = 93 dk** (yeniden deneme 0) →
+>     3 indeks + 7 FK (dump TOC'undan) 177 sn → ANALYZE 6 sn.
+>   - Doğrulama (dump'tan kurulan yerel referans ile): **97 / 97 tablo satır satır AYNI** · `email_queue` 571.010 · indeks 216 · kısıt 384 (FK 170) ·
+>     tetikleyici 36 · görünüm 3 · fonksiyon 55 · dizi 56 (değerleriyle) · eklenti 4 AYNI · DB 3,76 GB (`email_queue` 3,1 GB; yığın 115 MB).
+>   - Org 2: canlıda koşulan GUV-01 SQL'i kopyada da (16:35:54Z) → `2 | !dis | cancelled | 0 | 3` · staging form 68 → 404 (kopya = kesim günkü canlı durumu).
+> - **KES-02/2 — 053→069:** dry-run 53 sn duvar (Σ 18,8 sn) · apply **53 sn** (Σ 18,1 sn; en uzun 066 4,4 · 061 2,1 · 054 1,4 · 068 1,3 sn; dosya başına
+>   ~0,63 sn CC Mac → Oregon gidiş-dönüşü) · ikinci apply "nothing" 5 sn · `VALIDATE CONSTRAINT email_queue_report_run_id_fkey` **2,05 sn** → 60 sn
+>   eşiğinin altında, kesimde AYRI PENCERE GEREKMEZ; doğrulanmamış kısıt 0. 061'in satır içi FK'si (`email_queue.attachment_document_id`) 571.010 satırla
+>   2,1 sn. **067 yalnız runner'la koşar** (`ell.migration_runner` denetimi) → canlıda `psql -f` DEĞİL, `node scripts/migrate.js`.
+>   TABAN 342.00 · TABAN-2 EŞİT (göç öncesi ve sonrası).
+> - **KES-02/3 — Zoho fark partisi:** çekim 10:30:57–10:37:31Z (6 dk 34 sn · ~3.987 kredi · 3.947 SO · hata 0) + payees 13 / 13 (~17 kredi) · dry-run
+>   15,6 sn **DUR 0** · apply 11,8 sn → batch #4: kontrat 19 · kalem 39 · ödeme 19 · gider 39 · fuar 1 · tedarikçi 1 · mutabakat 9,7 sn → **14 / 16** ·
+>   `rollback.js 4` dry 26,1 · apply **24,8 sn** (eklenenin aynısı silindi) · yeniden apply 12,3 sn (#5) → sayılar + mutabakat AYNI. Rapor LEENA
+>   `docs/audits/GOC_MUTABAKAT_2026-11-10_prova1.md` (yalnız sayı).
+> - **DUR LİSTESİ (hedef 0 → 2; neden ortak):** artımlı göç mevcut `zoho_record_id`'yi ATLAR (`scripts/zoho/migrate.js` başlığı) → 4 Kas'ta göçmüş
+>   kontratların Zoho'daki SONRAKİ değişimi taşınmaz; kesime kadar Zoho girişi sürdüğü için (KES-05) sınıf büyür.
+>   - **DUR-1 ödeme:** mevcut **23 kontratta 29** Received_Payment satırı LEENA'da yok (EUR 18 · MAD 11; ödeme tarihi Tem 1 · Eyl 10 · Eki 6 · Kas 12) →
+>     ölçüt 4 ❌ (Zoho 1.856 · LEENA 1.827).
+>   - **DUR-2 tutar:** **1** mevcut kontratın Grand Total'ı Zoho'da değişmiş (2026 · EUR hücresi) → ölçüt 2 ❌.
+>   - **Bulgu (DUR değil — Sentez S2):** "sonraki prova getirir" GERÇEKLEŞMEDİ: 3.928 mevcut kontratın 3.928'inde ham çekimde şirket ülkesi var, **3.865**'i
+>     `core_countries`'e eşleniyor (63 eşleşmez); artımlı koşu yalnız yeni 19'u doldurur → R2 "By country" göçmüş kontratlarda "Country unknown" kalır.
+>   - **Ölçülen seçenek (karar Sentez / Orchestrator):** batch #2 (canlının 4 Kas göçü) bugünkü kopyada GERİ ALINABİLİR — #4 geri alındıktan sonra
+>     `rollback.js 2 --dry-run`: dışa bağ **0**, silinecek kontrat 3.928 · ödeme 2.327 · kalem 7.813 · payout 179 · gider 1.436 · tedarikçi 295 ·
+>     temsilci 12 · fuar tedarikçisi 324 · süre 637 sn (CC Mac → staging). → Kesimde "#2 geri al + taze çekimle tam göç" DUR-1 / DUR-2 / S2'yi MEVCUT
+>     kodla kapatır (koşul: o anda #2'ye dışa bağ 0 — dry-run gösterir; kontrat LEENA id'leri değişir, çapalar AF ile). Diğer yol: "mevcut kontrata yeni
+>     ödeme + tutar farkı" göç dilimi (yeni kod). Hangisi seçilirse PROVA-2'de o koşulur.
+> - **KES-02/4 — klasik token kullanıcıları (kopya):** klasik giriş **1** (org 1, paylaşılan hesap) + org 2 pasif · ui2 kullanıcı Owner 1 + servis 1
+>   (059 sonrası `user_type` hepsi internal). Org 1 klasik hesabını kaç kişinin kullandığı DB'den ÖLÇÜLEMEZ → kesim günü davet listesi (kişi + rol) Suer'de;
+>   kesimden sonra erişim logu (069) klasik token kullanımını gösterir.
+> - **KES-02/5 — worker:** eliza-next worker (`60cc7f9`) yerel taşınmış kopyada (temiz env, SendGrid anahtarı yok, `EMAIL_ECHO=1`) açılış hatası 0;
+>   güvenlik tiki 1 olay → 1 `echo` bildirim (gönderilmedi). Pencere: yeni worker eski şemada `eq.*` okur, yeni kolon yoksa bugünkü varsayılan
+>   (`utils/salesMail.js` `workerExtras`) → gönderim sürer. Kopyada `email_queue` `pending` 0. Not: main'in `sendEmail`'i `SENDGRID_API_KEY` yoksa satırı
+>   `sent` işaretler (gönderim yok, hata yok — `utils/email.js:34-37`) → kesim listesine "worker'da anahtar ADI var".
+> - **KES-02/6 — env (yalnız ad; `git grep` `origin/main 2db0131` ↔ `eliza-next 60cc7f9`, izlenen dosyalar, `.env*` hariç — K4):**
+>   web (Leena_v401) YENİ `REPORT_NL_PROVIDER` (anthropic | tanımsız = fake) · `ANTHROPIC_API_KEY` (anthropic seçilirse) · isteğe bağlı
+>   `ANTHROPIC_BASE_URL` · `REPORT_NL_MODEL` · `SECURITY_CHECK_MS` · **canlıda TANIMSIZ kalmalı** `EMAIL_ECHO` · `INVITE_ECHO` ·
+>   `REPORT_SCHEDULER_IN_PROCESS` · DEĞER DEĞİŞİMİ `JWT_SECRET` (ADR-023; herkes yeniden girer). Worker (leena-email-worker, G34): YENİ
+>   `SECURITY_ALERT_EMAILS` (Suer) · isteğe bağlı `REPORT_SCHEDULE_CHECK_MS` · `SECURITY_CHECK_MS` · `EMAIL_ECHO` tanımsız · `SENDGRID_API_KEY` mevcut.
+>   Artık okunmayan (kesimden sonra silinebilir): `ADMIN_EMAIL` · `ALLOW_ORGANIZER_REGISTRATION`.
+> - **KES-02/7 — LIFFY:** `DISABLE_CONVERT_OUTBOX` (liffyv1 `10047ee` `backend/server.js:136`) · fuar senkronunun ayrı bayrağı YOK — yalnız teklif uçlarından
+>   tetiklenir ve `LEENA_API_URL` + `LEENA_HMAC_SECRET` + `LEENA_SERVICE_USER_ID` üçü tanımlıyken çalışır (`services/leenaClient.js:23-30`,
+>   `services/expoSync.js:95`) → sıra: `DISABLE_CONVERT_OUTBOX=1` → liffy-api + liffy-ui ASKI (ikisi de durur). DB silinmez.
+> - **KES-02/8 — ELIZA eski:** dokunulmadı.
+> - **KES-02/9 — doğrulama (araç hesapları; iki koşu):** `/health` 200 · TABAN **342.00** (göç öncesi · sonrası · Zoho sonrası · geri alma sonrası) ·
+>   TABAN-2 **EŞİT** · R2 (2025-09-01…2026-10-31, fuar kırılımı) 200 · 47 satır · parmak izi `bde27669be25b5a2` · R5 (2026-10) 200 · 50 satır / 12 temsilci ·
+>   `ac111409a65f2701` · R7 200 (12 fuar · 85 açık bakiye satırı; bugüne bağlı, günler arası karşılaştırılmaz) — ham sayılar yalnız yerel (ell-docs public);
+>   **iki koşu AYNI** · yetki matrisi 13 uç × 3 hesap — Owner hepsi 200 · Sales: rapor 200, Owner ana sayfa 409 `OUT_OF_SCOPE`, Security / Users 409
+>   `PERMISSION_REQUIRED` · dış: kontrat 200 (kendi), gerisi 409 `EXTERNAL_NOT_ALLOWED` — iki koşu AYNI · izin kaydı 35 · rol 6 · **3 ekran** (cc-owner
+>   R7 `owner-home` · R2 `sales-performance` · R5 `finance-payments-agent`) konsol hatası 0 · cc-staging R2 sayfasında 1 beklenen 409 (kapsam).
+> - **KES-02/10 — geri alma (kopyada GERÇEKTEN):**
+>   - **(a) kod geri alma:** main `2db0131` taşınmış şemada (dump'tan yerel kopya + 053→069) — 72 parametresiz GET × 2 kimlik (klasik + ui2) + 2 yazma
+>     (kullanıcı daveti · temsilci — 059 / 067 / 069 kısıt ve tetikleyicileri) = **146 çağrı: taşınmamış kopyaya göre durum kodu farkı 0**; 5xx yalnız iki
+>     tarafta aynı 4 call-center "yapılandırılmamış" 503; main worker açılış hatası 0 → **main revert + deploy (~60 sn, G43) DB geri yüklemesiz güvenli.**
+>     Ters yön (kesim penceresi: deploy önce, göç sonra) — eliza-next taşınmamış şemada: EMS çekirdeği AYNI · yeni modüller 503 `NOT_MIGRATED` /
+>     `MIGRATION_PENDING` · R2 / R4 / R5 / R7 500 (`companies` yok — 057) · worker hatası 0 → deploy'dan hemen sonra göç.
+>   - **(b) tam DB geri yükleme:** taşınmış + Zoho'lu staging → reset → canlı export'tan geri. Deneme 1 (18:38:13Z, `--jobs 4`) adım 2'de düştü:
+>     staging DB **18:44:33Z kilitlenme kurtarması** (checkpointer / bgwriter istatistik sıfırlanma anı; postmaster 19 Eki'den beri aynı) — neden CC'ce
+>     gözlenemez (Render DB logları; staging `shared_buffers` 64 MB → küçük örnek; büyük olasılıkla 4 paralel indeks yapımı). Deneme 2 (`--jobs 2`):
+>     **2 sa 0 dk 37 sn** (18:47:03–20:47:40Z) = reset 4 sn · 96 tablo + indeksleri 10 dk 49 sn · PK 6 sn · 58 parça 1 sa 47 dk 50 sn (20:18:36–40Z
+>     üç bağlantı aynı anda koptu, sunucu kurtarması YOK — üçü 2. denemede tamam, mükerrer 0) · indeks + FK 1 dk 40 sn · ANALYZE 8 sn → dump ile 97 / 97
+>     tablo + şema nesneleri AYNI, kayıt 052'ye döndü. Ardından yeniden ileri: GUV-01 SQL · 053→069 (56 / 53 sn · "nothing" · VALIDATE 2,2 sn) · araç
+>     hesapları · Zoho (#4, aynı sayılar) · mutabakat (aynı 14 / 16) · TABAN · adım 9 (parmak izleri + matris AYNI) → **PROVA-1 içi tekrar farkı 0.**
+>   - Sonuç: tam geri yükleme Mac'ten ≈ 2 saat (veri aktarımına bağlı; tek akışlı yöntem 19 Eki 6 sa 27 dk, bugün 4 sa 35 dk'da düştü) → kesimde SON ÇARE.
+>     Render'ın kendi yedek / geri yükleme özelliği CC'ce ölçülemez (Suer işi).
+> - **Kesim günü dakika planı (öneri; süreler staging — canlı iç ağda kısalabilir):** T0 Suer Zoho girişi durur + LIFFY `DISABLE_CONVERT_OUTBOX=1` ·
+>   T0+1 CC final Zoho çekimi (~7 dk) ∥ Suer canlı export (geri alma tabanı; süresi PROVA-2'de ölçülür — göçten ÖNCE biter) · T0+10 Suer env (web + worker,
+>   `JWT_SECRET` dahil) · T0+12 Suer merge + push main (SUER BLOĞU) → deploy ~60 sn · T0+14 Suer Render Shell `node scripts/migrate.js --dry-run` → apply →
+>   "nothing" → VALIDATE (staging 56 + 53 + 5 + 2 sn) · T0+18 CC salt okuma duman · T0+20 Suer laptop Zoho dry → apply (4 Kas yolu) → CC mutabakat
+>   (staging 11 + 11 + 8 sn; tam göç seçilirse + rollback 2 ~11 dk + tam göç) · T0+30 CC TABAN / TABAN-2 / R2-R5-R7 + Suer ui2 Owner girişi, 3 ekran ·
+>   T0+35 davetler + liffy-api / ui askı · T0+40 duyuru "bitti". **≈ 40–45 dk** (tam göçle ≈ +15 dk). Geri alma kapıları: deploy sonrası → main revert
+>   (~2 dk, (a)) · Zoho batch → `rollback.js` (25 sn) · DB bozulması → tam geri yükleme (~2 sa, (b)).
+> - **Suer işleri (KES-03):** export (PROVA-2 taze + kesim günü) · env (yukarıdaki liste, worker ayrı servis — G34) · davetler (ui2; kişi + rol listesi) ·
+>   ana veri (KES-01: tüzel kişiler · banka hesapları · hedefler · şablon düzenlemeleri · kayıtlı raporlar — kesim günü canlıda) · duyuru (Zoho girişi
+>   durur · LIFFY kapanır · ui2 davetle giriş · `JWT_SECRET` yenileme = herkes yeniden girer) · Render paneli: canlı DB planının yedek / geri yükleme
+>   özelliği + staging 18:44:33Z kilitlenme log satırı.
+> - **PROVA-2 referans (aynı olmalı; veri farkı açıklanır):** şema nesneleri · 17 göç ✓ + "nothing" + VALIDATE · mutabakat ölçüt sonuçları (DUR 0 hedefi —
+>   seçilen yöntemle) · TABAN 342.00 · TABAN-2 EŞİT · yetki matrisi (13 × 3) · R2 / R5 parmak izi (aynı pencere; geçmiş veri değiştiyse fark açıklanır) ·
+>   GUV turu · süreler (göç ~53 sn · Zoho ~11 sn · geri alma ~2 sa).
+> - **Kesim tarihi (KES-04 — CC verisi; öneri Orchestrator, seçim Suer):** 16 Kas'tan önce yalnız DUR yöntemi 11 Kas'ta "tam göç (mevcut kod)" seçilirse
+>   sığar (PROVA-2 12–13 Kas + kesim 14–15 Kas); "yeni dilim" seçilirse sığmaz. 17–20 Kas Cezayir fuarları: kopyada bu fuarlara LEENA ziyaretçisi 0, aktif
+>   kampanya 0 (27 tamamlanmış · 3 taslak) → EMS yükü yok; ekip fuarda → ilk hafta hotfix penceresi (KES-05) zayıf. **CC önerisi: 21 Kas sonrası (ör. 22 Kas,
+>   G42 gece penceresi).**
+> - **GUV (aynı rapor):** GUV-01 KAPATILDI (canlı, Suer — [defter:2026-11-10 GUV-01 KAPATILDI]); GUV-02..04 dilimi taze kopyada: register **404** · kilit 5
+>   başarısız → 6. **429**, klasik giriş aynı sayaç (**429**) · kapsam: Sales 409 `PERMISSION_REQUIRED` · dış 409 `EXTERNAL_NOT_ALLOWED` · erişim logu 132
+>   satır, e-posta / sorgu dizesi içeren yol **0** · olay 3 (`owner.created` — araç hesabı · `scope_409.burst` — yetki matrisi koşusu ≥ 10 / 15 dk'yı
+>   tetikledi) → bildirim 6, hepsi `echo` (gönderilmedi) · Owner ekranları (Security · Organizations) konsol hatası 0.
+> - **DÜZELTME (YON-01):** [defter:2026-11-10 SENTEZ 10 Kas: GÜVENLİK OLAYI HÜKÜMLERİ] ölçümündeki `email_queue` **571.012 → 571.010** veri satırı (awk sayımı
+>   COPY bitiş işaretini `\.` ve bir boş satırı da saymıştı; bugün 18 alanlı satırla yeniden sayıldı, staging yüklemesi 571.010). Org 2 = 0 sonucu DEĞİŞMEZ.
+> - **Commit:** LEENA eliza-next **`0d70d4d`** (mutabakat raporu; push 60cc7f9..0d70d4d — YON-19) · ell-docs bu kayıt + kütük KES PROVA-1 satırı.
+>   Kod değişikliği YOK.
+> - **Ölçülenler:** yukarıdaki süreler ve sayılar (staging; yerel kopyalar dump'tan) · iki ileri koşu birebir.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Render Shell iç ağında göç süresi · canlı export süresi · canlı DB planı ve yedek özelliği · staging 18:44:33Z kilitlenmesinin
+>   ve 20:18Z kopmasının nedeni · canlı worker'da `SENDGRID_API_KEY` varlığı · LIFFY askısının etkisi (canlı — koşulmadı) · tam göç yolunun kendisi (yalnız
+>   geri alma dry-run'ı) · GUV-03 bildiriminin canlıda gerçek gönderimi (staging echo).
+> - **Bilinçle yapılmayanlar:** canlıya bağlantı / yazma · DUR çözümü için kod veya tam göç uygulaması (karar Sentez) · LIFFY değişikliği · dış kullanıcı
+>   daveti · tasarım · madencilik. Yerel geçici kopyalar (PG17 küme, açılmış export, parça dosyaları) ONAY'a kadar Mac'te; repo / sohbet / ell-docs'a GİRMEDİ.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -8928,6 +9033,10 @@
 >   **GUV DİLİMİ** eliza-next `9093ad7` (069 erişim logu · kilit · bildirim · kayıt ucu kaldırıldı · Owner davetiyle kiracı) 859 / 859 —
 >   [defter:2026-11-10 SENTEZ 10 Kas: GÜVENLİK OLAYI HÜKÜMLERİ] · [defter:2026-11-10 GUV DİLİMİ]. **★SIRADAKİ (bu kazanır) = CC: PROVA-1 zinciri
 >   (restore 10:05Z başladı → 053→069 → Zoho fark → … → geri alma) → tek rapor "PROVA-1 + GUV ONAY?" · Suer: GUV-01 SQL teyidi.**
+>   10 Kas (11): **GUV-01 KAPATILDI** (Suer, canlı) · **PROVA-1** koşuldu (KES-02 1–10): göç 53 sn · VALIDATE 2 sn · Zoho 14 / 16 → **DUR 2** (artımlı göç mevcut
+>   kontrat değişimini taşımaz: 29 ödeme / 23 kontrat + 1 tutar) + S2 bulgusu · geri alma (a) kod 0 fark (b) tam geri yükleme 2 sa 0 dk 37 sn · GUV turu yeşil —
+>   [defter:2026-11-10 PROVA-1]. **★SIRADAKİ (bu kazanır) = Suer: "PROVA-1 + GUV ONAY?" → Sentez: DUR yöntemi (tam göç | yeni dilim) + S2 + kesim tarihi →
+>   PROVA-2 (taze export).**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:

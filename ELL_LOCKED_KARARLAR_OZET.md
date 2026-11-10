@@ -467,6 +467,11 @@ LIFFY madencilik kararı; tasarım fazı Paket 6 ile paralel.
 Kapsam dışı prova: tasarım, madencilik, DENEME, dış kullanıcı daveti. İlk çıktı: PROVA-1 raporu (KES-03 satırlarıyla).
 ```
 
+- **PROVA-1** (10 Kas, canlı 10 Kas 09:23Z kopyası) — KES-02 1–10 koşuldu: göç 053→069 53 sn (VALIDATE 2 sn, ayrı pencere gerekmez) · Zoho artımlı
+  14 / 16 → **DUR 2** (mevcut kontrat değişimi taşınmaz: 29 ödeme / 23 kontrat + 1 tutar) + S2 bulgusu (ülke yalnız yeni 19'da) · batch #2 geri alınabilir
+  (dışa bağ 0) · geri alma (a) main taşınmış şemada 0 fark (b) tam geri yükleme 2 sa 0 dk 37 sn · iki ileri koşu birebir · GUV turu yeşil. Açık: DUR yöntemi
+  (Sentez) → PROVA-2. [defter:2026-11-10 PROVA-1]
+
 ### GUV — güvenlik olayı ve kalıcı güvenlik kuralları (yeni grup, 2026-11-10, Sentez 10 Kas)
 
 > Sentez 10 Kas "GÜVENLİK OLAYI HÜKÜMLERİ" — kalıcı kurallar AYNEN (tam metin defterde). [defter:2026-11-10 SENTEZ 10 Kas: GÜVENLİK OLAYI HÜKÜMLERİ]
