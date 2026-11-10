@@ -486,7 +486,7 @@ Kesim provası direktifi (KES-01..05) aynen; GUV-04 dilimi provadan önce. Hotfi
 ```
 - **GUV-01** (OLAY, emsal) — 17 Eyl 2026 17:28Z açık kayıt ucuyla dış organizatör hesabı (org 2): 1 sahte fuar + 1 herkese açık form. Bugünkü veride
   (10 Kas export) form gönderimi 0 · e-posta 0 · ziyaretçi / terminal / içe aktarma / kampanya 0 · son giriş ölçülemez · 17 Eyl–9 Kas okuma erişimi
-  BİLİNEMEZ. Kapatma SQL'i (silme yok, delil 90 gün) Suer'de. [defter:2026-11-10 SENTEZ 10 Kas: GÜVENLİK OLAYI HÜKÜMLERİ]
+  BİLİNEMEZ. **KAPATILDI** (Suer, 10 Kas): hesap pasif · fuar cancelled · form kapalı (canlı 404) · delil 3 satır, silme yok. [defter:2026-11-10 SENTEZ 10 Kas: GÜVENLİK OLAYI HÜKÜMLERİ] · [defter:2026-11-10 GUV-01 KAPATILDI]
 - **GUV-02** — Kayıt yalnız davetle; açık kayıt ucu kodda kalmaz; kiracı açma yalnız Owner davetiyle (Admin). Çok kiracılı satış → ayrı ADR.
 - **GUV-03** — Güvenlik bildirimleri Suer'e e-posta + haftalık güvenlik özeti (push tohumu); okunmamış e-postaya dayanılmaz.
 - **GUV-04** — Erişim logu (G26) kesim listesinde, kesim ÖNCESİ dilim: istek başına zaman · kimlik · organizer · yol · durum · IP; 90 gün; Owner ekranı

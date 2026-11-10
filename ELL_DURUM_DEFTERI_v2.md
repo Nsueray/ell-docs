@@ -8626,6 +8626,20 @@
 > - **Bilinçle yapılmayanlar:** canlıya push (kesim zinciri) · `.claude/skills` belgeleri (Mayıs'tan beri finans dilimlerinde güncellenmiyor) · kırmızı-önce
 >   koşusu (yeni modüller — G1 / G4 / G5'in eski davranışı hotfix 4 testinde ve önceki ölçümlerde) · IP başına sınır (hüküm e-posta başına).
 
+> ## ✅ 2026-11-10 — GUV-01 KAPATILDI (Suer, canlı): org 2 hesabı pasif · fuar `cancelled` · form kapalı · delil 3 satır · SİLME YOK
+>
+> - **Kriter kaynağı:** [defter:2026-11-10 SENTEZ 10 Kas: GÜVENLİK OLAYI HÜKÜMLERİ] "KAPAT" adımı (GUV-05: ölç → **kapat** → delil sakla → bilinemeyeni yaz →
+>   kural çıkar).
+> - **Ne yapıldı (Suer, Render Shell, `leena_v401_db`, tek yapıştırma `BEGIN … COMMIT`):** koruma SELECT 1 satır (id 2, oluşturma 2026-09-17 17:28:30Z) ·
+>   delil tabloları `guv01_organizers_20261110` · `guv01_expos_20261110` · `guv01_forms_20261110` (her biri 1 satır) · organizatör `UPDATE 1` (parola özeti →
+>   bcrypt olmayan işaret) · fuar 20 `UPDATE 1` → `cancelled` · form 68 `UPDATE 1` → `is_active = false` · terminal `UPDATE 0` · kullanıcı `UPDATE 0` · `COMMIT` ·
+>   COMMIT sonrası doğrulama **`2 | !dis | cancelled | 0 | 3`** (beklenenle birebir).
+> - **Ölçülenler (CC, canlı, salt okuma GET, 11:08:08Z):** `GET /api/forms/public/68` → **404** "Form not found or inactive" (09:27:51Z'de 200 idi) · `/health` 200.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** klasik girişin bu hesap için 401 verdiği (hesabın şifresiyle denenmez — CC canlıya giriş denemesi yapmaz; işaretin
+>   `bcrypt.compare`'de false döndüğü yerelde aynı kütüphaneyle ölçüldü) · 17 Eyl–kesim arasında verilmiş klasik token'lar (DB'ye bakılmadan doğrulanır;
+>   en geç 30 günde düşer — kesimde `JWT_SECRET` yenilemesi ADR-023 maddesi) · `POST /api/visitors/public` formun `is_active`'ine bakmaz (EMS-07 kuyruğu).
+> - **Delil:** 90 gün (Sentez) — silme Suer kararıyla (en erken ~8 Şub 2027).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
