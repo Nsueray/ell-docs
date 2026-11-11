@@ -2,7 +2,7 @@
 
 > **Ne:** UI-ÖNCE fazının (kütük YON-21) tek takip belgesi — Sentez 11 Kas PAKET UI-TAM-2 §1. Her ekran için: tasarım kaynağı · inşa durumu ·
 > Suer turu · kuyruk. Kriter bu belge DEĞİLDİR: kriter Sentez blokları (defterde AYNEN) + kütük; bu belge nerede ne olduğunu gösterir.
-> **Güncelleme:** her paket parçasında (defter kaydıyla aynı commit). **Son güncelleme:** 2026-11-12 — PAKET UI-TAM-2 3. parça (Extra equipment + Payment) staging'de.
+> **Güncelleme:** her paket parçasında (defter kaydıyla aynı commit). **Son güncelleme:** 2026-11-12 — PAKET UI-TAM-2 4. parça (proje ekibi ekranları) staging'de.
 > **Ortam:** yalnız staging (`https://leena-staging.onrender.com/ui2/`). Canlıda bu fazın hiçbir ekranı yok. Tarihseldir (YON-01).
 
 ## 1. Tasarım kaynakları
@@ -30,8 +30,8 @@ Suer turu: Y7 — Suer kendi Owner hesabıyla gezer, cevabı tek "değişiklik l
 | 5 | Sales | Quotes + teklif | `sales-quotes.html` · `sales-quote.html` | set · UX 2. tur #25–27 | staging (`5032a1f`) | bekliyor |
 | 6 | Sales | Companies + firma kartı | `sales-customers.html` · `sales-customer.html` | set · UX 2. tur #29–30 · YET-26 | staging (`5032a1f`) | bekliyor |
 | 7 | Operations | Dashboard | `ops-dashboard.html` | set · UX 2. tur #2 | staging (`e7b77ef`) | bekliyor |
-| 8 | Operations | **Exhibitors** (liste) | `ops-exhibitors.html` | set → **UX 3. tur C2 · C2/C3 mockup · EXH-19** | staging (`e7b77ef`) → **UI-TAM-2 §4** yeniden kurulur | bekliyor |
-| 9 | Operations | **Exhibitor** detayı | `ops-exhibitor.html` | set → **UX 3. tur C3 · C2/C3 mockup · EXH-20** | staging (`e7b77ef`) → **UI-TAM-2 §4** yeniden kurulur | bekliyor |
+| 8 | Operations | **Exhibitors** (liste) | `ops-exhibitors.html` | set → **UX 3. tur C2 · C2/C3 mockup · EXH-19** | staging (`e7b77ef`) → **yeniden kuruldu: staging (`df63427`)** | bekliyor |
+| 9 | Operations | **Exhibitor** detayı | `ops-exhibitor.html` | set → **UX 3. tur C3 · C2/C3 mockup · EXH-20** | staging (`e7b77ef`) → **yeniden kuruldu: staging (`df63427`)** | bekliyor |
 | 10 | Operations | Floor plan | `ops-floorplan.html` | set | staging (`e7b77ef`) — DEĞİŞMEZ (EXH-20; floor plan modülü Mimari hattında) | bekliyor |
 | 11 | Operations | Visitor & Access | `ops-visitors.html` | set | staging (`e7b77ef`) | bekliyor |
 | 12 | Operations | Communications | `ops-communications.html` | set · UX 2. tur #14–15 | staging (`e7b77ef`) | bekliyor |

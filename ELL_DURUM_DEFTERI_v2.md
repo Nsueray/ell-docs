@@ -10392,6 +10392,81 @@
 > - **Kuyruğa:** gün sınırı test kırılganlığı (S) · sipariş iptalinin "My orders" testi (S) · banka masrafı metni (Finance) · EUR dışı kontratta Payment gösterimi (karar).
 > - **→ Sıradaki:** §4 PROJE EKİBİ (Exhibitors listesi · Exhibitor detail · Fair days iskeleti).
 
+> ## ✅ 2026-11-12 — PAKET UI-TAM-2 4. PARÇA: PROJE EKİBİ EKRANLARI STAGING'DE — Exhibitors listesi (EXH-19) · Exhibitor detail (EXH-20) · "Stuck" tek tanım · günde 1 hatırlatma · toplu Remind önizlemeli · adına giriş · H5 (LEENA eliza-next `05ab149` + `df63427`) · 1066 / 1066
+>
+> - **Kriter kaynağı:** [defter:2026-11-11 SENTEZ 11 Kas: PAKET UI-TAM-2] — blok D EXH-19 · EXH-20 · E §4 · C9 · EK-1 madde 4.3 · 6 · EK-2 H1 · H4 · H5 · H6 · H7 · H9 · varsayım 12 · 13 ·
+>   EK-3 F1. Orchestrator UYGULAMA 4b. Ölçütler dosyalardan yeniden okundu. C2/C3 mockup'ı referans olarak bakıldı (düzen · sayaçlar · kart sırası); CSS'i / senaryo
+>   şeridi / kabuğu ALINMADI (ui2'nin kendi kabuğu + bileşenleri).
+> - **Ne yapıldı:**
+>   - **Exhibitors listesi (EXH-19):** satır = EXHIBITOR (ana kontrat; extra equipment siparişi kontrat olduğu halde satır DEĞİL, "Orders" sütunu). Sütunlar: seçim ·
+>     exhibitor (ülke · satıcı · kontrat no · pavyon etiketi) · stand (no · m² · tip) · Catalogue · Stand durumu · Orders · Badges · Payment (yalnız durum adı) · Chain
+>     (işaretli — §5) · eylemler (Remind · Copy link). Üstte deadline sayaçları (tıkla → süz) · hazır görünümler All · Stuck · Waiting for us · Payment warning ·
+>     Fair days (yalnız iskelet, işaretli) · süzgeçler (arama · stand tipi · ülke · satıcı · sales group · bölüm durumu) · expo ayarı eksikse şerit → Expo settings ·
+>     stand sheet dışa aktarımı (stand firmasına döküm: fascia · stand · sipariş kalemleri; para YOK).
+>   - **Tek türetim:** satırdaki her durum Exhibitor Page'in okuduğu AYNI işlevden gelir; liste yalnız girdileri toplu sorgularla yükler. Sayaçlar ve görünümler aynı
+>     satırların sayımıdır (sayaç = liste). Toplamlar rapor toplamıyla (R3) aynı ifade.
+>   - **H1 "Stuck" TEK tanım (sunucuda, sabitler kodda TEK yerde 7 · 5):** deadline'a ≤ 7 gün kala To do · 5+ gün cevapsız Changes requested · herhangi bölüm Overdue
+>     (Payment DAHİL) · zincir Failed / Blocked (zincir kısmı §5'te bağlanır).
+>   - **Remind (EXH-03 · H7):** tek kalıp — exhibitor'ın açık bölümlerinin HEPSİ tek e-postada, düğme ilk eksik bölüme iner; Payment yalnız durum adıyla (tutar / banka
+>     yok); yalnız Payment'sa Finance kutusundan. **Günde 1** (fuarın saatine göre gün; otomatik ve elle) — ikincisini SUNUCU reddeder: "reminded today hh:mm — next
+>     tomorrow". Build-up'ın ilk günü durur; beklet / iptal / aktarılan / fuarı biten exhibitor'a gitmez. **Toplu Remind önizlemesiz SUNUCUDA reddedilir:** ilk çağrı
+>     önizlemedir (kim alacak · kim NEDEN atlanacak), onay çağrısı önizlemenin sayılarını taşımak zorunda.
+>   - **Exhibitor detail (EXH-20):** başlık (firma · fuar · stand no / m² / tip · kontrat no · satıcı · ödeme uyarısı · "page last opened") + Open as exhibitor · Copy
+>     link · Send link · Regenerate link (H9 penceresi: "Send the new link now?" varsayılan EVET) · Remind · durum şeridi · uyarı şeritleri (stand tipi boş · alıcı yok
+>     · sayfa hiç açılmadı · expo ayarı eksik · exhibitor'ın bekleyen isteği) · kartlar: Stand (Equipped: fascia · onaylayan · Reopen · Enter on behalf; Space-only:
+>     sürümler · ölçüler + üst sınır işareti · müteahhit · Approve · Request changes) · Catalogue (içerik · son sürümden farklar · Approve · Request changes — deadline
+>     sonrası tarih zorunlu · Reopen until · Enter on behalf) · Orders (bağlı kontratlar · New order on behalf · Mark delivered) · Badges · Payment (ÖZET — ödeme
+>     kontrat ekranında kaydedilir) · Operations bilgileri · alıcılar (to / cc · dil · birincil) · Correspondence (giden e-postalar "View" · exhibitor'ın yazdıkları ·
+>     ekip notları) · History · kontratın Sales iletişim günlüğü (UI-TAM'dan — korundu).
+>   - **Operations bilgileri (EK-3 F1):** stand type ve sales group SEÇMELİ (referans listesinden); **stand no ELLE yazılan metin** — Exhibitor Page başlığı, liste,
+>     stand sheet ve e-posta başlığı YALNIZ bu alanı okur, boşsa "to be confirmed". m² düzenlenmez (RAP-04).
+>   - **H5:** stand type deadline'dan SONRA girilirse sistem Stand bölümünü +7 gün açar — SİSTEM olayı "reopened — stand type set late"; varsayılan fascia pencere
+>     geçince uygulanır; elle Reopen gerekmez. (Stand e-postasının "hemen" gitmesi zincirle — §5.)
+>   - **H4 "Enter on behalf":** not ZORUNLU · stand onayı ve catalogue doğrudan Approved · yine sürümlü, değişmez kayıt · History'de "entered on behalf" + not + yapanın
+>     adı · exhibitor sayfasında görünür. Adına sipariş aynı çekirdek yolundan (not zorunlu). "Mark delivered" (geri alınabilir).
+> - **Commit:** LEENA eliza-next `05ab149` + `df63427` (PUSH: CC, yalnız `eliza-next`; canlı `main` DEĞİŞMEDİ `2db0131`). Migration YOK (kayıt 76).
+> - **Ölçülenler:**
+>   - **Test (yerel, PG 14.18; veritabanı oturumu UTC):** tam zincir tek koşuda **1066 / 1066** — 63 suite (1048 + yeni suite `test_ui_tam2_team.js` 18). Eski ekran
+>     testleri DEĞİŞMEDEN yeşil (iki yeni sayfa önce onlara takıldı, sayfalar kurala uyduruldu: kabuk anahtarı · sayfada hesap yok · kontrat tarihi ham basılmaz).
+>   - **Staging (fuar 15, cc-project):** liste 3 exhibitor · toplamlar R3 ile EŞİT (4 kontrat = 3 exhibitor + 1 sipariş · 39,00 m²) · görünüm = sayaç (Stuck 2 / 2 ·
+>     Waiting 0 / 0 · Payment warning 1 / 1) · liste yanıtı 0,8–1,9 sn · Sales 409 (`operations.read`) · dış kullanıcı 409. Ekranlar 1440 + 390 px: HTTP 200 · yatay
+>     taşma 0 · konsol hatası 0.
+>   - **Eylemler (staging, uygulamanın kendi uçlarıyla):** stand no yazıldı → Exhibitor Page başlığı ve e-posta başlığı okuyor · listede olmayan stand tipi 400 ·
+>     Remind → echo; aynı gün ikincisi 409 "reminded today 00:49 — next tomorrow" · toplu Remind önizlemesi: 1 gidecek · 2 atlanacak (bugün hatırlatıldı · alıcı e-postası
+>     yok) → önizlemesiz onay 409 → doğru onayla 1 gitti · sipariş "Delivered" (sayfa şeridinde "Done · delivered") · not · notsuz "Enter on behalf" 400 ·
+>     Correspondence "View" metninde sayfa anahtarı YOK · stand sheet CSV.
+>   - **H5 kanıtı:** testte (`test_ui_tam2_team.js` H5): sistem olayı (yapan: system · kullanıcı yok · not "reopened — stand type set late" · neden
+>     `stand_type_set_late` · tarih bugün + 7), pencere içinde To do, 8. gün varsayılan fascia; deadline'dan önce girilende olay yok. Staging kanıtı §6'da (yeni SAMPLE
+>     kontratla).
+>   - **Echo e-postalar (2 hatırlatma; gönderilmedi)** dosyada. **TABAN** 342.00 · **TABAN-2 EŞİT**.
+>   - **Y2 — bağlı / işaretli:** Exhibitors listesi BAĞLI; işaretli 2 yer: Chain sütunu (§5) · Fair days görünümü (iskelet — UX tam tarif vermedi). Exhibitor
+>     detail BAĞLI; işaretli 1 yer: E-mail chain kartı (§5).
+> - **Ön-onaylı SAPMA + 🔶 (Sentez'e):**
+>   1. 🔶 **Koyu "In review" çipi (varsayım 13):** bileşen setinde koyu çip yok → MEVCUT "primary" tonuyla, metni "In review · ours". Yeni token / sabit renk YOK.
+>      Gerçek koyu çip UI-DÜZELTME-1'e.
+>   2. 🔶 **Elle Remind de build-up'ın ilk günü durur** (C9 "hatırlatma durur" — en kilitli okuma; fuar günü ödeme kovalaması telefonla).
+>   3. 🔶 **"Waiting for us"** = incelemede bekleyen gönderim + exhibitor'ın cevaplanmamış değişiklik isteği (ekip Reopen ile ya da "request answered" notuyla kapatır).
+>   4. **"Payment warning" görünümü = Payment Overdue** (Balance due uyarı sayılmadı; sayaçta ayrı).
+>   5. 🔶 **Hall süzgeci KONMADI** (kaynağı floor plan olurdu — EK-3 F1). Kuyruk satırı AYNEN: "stand no'nun kaynağı → yeni floor plan modülünün yerleştirme kaydı
+>      (Mimari hattı)".
+>   6. **Catalogue "Request changes" yorumu tek metin** (UX "alan bazlı yorum" — alan alan yorum yok; "son sürümden farklar" alan adlarıyla işaretli).
+>   7. **Adına catalogue girişi tam form** (yeni görsel yüklenmezse son sürümün görselleri korunur); adına Space-only girişinde dosyalar ekipçe yüklenir.
+>   8. **Yaşam döngüsü eylemleri (beklet / aktar / iptal) kontrat ekranında kaldı** — detay salt-okunur durumda uyarıyla; varsayım 12 (Beklet → yalnız Reactivate ·
+>      İptal → hepsi gizli) eylemlerin gizlenmesiyle uygulandı, "Reactivate" düğmesi ayrıca KONMADI (mevcut kontrat akışı).
+>   9. **Operations bilgilerini `operations.write` yazar** (yeni uç); UI-TAM'ın `contracts.write` isteyen eski ucu yerinde, ekran artık yenisini kullanır.
+>   10. **`df63427` düzeltmeleri:** alıcı tablosu dar sütunda taşıyordu · "receipt checked" satırında yapanın adı yoktu · adı boş göç kontratında bağlantı metni boştu.
+>   11. **Bulunan hata (testle yakalandı, düzeltildi):** olay kimlikleri metin olarak karşılaştırılıyordu → "Waiting for us" isteği gizleyebiliyordu; sıra artık kayıt
+>       sırasından.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** PG 14 ikinci koşu + PG 17 (paket sonunda) · staging'de H5 (stand deadline'ı geçmiş + tipi boş SAMPLE kontrat yok — §6'da) · staging'de
+>   Approve / Request changes / Reopen / adına giriş / adına sipariş EKRANDAN tıklanarak (uçtan ve testte; ekranlar yüklenişte ölçüldü) · büyük fuarda liste süresi
+>   (staging fuarı 3 exhibitor — canlı kopyadaki büyük bir fuarla ölçülmedi: o fuarlar satışa açık değil ama liste salt okur — ÖLÇÜLECEK) · Office Manager / Finance
+>   hesabıyla tur (araç hesabı yok — testte) · Fair days · Safari / Firefox / gerçek telefon.
+> - **Bilinçle yapılmayanlar:** Sales'e exhibitor ekranı (EK-1 madde 6 — kuyruk, Suer kararı) · floor plan'a her tür bağ · mockup CSS'i · kontrat yaşam döngüsü akışı ·
+>   kural motoru · canlı her şey.
+> - **Kuyruğa:** koyu "In review" çipi (UI-DÜZELTME-1) · alan bazlı catalogue yorumu (S) · Fair days tam tarifi (UX) · büyük fuarda liste süresi ölçümü (S) ·
+>   "satışçı kendi kontratlarının exhibitor durumunu salt okunur görsün mü" (Suer kararı, Faz 4).
+> - **→ Sıradaki:** §5 ZİNCİR (planlama · 6 yerleşik e-posta · Chain status · Send all now / Resend / Exclude · Rules listesi).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
