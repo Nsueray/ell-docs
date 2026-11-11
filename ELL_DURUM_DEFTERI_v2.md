@@ -8999,6 +8999,111 @@
 >   `.claude/skills` belgeleri.
 > - **→ Sıradaki:** §1 ön ölçüm (set · tarama · ❓ listesi · bağlantı haritası · kimlik) → §3 prototip katmanı → §4 yetki migration'ı → §5 ekranlar (Y1 sırası).
 
+> ## ✅ 2026-11-11 — PAKET UI-TAM 1. PARÇA: ÖN ÖLÇÜM (§1 a–f) + PROTOTİP KATMANI STAGING'DE (`/design-preview/`, Y3) · BAĞLANTI HARİTASI (LEENA `eba7970`)
+>
+> - **Kriter kaynağı:** [defter:2026-11-11 SENTEZ 11 Kas: UI-ÖNCE FAZI — KURALLAR (Y1–Y10) + PAKET UI-TAM] (Y2 · Y3 · C §0) + Orchestrator UYGULAMA §1 / §3 ·
+>   kütük YON-21 eki · UI-07 · tarama yöntemi [defter:2026-10-23 UI-0 BELGE KAPANIŞI (KB @ 92c3ac9) + UI-0b HÜKÜMLERİ].
+> - **ÖN ÖLÇÜM (§1):**
+>   - **(a) SET** — `~/Downloads/Eliza PlatformDesign`: **65 dosya** (kökte 38 görünür öğe + gizli `.thumbnail`): 31 HTML (22 ürün ekranı + ürün dizini +
+>     Directions + A / B varyant 4 + galeri 3) · `design-canvas.jsx` · `styles/` 4 · `themes/` 12 · `warm/` 3 · `export/` 4 (2 gömülü paket + 2 `-src`) ·
+>     `uploads/` 1 · `screenshots/` 8. Sentez A tarifiyle **fark yok** (22 ürün ekranı sayıldı: Login 1 · Sales 5 · Ops 7 · Finance 5 · Mobile 3 · Settings 1).
+>     **Repoda kopyası:** LEENA'da YOKTU; ell-docs `archive/design/` 23 Eki setinin taranmış 42 dosyası. sha256 (metin dosyaları, 56 ↔ 40): **39 AYNI ·
+>     1 DEĞİŞMİŞ** (ürün dizini sayfası) · **16 YENİ** (Login ×3 · Finance – Commissions · Mobile ×3 · Ops – Visitor & Access · Sales – Companies / Mail /
+>     Quotes · export ×4 · uploads brief) — 16'nın 10'u 23 Eki'de taramadan geçmeyip alınmayanlar, gerçekten yeni olan Sales – Mail + export ×4
+>     (kaynak klasör `Eliza Platform new ui design` ile: 50 aynı · 1 değişmiş · 5 yeni).
+>     **Stiller ↔ ui2:** setin `signal.css :root` · `themes.css` vermillion · cobalt renk anahtarları ui2 `tokens.css`'teki üç temayla **32 / 32 / 32 AYNI,
+>     fark 0**. Set `signal.css`'te olup ui2'de olmayan sınıf 29 (stat · bar · delta · live-dot · kbd · chip-outline · input-group · yardımcılar);
+>     `atlas.css` (B yönü) ve `mobile.css` ui2'de yok. Diğer 13 tema paleti `themes/*.html` + `warm/*.html` içinde satır içi `:root` bloklarında.
+>     `uploads/` brief'i (mimari tarifi bayat) kullanılmadı, alınmadı.
+>   - **(b) TARAMA** (beş kategori; 56 metin dosyası, regex + staging `claude_readonly`, `BEGIN READ ONLY`, yalnız sayı): **anahtar / sır 0** ·
+>     **şifre 8 satır, değer DEĞİL** (3 Login sayfasında etiket + yer tutucu · Sales – Mail'de bir metin) · **e-posta 40 farklı adres / 91 satır**
+>     (26 alan adı; 4'ünün gerçek kaydı var — kiracı alan adları dahil; **1 adres gerçek kayıtla birebir** — temsilci 1 · ziyaretçi 5 · kampanya alıcısı 4) ·
+>     **telefon 4** (Sales – Companies) · **ad: 274 aday ifadeden 7'si kayıtla eşleşti** — 3'ü kişi adı (ziyaretçi / kampanya alıcısı / call-center),
+>     1'i yaygın iki-ad öneki, 3'ü kişi değil (kiracı adı · fuar adı · unvan); ayrıca 1 ön ad bir temsilcinin ön adıyla aynı. Firma adı eşleşmesi 0.
+>     Adlar deftere yazılmadı. **LEENA repo PRIVATE** (`gh repo view`) → sunulan kopya commit edildi; set ell-docs'a GİRMEDİ.
+>   - **(c) Sentez ❓ listesi** (salt-okunur ölçüm, dosya:satır):
+>     - teklifte **konu YOK** · **ödeme koşulu YOK** (`migrations/058_quotes.sql:51-89`; serbest `notes` + tüzel kişi banka bloğu var) · **geçerlilik VAR**
+>       (`quotes.valid_until`, 058:68; yalnız taslakta değişir; ui2 `sales-quote.html:110`).
+>     - kontratta **satış tipi YOK** (repo genelinde arama 0) · **stand tasarım linki VAR** (`contracts.stand_design_link` text,
+>       `016_contract_operational_columns.sql:22`) · stand NO kontratta YOK (yalnız kat planında `expo_stands.stand_code`, `001:76`; `contract_id`
+>       yazan uç yok).
+>     - **stand tipi ve satış grubu SERBEST METİN** (`016:24` · `016:27`; CHECK / FK / referans tablosu yok). Yazan tek yol Zoho göçü
+>       (`scripts/zoho/lib/apply.js:126-127`); **operasyon alanlarını yazan uç YOK** (`routes/contracts.js` yazım uçları: convert · status ·
+>       payments · reverse · transfer · assignment · schedule ×2). ui2'de bu alanları gösteren ekran yok (yalnız klasik `contract-detail.html:594-600`).
+>     - **owner cari:** `virtual` hesap + `person_id` (`036_ledger_reference.sql`); ayrı "owner" türü yok; ui2 `finance-accounts.html` kutusu + özet kartı.
+>     - **tek gelir listesi YOK:** tüm ödemeleri listeleyen uç / ekran yok (R5 aylık + temsilci kırılımı · Admin › Migration › Unlinked income ·
+>       rapor oluşturucu Payments modülü — üçü de kısmi).
+>     - **stat-card → kayda inme:** 11 sayfada `href`'siz kart var (ör. `operations-expos.html:102-107` · `sales-performance.html:60-64` ·
+>       `finance-collections.html:58` · `admin-security.html:44-48`); 3 sayfada süzgeçli listeye, 10 sayfada yalnız sayfa içi çapaya iner.
+>     - **EMS `created_by`:** visitors · forms · terminals · email_templates · badge_templates · import_logs / jobs · expo_exhibitors'ta `*_by` kolonu
+>       YOK; `email_campaigns.created_by` ve `checkins.staff_id` kullanıcı değil ORGANİZATÖR kimliği tutar; `payments.created_by` her yazımda NULL.
+>     - **fuar son tarihleri:** 8 ofset + 8 elle tarih (`010_expo_operations.sql:103-120`); etkin tarih `GET /api/expos/:id`'de hesaplanır
+>       (`routes/expos.js:121-134`); rozet son tarihi YOK; ui2'de gösteren ekran yok (klasik `expo-form.html:242-250`).
+>     - **Firma kartı "UX brief'i":** defter + kütükte YOK (Orchestrator ölçümü); setin Sales – Companies ekranında **sekme YOK** (kartlar: Contacts ·
+>       Quotes & deals · Affiliations · Activity · Account team · Quick facts) → dört sekme mevcut verinin sekmeleriyle kurulacak
+>       (Contracts · Quotes · Contacts · Communication) — **ön-onaylı SAPMA + 🔶**.
+>   - **(d) BAĞLANTI HARİTASI** → `docs/audits/UI_TAM_BAGLANTI_HARITASI_2026-11-11.md` (22 ekran × her öğe → mevcut uç | ucuz uç (S) | işaretli + kuyruk;
+>     açılacak 6 ucuz uç §6'da). Plan belgesidir; gerçekleşen "bağlı / işaretli" sayıları ekran parçalarının kayıtlarında.
+>   - **(e) KİMLİK** (ölçüm, dosya:satır):
+>     - `middleware/authMiddleware.js`: klasik token (`user_id` yok) DB'ye gitmeden geçer (`:38-39`); iç kullanıcı token'ı tek sorguyla aktiflik
+>       denetlenir, geçer (`:40-49`); dış kullanıcı izin listesi dışında 409 `EXTERNAL_NOT_ALLOWED` (`:18-22`, `:46-47`).
+>     - **EMS uçlarında iç kullanıcı için HİÇBİR izin kapısı yok**: EMS route dosyalarının hiçbiri `requirePermission` kullanmıyor; iç kullanıcı
+>       organizasyon genelinde EMS verisine erişir (`tests/test_b2_scope.js:196-207` bunu 200 olarak sabitliyor — Sales şablonu dahil).
+>       `operations.read` yalnız `nav.json` + migration + testlerde geçiyor, `routes/` altında YOK.
+>     - Kayıt defterinde operations modülünde TEK kod: **`operations.read`** (`044_permissions.sql:61`); **`operations.write` YOK**. Veren şablonlar:
+>       Project (all, `044:139`) · Office Manager (office, `044:146`) · Owner (kısa devre). Kapı sonrası EMS'e giremeyecek iç şablonlar:
+>       **Finance · Sales · Sales Operations**.
+>     - Project şablonu bugün: operations.read · budget.read / .write · sales.read · contracts.write (all) — **contracts.read YOK** (Y5 bunu ekler).
+>     - **Mobile / saha:** terminal uçları (`/api/terminal/*`) yalnız terminal anahtarı; **kullanıcı oturumuyla çağrılabilenler:** `POST /api/checkins`
+>       (`routes/checkins.js:11`) · `GET /api/visitors/paginated?search=` · `POST /api/visitors/manual` · `GET /api/checkins/stats/summary` ·
+>       `GET /api/reports/summary` / `/live`. Lead tarama uçları (`/api/leads/*`) kimliksiz (EMS E sınıfı — dokunulmadı).
+>     - **Bulgu (EMS kuyruğuna, bu pakette dokunulmadı):** `middleware/dualAuth.js` JWT yolu (`:31-41`) `users` tablosuna bakmaz → `/paginated` ·
+>       `/import` · `/manual` uçlarında dış kullanıcı ve pasif kullanıcının süresi dolmamış token'ı da geçer (aynı kiracı içinde). YET-25 kapısı
+>       bu yolu da kapsayacak (§4-c).
+>   - **(f)** S3 = b'nin yeri: sunucu `routes/analytics.js:23` + `:255` (`contracts.read` kapısı — Project 409) · ekran
+>     `public/ui2/operations-expos.html:30-34` · test `tests/test_p3e.js:206-210` (E15, kaynak deseni). **Suer'in staging Owner hesabı:** araç olmayan
+>     Owner kullanıcı 1 — **aktif, şifresi VAR**, açık daveti yok (giriş denenmedi).
+> - **PROTOTİP KATMANI (Y3):**
+>   - **Yer:** LEENA `backend/leena-v401-backend/design-preview/` — `public/` ve `public/ui2/` DIŞINDA (UI-0 testleri ürün sayfaları için AYNEN;
+>     ui2'de istisna açılmadı). `index.js`: `/design-preview` statik bağlama + `X-Robots-Tag: noindex, nofollow` + dizin sayfası = setin ürün dizini.
+>     Oturumsuz erişim: ui2 statik dosyaları bugün oturumsuz 200 (ölçüldü: `/ui2/index.html` · `nav.json` · `finance-summary.html`) → prototip de aynı.
+>   - **Sunulan kopya — 58 dosya** (48 HTML + 4 CSS + jsx + 4 PNG + boş durum dosyası): her HTML'de şerit **"PROTOTYPE — sample data, not real"** +
+>     "All screens" (ürün dizini) + "Back to ELIZA" + `<meta name="robots" content="noindex, nofollow">`. Kaynak (Downloads) DEĞİŞMEDİ.
+>   - **Ön-onaylı SAPMA'lar (sunulan kopyada; tasarım aynı — emsal UI-0b):**
+>     1. **E-posta 91 satır:** tüm adresler ayrılmış `.example` alanına taşındı (kiracı alan adları → `eliza.example`; diğerleri `<ad>.example`);
+>        gerçek addan türemiş 4 yerel parça değişti. Yeniden tarama: `.example` dışı alan adı **0**.
+>     2. **Ad 29 yer:** kayıtla eşleşen 3 kişi adı + 1 ön ad kurgusal değerle değişti (yeni değerler aynı tablolarda 0 eşleşme ölçüldü). Yeniden
+>        tarama: kişi adı eşleşmesi **0** (kalan 2 eşleşme kiracı adı + fuar adı). · **Telefon 4** → açıkça kurgusal desen.
+>     3. **Alınmayanlar:** `uploads/` brief · `.thumbnail` · hiçbir sayfanın yüklemediği 4 PNG · `export/` altındaki 2 gömülü paket (içeriği taranamaz
+>        biçimde paketli; aynı ekranların `-src` sürümleri sunuluyor).
+>     4. **Yeniden üretilenler:** iki login küçük resmi (aslında e-posta görünüyordu) temizlenmiş sayfalardan aynı boyutta (1440 × 900) yeniden çekildi.
+>     5. **Bağlantı onarımı:** `export/*-src.html` kökte yazılmış bağlantıları alt klasörden kırıktı (sette de) → 17 bağlantıya `../` · tuvalin
+>        okuduğu isteğe bağlı durum dosyası sette yok (her galeri sayfasında 404) → sunulan kopyada boş dosya.
+>   - **Kabuk bağlantısı (UI-02):** `nav.json` öğesi `design-preview` (`domain: shell` · `topbar: true` · `internalOnly`) → `shell.js` üst çubukta
+>     sağda bağlantı çizer (yol / etiket shell'de yok) → ui2 kapı sayfası `design-preview.html` (29 ekran bağlantısı + "PROTOTYPE" uyarısı; API yok).
+>   - **Araçlar (Mac, repo DIŞI — `~/ell-ui-tools/ui-tam/`, 700):** `build_preview.py` (kopya + temizleme; eşleşen adların eşlemesini taşıdığı için
+>     repoya girmedi) · `login_thumbs.js` · `proto_tour.js` · `stg.js` (araç hesabı oturumu).
+>   - **Kaldırma bu pakette DEĞİL** (faz sonu) → kuyruk + ADR-023 kesim maddesi adayı: "prototip katmanı kesimden ÖNCE kalkar (canlıya gitmez)".
+> - **Commit:** LEENA eliza-next **`eba7970`** (`f362819` üstünde; 67 dosya: 58 prototip + `index.js` · `nav.json` · `shell.js` · `signal.css` ·
+>   `design-preview.html` · `test_ui_tam.js` · `test_ui2_ui0.js` · `package.json` · `CLAUDE.md`) · push `f362819..eba7970` · ell-docs bu kayıt +
+>   `docs/audits/UI_TAM_BAGLANTI_HARITASI_2026-11-11.md`. **PUSH: CC (YON-19).**
+> - **Ölçülenler:**
+>   - **Test:** PG 14 tam zincir **877 / 877 · 56 suite · EXIT 0** (871 + yeni `test_ui_tam` 6). **Hüküm beklentisi (SAPMA, test satırında yorum):**
+>     `test_ui2_ui0` K2 kabuk sınıf listesine `nav-link` (Sentez 11 Kas Y3 — kabuktan bağlantı). PG 17 + ikinci PG 14 koşusu paket sonunda.
+>   - **Staging (deploy `eba7970`, ~1 dk; Playwright):** dizin + 9 sayfa (Login · Sales – Mail · Ops – Dashboard · Finance – War Room · Mobile –
+>     Dashboard · Settings · Theme Gallery v2 · Directions · export src) → hepsi **200 · şerit VAR · noindex (meta + başlık) · konsol hatası 0 ·
+>     kırık görsel 0**; bağlantı zinciri dizin → Ops Dashboard → Exhibitor → şeritten dizine **ÇALIŞIYOR**.
+>   - **Kabuk bağlantısı (araç hesapları):** cc-owner VAR → kapı sayfası → `/design-preview/` (konsol 0) · cc-staging VAR (iniş sayfasında
+>     bilinen 1 kapsam 409'u — [defter:2026-11-10 PROVA-1]) · **cc-external YOK** (dış kullanıcıya gizli).
+>   - Suer'e tek satır: "prototip açık: https://leena-staging.onrender.com/design-preview/".
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** adların kurgusal olduğu (yalnız bizim kayıtlarımızla eşleşmeme ölçüldü) · eşleşme yalnız STAGING kopyasında (10 Kas
+>   canlı export'u) — canlının 10 Kas sonrası kayıtları ölçülmedi · PNG'lerde OCR yok (iki `thumb-*-dash` 23 Eki'de gözle geçmişti; yeniden bakılmadı) ·
+>   gömülü export paketlerinin içeriği (açılmadı; sunulmuyor) · 48 sayfanın 38'i tarayıcıda tek tek açılmadı (bağlantı hedefleri testle, 10 sayfa
+>   tarayıcıyla) · Suer'in Owner hesabıyla giriş (yalnız aktif + şifreli olduğu) · Render API anahtarı (gelmedi — "anahtar bekliyor").
+> - **Bilinçle yapılmayanlar:** setin ell-docs'a alınması · Downloads'taki kaynağa dokunma · `dualAuth` bulgusunun bu parçada düzeltilmesi (§4-c'de) ·
+>   klasik sayfa gövdeleri · canlıya herhangi bir şey.
+> - **→ Sıradaki:** §4 yetki migration'ı (070: Y5 · YET-25 · YET-26 · tema tercihi · cc-project) → Login + kabuk → Operations → Sales → Finance → Mobile + Settings.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
