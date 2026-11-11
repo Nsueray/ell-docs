@@ -9172,6 +9172,179 @@
 >   (E sınıfı) · klasik sayfa gövdeleri · staging'e iş verisi yazma (yalnız araç hesabı) · canlıya herhangi bir şey.
 > - **→ Sıradaki:** Login + kabuk (arama kutusu · zil yeri · tema uygulaması · işaret bileşeni) → Operations.
 
+> ## ✅ 2026-11-11 — PAKET UI-TAM 3. PARÇA: LOGIN + KABUK SETİN DÜZENİNDE — arama kabukta (S6) · zil yeri işaretli · tema hesaptan · İŞARET bileşeni (UI-07) + setin düzen bileşenleri (LEENA `a71164f` + düzeltme `3dab8f9`)
+>
+> - **Kriter kaynağı:** [defter:2026-11-11 SENTEZ 11 Kas: UI-ÖNCE FAZI — KURALLAR (Y1–Y10) + PAKET UI-TAM] (Y2 gerçek veri kuralı · Y4 tema · C §1 Login +
+>   kabuk) + kütük UI-07 + bağlantı haritası §0 (`docs/audits/UI_TAM_BAGLANTI_HARITASI_2026-11-11.md`).
+> - **Ne yapıldı:**
+>   - **İŞARET tek bileşen (UI-07):** `components.js` `C.nc` · `C.ncValue` · `C.ncButton` · `C.ncBox` — görünür "Not connected yet" + `data-nc`; işaretli
+>     düğme devre dışı (ölü düğme değil); işaretli sekme / hızlı eylem / menü öğesi bağlantı değil. Metin tek yerde (`C.NC_TEXT`); sayfalar elle yazmaz.
+>   - **Setin düzen bileşenleri** (hepsi `components.js` + `signal.css`, renk yalnız token — UI-03 / UI-04): bağlam çubuğu · geri sayım · KPI kartı ·
+>     sekme şeridi · araç çubuğu · sayfalama · hero · anahtar / değer · satır listesi · adım bandı · zaman çizelgesi · pano + kart · kilitli alan ·
+>     yatay / dikey CSS çubukları (grafik kütüphanesi yok) · giriş düzeni · mobil çerçeve · tema kartı · ayar menüsü · **köprü (`C.bridge`)** — klasik
+>     ekran yolu `nav.json`'daki `legacy` öğeden okunur, sayfa yol yazmaz (UI-02); `nav.json`'da yoksa işaretli devre dışı düğme.
+>   - **Login + davet kabul** setin iki panelli düzeninde (`C.auth`); giriş mantığı ve uç AYNI (`/api/user-auth/login`). Alan kutuları `nav.json`
+>     `domains`'ten. **Bağlı:** e-posta + şifre girişi · davet kabul · klasik giriş köprüsü (`nav.json` `classic-login`). **İşaretli (4):** Forgot
+>     password · Keep me signed in · Continue with SSO · dil seçimi. Setin uydurma verisi (örnek e-posta · sürüm no · şehir satırı) üründe YOK.
+>   - **Kabuk:** üst çubukta **arama kutusu** (form → `nav.json` `shellSearch` öğesinin sayfası `search.html`; iç VE dış kullanıcıda görünür, kapsam
+>     sunucuda — RAP-16; ⌘K / Ctrl-K odaklar) · **zil = yalnız yer, işaretli** (bildirim merkezi yok) · **tema hesaptan** (`/me` `theme` →
+>     `localStorage` + `data-theme`; `null` → varsayılan vermillion) · "Design preview" bağlantısı (`nav.json` `topbar`, dış kullanıcıda yok).
+>     Arama sonuç sayfası Sales alt menüsünden kabuğa taşındı (`sales-search.html` → `search.html`; Sales alan kapısı kalktı — envanter §4 U6).
+>   - **Oturumsuz ziyaret + düşen oturum → ui2 giriş sayfası** (setin Login'i ürünün girişi). Kabukta TEK adres `ui2LoginUrl` (yol `nav.json` `login`
+>     öğesinden); `ledger-ui.js` `L.api` ve Finance kontrat sayfasının 401 dalı da onu kullanır.
+>   - 7 mevcut sayfadaki etkisiz `#` sayfa göstergesi düz metin oldu (ölü bağlantı 0 — Y2).
+> - **BULGU + DÜZELTME (`3dab8f9`, bu parçanın staging turunda ölçüldü):** `a71164f` ile kabuğun yönlendirmesi ui2 girişine çevrilmişti ama
+>   oturumsuz ziyaret staging'de klasik `/login.html`'e düşüyordu — sayfanın ilk API çağrısı 401 alınca `L.api`'nin 401 dalı klasik adrese gönderip
+>   kabuğun yönlendirmesini eziyordu. `a71164f`'teki S4 testi yalnız kaynak metnine bakıyordu → davranışı görmedi. Düzeltme: tek adres
+>   (`ui2LoginUrl`) + S4 artık davranışı sınar (anonim kabukta `ui2LoginUrl()` değeri · `L.api` 401 dalı · ui2 dosyalarında klasik giriş yolu metni 0).
+> - **Ön-onaylı SAPMA'lar (YON-18) + 🔶:**
+>   1. **Oturumsuz kullanıcı artık ui2 girişine gider** (eskiden klasik `/login.html`). Klasik organizer hesabı ui2 giriş sayfasındaki köprüden klasik
+>      girişe geçer. Klasik sayfaların kendi yönlendirmeleri (klasik `login.html`) DEĞİŞMEDİ.
+>   2. **Arama Sales alanı olmayan kullanıcıya da açık** (kabuk sayfası; sonuç kümesi sunucuda izne + kapsama göre — değişmedi).
+>   3. **Oturum süresi / parola sıfırlama / SSO / dil** işaretli kaldı — uç açılmadı (kuyruk).
+> - **Commit:** LEENA eliza-next **`a71164f`** (`6f9c4ac` üstünde; 19 dosya) · düzeltme **`3dab8f9`** (5 dosya). **PUSH: CC (YON-19).**
+> - **Ölçülenler:**
+>   - **Test (`a71164f`):** PG 14 tam zincir **904 / 904 · 57 suite · başarısız 0** (895 + `test_ui_tam` 6 → 15: S1–S5 kabuk + giriş · T1–T2 tema ·
+>     Y1–Y3 gerçek veri kuralı). **Hüküm beklentileri (SAPMA — test satırında hüküm yorumu):** `test_ui2_ui0` K2 kabuk sınıf listesi (arama · zil) ·
+>     `test_ui2_ledger_pages` U3 Sales alt menü 8 → 7 bağlantı (arama kabuğa — S6). Düzeltme sonrası tam zincir: [defter:2026-11-11 PAKET UI-TAM
+>     4. PARÇA] ölçülenler.
+>   - **Y3 (uydurma veri üründe 0):** prototipten çıkarılan örnekler (e-posta · para · kod · binlik sayı · kurgusal firma / kişi adı; ≥ 150 örnek) ui2
+>     dosyalarının hiçbirinde geçmiyor (test Y3).
+>   - **Staging (deploy `3dab8f9`; Playwright):** giriş sayfası oturumsuz 1440 px + 390 px → 200 · başlık "Sign in" · işaret 4 · yatay taşma 0 ·
+>     konsol hatası 0. **Oturumsuz ziyaret** 5 sayfada (Finance özet · Operations Dashboard · Sales ana sayfa · Finance kontrat · ui2 kökü) →
+>     `/ui2/login.html` (düzeltmeden ÖNCE ölçülen: `/login.html`). **4 araç hesabı:** cc-owner → Owner ana sayfası, sekmeler Sales · Operations ·
+>     Finance · Admin · cc-project → sekmeler Sales · Operations · Finance · cc-staging (Sales) → Sales · Finance · cc-external → yalnız Sales,
+>     "Design preview" bağlantısı YOK; dördünde de arama kutusu var · zil işaretli · tema vermillion · arama sayfası 200, yatay taşma 0, konsol
+>     hatası 0.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** ⌘K / Ctrl-K klavye kısayolu tarayıcıda (yalnız kod — test S1) · tema DEĞİŞTİRME'nin ekrandan uygulanışı (seçim
+>   ekranı Settings parçasında; uç 2. parçada ölçüldü) · süresi dolmuş GERÇEK token ile 401 yolu (oturumsuz ziyaret aynı dalı kullanır — o ölçüldü) ·
+>   klasik organizer oturumunun ui2 kabuğundaki görünümü staging'de (klasik hesabın şifresi CC'de yok) · Chromium dışı tarayıcı · PG 17 koşusu
+>   (paket sonunda).
+> - **Bilinçle yapılmayanlar:** parola sıfırlama akışı · SSO · dil seçimi · oturum süresi seçeneği · bildirim merkezi (hepsi işaretli → kuyruk) ·
+>   klasik `login.html` gövdesi · `leena-fetch.js` (ortak sarmalayıcı — dokunulmadı) · canlıya herhangi bir şey.
+> - **→ Sıradaki:** Operations (7 ekran).
+
+> ## ✅ 2026-11-11 — PAKET UI-TAM 4. PARÇA: OPERATIONS 7 EKRAN STAGING'DE — Dashboard · Exhibitors · Exhibitor detay · Floor plan · Visitor & Access · Communications · Reports · `/api/operations` (4 okuma ucu) · kontrat operasyon alanları yazımı (LEENA `e7b77ef` + düzeltme `7874fa4`)
+>
+> - **Kriter kaynağı:** [defter:2026-11-11 SENTEZ 11 Kas: UI-ÖNCE FAZI — KURALLAR (Y1–Y10) + PAKET UI-TAM] (Y2 · Y5 · C §2 Operations) + Orchestrator
+>   UYGULAMA §5 ("ucuz uç": mevcut tablolar üstünde okuma, yeni tablo / motor yok) + bağlantı haritası §1 + §6 · BM v4 yama-3 §4.5.
+> - **Ne yapıldı:**
+>   - **Fuar bağlamı** (`ops-ui.js`): seçili fuar `?expo=<id>` ile taşınır; yoksa klasik ekranlarla ORTAK anahtar (`localStorage.selectedExpoId` /
+>     `selectedExpoName`) okunur → köprüyle açılan klasik ekran aynı fuarı görür. Hiçbiri yoksa en yakın gelecek fuar. Bağlam çubuğu: fuar seçici ·
+>     yer / tarih · cluster rozeti · geri sayım (parçalar sunucudan).
+>   - **`routes/operations.js`** — `/api/operations`, **EMS iç kapısının arkasında** (YET-25: iç kullanıcı `operations.read`), YALNIZ okuma, yeni
+>     tablo yok, her sayı sunucuda (RAP-11); dördü de fuar sahipliğini tek yardımcıyla sınar (EMS-01, aynı 403):
+>     `GET /dashboard` (fuar başlığı · evre · geri sayım · ziyaretçi / check-in sayaçları · saatlik check-in · konferans konu sayıları — gün / saat
+>     UTC, klasik check-in istatistiğiyle aynı) · `GET /floorplan-summary` (salon başına plan sürümü + durum bazında stand sayısı / m² + stand
+>     listesi) · `GET /communications-summary` (e-posta kuyruğu sayaçları son 7 gün · abonelikten çıkan · kampanya / şablon sayıları) ·
+>     `GET /exhibitors` (**fuarın KONTRATLARI = katılımcı listesi**; ek kapı `contracts.read` + kontrat kapsamı YET-03; m² · brüt · ödenen · bakiye
+>     durumu `utils/metrics.js`'ten — RAP-04..08 tek tanım; komisyon alanı YOK).
+>   - **`PUT /api/contracts/:id/operations`** (yazan uç yoktu → açıldı): stand tipi · katalog sayfası · stand tasarım bağlantısı (http/https) ·
+>     nakliye (Included / Excluded) · boş m². Kapı `contracts.write` + kontrat kapsamı (statü yazımıyla aynı); kısmi güncelleme; boş metin alanı
+>     temizler; **denetim satırı aynı işlemde** (`contract.operations_update`, alan bazında önce / sonra — YET-08); değişiklik yoksa satır yazılmaz.
+>   - **7 ekran (ui2, `ops-*.html`) — öğe bazında (Y2):**
+>     1. **Dashboard** — *bağlı:* imzalı kontrat / m² / hedef (R3) · kayıtlı ziyaretçi · check-in + saatlik dağılım · konferans kaydı · stand
+>        sayıları · e-posta kuyruğu · 8 son tarih etkin tarihle (`GET /api/expos/:id`) · klasik fuar kaydı köprüsü. *İşaretli:* onboarding sayaçları
+>        (katalog · stand tasarımı · build-up · rozet) · salon doluluğu / mini harita · ziyaretçi hedefi · konferans kapasitesi · bekleyen operasyon
+>        e-postası · cluster görünüm anahtarı · fuar kodu.
+>     2. **Exhibitors** — *bağlı:* kontrat başına satır (firma · ülke · m² · stand tipi · AF no · tutar · ödenen % · statü) · sayaçlar (imzalı · m² ·
+>        açık bakiyeli) · arama · statü süzgeci · sayfalama · dışa aktarım (R3 firma listesi) · satır → detay · "Add exhibitor → new quote".
+>        *İşaretli:* onboarding sayaçları ve sütunu · stand no / salon · lead scanner · Hall / Stage süzgeçleri · Onboarding / Ready / Blocked
+>        sekmeleri · katalog tamamlanma.
+>     3. **Exhibitor detay** (= kontrat) — *bağlı:* kontrat + tutar / ödenen / bakiye · m² + ödenen % · temsilci · firma kişileri (`sales.read`
+>        varsa) · iletişim günlüğü (`communications.read` varsa) · fuar son tarihleri · operasyon alanları OKUMA + DÜZENLEME · imzalı tarama /
+>        stand tasarımı bağlantıları · Finance kontratına geçiş. Komisyon bölümü bu ekranda hiç çizilmez. *İşaretli:* onboarding bandı ve durumları ·
+>        stand no / salon · Issue badges · lead scanner koltukları / lead sayısı · belge yükleme · katalog formu durumu · onay akışı · build-up görevleri.
+>     4. **Floor plan** — *bağlı:* salon sekmeleri · plan sürümü · durum bazında stand sayısı / m² · stand listesi · klasik editöre köprü.
+>        *İşaretli:* tuval önizlemesi (stand haritası · araçlar · zoom) · stand → katılımcı (kontrat) bağı · dışa aktarım.
+>     5. **Visitor & Access** — *bağlı:* ziyaretçi listesi (arama · tür · kaynak · check-in durumu · sayfalama) · dışa aktarım · **Add visitor**
+>        (klasik `POST /api/visitors/manual`) · konferans konuları · terminaller · rozet şablonları · formlar · sayaçlar · 8 klasik köprü (ziyaretçi
+>        günlüğü · içe aktarım · formlar · terminaller · rozet şablonları · konferanslar · check-in'ler · rozet). *İşaretli:* Confirmed · No-shows
+>        sayaçları · Day süzgeci · Access zones sütunu · toplu seçim.
+>     6. **Communications** — *bağlı:* kampanyalar · şablonlar · kuyruk sayaçları + abonelikten çıkanlar · 5 klasik köprü (şablonlar · kampanyalar ·
+>        gönderim · re-activation · e-posta geçmişi). *İşaretli:* operasyon / pazarlama sınıfı (şablonda sınıf bayrağı yok) · bounce (gözlenemez —
+>        G9) · onaylı kişi sayısı · ortalama açılma · kayıtlı segmentler · 8 adımlı operasyon e-posta zinciri.
+>     7. **Reports** — *bağlı:* kayıt / check-in sayaçları · günlük kayıt (son 30 gün) ve check-in dizisi · ziyaretçi türü dağılımı · kayıt
+>        kaynakları (klasik `GET /api/reports/summary`) · salon başına stand m² · imzalı kontrat / m² (R3) · kayıtlı raporlar (rapor oluşturucu) ·
+>        R8: klasik kayıt + check-in raporu köprüleri, tam ziyaretçi dışa aktarımı. *İşaretli:* ziyaretçi hedefi · katılımcı durum dağılımı ·
+>        salon doluluğu (satılan / boş) · dönem süzgeci · panel CSV'leri.
+>   - **`nav.json`** (BM v4 yama-3 §4.5): Operations girişi Dashboard; gruplar Expo (7 ekran) · Expos (R8 listesi AYNEN) · On-site (öğesi mobil
+>     parçada — boşken alt menüde çizilmez). **17 klasik köprü öğesi** (`legacy`, ebeveyni onu kullanan sayfa). Exhibitors + detay `contracts.read`
+>     ister (kodu olmayan oturumun alt menüsünde görünmez). `C.list` sütunu bütünüyle işaretleyebilir (sütun başlığında işaret + altta dökümü).
+>   - **CLAUDE.md** (EMS tarafı — KURAL 4): `/api/operations` uç özeti · EMS iç kapısı bölümüne ek · beklenen test sayısı.
+> - **BULGU + DÜZELTME:**
+>   - **(testte yakalandı, commit'ten ÖNCE)** denetim eylemi adı ilk yazımda üç parçalıydı; `audit_log` eylem biçimi kısıtı (045: iki parça)
+>     reddediyor, yazma ucu 400 dönüyordu. Ad `contract.operations_update` oldu. Okuma ekranları yerel önizlemede (staging'e salt-okunur vekil)
+>     doğrulanmıştı; yazma ucu ancak test DB'sinde koşunca görüldü.
+>   - **(`7874fa4`, staging turunda ölçüldü)** Reports'ta dört panel "Could not load the report summary" gösterdi. Ölçüm: klasik
+>     `GET /api/reports/summary` 21 684 ziyaretçili fuarda tek başına **11,4 – 12,9 sn** (3 ölçüm); sayfanın diğer çağrılarıyla birlikte ortak fetch
+>     sarmalayıcısının 15 sn sınırını aşıyordu. Düzeltme: `L.api`'ye isteğe bağlı `timeoutMs` (çağıranın kendi iptal sinyali; varsayılan AYNEN) —
+>     yalnız bu çağrıya 60 sn. Klasik uç ve `leena-fetch.js` DEĞİŞMEDİ. **Ucun kendisi yavaş → kuyruk** (EXPLAIN + dizin işi ayrı dilim).
+>   - **(yerel önizlemede)** Reports "Registrations per day" boş çıkıyordu: klasik uç alanı `registrations` adıyla ve yeniden eskiye veriyor — sayfa
+>     `count` okuyordu. Alan + sıra düzeltildi.
+> - **Ön-onaylı SAPMA'lar (YON-18) + 🔶:**
+>   1. **`GET /api/operations/exhibitors` bağlantı haritasının §6 "ucuz uç" tablosunda YOKTU** — harita "katılımcı listesi = R3 kümesi" diyordu; R3'ün
+>      firma listesi kontrat başına satır / sayfalama / operasyon kolonu taşımıyor. Aynı olgu tanımı (`metrics.factsCte`) üstünde okuma olarak
+>      açıldı; toplamı R3 ile aynı (aşağıda ölçüldü).
+>   2. **Operasyon alanları yazımında `sqm` (m²) YOK** — harita §6 "m²" de sayıyordu. `contracts.sqm`, m² kalemi olmayan göçmüş kontratta ölçünün
+>      m² yedeğidir (RAP-04); düzenlenirse R2 / R3 / R6 rakamları oynar. Yazılabilen beş alanın hiçbiri ölçüye / komisyona girmez (kod araması).
+>      🔶 Sentez: `sqm` düzeltmesi ayrı karar (RAP-04 etkisiyle).
+>   3. **Yazma izni mevcut `contracts.write`** (yeni kod / şablon satırı açılmadı — Orchestrator 4-c): Project (all) · Finance (all) · Office Manager
+>      (ofis) yazar; Sales yazamaz. 🔶 Operasyon alanları için ayrı, dar bir yazma kodu istenirse → ADR.
+>   4. **Katılımcı listesi klasik organizer oturumuna kapalı** (409 `NOT_USER_SESSION` — kontrat uçlarıyla aynı). Diğer üç özet ucu klasik token'la
+>      her EMS ucu gibi açılır.
+>   5. **ui2 fuar seçimi klasik anahtarı YAZAR** (`selectedExpoId` / `selectedExpoName`) — köprünün aynı fuarı açması için; klasik sayfa gövdeleri
+>      DEĞİŞMEDİ.
+>   6. **Exhibitor detayında iletişim günlüğü Project'e kapalı** ([defter:2026-11-11 PAKET UI-TAM 2. PARÇA] SAPMA 6 — şablonda `communications.read`
+>      yok): uç çağrılmaz, ekranda nedeni yazar. 🔶 açık.
+>   7. **Hüküm beklentileri (test satırında hüküm yorumu — Sentez 5 Kas not 4):** `test_ui2_ui0` G2 + `test_p3d` R8 (Operations girişi
+>      `operations-expos.html` → `ops-dashboard.html`; gruplar `ops-expos` → Expo · Expos · On-site) · `test_p3e` E15 ("nav'da ops öğesi tek" →
+>      "Expos sayfası tek"; fuar detayı hâlâ ayrı sayfa değil).
+> - **Commit:** LEENA eliza-next **`e7b77ef`** (`a71164f` üstünde; 21 dosya, +1456) · düzeltme **`7874fa4`** (2 dosya). **PUSH: CC (YON-19).**
+>   Migration YOK (kayıt 72, son `070_ui_tam`).
+> - **Ölçülenler:**
+>   - **Test (`e7b77ef`):** PG 14 tam zincir **914 / 914 · 57 suite · başarısız 0** (904 + `test_ui_tam` O1–O3 + `test_ui_tam_access` O1–O7).
+>     Düzeltmelerden (`7874fa4` · `3dab8f9`) sonra çalışma ağacında yeniden: **914 / 914 · 57 suite · başarısız 0** (ağaçta Sales parçasının henüz commit edilmemiş, yalnız alan EKLEYEN üç arka uç değişikliği de vardı).
+>     Yeni testler: 7 ekran nav'da + alt menü (`contracts.read`'siz oturumda Exhibitors görünmez) · klasik ekranlara YALNIZ köprü (17 köprü; sayfada
+>     klasik yol metni 0; kullanılmayan köprü 0) · sayfaların çağırdığı her uç `index.js`'te bağlı · sayfada hesap 0 · katılımcı ucu şablon matrisi
+>     (Owner / Project all · Office Manager ofis · Finance + Sales 409 · ezmeli Sales yalnız kendi kontratı · dış kullanıcı 409 · klasik oturum 409) ·
+>     sayılar fikstürle elle doğrulanan değerlerde (12 + 9 = 21,00 m²; 2400 − 400 = 2000,00 açık) · dört ucun kapı / doğrulama / fuar sahipliği
+>     yanıtları · `routes/operations.js`'te yazma ifadesi 0 · operasyon alanı yazımı (5 alan · denetim satırı · yinelenen yazımda satır yok ·
+>     temizleme · 8 geçersiz gövde 400 · `sqm` / `revenue` / `status` yok sayılır, kolonlar değişmez · yazımdan sonra m² toplamı aynı) · yazma kapısı
+>     matrisi.
+>   - **Staging API (deploy `e7b77ef`; 4 araç hesabı × 7 çağrı):** cc-owner + cc-project dört uç 200 · fuar no'suz 400 · olmayan fuar 403 · boş
+>     gövdeli operasyon yazımı 400 `VALIDATION` (yazım YOK) · cc-staging (Sales) hepsi 409 `PERMISSION_REQUIRED` · cc-external okuma uçları 409
+>     `EXTERNAL_NOT_ALLOWED`, yazma 409 `PERMISSION_REQUIRED`. **Tek tanım kanıtı:** bir fuarda katılımcı ucu "sayılan 158 kontrat · 3195,00 m²" =
+>     R3 `totals` "158 kontrat · 3195,00 m²". Aynı fuar: 21 684 kayıtlı · 15 384 check-in / 7 694 kişi · 31 konferans konusu · 1 salon 5 stand
+>     409,00 m² · kuyruk son 7 gün 19 gönderilmiş · 831 abonelikten çıkan · 7 kampanya · 19 şablon. "Add visitor" kapısı (yazmayan doğrulama
+>     yoklaması — e-postasız gövde): cc-project + cc-owner 400 "Email is required" · cc-staging 409 · cc-external 409.
+>   - **Staging ekran turu (Playwright; cc-project + cc-owner × 7 ekran × 1440 px + 390 px = 28 yükleme):** hepsi 200 · yatay taşma 0 · konsol
+>     hatası 0 · işaret sayıları Dashboard 19 · Exhibitors 14 · Exhibitor detay 15 · Floor plan 8 · Visitor & Access 9 · Communications 17 ·
+>     Reports 10. Reports `7874fa4` sonrası cc-project ile iki genişlikte hata durumu YOK (öncesinde 4 / 4 yüklemede vardı). cc-staging + cc-external Operations
+>     Dashboard adresinde "You do not have access to Operations." (alt menü yok, konsol hatası 0).
+>   - **TABAN** 342.00 · **TABAN-2 EŞİT** · kayıt 72 (deploy sonrası, staging salt-okunur).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:**
+>   - **"Add visitor" formunun GÖNDERİMİ hiçbir ortamda koşulmadı** — staging'e iş verisi yazılmaz (Orchestrator), test DB'sinde `visitors` tablosu
+>     yok (YON-09). Ölçülen: kapı + gövde biçiminin klasik ucun okuduğu alanlarla aynı olduğu (kod) + doğrulama yoklaması. Uç klasik uçtur, değişmedi.
+>   - **Operasyon alanı yazımı staging'de** (iş verisi yazılmaz) — test DB'sinde sınandı; staging'de yalnız boş gövdeyle 400.
+>   - `dashboard` · `floorplan-summary` · `communications-summary` gövdeleri test zincirinde YOK (EMS tabloları test DB'sinde yok) — staging'de
+>     ölçüldü; test zincirinde yalnız kapı / doğrulama / sahiplik.
+>   - Geri sayım + "running" evresi (staging'deki fuar bitmiş — evre `past`; `upcoming` / `running` dalları yalnız kod) · cluster rozeti
+>     (ölçülen fuarın cluster'ı yok) · planı olmayan fuarın Floor plan boş durumu · kampanyası / şablonu olmayan fuar.
+>   - Office Manager ve Finance şablonlarıyla staging turu (araç hesabı yok — test zincirinde) · klasik organizer token'ıyla özet uçları staging'de.
+>   - Köprüyle açılan klasik sayfanın aynı fuarı gösterdiği (klasik sayfa klasik oturum ister; araç hesapları kullanıcı oturumu) — yalnız anahtarın
+>     yazıldığı ölçüldü (kod + test O3).
+>   - PG 17 koşusu + ikinci PG 14 koşusu (paket sonunda) · Render API anahtarı ("anahtar bekliyor").
+> - **Bilinçle yapılmayanlar:** onboarding modeli (katalog · stand tasarımı onayı · build-up · rozet durumu) · stand ↔ kontrat bağı · lead scanner'ın
+>   kontrata bağlanması · ziyaretçi hedefi · erişim bölgeleri · operasyon e-posta zinciri · `operations.write` kodu · `sqm` düzenleme ·
+>   `/api/reports/summary` hızlandırma · klasik sayfa gövdeleri · terminal akışı · staging'e iş verisi yazma · canlıya herhangi bir şey.
+> - **Kuyruğa (işaretlenenler; S / M / L):** onboarding durumu + sayaçları (L) · stand ↔ kontrat bağı ve salon doluluğu (M) · lead scanner ↔
+>   kontrat (M) · ziyaretçi hedefi alanı (S) · konferans kapasitesi (S) · fuar kodu alanı (S) · erişim bölgeleri (M) · Day süzgeci (S) · toplu seçim
+>   (S) · şablon sınıfı bayrağı (S) · bounce verisi (M — G9) · operasyon e-posta zinciri (L) · segmentler (M) · dönem süzgeci + panel CSV (S) ·
+>   kat planı önizlemesi (M) · belge yükleme (M) · `/api/reports/summary` süresi (S — EXPLAIN) · `leena-backend` skill rota tablosu v402'den beri
+>   güncellenmemiş (bu parçada yalnız yeni satır eklendi).
+> - **→ Sıradaki:** Sales (My Work · Mail · Pipeline · Quotes düzeni · Companies + firma kartı).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
