@@ -8773,6 +8773,91 @@
 >   çıktıları (GUV-01 delili; silme Suer kararı, GUV-01) · araç takımını repoya koymak (makineye özel yollar; README'de yazılı).
 > - **→ Sıradaki: BEKLE** — Sentez: DUR yöntemi (+ S2 + kesim tarihi) → PROVA-2 (Suer taze export → aynı zincir → hedef DUR 0).
 
+> ## ✅ 2026-11-11 — SENTEZ 11 Kas: YÖN DEĞİŞİKLİĞİ (YON-21) — AYNEN · KESİM HATTI DURDU, ÜRÜN TAMAMLAMA HATTI · kapanışlar
+>
+> - **Kriter kaynağı:** Suer 11 Kas (yapıştırma): "YÖN DEĞİŞİKLİĞİ — SENTEZ 11 Kas (Suer kuralları) — deftere AYNEN, kütüğe YON-21" + KAPANIŞLAR
+>   + uygulama A–D · [defter:2026-11-11 PROVA-1 + GUV ONAY].
+> - **SENTEZ 11 Kas — AYNEN:**
+>
+> ```
+> SENTEZ → ORCHESTRATOR — YÖN DEĞİŞİKLİĞİ (Suer 11 Kas): KESİM HATTI DURDU, ÜRÜN TAMAMLAMA HATTI (11 Kas)
+> SUER KURALLARI (kütüğe, YON-21):
+> 1. Kesim tarihi YOK. PROVA-2 koşulmaz. Kesim: arayüz dahil her şey staging'de bitince; o zaman prova ×2 yeniden (son hal
+>    üstünde). Prova-1 yöntem/süre bilgisi kütükte kalır (KES).
+> 2. Kesimden sonra Zoho EN AZ 3 AY / EN AZ 2 FUAR ana sistem kalır; "ana sistem artık yeni" sözünü Suer verir. Paralel
+>    dönem kuralı (nereye girilir) o zaman; şimdi karar yok.
+> 3. Canlı LEENA dokunulmaz (yalnız YON-16 b güvenlik). Staging'deki Zoho verisi kalır (gerçekçi ekranlar için); kesim
+>    öncesi silinip taze alınır. Göç/eşitleme işi EN SONA.
+> 4. Tasarım fazı ŞİMDİ başlar, paketlerle iç içe (UX hattı kriterleri Sentez'den). "Önce ekran" aynen.
+> İLK İŞ — EKSİK ENVANTERİ (tek prompt, salt okuma + belge; kod yok): REQ Part 2'nin 8 iş akışı (§2.1–2.8) + Part 3
+> kesişenler madde madde × durum: ui2'de VAR / eski LEENA ekranında VAR (yol) / LIFFY'de VAR / YOK. Özellikle: kat planı ·
+> katılımcı katalog formu · stand formları / ekstra hizmet siparişi · stand çizimi gönderimi · 8'li operasyon e-posta
+> zinciri (REQ §2.7) · ödeme hatırlatma · hoş geldin e-postası · yaka kartı gönderimi · kontrat sonrası ek sipariş (ELAN
+> EXPO ekip primi) · gelen e-posta. Çıktı: ell-docs docs/audits/EKSIK_ENVANTERI_<tarih>.md + Suer'e TEK TABLO (madde ·
+> durum · nerede · tahmini paket büyüklüğü S/M/L), ≤60 satır, kişisel veri yok. Suer öncelik verir; paket sırası ondan
+> sonra. Paralelde: UI kuyruğu + tasarım fazı başlangıcı (ui2 kabuk, menü düzeni, Operations sekmesi eski ekranları
+> ui2'ye taşıma planı).
+> ```
+>
+> - **KAPANIŞLAR (Orchestrator, deftere):**
+>   - DUR-1 / DUR-2 + S2 ülke bulgusu → **"göç / eşitleme dilimi, EN SONA"** kuyruğuna (karar o zaman) — [defter:2026-11-10 PROVA-1].
+>   - **PROVA-2 beklemesi KALKTI.** Kesim tarihi YOK; kesim = arayüz dahil her şey staging'de bitince, prova ×2 son hal üstünde yeniden.
+>   - KES-01..05 + PROVA-1 yöntem / süreleri kütükte KALIR (KES grubu).
+>   - `~/ell-prova-tools/prova1/` SAKLANIR (dokunulmadı).
+>   - **`~/zoho_raw` SİLİNDİ** (11 Kas, CC; K4): 27 Eki + 10 Kas çekimleri, 67 MB. İçindeki onaylı alıcı eşlemesi (`payee_agent_map.json`) de gitti —
+>     yeniden üretim yolu defterde: `payee-review.js --kind "1=employee,2-14=agency"` + `--confirm "1=a"` ([defter:2026-10-28 PAYEE EŞLEMESİ: ÖLÇÜM + GOC-06
+>     ALICI MODELİ]; numaralar korunur). Göç en sona → o zaman taze çekim.
+>   - `~/Downloads/` altındaki 7 export arşivi (`*.dir.tar.gz`, 19 Eki–10 Kas) **Suer'in kararı** (raporda hatırlatıldı; dokunulmadı).
+> - **Commit:** ell-docs bu kayıt + kütük YON-21 + ★ (sonraki kayıtla aynı commit). Kod yok.
+> - **Ölçülenler:** `~/zoho_raw` silme öncesi liste (2 dizin, 67 MB) · silme sonrası yok.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** —
+> - **Bilinçle yapılmayanlar:** canlıya bir şey · staging Zoho verisine dokunma (YON-21 3: kalır) · PROVA-2.
+
+> ## ✅ 2026-11-11 — EKSİK ENVANTERİ (REQ §2.1–2.8 + Part 3) + UI KUYRUĞU (karar var + küçük → 4 madde yapıldı) + OPERATIONS TAŞIMA PLANI
+>
+> - **Kriter kaynağı:** YON-21 İLK İŞ + Orchestrator uygulama A–D (11 Kas) · [defter:2026-11-11 SENTEZ 11 Kas: YÖN DEĞİŞİKLİĞİ (YON-21)].
+> - **Ne yapıldı:**
+>   - **A — EKSİK ENVANTERİ** → `docs/audits/EKSIK_ENVANTERI_2026-11-11.md`: §0 Suer tablosu (60 satır: madde · durum · nerede · S/M/L; ★ Sentez
+>     listesi 11 satır) · §1 tam envanter (§2.1 13 · §2.2 12 · §2.3 11 · §2.4 10 · §2.5 30 · §2.6 15 · §2.7 15 · §2.8 11 · Part 3 34 madde;
+>     dosya:satır kanıtlı) · §2 staging kullanım sinyali (122 tablo, `claude_readonly`, kişisel veri yok) · §3 ÖLÇÜLMEDİ / BULAMADIM + 3 REQ ↔ kod
+>     ayrımı (Sentez notu) · §4 UI KUYRUĞU (29 madde, kaynak atıflı) · §5 OPERATIONS TAŞIMA PLANI (8 adım + Finance klasikleri; legacy köprü 2).
+>     REQ yolu ölçüldü: ell-docs kökü `ELAN_EXPO_REQUIREMENTS_v1_0.md` (2.435 satır). Kod tabanı `eliza-next` `0d70d4d` · LIFFY `10047ee` /
+>     `b78231b` · eliza `0608477`. 4 bölüm paralel okundu (alt ajanlar), kilit iddialar elle doğrulandı.
+>   - **★ özeti:** YOK 6 (katalog formu · ekstra hizmet siparişi · 8'li zincir · hoş geldin · ekip primi — REQ'de tanımsız · send all) ·
+>     KISMİ 5 (stand ↔ kontrat · stand çizimi · ödeme hatırlatma · yaka kartı · gelen e-posta) · klasik VAR 1 (kat planı; staging son kayıt 21 Nis).
+>   - **B — UI KUYRUĞU** (yalnız karara bağlı + ≤ S; her biri ayrı commit, `eliza-next`, push `0d70d4d..bf217b7`):
+>     - **Q1 `ee28499`** Expenses / Drafts: gider kategori + tip İKİ kutu (Suer 26 Eki · kütük UI notu) — kategori kutusu gönderilmez, tip kutusu
+>       seçilen kategorinin aktif tipleriyle dolar; yalnız `expense_type_id` gider. Ortak yardımcı `ledger-ui.js` (`expenseTypeFields` + `wireExpenseType`).
+>     - **Q2 `342a670`** kontrat başlığında `contract_date` ISO zaman damgası → YYYY-MM-DD (Sentez 5 Kas karar 7 kaydı); aynı ham basım Admin ›
+>       Migration › SD listesinde de düzeltildi.
+>     - **Q3 `fa24645`** Sales › Overview › **My commissions** (Sentez 6 Kas karar 7 = a · YET-23): kendi temsilci kaydı + ekstresi (MOT-01);
+>       yeni `GET /api/sales-agents/mine` (commissions.read; yalnız `sales_agents.user_id` = oturumdaki kullanıcı, kapsam ne olursa olsun;
+>       kullanıcı oturumu yoksa 409). nav öğesi `internalOnly`.
+>     - **Q4 `6fe4465`** R4: dışa aktarım yalnız aksiyon listesi sorgusunu koşar — staging aynı veride 5,7 / 3,8 sn → 1,0 / 0,75 sn, çıktı HEAD ile
+>       bayt bayt AYNI (varsayılan + `include_pre_milat=1` + CSV). Ekran yolu DEĞİŞMEDİ: altı okumayı eşzamanlı koşmak küçük staging DB'de kazanç
+>       vermedi (ölçüldü: 6,7–8,2 → 5,7–7,3 sn, gürültü içinde) → geri alındı. Ekran bugün 3,0–5,0 sn (898 satır; 7,2 sn / 2.080 satır 068 legacy
+>       kovasından önceydi). Kalan "tek olgu sorgusu" = ayrı dilim (envanter §4 U4).
+>     - **Q5 (ölçüm, kod yok)** 390 px: teklif listesi · convert kuyruğu · teklif detayı yatay taşma 0, konsol hatası 0. Staging'de teklif 0 →
+>       satırlı liste ÖLÇÜLEMEDİ.
+>     - **Yapılmadı — kabukta arama kutusu (S6):** sonuç sayfası Sales alanında; Sales'i olmayan Finance kullanıcısı `L.guard(root, 'sales')`'e
+>       takılır (`ui2/sales-search.html:38`) → yer / IA kararı (UI-01, UX-NN) gerekir; "yeni karar gerektirmeyen" süzgecinden geçmedi.
+>   - **SAPMA (test beklentisi, hükümle — Sentez 5 Kas not 4):** `test_ui2_ledger_pages` U3 Sales alt menü bağlantısı 7 → 8 (Sentez 6 Kas karar 7) ·
+>     `test_p1b2_taxonomy` T4/T5 tek 73 seçenekli liste → iki kutu (Suer 26 Eki; 73 çiftin her biri yardımcıyla seçili çizilerek hâlâ sınanır) —
+>     `73f65b6`. Yeni suite `tests/test_uiq.js` (12; 5'i DB'li). LEENA `CLAUDE.md` beklenen test satırı `bf217b7`.
+> - **Commit:** LEENA eliza-next `ee28499` · `342a670` · `fa24645` · `6fe4465` · `73f65b6` · `bf217b7` (push `0d70d4d..bf217b7`, YON-19) · ell-docs bu kayıt
+>   + `docs/audits/EKSIK_ENVANTERI_2026-11-11.md` + kütük (YON-21 · KES · UI · YET) + ★.
+> - **Ölçülenler:** test PG14 ×2 + PG17 → **871/871**, 55 suite, EXIT 0 (üçü de) · R4 eşitlik + süre (yukarıda) · staging turu (cc-owner):
+>   deploy `bf217b7` ~60 sn · `/health` 200 · Q1 Expenses kategori kutusu 7 seçenek (6 + "—"), tip kutusu başta 1 ("choose a category first") →
+>   kategori seçilince 7 · Drafts yeni taslak formunda iki kutu · Q2 kontrat başlığı YYYY-MM-DD, ISO saat yok · SD listesinde ISO saat yok ·
+>   Q3 My commissions açılıyor, alt menüde öğe var, cc-owner'a bağlı temsilci yok → boş durum metni (`/mine` 200 · 0) · Q4 R4 CSV 563 / 362 ms
+>   (134 KB), ekran JSON 3,15 sn (690 KB) · 390 px My commissions + Expenses yatay taşma 0 · tüm ekranlarda konsol hatası 0.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** LIFFY ve eliza-legacy DB'leri (bu turda okunmadı; LIFFY sayıları 5 Kas belgesinden) · klasik ekranların gerçek
+>   kullanıcı trafiği · teklif listesinin satırlı 390 px görünümü (staging'de teklif yok) · My commissions'ın dolu ekstre görünümü (araç
+>   hesaplarına bağlı temsilci yok — test DB'de sınandı) · R4 ekran süresinin canlı DB'de değeri.
+> - **Bilinçle yapılmayanlar:** yeni karar gerektiren UI maddeleri (§4 U6–U29) · ekran yolunda R4 eşzamanlılığı (ölçüldü, kazanç yok) ·
+>   envanterde kod değişikliği · canlıya bir şey · staging'e veri yazma (teklif oluşturmak dahil) · tasarım / cila (UX-NN kriteri yok).
+> - **→ Sıradaki:** Suer önceliği (envanter §0 tablosu) → paket sırası → paketler (tasarım fazı paketlerle iç içe, UX-NN Sentez'den).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -9068,6 +9153,9 @@
 >   11 Kas (1): **PROVA-1 + GUV ONAY** (Orchestrator 00:30) · yerel kopyalar silindi · araç takımı `~/ell-prova-tools/prova1/` — [defter:2026-11-11 PROVA-1 + GUV
 >   ONAY]. **★SIRADAKİ (bu kazanır) = BEKLE → Sentez: DUR yöntemi (batch #2 geri al + tam göç | güncelleme dilimi) + S2 + kesim tarihi → PROVA-2 (Suer taze
 >   export → aynı zincir → DUR 0; R5 farkı DUR satırlarıyla açıklanır).**
+>   11 Kas (2): **YÖN DEĞİŞİKLİĞİ (YON-21)** — kesim hattı DURDU, PROVA-2 YOK, göç / eşitleme EN SONA (DUR-1/2 + S2 oraya) · `~/zoho_raw` silindi ·
+>   **EKSİK ENVANTERİ** (`docs/audits/EKSIK_ENVANTERI_2026-11-11.md`) + UI kuyruğu Q1–Q4 (`eliza-next` `bf217b7`, 871/871) — [defter:2026-11-11
+>   EKSİK ENVANTERİ …]. **★SIRADAKİ (bu kazanır) = Suer önceliği (envanter §0) → paket sırası → paketler (tasarım fazı iç içe; UX-NN Sentez'den).**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
