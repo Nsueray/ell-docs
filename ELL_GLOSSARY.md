@@ -315,6 +315,16 @@ Each recipient gets their own run with only the records they are allowed to see.
 One search box for companies, contacts, quote numbers, contracts (AF number or company) and expos. Results follow the same permission
 scope as the lists; external users find only their own records. (RAP-16)
 
+### Prototype layer (prototip katmanı)
+- **Definition:** The design set served as delivered at `/design-preview/` on staging — clickable, **sample data only**, a "PROTOTYPE — sample data, not real" strip on every page. Lives outside the product pages (`public/ui2/`) and outside the ui2 rules; reached from the shell link "Design preview" (nav.json `topbar` item). Temporary: removed at the end of the UI-first phase, never reaches live. (Sentez 11 Kas Y3 — kütük YON-21 eki; ADR-023 kesim maddesi.)
+- **Not:** a product screen. Product screens follow UI-07: every element reads a real endpoint or carries the "Not connected yet" mark.
+
+### Bridge (köprü, "classic")
+- **Definition:** A ui2 menu entry that opens a **classic** (pre-ui2) screen because the ui2 twin does not exist yet. In nav.json: `legacy: true` + `status: placeholder`, `path` = the classic page; the link to the classic page comes ONLY from nav.json (never embedded in a page — UI-02, Sentez 23 Eki). Classic page bodies are not edited. Temporary by definition; each bridge has a line in the UI queue.
+
+### Not connected yet (işaret)
+- **Definition:** The single visible mark (one component in `components.js`) on a ui2 element — card, column, field, button, tab — that is drawn from the design but has no real endpoint behind it yet. Per element, not per page; a button either works or carries the mark (no dead buttons). Each marked element is a queue line (what · which screen · S/M/L). (kütük UI-07 — Sentez 11 Kas Y2.)
+
 ### Country Manager
 
 An Elan Expo manager responsible for a specific country office.

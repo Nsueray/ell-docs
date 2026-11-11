@@ -9104,6 +9104,74 @@
 >   klasik sayfa gövdeleri · canlıya herhangi bir şey.
 > - **→ Sıradaki:** §4 yetki migration'ı (070: Y5 · YET-25 · YET-26 · tema tercihi · cc-project) → Login + kabuk → Operations → Sales → Finance → Mobile + Settings.
 
+> ## ✅ 2026-11-11 — PAKET UI-TAM 2. PARÇA: YETKİ + TERCİH STAGING'DE — 070 (Y5 Project contracts.read · YET-26 company_amounts.read · tema) · EMS İÇ KAPISI (YET-25 KAPANDI) · firma kartı ucu · cc-project (LEENA `6f9c4ac`)
+>
+> - **Kriter kaynağı:** [defter:2026-11-11 SENTEZ 11 Kas: UI-ÖNCE FAZI — KURALLAR (Y1–Y10) + PAKET UI-TAM] (Y4 · Y5 · C §2 "YET-25 bu pakette KAPANIR" ·
+>   C §3 Companies) + Orchestrator UYGULAMA §4 (a–f) · ölçüm [defter:2026-11-11 PAKET UI-TAM 1. PARÇA] (e).
+> - **Ne yapıldı:**
+>   - **070_ui_tam** (yalnız runner; mevcut satır DEĞİŞMEZ): kayıt defterine `company_amounts.read` (alan sales; şablon satırı YOK) · Project sistem
+>     şablonuna `contracts.read` (all) · `users.ui_theme` (NULLABLE + biçim CHECK'i). `operations.write` AÇILMADI.
+>   - **Y5 (YET-19 eki):** Project kontrat liste / detay / ödeme + plan okur; R3 (Operations fuar detayı — Sales sekmesi), R2, R6 satış bloğu ve rapor
+>     oluşturucunun kontrat modülü Project'e açıldı. Kontrat detayında komisyon bölümü GİZLİ (`commission_hidden: true` — YET-23); ödeme yazımı 409
+>     (`payments.write` yok — değişmedi). **S3 = b SUPERSEDED** (sayfadaki sekme kuralı `contracts.read`'e bağlı kaldı; Project artık kodu taşıyor).
+>   - **YET-25 EMS İÇ KAPISI** (`middleware/emsGate.js`): `index.js`'te 23 klasik EMS bağlamasının + satır içi `GET /api/templates`'in önüne kondu;
+>     klasik rota dosyalarına DOKUNULMADI. İç kullanıcı `operations.read` ister. Klasik organizer token'ı, anahtarla açılan uçlar, kimliksiz uçlar,
+>     servis imzası ve bozuk token yolu AYNEN (kapı yalnız `user_id` taşıyan geçerli token'da devreye girer). Dış kullanıcı ve pasif kullanıcı
+>     `dualAuth`'un JWT yolunda da reddedilir ([defter:2026-11-11 PAKET UI-TAM 1. PARÇA] (e) bulgusu KAPANDI).
+>     **Kapı sonrası EMS'e giremeyen iç şablonlar: Finance · Sales · Sales Operations** (409 `PERMISSION_REQUIRED`, `permission: operations.read`).
+>   - **YET-26 firma kartı ucu** `GET /api/customers/:id/card` (`sales.read`): firma + sayaçlar + kontratlar + teklifler + uyarılar tek yanıtta, sayılar
+>     sunucuda (m² `utils/metrics.js` — RAP-04 tek tanım). Kullanıcının kontrat kapsamı dışındaki kontrat = fuar · edisyon · m² · temsilci; tutar / AF /
+>     durum alanı yanıtta YOK + `locked: true`. `company_amounts.read` ezmesi ya da Owner kilidi açar. Dış kullanıcı yalnız kendi kontratı.
+>     Ekranı Sales parçasında.
+>   - **Y4 tema tercihi:** `PUT /api/user-auth/preferences` (oturum sahibinin KENDİ satırı; izin kodu yok — kişisel tercih) · `/me` `theme` taşır ·
+>     `utils/themes.js` 15 tema · `tokens.css`'e setin kalan 13 paleti (`html[data-theme]`; değerler set sayfalarındaki `:root` bloklarından AYNEN).
+>     Seçim ekranı Settings parçasında.
+>   - **cc-project araç hesabı** (Y7; Project şablonu, ofissiz): cc-owner emsali — davet satırı + uygulamanın kabul ucu (kabul 200 · giriş 200);
+>     şifre `~/.ell-cc/cc-project.pw` (600). Araç `~/ell-ui-tools/ui-tam/stg_tool_accounts.js` (repo dışı).
+>   - **Belge:** kütük YET-19 eki · YET-25 kapanış · **YET-26** · sözlük (prototype layer · bridge (classic) · Not connected yet) · **ADR-023 kesim
+>     maddeleri** (070 + Y5 + YET-25 canlı davranışı kesimde değiştirir — klasik token regresyon kanıtıyla · prototip katmanı kesimden önce kalkar).
+> - **Ön-onaylı SAPMA'lar (YON-18) + 🔶:**
+>   1. **Yazma uçları `operations.read` ile** — kayıt defterinde `operations.write` yok; yeni kod / şablon satırı açılmadı (Orchestrator 4-c). 🔶 Sentez:
+>      ayrı yazma kodu gelsin mi; Office Manager'ın kapsamı `office` iken ofis boyutu olmayan EMS kaydını yazması (YET-03 "ofissiz kayıt yalnız all")
+>      bugünkü gibi mi kalsın.
+>   2. **`GET /api/expos` (fuar LİSTESİ) iç kullanıcıya açık kaldı** — Finance / Sales ekranları (bütçe · tahsilat · kontratlar · gider · taslak · transfer ·
+>      performans · göç SD listesi) fuar seçim listesini bu uçtan okuyor (Operations dışı 8 sayfa, ölçüldü); kapı konsaydı bu ekranlar kırılırdı. Fuar detayı / yazımı / ziyaretçi
+>      uçları kapılı. Emsal YET-21 "referans listeleri açık".
+>   3. **Firma kartında dış kullanıcı:** tavan AYNEN (YET-15) → yalnız kendi kontratları; başka satışçının kontratı kilitli satır olarak da gelmez. 🔶
+>      (genişletme = ADR).
+>   4. **Firma kartında temsilci adı kilitli satırda da görünür** (fuar · edisyon · m² + kontratın temsilcisi) — Sentez metni üç alan sayıyordu; "kime
+>      ait" bilgisi YET-17 uyarısında zaten veriliyor. 🔶 istenmezse tek alan çıkar.
+>   5. **Tema tercihi yazımı denetim kaydı YAZMAZ** (kişisel tercih; B32 istisnaları sınıfı) · dış kullanıcı da kendi temasını seçer.
+>   6. **Project şablonunda `communications.read` YOK** → Project kullanıcısı (Operations) kontratın iletişim günlüğünü göremeyecek; şablon satırı
+>      açılmadı (Orchestrator kapsam dışı). 🔶 Sentez.
+> - **Commit:** LEENA eliza-next **`6f9c4ac`** (`eba7970` üstünde; 19 dosya) · push `eba7970..6f9c4ac` · ell-docs bu kayıt + kütük + sözlük + ADR-023.
+>   **PUSH: CC (YON-19).** Staging migration'ını CC koştu (YON-19 (2)).
+> - **Ölçülenler:**
+>   - **Test:** PG 14 tam zincir **895 / 895 · 57 suite · başarısız 0** (877 + `test_ui_tam_access` 15 + `test_migrate` R73–R75). Yeni suite: EMS kapısı
+>     şablon × uç matrisi 7 × 6 = 42 hücre · klasik token kapılı / kapısız ikiz uçta AYNI durum + gövde · kapının dokunmadığı yollar · `index.js`
+>     bağlama denetimi (23 EMS kapılı · 15 EMS dışı kapısız) · Y5 · firma kartı 5 test · tema 2 test · TABAN.
+>   - **Hüküm beklentileri (SAPMA — test satırında hüküm yorumu, Sentez 5 Kas not 4):** Y5 → `test_b2_scope` M1 Project satırı (kontrat okuma 6 hücre
+>     409 → 200) · `test_p3_yk2_le` M2 (Project kontrat detayı 409 → gizli komisyonla 200) · `test_p3b_reports` R2e + R6b · `test_p3e` E13 ·
+>     `test_p4` A5 · `test_p5_pre` S3 · `test_p3_convert` T6 şablon satırı 48 → 49 · YET-26 → `test_users_admin` R1 kayıt defteri 35 → 36 ·
+>     YET-25 → `test_b2_scope` 'ems' sütunu (Finance · Sales · Sales Operations 200 → 409; sahte uç artık kapıyla bağlanıyor) · `test_migrate` R70–R72
+>     ≤ 069'a donduruldu.
+>   - **Staging migration (PG 17.11, `leena_staging_db`):** dry-run "DRY-RUN OK: 1" (863 ms) → apply "COMMIT: 1" (646 ms) → ikinci apply "Nothing to
+>     apply" · kayıt 71 → **72** · NOTICE "permissions 36 · Project +contracts.read on 1 template" · sonra: Project `contracts.read` all 1 ·
+>     `company_amounts.read` şablon satırı 0 · `ui_theme` kolonu var, dolu satır 0.
+>   - **TABAN** 342.00 (göç öncesi · sonrası) · **TABAN-2 EŞİT** (çapa AF numarasıyla; staging kopyasında kontrat kimliği canlıdakiyle aynı).
+>   - **Staging yetki matrisi (deploy `6f9c4ac`; 4 araç hesabı × 8 uç, API):** cc-owner hepsi 200 · **cc-project** EMS 200 · kontrat 200 · kontrat
+>     detayı 200 komisyon GİZLİ · R3 200 · alanlar finance + operations + sales · ödeme yazımı 409 `payments.write` · **cc-staging (Sales)** EMS 409
+>     `PERMISSION_REQUIRED` · fuar listesi 200 · fuar detayı 409 · kendi kapsamındaki kontrat listesi 200 · **cc-external** EMS / fuar / R3 409
+>     `EXTERNAL_NOT_ALLOWED`, kontrat listesi 200. Tema: seç 200 → `/me` aynı tema → temizle 200 · bilinmeyen 400 `UNKNOWN_THEME`.
+>     Token'sız yollar değişmedi (rozet 404 · sayfalı liste 401 · slug 404).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** klasik organizer token'ının STAGING'deki davranışı (klasik hesabın şifresi CC'de yok — regresyon kanıtı test
+>   zincirinde, ikiz uçla) · terminal anahtarlı gerçek uçlar staging'de (anahtar kullanılmadı; kapı Authorization'sız isteğe dokunmuyor — testle) ·
+>   firma kartı ucu staging'de (firma kaydı 0 — veri yok; test DB'sinde sınandı) · PG 17 + ikinci PG 14 koşusu (paket sonunda) · Render API anahtarı
+>   ("anahtar bekliyor").
+> - **Bilinçle yapılmayanlar:** `operations.write` kodu · yeni şablon satırı (Project `contracts.read` dışında) · EMS-05..08 kuyruğu · leads uçları
+>   (E sınıfı) · klasik sayfa gövdeleri · staging'e iş verisi yazma (yalnız araç hesabı) · canlıya herhangi bir şey.
+> - **→ Sıradaki:** Login + kabuk (arama kutusu · zil yeri · tema uygulaması · işaret bileşeni) → Operations.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**

@@ -94,3 +94,15 @@ Faz A restore + rollback.js. Prova ≥ 2 kez, canlının taze kopyasında.
 >   Faz A'da (21 Eki) bir kez yapıldı; aynı yol.
 > - **GUV-02:** eliza-next'te `POST /api/auth/register` KALDIRILDI (404); canlıda hotfix 4'ün 403'ü kesime kadar kalır (SAPMA, defter). Yeni kiracı
 >   yalnız Owner davetiyle (Admin › Organizations).
+>
+> **Kesim maddeleri (Sentez 11 Kas — UI-ÖNCE fazı, PAKET UI-TAM; CC, eliza-next):**
+> - **070 + Y5 + YET-25 canlı davranışı kesimde DEĞİŞTİRİR:** (a) Project şablonu `contracts.read` (all) alır — Project kullanıcıları kontratları
+>   görür (komisyon bölümü gizli kalır, ödeme yazamaz). (b) EMS / ziyaretçi uçları iç kullanıcıdan `operations.read` ister
+>   (`middleware/emsGate.js`, `index.js` bağlamaları): kesimden sonra ui2 hesabıyla klasik EMS ekranlarını açan **Finance · Sales · Sales Operations**
+>   şablonlu kullanıcı 409 alır — EMS kullanacak kişiye Project / Office Manager şablonu ya da `operations.read` ezmesi kesim günü davet listesinde
+>   verilir. **Klasik organizer token'ı ETKİLENMEZ** (kanıt: `tests/test_ui_tam_access.js` G3 — kapılı uç kapısız ikiziyle aynı durum + aynı gövde;
+>   G4 — anahtar / kimliksiz / bozuk token yolları aynen) → paylaşılan klasik hesap ve terminal akışı kesimde değişmeden çalışır.
+>   070 yalnız 1 kayıt defteri satırı + 1 şablon satırı + `users.ui_theme` kolonu ekler (NULLABLE, varsayılansız — tablo taraması yok).
+> - **Prototip katmanı kesimden ÖNCE kalkar:** `/design-preview/` bağlaması (`index.js`) + `design-preview/` dizini + ui2 kapı sayfası + `nav.json`
+>   `topbar` öğesi faz sonunda silinir; kesim provası listesine "prototip yok" denetimi (canlıya gitmez — Sentez 11 Kas Y3).
+
