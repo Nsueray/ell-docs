@@ -10323,6 +10323,75 @@
 >   sistem e-postalarının FR / TR metni.
 > - **→ Sıradaki:** §3 EXTRA EQUIPMENT + PAYMENT (sepet → kod → sipariş = yeni kontrat · Payment bölümü · dekont bildirimi → Finance Collections).
 
+> ## ✅ 2026-11-12 — PAKET UI-TAM-2 3. PARÇA: EXTRA EQUIPMENT + PAYMENT STAGING'DE — sipariş = çekirdekten doğan bağlı kontrat · kodlu eylemler · Payment bölümü · dekont bildirimi → Finance "receipts to check" · RAP-18 marj (LEENA eliza-next `face83b` + `0da9c4f`) · 1048 / 1048
+>
+> - **Kriter kaynağı:** [defter:2026-11-11 SENTEZ 11 Kas: PAKET UI-TAM-2] — blok A2 · B2–B4 · C1–C4 · C10 · C13–C15 · E §3 · EK-1 madde 1 (RAP-18) · madde 4 varsayım 7 · kütük
+>   EXH-05 · EXH-10 · EXH-13 · RAP-18. Orchestrator UYGULAMA 2 (kodlu eylemler) + 3 (SİPARİŞ + PARA DEĞİŞMEZLERİ). Ölçütler dosyalardan yeniden okundu.
+> - **Ne yapıldı:**
+>   - **Sipariş (EXH-05):** sepet → kod → sipariş = ana kontrata BAĞLI yeni kontrat. Kontrat MEVCUT tek çekirdekten doğar (ikinci kontrat yaratma yolu YOK); çekirdeğe
+>     üç İSTEĞE BAĞLI girdi eklendi (açık satıcı · parent bağı · aynı işlemde çağıranın adımı) — öbür çağıranlar aynen. Satıcı = proje ekibinin team kaydı (oran = kaydın
+>     varsayılanı) · para birimi, tüzel kişi ve kur ana kontrattan · numara teklif / kontrat numara dizisinden · L4 · convert günlüğünde kaynak "exhibitor_page".
+>     Çekirdeğin kapıları (satışa açık fuar · ofis · bölge) GEVŞEMEDİ.
+>   - **Fiyat SUNUCUDA:** fuarın ekipman listesi × katalog fiyatı (ofis fiyatı varsayılanın önünde — KAT-01) × B4 (build-up'ın ilk gününden itibaren +%100; gün fuarın
+>     saatine göre). İstemcinin gönderdiği fiyat OKUNMAZ. Uygulanan birim fiyat sipariş kontratının kalemlerinde donar. Sayfadan sipariş fuar sonuna dek açık.
+>   - **Aynı sepet iki kez = TEK kontrat:** sipariş satırı tekrar anahtarıyla çekirdeğin KENDİ işleminde yazılır (aynı anda çift gönderimde ikinci kontrat geri alınır).
+>   - **Kod (EXH-13):** Payment ve "Place order" kodlu — 6 hane · 10 dakika · YALNIZ kontratın alıcı listesindeki adrese (to + cc) · 5 yanlış → 15 dakika kilit · doğru kod
+>     bu tarayıcıda 24 saatlik oturum açar (DB yalnız özetini tutar). Echo bayrağı varken (staging) kod ekranda da görünür; bayraksız ortamda ASLA.
+>   - **Payment bölümü (EXH-10):** kodsuz yalnız durum ADI (Balance due · Overdue · Receipt received — being checked · Paid). Kodla: ana + extra kontratlar TEK
+>     tabloda ayrı satır (toplam · ödenen · bakiye) · vade planı (kalem durumu tahsilat raporunun kümülatif kuralıyla) · banka (kontratın tüzel kişisinin "belgede göster"
+>     hesabı — teklif PDF'inin bastığı) · "I paid — upload receipt" · bildirimlerim. Dekont bildirimi ödeme DEĞİLDİR: tahsilat tablosuna yazmaz, bakiye değişmez (C14).
+>   - **Finance:** Collections'ta "Receipts to check" listesi + kontrat sayfasında şerit; Finance ödemeyi MEVCUT akışla kaydeder, bildirimi "checked" işaretler
+>     (exhibitor'da "Confirmed"). Bildirimler kontrat duvarının arkasında (contracts.read + kapsam; kontrol = payments.write).
+>   - **Sistem e-postaları:** Payment code · Order confirmation (yeni kontrat no + kalemler + toplam) — echo; HİÇBİR e-postada banka bilgisi yok (C13).
+>   - **RAP-18 (EK-1 madde 1 — hüküm):** fuar marjı TEK tanım (`utils/metrics`): net gelir (iptal + aktarılan dışarıda, beklet dahil — RAP-03) − fuara bağlı `expenses`
+>     (ters kayıt netlenir; ledger DEĞİL) = brüt marj; − hak edilen komisyon = net kâr; tahsilat ayrı satır. Expo Finance ekranında Gross margin / Net profit BAĞLANDI.
+>   - **§2'den kalanlar:** catalogue "Discard changes" · firma kaydından ön doldurma (web + ülke) · sayfa modelinde bağımsız sorgular birlikte · Stand formundan
+>     Extra equipment'a yönlendirme (panel baskı = fiyat listesinde ürün, görseli siparişe yüklenir — C4).
+> - **Commit:** LEENA eliza-next `face83b` + `0da9c4f` (PUSH: CC, yalnız `eliza-next`; canlı `main` DEĞİŞMEDİ `2db0131`). Migration: staging'de CC koştu — dry-run → apply →
+>   ikinci apply boş; kayıt 75 → **76** (`074_exhibitor_orders`: convert günlüğünün kaynak + yol kısıtları genişledi; yeni kısıt adları "v2").
+> - **Ölçülenler:**
+>   - **Test (yerel, PG 14.18):** tam zincir **1048 / 1048** — 62 suite (1023 + yeni suite `test_ui_tam2_orders.js` 25). Hüküm gereği güncellenen beklentiler (satırında
+>     hüküm yorumu — SAPMA): `test_ui_tam` F2 (Expo Finance marjı işaretliydi → sunucudan, RAP-18) · `test_ui2_ui0` K4 (dekont bildirimi tutarı tek birimli, EXH-10).
+>     Kendi §2 testimde iki beklenti §3'e göre güncellendi (Payment bölümü artık var · dekont yüklemesi kodlu).
+>   - **Staging turu (SAMPLE kontrat 7899, tarayıcıyla, girişsiz, 1440 px):** fiyat listesi 10 ürün, not "Pre-show prices until 15 Nov 2026" · sepet sunucu fiyatıyla
+>     (2 × 400 + 60 = 860,00 EUR) · Place order → kod kutusu → kod (echo, ekranda) → sipariş → **kontrat ATR-200005 doğdu** → "My orders" · Payment: özet iki satır
+>     (ana 10.190,00 · sipariş 860,00) · vade planı (mevcut akışla kurulan varsayılan plan) · dekont bildirimi gönderildi → durum "Receipt received — being checked".
+>     Her adımda yatay taşma 0 · konsol hatası 0 · başka kökene istek 0.
+>   - **Doğan kontrat (salt-okunur ölçüm):** parent 7899 · Active · EUR 860,00 · kur 1 · satıcı = team kaydı (oran boş → varsayılan) · teklifsiz · kalemler donmuş
+>     (2 × 400,00 · 1 × 60,00) · convert günlüğü: received + succeeded, kaynak exhibitor_page · sipariş "pre_show".
+>   - **Finance tarafı:** Owner ve Project bildirimi görüyor · Sales (kapsamı dışında) 0 satır · dış kullanıcı 409 · "Mark as checked" (Owner) → açık 0; kontratın
+>     ödeme sayısı öncesi / sonrası 0 / 0 (ÖDEME YAZILMADI). Collections · Expo Finance · kontrat sayfası 1440 px: HTTP 200 · taşma 0 · konsol hatası 0.
+>   - **RAP-18 (fuar 15):** net gelir 33.820,00 · doğrudan gider 250,00 (1 satır) · brüt marj 33.570,00 · hak edilen komisyon 342,00 · net kâr 33.228,00 · tahsilat
+>     7.440,00 · sayılan kontrat 4. Sales oturumuna marj VERİLMİYOR (kapsam "all" değil).
+>   - **Echo e-postalar (2; gönderilmedi):** Payment code · Order confirmation. İkisinde de banka bilgisi yok (dosya taraması 0).
+>   - **TABAN** 342.00 · **TABAN-2 EŞİT** (migration sonrası).
+> - **Ön-onaylı SAPMA + 🔶 (Sentez'e):**
+>   1. 🔶 **Sipariş kapıları (en kilitli okuma):** fuar satışa açık değilse / ofis çözülemezse / bölge izin vermezse sipariş REDDEDİLİR; sayfa "Ordering is not
+>      available yet" der. Kesimde göçmüş fuarlar satışa açılmadıkça o fuarın exhibitor'ı sipariş veremez (kesim maddesi).
+>   2. 🔶 **Satıcı = tek aktif team kaydı** (birden çoksa en eski); oran = kaydın varsayılanı; "ekip primi" kuralı YOK — oran uydurulmadı.
+>   3. 🔶 **Kur = ana kontratın donmuş kuru** (sipariş anında kur girecek insan yok). EUR dışı ana kontratta kur yoksa sipariş kapalı.
+>   4. 🔶 **Fiyat listesi ve sepet önizlemesi kodsuz** (fuarın fiyatları — kontratın parası değil); sipariş VERMEK ve siparişlerin tutarı kodlu.
+>   5. **Vergi = ürünün katalogdaki vergi oranı** (yeni teklif satırının varsayılanı).
+>   6. **Numara dizisi:** sipariş numarası diziden önce alınır; çekirdek siparişi reddederse o numara boş kalır (dizide boşluk).
+>   7. 🔶 **Payment tutarları kontratın para biriminde:** ödemelerin hepsi o para birimindeyse toplamları; başka para biriminde ödeme varsa EUR üzerinden çevrilir
+>      ("approximate" notu). Durum adı tek tanımdan (LED-23, EUR) — EUR dışı kontratta kur farkı "Balance due" bırakabilir.
+>   8. 🔶 **Banka = tüzel kişinin belge hesabı;** tüzel kişisi olmayan kontratta (SAMPLE 7899 / 7900 böyle — ölçüldü) "Bank details are not available here yet".
+>      Banka masrafı cümlesi ("Bank charges may apply…") CC taslağı — Finance onaylamalı.
+>   9. **"Confirmed" = Finance bildirimi kontrol etti** (ödeme kaydıyla otomatik eşleşme yok).
+>   10. **Kodun echo bayrağı = davet linklerinin bayrağı** (staging'de gizliyi ekrana veren mevcut tek bayrak).
+>   11. **`face83b`'de Payment code e-postasının konusu kodu taşıyordu** (posta kaydında düz duruyordu) → `0da9c4f`: kod yalnız gövdede; testle.
+>   12. **Geçici:** sipariş kontratları UI-TAM'ın Exhibitors listesinde ayrı satır olarak görünüyor — §4'te satır = exhibitor, sipariş sütun.
+>   13. **Test kırılganlığı (bu paketten bağımsız, ölçüldü):** yerel saat 00:00–03:00 (+03) arasında üç eski suite gün sınırına takılıyor (`test_p3c` R7 · `test_p3d` R7a ·
+>       `test_guv` G12 — yerel veritabanı +03, test UTC günü). Veritabanı oturumu UTC'ye alınınca üçü de yeşil; zincir öyle koşuldu. Kuyruk.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** PG 14 ikinci koşu + PG 17 (paket sonunda) · staging'de on-site fiyat (tarih gelmedi — testte) · staging'de banka bloğu (tüzel kişili
+>   SAMPLE kontrat §6'da açılacak — testte + yerel önizlemede) · staging'de bölge reddi ve 5-yanlış kilidi (testte) · EUR dışı kontrat · Finance şablonlu hesapla tur
+>   (araç hesabı yok — Owner'la) · sipariş kontratı İPTAL edilince "My orders" (kod yolu var, testi yok) · Admin › convert queue ekranının yeni kaynağı nasıl gösterdiği ·
+>   Safari / Firefox / gerçek telefon · gerçek e-posta teslimi.
+> - **Bilinçle yapılmayanlar:** çevrimiçi ödeme · ödeme kaydı akışına dokunmak · "ekip primi" oranı · katalogda ürün yaratmak ("tam baskı" ürünü proje ekibinin) · adına
+>   sipariş / teslim işareti (§4) · canlı her şey.
+> - **Kuyruğa:** gün sınırı test kırılganlığı (S) · sipariş iptalinin "My orders" testi (S) · banka masrafı metni (Finance) · EUR dışı kontratta Payment gösterimi (karar).
+> - **→ Sıradaki:** §4 PROJE EKİBİ (Exhibitors listesi · Exhibitor detail · Fair days iskeleti).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**

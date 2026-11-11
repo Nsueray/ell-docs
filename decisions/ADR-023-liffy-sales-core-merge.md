@@ -121,4 +121,9 @@ Faz A restore + rollback.js. Prova ≥ 2 kez, canlının taze kopyasında.
 >   tahmini büyüme yılda ~3–4 GB, tavanla ~45 GB → kesimden önce disk / saklama kararı; (d) **rozet formu** — her fuar için exhibitor rozet formu Expo settings'te
 >   elle bağlanır (073 hiçbir fuara bağlamaz); bağlanmamış fuarda Badges bölümü kapalıdır; (e) canlıda echo bayrağı YOK → rozet QR e-postası klasik akışla gerçekten
 >   gider, sistem e-postaları worker'la gider; (f) 073 yalnız NULLABLE bir kolon ekler.
+> - **Sipariş + Payment (3. parça; 074):** (a) **sipariş kapıları** — extra equipment siparişi çekirdeğin kapılarından geçer: fuar SATIŞA AÇIK olmalı, ana kontratın
+>   ofisi çözülmeli, bölge izin vermeli; kesimde satışa açılmayan fuarın exhibitor'ı sayfadan sipariş veremez; (b) **team kaydı** — aktif "team" temsilci kaydı ve
+>   varsayılan oranı canlıda VAR olmalı (yoksa sipariş kapalı); (c) **banka bloğu** — Payment bölümü kontratın tüzel kişisinin "belgede göster" hesabını gösterir;
+>   tüzel kişisi / belge hesabı olmayan kontratta banka görünmez (göçmüş kontratların tüzel kişi doluluğu kesimde ölçülür); (d) **kod** — canlıda echo bayrağı
+>   yok: kod yalnız e-postayla gider → worker + gönderen doğrulaması şart; (e) 074 convert günlüğünün iki kısıtını genişletir (yeni adlar "v2"), satır değiştirmez.
 > - Paketin diğer kesim maddeleri (worker · gönderen doğrulaması · sonraki migration'lar) parça kayıtlarıyla bu bloğa eklenir.
