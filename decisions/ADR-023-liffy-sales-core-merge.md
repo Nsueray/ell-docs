@@ -110,5 +110,9 @@ Faz A restore + rollback.js. Prova ≥ 2 kez, canlının taze kopyasında.
 > - **Exhibitor e-posta zinciri VARSAYILAN KAPALI (kütük EXH-16 — EK-1 madde 2):** otomatik gönderim fuar başına AÇIKÇA açılır; migration hiçbir fuar /
 >   kontrat için zincir başlatmaz; planlı tarihi geçmiş satır kendiliğinden gitmez (Send now + önizleme). Kesimde göçmüş fuar / kontratlara toplu
 >   e-posta GİTMEZ; zincirin hangi fuarda açılacağı kesim günü listesine fuar fuar yazılır.
-> - Paketin diğer kesim maddeleri (worker · gönderen doğrulaması · dosya saklama · 071+ migration'lar · `operations.write`'ın klasik akışa etkisi)
->   parça kayıtlarıyla bu bloğa eklenir.
+> - **071 + 072 (1. parça):** 071 yetkiyi DEĞİŞTİRİR — EMS / ziyaretçi uçlarında YAZMA artık `operations.write` ister (Project · Office Manager şablonlarında
+>   var); kesimden sonra yalnız `operations.read` ezmesi verilmiş bir ui2 kullanıcısı EMS'te yazamaz (kesim günü davet listesinde yazacak kişiye şablon ya
+>   da `operations.write` ezmesi). **Klasik organizer token'ı ve terminal akışı ETKİLENMEZ** (kanıt: `tests/test_ui_tam2.js` Y2 — kapılı uç kapısız ikiziyle
+>   aynı durum + aynı gövde; `tests/test_ui_tam_access.js` G3 / G4). 072 yalnız şema ekler: `contracts`'a 4 NULLABLE, varsayılansız kolon (tablo taraması yok)
+>   + yeni tablolar + iki referans tohumu; hiçbir fuar için anahtar / kural / zincir yaratmaz.
+> - Paketin diğer kesim maddeleri (worker · gönderen doğrulaması · dosya saklama · sonraki migration'lar) parça kayıtlarıyla bu bloğa eklenir.

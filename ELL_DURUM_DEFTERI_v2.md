@@ -10128,6 +10128,112 @@
 >   belgesinin aranması / okunması (EK-3) · ell-docs çalışma dizinindeki izlenmeyen dosyalar (`Claude outputs/` — CC'nin değil).
 > - **→ Sıradaki:** §0 ön ölçüm + §1 TEMEL (şema 071+ · izinler · Expo settings · Equipped paket kuralı).
 
+> ## ✅ 2026-11-11 — PAKET UI-TAM-2 1. PARÇA: ÖN ÖLÇÜM (§0 + 1-a … 1-l) + TEMEL STAGING'DE — 071 yetki (`operations.write`) · 072 exhibitor şeması · EMS kapısı okuma / yazma ayrımı · oturumla check-in · Expo settings · Equipped paket kuralı (LEENA eliza-next `de7d486`) · 973 / 973
+>
+> - **Kriter kaynağı:** [defter:2026-11-11 SENTEZ 11 Kas: PAKET UI-TAM-2] — blok A1 · A4 · A5 · A7 · B5 · B7 · E §0 + §1 · EK-1 madde 2 · EK-3 F1 / F2 · kütük EXH-06 · EXH-16 · EXH-18 ·
+>   EXH-20 · ILT-07 · GUV-06 · YET-19 eki. Orchestrator UYGULAMA 1 (ön ölçüm) · 3b · 5.
+> - **ÖN ÖLÇÜM (staging salt-okunur + repo `bb9e721`; inşa bunların üstüne):**
+>   - **Echo / worker:** staging `EMAIL_ECHO` = 1 · gönderim anahtarı yok · worker servisi yok (Render sarmalayıcısıyla, önceki kayıt) — değişmedi.
+>   - **Kontratın kişi modeli:** kontratta kişi kolonu YOK; bağ `customer_company_id` → firmanın kişileri (LEENA teklifinden doğan kontratta teklifin kişisi).
+>     Göçmüş kontratta yalnız firma adı. → alıcı listesi kendi tablosunda (ana kişi + eklenenler, to / cc — EXH-13).
+>   - **`expo_exhibitors`:** klasik kayıt (ad · kişi · e-posta · ülke · sektör); staging'de 1 satır, `expo_stands`'a bağlı (floor plan tarafı) → KULLANILMADI
+>     (EK-3 F1); co-exhibitor'lar kendi tablosunda.
+>   - **Badge akışı:** `POST /api/visitors/public` (`routes/visitors.js:225+`) — tür ve e-posta şablonu FORMDAN; aynı e-posta o fuarda kayıtlıysa kayıt güncellenir,
+>     QR korunur, **tür formun türü olur** (visitor → exhibitor), e-posta "(Resent)" ile yeniden kuyruğa girer. Staging'de 11 exhibitor formu; fuar 15 / 11'de yok.
+>     (Sentez C15: ölçüldü, bu pakette değiştirilmez.)
+>   - **Fiyat modeli (KAT-01):** ürün × (ofis | varsayılan) × para birimi; fuar boyutu YOK. → "expo fiyat listesi" = fuar ↔ katalog ürünü bağı (yeni) ×
+>     mevcut fiyat çözümü (`utils/catalog.js` — ofis fiyatı varsayılanın önünde); on-site fiyat sunucuda. Katalogda 156 "Extra Equipment" ürünü.
+>   - **Drive (Zoho şablonları):** klasör bulundu; "E-POSTA ŞABLON METİNLERİ" altında 19 HTML = zincirin 7 türü × EN / FR (14 dosya: Welcome · Stand ·
+>     Stand "ekipmanlı" · Catalogue · Build-up (genel + Fas) · Payment reminder · Badge) + 5 iç bildirim. Hatırlatma kalıbı ve sistem e-postaları için
+>     dosya YOK (ada göre). Metinler ell-docs'a girmez (§5'te LEENA'ya tohum).
+>   - **Suer'in ölçüm dosyaları:** katalog formu F1–F4 alan listesi + şablon erişim notu (şablonlar Zoho'dan okunamamış). **1-h:** zorunlu küme EK-1 4.2 ile
+>     AYNI; farklar: marka alanının etiketi (her formda isteğe bağlı) · F4'te gizli-zorunlu "Participants Names for Badge" (rozet işi — B9 ayrı akış). EK-1 uygulanır.
+>   - **1-a dosya:** kalıcı dosya deseni `quote_documents` (içerik DB'de, bytea). Staging DB 3,8 GB / 10 GB (3,2 GB'ı e-posta kuyruğu). Dış depolama yok.
+>   - **1-b kontrat doğumu:** kontrat yalnız tek çekirdekte (`utils/convertCore.js:180/188`) ve transferde (`routes/contracts.js:1238`) doğar. Çekirdek teklif
+>     kimliği ister (tekrar koruması o kimlikte); kapılar: satışa açık (KAT-03) · ofis · bölge (müşteri ülkesi verilirse) · L4. `team` kaydı "ELAN EXPO" staging'de
+>     VAR (aktif, `sr_sales_agent_id` yuvasında yaşar — 067), varsayılan oranı VAR.
+>   - **1-c log:** erişim logu yalnız `/api` altında, yolu sorgusuz yazar, 20+ karakterlik parçayı maskeler; AMA platformun kendi istek logu tam adresi görür →
+>     sayfa anahtarı adresin yoluna / sorgusuna KONMAZ (parça — `#` — içinde taşınır; sunucuya ve Referer'a gitmez). Bugün `Referrer-Policy` başlığı YOK.
+>   - **1-d EMS envanteri:** kapının arkasında 24 bağlama (+ Operations özetleri + 1 satır içi uç): 72 GET · 90 GET-dışı uç; **GET ile yazan uç 0** (1 şüpheli elle
+>     doğrulandı) → kural yöntemle: GET okuma · diğerleri yazma. Klasik check-in tekilliği: terminal ucu aynı ziyaretçinin aynı etikette eşik içindeki (fuar
+>     ayarı, varsayılan 120 sn) ikinci okumasını YOK SAYAR (`routes/terminalCheckins.js:398+`).
+>   - **1-e zamanlayıcı:** rapor zamanlayıcısı + güvenlik tik'i staging'de süreç içi (yalnız `EMAIL_ECHO` = 1), canlıda worker'da — zincir aynı iki kancaya oturur.
+>   - **1-f fuar alanları:** fuar tablosunda kimlik + 8 tarih + 8 ofset + açılış saati + küme + 3 form adresi ZATEN var; ortaklar `expo_partners`'ta (HQ ·
+>     yerel ofis · seyahat · nakliye · stand firması · vize … rolleri). Yeni gereken: sipariş / rozet deadline'ı · zamanlama · metin blokları · belgeler · sınırlar ·
+>     zincir anahtarı · gönderen kutuları · paket kuralı · ekipman listesi. Aynı bilgi için ikinci kolon AÇILMADI.
+>   - **1-g serbest metin dağılımı:** stand tipi — Equipped 3.240 · Other 460 · Non-equipped 240 · boş 8 · Outdoor Area 3. Satış grubu — International 1.561 ·
+>     Turkey 941 · Foreign Office 515 · Morocco Office 435 · Nigeria Office 312 · Partner 136 · Kenya Office 36 · China Office 11 · boş 5.
+>   - **1-i font / dış kaynak:** ui2'nin `tokens.css` dosyası 10. satırda Google Fonts'u içe aktarıyor (tek dış kaynak) → anahtarlı sayfalar o dosyayı
+>     YÜKLEMEYECEK (§2). Repoda font dosyası YOK.
+>   - **1-j gün sınırı:** zamanlayıcı günü programın saat dilimine göre sayıyor (ülke → dilim, yoksa UTC) → zincir fuarın ülkesiyle aynı kuralı kullanır.
+>   - **1-k stand no (EK-3 F1):** bugün stand no tutan bağımsız alan YOK (kontratta yok; ziyaretçideki alan kişi başı; `expo_stands` floor plan → sayılmaz) →
+>     yeni metin kolonu `contracts.stand_no` (072).
+>   - **1-l paket kalemleri (EK-3 F2):** katalogda masa / sandalye / spot karşılıkları VAR (birçok çeşit; ör. Rectangular Table · Chair C · Spotlight C, EUR
+>     fiyatlı). "Dahil ekipman" tutan başka yer bulunmadı → ikinci tanım yok.
+> - **Ne yapıldı (§1 TEMEL):**
+>   - **071 yetki (YET-19 eki):** `operations.write` kodu · Project şablonuna `operations.write` · `communications.read` · `followups.read` · `catalog.write` (all) ·
+>     Office Manager'a `operations.write` (office). Sales / Sales Operations / Finance'e satır YOK.
+>   - **EMS kapısı (A7):** GET `operations.read` · diğer yöntemler `operations.write`; yalnız okuma kodu olan kullanıcı yazımda 409. Klasik organizer token'ı AYNEN.
+>     071 uygulanana dek yazım eski kodla sürer (deploy → migration penceresi).
+>   - **Oturumla check-in (A1):** `POST /api/operations/checkins` — oturuma bağlı ayrı uç; satır `session` etiketiyle yazılır (terminal / rozet-baskı etiketi
+>     taklit edilmez); terminal ucuyla AYNI tekillik; aynı işlemde durum + denetim satırı (`checkin.create`). Mobil Scan ekranının "Check in" düğmesi bağlandı.
+>   - **072 şema (yalnız şema — hiçbir fuar / kontrat için anahtar, kural, zincir YARATMAZ):** sayfa anahtarı (yalnız özet) · alıcı listesi · olay kaydı (yalnız
+>     eklenir) · sürümlü, değişmez gönderimler + taslak · dosyalar · kod + tarayıcı oturumu · sipariş (kontrat + parent bağı + tekrar anahtarı) · rozet bağı ·
+>     dekont bildirimi · e-posta şablonu + posta kaydı · fuar ayarı · metin blokları · belgeler · ekipman listesi · sürümlü paket kuralı · gönderen kutuları ·
+>     co-exhibitor. `contracts`'a 4 NULLABLE kolon (`stand_no` · `parent_contract_id` · `pavilion_mode` · `package_rule_id`). Referans tohumu: stand tipi 4 ·
+>     satış grubu 8 (Admin › Reference data'dan yönetilir).
+>   - **Equipped paket kuralı (EXH-06 — EK-3 F2):** altı alan (ürün · ilk alan · başlangıç adedi · her ek alan · ek adet · üst sınır) · SÜRÜMLÜ, kalemler değişmez ·
+>     TEK hesap işlevi · sonuç tablosu 9 · 12 · 18 · 30 · 60 · 90 m² (kaydetmeden önizleme dahil). Kontratın hakkı: açık bağ varsa o sürüm, yoksa kontrat doğduğunda
+>     yürürlükteki son sürüm (hepsinden eskiyse ilk sürüm) → yeni sürüm mevcut kontratın hakkını DEĞİŞTİRMEZ.
+>   - **Expo settings (EXH-18):** ekran + `/api/expo-settings` — hazırlık paneli (7 e-posta) · kimlik (klasik fuar kaydından, köprü) · build-up tarihleri + 7 metin
+>     bloğu × EN / FR / TR · stand (paket kuralı + sınırlar) · deadline'lar + zamanlama (deadline değişikliği exhibitor sayısıyla ONAY ister) · ortaklar (klasik uç) ·
+>     ekipman listesi · belgeler · gönderim (gönderen kutuları ILT-07 · varsayılan dil · zincir anahtarı + Pause) · önceki edisyondan kopya ("not reviewed").
+>   - **A5:** Project şablonunun giriş sayfası Ops Dashboard — AÇIK hedef (`nav.json` `roleLanding`); diğer roller `bb9e721` kuralında.
+> - **Commit:** LEENA eliza-next `de7d486` (PUSH: CC, yalnız `eliza-next`; canlı `main` DEĞİŞMEDİ `2db0131`). Migration: staging'de CC koştu — dry-run → apply → "Nothing
+>   to apply"; kayıt 72 → **74** (`071_ui_tam2_access` · `072_exhibitor_core`). Deploy `de7d486` **live** (Render API, yalnız izinli staging servisi).
+> - **Ölçülenler:**
+>   - **Test (yerel, PG 14.18):** tam zincir **973 / 973** — 60 suite (947 + yeni suite `test_ui_tam2.js` 23 + `test_migrate` R76–R78). Hüküm gereği güncellenen
+>     beklentiler (her satırda hüküm yorumu — SAPMA): `test_users_admin` R1 36 → 37 kod · `test_p3_convert` T6 49 → 54 şablon satırı · `test_ref` R1 12 → 14 tür ·
+>     `test_ui_tam` O1 (alt menüye Expo settings) · M1 (Scan'in Check in düğmesi bağlı) · `test_ui_tam_access` O4 (operations.js'te tek yazan uç) ·
+>     `test_migrate` R73–R75 ≤ 070'e donduruldu. PG 14 ikinci koşu + PG 17 paket sonunda.
+>   - **EK-3 F2 — tablo şeması + örnek çıktı (tohum; staging fuar 15, sürüm 1):** masa (Rectangular Table) 12 m² → 1, her +12 m² → +1 · sandalye (Chair C) 12 → 3,
+>     her +12 → +3 · spot (Spotlight C) 12 → 3, ek yok. Altı kademe 9 · 12 · 18 · 30 · 60 · 90 m²: masa **1 · 1 · 1 · 2 · 5 · 7** — sandalye **3 · 3 · 3 · 6 · 15 · 21** —
+>     spot **3 · 3 · 3 · 3 · 3 · 3** (Orchestrator'ın test vektörüyle AYNI). 6 m²'lik stand: 1 · 3 · 3. 24 m²: 2 masa · 6 sandalye.
+>   - **Staging (fuar 15 "test", uygulamanın kendi uçlarıyla, cc-project):** tarihler + zamanlama (onaysız 409 `CONFIRM_REQUIRED`, etkilenen 3 → onayla kayıt) · 9
+>     metin bloğu (EN 7 · FR 2) · 5 ortak kaydı · 10 ürünlük ekipman listesi · paket kuralı sürüm 1 · 2 belge (HTML yükleme 400 `FILE_TYPE`) · gönderen kutuları ·
+>     şehir / mekân (klasik fuar ucu, kısmi güncelleme) → hazırlık paneli **Ready**; zincir anahtarı KAPALI. Türetilen tarihler: on-site fiyat = build-up'ın ilk
+>     günü 2026-11-16 · sipariş deadline'ı 2026-11-15. SAMPLE kontratlar: 7899 → Equipped · 7900 → Non-equipped (space-only akışı).
+>   - **Oturumla check-in — EKRANDAN (390 px, cc-project, SAMPLE ziyaretçi):** 201 → satır `session` / `session`, durum checked_in, denetim satırı cc-project;
+>     ikinci dokunuş "duplicate within 120 seconds" (satır artmadı). Yatay taşma 0 · konsol hatası 0.
+>   - **Kapı (staging):** cc-project okur + yazar · cc-staging (Sales) okuma 409 / yazma 409 `operations.write` · cc-external 409 `EXTERNAL_NOT_ALLOWED`.
+>     Expo settings ekranı 1440 + 390 px: HTTP 200 · yatay taşma 0 · konsol hatası 0.
+>   - **TABAN** 342.00 · **TABAN-2 EŞİT** (migration sonrası).
+> - **Ön-onaylı SAPMA + 🔶 (Sentez'e):**
+>   1. 🔶 **"Non-equipped" = space-only okuması:** referans tohumu ölçülen adlarla (Equipped · Non-equipped · Other · Outdoor Area); Exhibitor Page akışı
+>      Equipped → equipped · Non-equipped → space_only · diğer ikisi akışsız. Kontratta stand tipi METİN kalır (klasik ekranlar / raporlar aynen) — ad
+>      değiştirilemez, akış referans ekranından değişir. Yanlışsa tek alan.
+>   2. 🔶 **Paket sürümü bağı türetilir:** kontrat doğduğunda yürürlükteki son sürüm (hepsinden eskiyse ilk sürüm); açık bağ kolonu yalnız "elle geçirme"
+>      eylemi için duruyor (kuyruk). Okuma kararı Orchestrator 3b ile aynı sonucu verir (ilk yayımda mevcut kontratlar ilk sürümde).
+>   3. 🔶 **Hatırlatma zamanlamasının varsayılanı YOK:** UX'in −14 / 7 gün sayıları "uydurma örnek" (EK-2) → ayar boşken hatırlatma planlanmaz, hazırlık
+>      panelinde yazılı. İlk gönderimde yalnız Stand / Catalogue 45 gün varsayılan ("bugün 45"); Build-up / Badge boş.
+>   4. 🔶 **Expo settings'te kimlik düzenlenmez:** ad · şehir · mekân · tarih klasik fuar kaydında (köprü) — ikinci alan açılmadı. Sektör + "kardeş fuara
+>      kopyala" işaretli.
+>   5. 🔶 **Finance ve Sales Expo settings'i GÖRMEZ:** UX C4 "satış salt okur · Finance payment deadline'ını görür" diyor; ikisinde de `operations.read` yok,
+>      izin EKLENMEDİ (Orchestrator 5) → 409.
+>   6. 🔶 **Office Manager** ofis boyutu olmayan EMS kaydını bugünkü gibi yazar (kod yeter); gönderen kutuları kiracı geneli olduğundan ofis kapsamıyla
+>      yazılamaz (409 `OUT_OF_SCOPE`).
+>   7. Project artık `catalog.write` ile **Admin alanını** da görür (katalog oradadır) — B7'nin doğal sonucu.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** PG 14 ikinci koşu + PG 17 (paket sonunda) · yalnız `operations.read` taşıyan kullanıcıyla staging turu (araç hesabı yok —
+>   testte) · Office Manager / Finance şablonlarıyla staging turu (araç hesabı yok) · Expo settings formlarının tamamının EKRANDAN sürülmesi (uçtan dolduruldu;
+>   ekran yüklenişi + check-in ekrandan) · önceki edisyondan kopya staging'de (test fuarının önceki edisyonu yok — testte) · gerçek telefon / kamera · Safari /
+>   Firefox · Drive dosyalarının İÇERİĞİ (yalnız adları — §5'te okunacak) · üç metin kutusunun "yan yana" düzeni (bugün alt alta — cila).
+> - **Bilinçle yapılmayanlar:** canlı her şey · `tokens.css` ve ui2'nin öbür sayfaları · klasik fuar formu ve gövdesi · floor plan tablolarına her tür bağ ·
+>   zincirin açılması (KAPALI) · izin kodu / şablon satırı (5 satır dışında) · gerçek gönderen adresi (kutulara `.example` örnek adres) · skill dosyaları
+>   (rota tablosu bayat — kuyruk).
+> - **Kuyruğa:** paket sürümünü elle değiştirme eylemi (S) · Expo settings'te dil kutularının yan yana düzeni (S) · Finance / Sales'in Expo settings'i salt
+>   okuması (karar) · "kardeş fuara kopyala" (S) · sektörün ui2'de düzenlenmesi (S).
+> - **→ Sıradaki:** §2 EXHIBITOR PAGE (kimliksiz yüz: anahtar · kabuk · Stand · Catalogue · Badges · Build-up & documents · Contacts).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**

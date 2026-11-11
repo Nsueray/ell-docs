@@ -2,7 +2,7 @@
 
 > **Ne:** UI-ÖNCE fazının (kütük YON-21) tek takip belgesi — Sentez 11 Kas PAKET UI-TAM-2 §1. Her ekran için: tasarım kaynağı · inşa durumu ·
 > Suer turu · kuyruk. Kriter bu belge DEĞİLDİR: kriter Sentez blokları (defterde AYNEN) + kütük; bu belge nerede ne olduğunu gösterir.
-> **Güncelleme:** her paket parçasında (defter kaydıyla aynı commit). **Son güncelleme:** 2026-11-11 — PAKET UI-TAM-2 ilk (belge) commit'i.
+> **Güncelleme:** her paket parçasında (defter kaydıyla aynı commit). **Son güncelleme:** 2026-11-11 — PAKET UI-TAM-2 1. parça (TEMEL) staging'de.
 > **Ortam:** yalnız staging (`https://leena-staging.onrender.com/ui2/`). Canlıda bu fazın hiçbir ekranı yok. Tarihseldir (YON-01).
 
 ## 1. Tasarım kaynakları
@@ -42,10 +42,10 @@ Suer turu: Y7 — Suer kendi Owner hesabıyla gezer, cevabı tek "değişiklik l
 | 17 | Finance | Ledger | `finance-ledger.html` | set | staging (`e61d0a9`) | bekliyor |
 | 18 | Finance | Expo Finance | `finance-expo.html` | set · UX 2. tur #35 · RAP-18 | staging (`e61d0a9`) → UI-TAM-2 §3: Gross margin / Net profit bağlanır | bekliyor |
 | 19 | Operations · On-site | Mobile Dashboard | `mobile-home.html` | set | staging (`caa9f09`) | bekliyor |
-| 20 | Operations · On-site | Mobile Scan | `mobile-scan.html` | set · YET-19 eki (A1) | staging (`caa9f09`) → UI-TAM-2 §1: oturumla check-in | bekliyor |
+| 20 | Operations · On-site | Mobile Scan | `mobile-scan.html` | set · YET-19 eki (A1) | staging (`caa9f09`) · oturumla check-in **staging (`de7d486`)** | bekliyor |
 | 21 | Operations · On-site | Mobile Visitor List | `mobile-visitors.html` | set | staging (`caa9f09`) | bekliyor |
 | 22 | Kabuk | Settings › Appearance | `settings-appearance.html` | set | staging (`caa9f09`) | bekliyor |
-| 23 | Operations | **Expo settings** (YENİ) | — | UX 3. tur C4 · UX 2. tur #4 + eskiz 4 · EXH-18 · EXH-06 (paket kuralı) | **UI-TAM-2 §1** | — |
+| 23 | Operations | **Expo settings** (YENİ) | `ops-expo-settings.html` | UX 3. tur C4 · UX 2. tur #4 + eskiz 4 · EXH-18 · EXH-06 (paket kuralı) | **staging (`de7d486`)** | bekliyor |
 | 24 | Exhibitor yüzü (ui2 DEĞİL) | **Exhibitor Page** (YENİ) — kabuk · Stand · Catalogue · Badges · Build-up & documents · Contacts · geçersiz link sayfası | — | UX 3. tur C1 · C1 mockup · UX 2. tur #16–17 + eskiz 0–2 · EXH-01…14 · GUV-06 | **UI-TAM-2 §2** | — |
 | 25 | Exhibitor yüzü | Exhibitor Page — **Extra equipment + Payment** (kodlu) | — | UX 3. tur C1 · EXH-05 · EXH-10 · EXH-13 | **UI-TAM-2 §3** | — |
 | 26 | Finance | Collections — **"receipts to check"** | `finance-collections.html` (mevcut ekran) | Sentez C14 · EXH-10 | **UI-TAM-2 §3** | — |
