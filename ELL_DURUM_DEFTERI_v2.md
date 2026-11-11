@@ -9441,6 +9441,240 @@
 >   Affiliations (M) · Ops liaison (S) · Filters (S) · takvim (M) · canlı yenileme (S).
 > - **→ Sıradaki:** Finance (War Room · Contract düzeni · Commissions · Ledger · Expo Finance).
 
+> ## ✅ 2026-11-11 — PAKET UI-TAM 6. PARÇA: FINANCE EKRANLARI STAGING'DE — War Room (= R7) · Contract set düzeninde (+ ödeme planı) · Commissions (temsilci başına hak ediş / ödenen / bakiye) · Ledger (hesaplar + ekstre tek ekran) · Expo Finance (fuar P&L) (LEENA `e61d0a9` + düzeltme `e98fe65`)
+>
+> - **Kriter kaynağı:** [defter:2026-11-11 SENTEZ 11 Kas: UI-ÖNCE FAZI — KURALLAR (Y1–Y10) + PAKET UI-TAM] (Y2 · C §4 Finance) + Orchestrator UYGULAMA §5
+>   ("ucuz uç") + bağlantı haritası §3 + BM v4 yama-3 §4.5 (Finance) + kütük MOT-01 · LED-23 · RAP-01 / 02 / 10 / 11 · YET-23.
+> - **Ne yapıldı:**
+>   - **Sunucu — YALNIZ okuma / alan ekleme (yeni tablo, motor, izin kodu, formül YOK):**
+>     **`GET /api/commissions/agents`** — temsilci başına hak edilen · ödenen · bakiye + kontrat sayısı + son ödeme tarihi; her satır temsilci
+>     EKSTRESİNİN tanımıyla (tüm temsilciler tek sorguda; dilim kaynağı tek — `SLICE_CTES`, MOT-01); toplamlar aynı satırlardan: ödenecek =
+>     pozitif bakiyeler, temsilci borcu = negatif bakiyeler (netleşmez). Kapı kesim raporuyla aynı (`commissions.read` + kapsam ALL). Dışa
+>     aktarım aynı uçtan. · `GET /api/ledger/budgets/:expoId` yanıtına **`totals`** (bütçe toplamı · gerçekleşen toplamı · bütçeli kategori
+>     sayısı — kategori satırlarının toplamı sunucuda; mevcut alanlar değişmedi).
+>   - **5 ekran — öğe bazında (Y2):**
+>     1. **War Room** (`owner-home.html`; R7 bölümleri AYNEN: fuar başına satış + hedefe % · son 7 gün aktivite · fuar başına açık bakiye) —
+>        *eklenen bağlı öğeler:* yıl cirosu + aylık dağılım (R2; sütun boyu sunucunun ay payı) · kasa + banka toplamı · hesap bakiyeleri · açık
+>        alacak · ödenecek komisyon (ledger özeti) · alacak yaşlandırması + 90 günü aşan + hiç ödemesiz kontrat uyarıları (R4; kovalar RAP-10).
+>        *İşaretli:* yıllık ciro hedefi + hedef çizgisi · Top expos'ta Costs · Margin · Cash in · uyarılar: blocked exhibitor · FX exposure ·
+>        payout run · Board pack.
+>     2. **Contract** (`finance-contract.html`, set düzeni: başlık + rakam kartları, solda kalemler / işlemler / plan / yazışma, sağda ray) —
+>        *bağlı:* mevcut her şey (kalemler satır EUR'suyla · ödemeler · komisyon bloğu YET-23) + **ödeme planı** (`GET /api/contracts/:id/schedule`
+>        — plan kalemleri + toplamın kontrat tutarıyla eşitliği) · kontrat kuru · taraflar (firma kartı bağlantısı · roller) · kaynak teklifin
+>        donmuş PDF'i · **Record payment = klasik kontrat ekranına köprü** (`nav.json`, `?id=`). *İşaretli:* stand · satır başı Comm % /
+>        Commission · canlı kur + kaynağı · Finance owner · işlem türü etiketi · (tekliften doğmayan kontratta) PDF.
+>     3. **Commissions** (`finance-commissions.html`, yeni — menüdeki yer tutucu artık CANLI) — *bağlı:* temsilci tablosu (tür · ofis · kontrat ·
+>        hak edilen · ödenen · bakiye · son ödeme) · dört sayaç (Agents · Accrued · Paid · Due) · arama + tür süzgeci · dışa aktarım · satır →
+>        temsilci ekstresi · köprüler: klasik temsilci ekranı ("Add agent") + klasik kesim-dönemi raporu. *İşaretli:* Blended % · Status ·
+>        Run payout · Approve & run payout · Next payout run · Per-line commission.
+>     4. **Ledger** (`finance-ledger.html`, yeni) — *bağlı:* hesap sekmeleri + bakiyeler · konsolide kasa + banka toplamı (kapsam all ise) · seçili
+>        hesabın ekstresi (açılış · giriş · çıkış · kapanış + hareketler, yürüyen bakiye — sunucudan) · tarih aralığı · New transfer / New expense.
+>        *İşaretli:* tüm hesaplar tek hareket listesi · hareket arama · Type süzgeci · Method sütunu · ekstre dışa aktarımı.
+>     5. **Expo Finance** (`finance-expo.html`, yeni) — *bağlı:* fuar seçimi · bütçe / gerçekleşen kategori tablosu + gider toplamı + tahsilat
+>        (R6) · satış: kontrat · m² · brüt · tahsil edilen · açık (R3) · 90 günü aşan açık bakiye (R4, fuar süzgeci) · dışa aktarım · bütçe
+>        düzenleme (Expo budget). *İşaretli:* Gross margin · Net profit · marj halkası · cluster kırılımı + görünüm anahtarı.
+>   - **Menü (BM v4 yama-3 §4.5):** Executive başında **War Room** (eski "Overview") · Contracts'ta **Commissions** canlı · Money başında
+>     **Ledger** · Expo Finance başında **Expo Finance** · köprü öğeleri: `contract-classic` · `commissions-classic` (+ mevcut `agents`).
+> - **BULGU + DÜZELTME:**
+>   - **(testte, commit'ten önce)** yeni köprü öğesinin ebeveyni alt sayfaydı (şema: ebeveyn üst düzey olmalı) → `contract`. · War Room aylık
+>     sütun ipucunda elle "€" (K4 "sayfada elle € yok") → bileşenle. · Kontrat başlığında tarih biçimi mevcut testin beklediği ifadeyle.
+>   - **(yerel önizlemede)** birincil düğmedeki köprüde "classic" etiketi görünmüyordu (renk) → etiket düğmenin yazı rengini alır (Floor plan'daki
+>     "Open floor designer" da düzeldi). · Kontrat başlığındaki rakamlar kart şeridiyle tekrarlıyordu → başlıktan çıkarıldı. · Ödeme tarihi ham
+>     ISO damgasıydı → ilk 10 karakter.
+>   - **(`e98fe65`, staging turunda ölçüldü)** izni olmayan oturum sayfayı doğrudan adresle açınca (menüde gizli) beklenen 409 konsola düşüyordu:
+>     War Room'da ledger özeti (Project — `ledger.read` yok) · Commissions · Ledger · Expo Finance'te bütçe. Sayfalar artık ucu çağırmadan nedenini
+>     yazar (kapsam reddi — OUT_OF_SCOPE — istemcide bilinemez, sunucu yanıtı gösterilir).
+> - **Ön-onaylı SAPMA'lar (YON-18) + 🔶:**
+>   1. **`GET /api/commissions/agents` haritanın §6 tablosunda YOKTU** — harita tabloyu "temsilci listesi + ekstre"den kuruyordu (N temsilci = N
+>      ekstre çağrısı). Tek okuma, ekstrenin tanımıyla; sayılar ekstreyle ve ledger özetiyle eşit (aşağıda staging'de ölçüldü).
+>   2. **Expo Finance'te marj İŞARETLİ kaldı** — "Gross margin / Net profit" için tanım kararı yok (brüt mü net ciro mu · hangi giderler · komisyon
+>      dahil mi); sayı uydurulmadı. 🔶 Sentez: tanım gelirse sunucuda tek toplam olarak açılır (S).
+>   3. **Ledger'da ekstre dışa aktarımı ve Method sütunu işaretli** — harita "B" demişti; ekstre ucunda dışa aktarım yok, ödeme yöntemi ledger
+>      satırında değil.
+>   4. **War Room, Project'e açık** (Y5 sonucu: `contracts.read` all → R7 açılır); ledger tabanlı sayaçlar (kasa · alacak · komisyon) `ledger.read`
+>      olmadan görünmez. 🔶 Project'in ciro / açık bakiye toplamlarını görmesi isteniyor mu (Y5'in kapsamı).
+>   5. **Tek birimli tutar istisnaları genişledi** (RAP-01 para çifti kuralı; `test_ui2_ui0` K4): ödeme planı kalemi · plan toplamı · kontrat tutarı
+>      (plan ucunda EUR karşılığı yok) ve Ledger ekranının ekstre giriş / çıkış toplamı (Accounts › Statement ile aynı istisna).
+>   6. **Hüküm beklentileri (test satırında hüküm yorumu):** `test_ui2_ui0` N4 (Commissions canlı · Ledger · Expo Finance menüde) · N7 (klasik
+>      komisyon raporunun köprüsü `commissions-classic`) · N8 (ebeveynli köprü menü satırı değil) · K4 (yukarıdaki istisnalar).
+> - **Commit:** LEENA eliza-next **`e61d0a9`** (`2418198` üstünde; 14 dosya) · düzeltme **`e98fe65`** (4 sayfa). **PUSH: CC (YON-19).** Migration YOK.
+> - **Ölçülenler:**
+>   - **Test (`e61d0a9`):** PG 14 tam zincir **940 / 940 · 59 suite · başarısız 0** (929 + yeni suite `test_ui_tam_finance` 9 + `test_ui_tam`
+>     F1–F2). Yeni suite: temsilci A hak ediş 342.00 (TABAN fikstürü) · ödenen 40.00 · bakiye 302.00; B yalnız ödeme → −30.00; C hareketsiz 0.00 —
+>     her satır temsilci ekstresiyle aynı · toplamlar testte satırlardan yeniden toplandı ve ledger özetinin `commissions` bloğuyla eşit · kapı
+>     (Owner + Finance 200 · Sales 409 OUT_OF_SCOPE · Project 409 PERMISSION_REQUIRED · klasik oturum 409 · token yok 401) · CSV dışa aktarım ·
+>     uçta yazma ifadesi yok · bütçe `totals` 5 fuarda kategori satırlarıyla eşit · 6 ekran tarayıcısız çizimle hatasız · köprü adresleri
+>     (`/contract-detail.html?id=<kontrat>` · `/sales-agents.html` · `/commissions.html`) `nav.json`'dan · TABAN.
+>   - **Staging API (deploy `e61d0a9`; gerçek veri, salt-okunur):** `GET /api/commissions/agents` Owner 200 (0,9 sn) — **47 temsilci · hak edilen
+>     286 580,52 · ödenen 78 286,20 · ödenecek 215 774,77 (18 temsilci) · temsilci borcu 7 480,45 (15)**; satırlardan yeniden toplam = toplamlar ✓ ·
+>     ödenecek + temsilci sayısı = `GET /api/ledger/summary` `commissions` ✓ · en yüksek bakiyeli temsilcinin satırı = kendi ekstresi ✓.
+>     cc-project 409 `PERMISSION_REQUIRED` · cc-staging (Sales) 409 `OUT_OF_SCOPE` · cc-external 409 `EXTERNAL_NOT_ALLOWED`. Bütçe `totals` (bir
+>     fuar) kategori satırlarıyla eşit. Süreler: ledger özeti 3,5 sn · R4 3,9 sn (fuar süzgeciyle 1,3 sn) · R2 yıl 4,2 sn · R7 1,3 sn.
+>   - **Staging ekran turu:** cc-owner 5 ekran × 1440 px + 390 px (10 yükleme) — hepsi 200 · yatay taşma 0 · konsol hatası 0 · işaret sayıları
+>     War Room 12 · Commissions 11 · Ledger 3 · Expo Finance 8 · Contract 7. cc-external: beşinde de alan kapısı (konsol hatası 0). cc-project +
+>     cc-staging: doğrudan adresle açılan izinsiz sayfalarda beklenen 409 (düzeltme öncesi); düzeltme sonrası: paket sonu turunda (deploy `8820199`) cc-project War Room · Commissions · Ledger · Contract nedenini yazıyor, konsol hatası 0; cc-staging'de yalnız kapsam reddi veren üç sayfa (War Room · Contract · Commissions) birer 409 (OUT_OF_SCOPE — istemcide bilinemez).
+>   - **Ledger ekranının VERİLİ hali:** yerel önizlemede (test DB; API ile açılan 2 hesap + 2 transfer) — sekmeler bakiyeleriyle (−64,50 / 64,50) · açılış 0,00 · giriş 35,50 · çıkış 100,00 · kapanış −64,50 · yürüyen bakiye −100,00 → −64,50 · konsolide 0,00 · 1440 px + 390 px yatay taşma 0, konsol hatası 0 (zincirde değil — Playwright ile görüldü).
+>   - **TABAN** 342.00 (test; aynı fikstür Commissions listesinde 342.00) · staging TABAN / TABAN-2 bu parçada yeniden ölçülmedi (migration ve
+>     motor değişikliği yok) — paket sonu ölçümünde.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:**
+>   - Ledger ekranı staging'de boş durumda (staging'de hesap kaydı 0) · War Room "Cash by account" staging'de boş · "Top expos" staging'de
+>     (bitmemiş fuar varsa dolu; ölçülen işaret sayısı 12 → liste çizildi, içerik okunmadı).
+>   - Ödeme planı DOLU bir kontratla ekran (ölçülen staging kontratında plan kalemi 0; yerel fikstürde plan yok) — plan tablosu yalnız kod.
+>   - "Record payment" köprüsünün açtığı klasik kontrat ekranı kullanıcı oturumuyla (köprü adresi ölçüldü; klasik sayfanın içi açılmadı).
+>   - Office Manager şablonu (ofis kapsamı) ile Ledger / Commissions ekranları · EUR dışı kontratta para çifti görünümü staging'de.
+>   - Tam zincir düzeltme commit'inden sonra: 7. parçanın zincirinde.
+>   - PG 17 koşusu + ikinci PG 14 koşusu (paket sonunda) · Render API anahtarı ("anahtar bekliyor").
+> - **Bilinçle yapılmayanlar:** toplu komisyon ödeme motoru · satır bazlı komisyon · marj tanımı · yıllık ciro hedefi · fuar başına gider / marj
+>   listesi · konsolide hareket listesi · ekstre dışa aktarımı · canlı kur · ui2 ödeme kayıt formu (klasik ekrana köprü) · board raporu · klasik
+>   sayfa gövdeleri · staging'e iş verisi · canlıya herhangi bir şey.
+> - **Kuyruğa (işaretlenenler; S / M / L):** marj tanımı + sunucu toplamı (S — karar) · yıllık ciro hedefi (M) · Top expos Costs / Margin / Cash in
+>   (M) · toplu ödeme (payout run) + onay durumu (L) · Blended % (S) · satır bazlı komisyon (L — model) · konsolide hareket listesi (M) · hareket
+>   arama + tür süzgeci (S) · ekstre dışa aktarımı (S) · Method sütunu (S) · canlı kur (M) · Finance owner (S) · işlem türü etiketi (S) · FX
+>   exposure raporu (M) · Board pack (M) · cluster toplamları (M) · ui2 ödeme kayıt formu (S).
+> - **→ Sıradaki:** Mobile (On-site: Home · Scan · Visitors) + Settings › Appearance → paket sonu regresyonu.
+
+> ## ✅ 2026-11-11 — PAKET UI-TAM 7. PARÇA: ON-SITE (MOBİL) 3 EKRAN + SETTINGS › APPEARANCE STAGING'DE — terminal akışı DEĞİŞMEDİ, mobil ekran check-in YAZMAZ · tema seçimi hesaba (LEENA `caa9f09` + kapanış düzeltmesi `8820199`)
+>
+> - **Kriter kaynağı:** [defter:2026-11-11 SENTEZ 11 Kas: UI-ÖNCE FAZI — KURALLAR (Y1–Y10) + PAKET UI-TAM] (Y2 · Y4 · C §5 Mobile "telefon genişliği;
+>   terminal akışı değişmez") + bağlantı haritası §4 + §5 + BM v4 yama-3 §4.5 (Operations · On-site; kabuk: Settings › Appearance).
+> - **Ne yapıldı:**
+>   - **On-site (Operations alanı, telefon çerçevesi + alt sekme çubuğu; aynı fuar bağlamı):**
+>     1. **Home** (`mobile-home.html`) — *bağlı:* fuar + evre · bugün check-in yapan kişi / geçiş · kayıtlı ziyaretçi · saatlik check-in ·
+>        imzalı katılımcı (R3, `contracts.read` varsa) · son check-in'ler (`GET /api/checkins?expo_id=`) · hızlı eylemler Scan · Visitors · Floor.
+>        *İşaretli:* On-site now (çıkış kaydı yok) · Exhibitors "ready" · "Doors open" canlı şeridi · Needs attention · Print.
+>     2. **Scan** (`mobile-scan.html`) — *bağlı:* rozet kodundan ziyaretçi (`GET /api/visitors/badge/:qr` — mevcut uç; başka fuarın rozeti
+>        uyarıyla) · kamera ile okuma (tarayıcının yerleşik QR okuyucusu varsa; kütüphane yüklenmez, yoksa nedeni yazılır) · ada göre arama
+>        (Visitors) · rozet (klasik rozet penceresi) · **fuarın tarama terminalleri → klasik tarama ekranı** (köprü, terminal anahtarı sorguda) ·
+>        **aynı terminal konferans şeridi için → klasik KONFERANS tarayıcısı** (ayrı ekran + ayrı parametre adı) · lead tarayıcı (klasik).
+>        *İşaretli:* bu ekrandan doğrudan Check-in · Lead modu.
+>     3. **Visitors** (`mobile-visitors.html`) — *bağlı:* arama (ad · e-posta · firma) · tür süzgeci · Checked-in / Pending süzgeci · sayfalama ·
+>        toplam (sunucudan) · satır → Scan. *İşaretli:* satırdan check-in.
+>   - **Settings › Appearance** (`settings-appearance.html`) — *bağlı:* 15 tema kartı (her kart KENDİ paletini önizler) · seçim hesaba yazılır
+>     (`PUT /api/user-auth/preferences`) ve anında uygulanır, başka cihazda girişte gelir · varsayılana dönüş · **`GET /api/user-auth/preferences`**
+>     (yeni okuma: tercih + seçilebilir tema listesi — liste sunucuda tek yerde, sayfa kendi kopyasını taşımaz) · ayar menüsü: Profile (Who is
+>     signed in) · Team & roles (Admin › Users, yetkiliyse). Üst çubuktaki hesap bağlantısı artık Settings'i açar. *İşaretli:* Mode Dark · System ·
+>     Density · Reduce motion · menü: Security · Notifications · Billing · Integrations.
+>   - **CLAUDE.md** (EMS tarafı): On-site ekranları · oturumla check-in ucunun kuralı · `/api/operations/expos`.
+> - **ÖLÇÜMLE DEĞİŞEN KARAR — mobil ekran check-in yazmıyor:** bağlantı haritası §4 "Scan → Check-in = `POST /api/checkins` (oturum JWT'si)"
+>   demişti. Ölçüm (kod + staging): uç YALNIZ `terminal: 'badge-print'` kabul ediyor (başka değer 400 "Invalid terminal"), mükerrer denetimini de o
+>   etikette yapıyor — yani rozet-baskı yolu, genel "bu ziyaretçiyi içeri al" ucu değil. O etiketi mobil ekrandan göndermek, basılmamış rozeti
+>   baskı terminali check-in'i olarak kaydederdi (terminal kırılımlı raporlar bozulur) → **yapılmadı**. Check-in mevcut terminal akışında kalır:
+>   Scan ekranı fuarın terminallerini klasik tarama ekranında açar (klasik "Copy URL" ile aynı adres). Doğrudan Check-in düğmesi işaretli.
+>   🔶 **Sentez:** telefondan oturumla check-in isteniyorsa ya uca yeni bir terminal etiketi (klasik uç değişir + rapor kırılımı kararı) ya da ayrı
+>   bir uç gerekir.
+> - **BULGU + DÜZELTME:**
+>   - **(yerel önizlemede, staging verisiyle)** terminal listesinde salonu "Conference" olan terminaller de check-in tarayıcısına gidiyordu — klasik
+>     "Copy URL"un bilinen tuzağı (CLAUDE.md G22: konferans şeridi check-in tarayıcısında açılırsa sertifika kesilmez). Scan ekranına amaç-özel
+>     ikinci köprü kondu (konferans tarayıcısı, doğru parametre adıyla) + görünür uyarı. Klasik terminaller sayfası DEĞİŞMEDİ.
+>   - **(testte)** tema önizlemesi için palet seçicisi eklenince mevcut token testi (H2) düştü → önizleme seçicisi ayrı satıra alındı; mevcut
+>     seçiciler bayt-aynı kaldı.
+>   - **(`8820199`, paket sonu staging turunda ölçüldü)** Operations Dashboard Owner'da 17–21 sn'de çiziliyordu: klasik `GET /api/expos` her hesapta
+>     **6,5–9,9 sn** (213 fuar × ziyaretçi / check-in sayan 4 alt sorgu) ve tüm Operations / On-site sayfaları seçici listesi için onu bekliyordu.
+>     Yeni hafif okuma **`GET /api/operations/expos`** (sayımsız seçici listesi) → staging'de 0,6–1,4 sn. Klasik uç DEĞİŞMEDİ (Finance ekranlarının
+>     fuar seçicileri hâlâ onu okur — kuyruk). Aynı commit: kapsam reddi artık hata görünümünde değil (War Room) · kontrat sayfası önce kontratı
+>     okur, okunamıyorsa ödeme + plan uçlarını çağırmaz (3 → 1 beklenen 409).
+> - **Ön-onaylı SAPMA'lar (YON-18) + 🔶:**
+>   1. Mobil Check-in işaretli (yukarıda — ölçümle değişen karar). 🔶
+>   2. **`GET /api/operations/expos` ve `GET /api/user-auth/preferences`** haritanın §6 tablosunda yoktu (ikisi de sayımsız / kişisel okuma).
+>   3. **Terminal anahtarı köprü adresinde taşınır** (klasik "Copy URL" ile aynı görünürlük; ekrana metin olarak basılmaz). Terminal listesini gören
+>      her iç kullanıcı (`operations.read`) tarama ekranını açabilir — klasik terminaller sayfasıyla aynı.
+>   4. **Rozet arama ucu fuar kapsamı sınamıyor** (mevcut E sınıfı açıklık — EMS kapıları kuyruğu); ekran başka fuarın rozetinde uyarı gösterir.
+>   5. **"Mobile" ekranlar ayrı bir alan değil** — Operations › On-site grubu (BM v4 yama-3); kabuk üst çubuğu telefon genişliğinde de görünür.
+>   6. **Hesap bağlantısı Settings'e taşındı**; "Who is signed in" ayar menüsünde Profile.
+> - **Commit:** LEENA eliza-next **`caa9f09`** (12 dosya) · kapanış düzeltmesi **`8820199`** (6 dosya). **PUSH: CC (YON-19).** Migration YOK.
+> - **Ölçülenler:**
+>   - **Test:** `caa9f09` PG 14 tam zincir 943 / 943 · 59 suite (940 + `test_ui_tam` M1–M2 + `test_ui_tam_access` T3) · `8820199` **945 / 945**
+>     (+ O8 · O8b). M1: mobil sayfalarda `POST` çağrısı ve check-in / terminal check-in ucu YOK · terminal anahtarı yalnız iki köprü sorgusunda ·
+>     kamera yalnız yerleşik okuyucuyla, ek betik yok. M2: tema adı listesi sayfada yok (sunucudan) · 15 temanın önizleme seçicisi. T3: tercih
+>     okuma (boşken null + 15 tema; seçimden sonra yeni tema; dış kullanıcı kendi tercihi; klasik oturum 409; token yok 401). O8: seçici listesinde
+>     sayım alanı yok, sıra yeniden eskiye.
+>   - **Tema seçimi tıklanarak (yerel, Playwright):** 15 kart · üç kartın önizleme rengi birbirinden farklı · Cobalt seçildi → sayfa teması + yerel
+>     kayıt + "Saved" mesajı · yeniden yüklemede seçili · başka sayfada da Cobalt · "Back to the default" → vermillion.
+>   - **Staging API (deploy `caa9f09`):** tercih okuma 4 hesapta 200 (15 tema, varsayılan vermillion) · araç hesabının KENDİ tercihi: seç 200 → oku
+>     cobalt → bilinmeyen 400 `UNKNOWN_THEME` → temizle 200 → oku null · On-site okuma uçları cc-project 200, cc-staging 409
+>     `PERMISSION_REQUIRED`, cc-external 409 `EXTERNAL_NOT_ALLOWED` · **`POST /api/checkins` terminal "mobile" → 400 "Invalid terminal"** (hiçbir
+>     kayıt yazılmadan) · hafif fuar listesi (deploy `8820199`): 213 fuar, 0,6–1,4 sn; cc-staging / cc-external 409.
+>   - **Staging ekran turu (390 px):** cc-project + cc-owner 6'şar yükleme (Home · Visitors · süzgeçli Visitors · Scan · rozet kodlu Scan · Settings) —
+>     hepsi 200 · yatay taşma 0 · konsol hatası 0; fuarın 9 tarama terminali listelendi, toplu baskı terminali listede yok. cc-staging + cc-external:
+>     mobil ekranlarda alan kapısı; Settings dördünde de açık.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:**
+>   - **Kamera ile QR okuma hiçbir ortamda denenmedi** (başsız tarayıcıda kamera yok; yalnız kod + "okuyucu yoksa nedeni yaz" dalı).
+>   - **Köprülerin açtığı klasik ekranlar açılmadı** (tarama · konferans tarayıcısı · rozet · lead tarayıcı): adresler ve parametre adları
+>     ölçüldü (kod: klasik sayfalar `terminalKey` / `terminal_key` okuyor); terminal anahtarıyla klasik ekranda check-in bu pakette YAPILMADI
+>     (staging'e iş verisi yazılmaz).
+>   - Gerçek telefonda görünüm (yalnız 390 px tarayıcı penceresi) · fuar günü (evre `running`) görünümü — staging'deki fuar bitmiş.
+>   - Mobil ekranlar test DB'sinde çizilmedi (EMS tabloları yok — YON-09); çizim staging verisiyle Playwright'ta.
+>   - Render API anahtarı ("anahtar bekliyor").
+> - **Bilinçle yapılmayanlar:** oturumla check-in · çıkış / içeride sayımı · rozet baskısı (terminalde) · lead yakalama (klasik) · koyu mod ·
+>   yoğunluk / hareket ayarı · ayrı parola ekranı · bildirim merkezi · klasik `/api/expos` hızlandırma · klasik terminaller sayfasındaki "Copy URL"
+>   (G22) · klasik sayfa gövdeleri · canlıya herhangi bir şey.
+> - **Kuyruğa (işaretlenenler; S / M / L):** oturumla mobil check-in (M — karar) · On-site now (M — çıkış kaydı) · Exhibitors ready (L — onboarding) ·
+>   canlı kapı şeridi + Needs attention (M) · satırdan check-in (M) · Lead modu (M) · Print (S) · koyu mod (M) · yoğunluk + hareket (S) · parola
+>   ekranı (S) · bildirimler (L) · klasik `/api/expos` süresi (S — EXPLAIN; Finance seçicileri bekliyor) · rozet arama ucunun fuar kapsamı (EMS E
+>   sınıfı) · G22 klasik "Copy URL" (S).
+> - **→ Sıradaki:** paket kapanışı (regresyon + tek rapor).
+
+> ## ✅ 2026-11-11 — PAKET UI-TAM KAPANIŞ: TASARIM SETİNİN 22 EKRANI STAGING'DE CANLI (ui2) + prototip katmanı · paket sonu regresyonu PG 14 × 2 + PG 17 **945 / 945** · canlıya HİÇBİR ŞEY gitmedi (LEENA eliza-next `8820199`)
+>
+> - **Kriter kaynağı:** [defter:2026-11-11 SENTEZ 11 Kas: UI-ÖNCE FAZI — KURALLAR (Y1–Y10) + PAKET UI-TAM] (A · B · C §0–§6 · Y7 "paket sonu TEK
+>   rapor — ONAY? sorusu ve SUER BLOĞU yok") + parça kayıtları [defter:2026-11-11 PAKET UI-TAM 1. PARÇA] … [defter:2026-11-11 PAKET UI-TAM 7. PARÇA].
+> - **Ne yapıldı (özet — ayrıntı parça kayıtlarında):** setin 22 ürün ekranı ui2'de; her öğe ya gerçek uçtan okur ya görünür "Not connected yet"
+>   işareti taşır (UI-07; işaret tek bileşen); ölü düğme / ölü bağlantı yok; setin uydurma verisi üründe yok; klasik ekranlara yalnız `nav.json`
+>   köprüleriyle gidilir (klasik sayfa gövdeleri DEĞİŞMEDİ); prototip katmanı `/design-preview/` ayrı (ui2 ve `public/` dışında, şeritli, noindex).
+> - **22 ekran → adres** (`https://leena-staging.onrender.com/ui2/` altında; fuar / kayıt seçimi sorgu dizesiyle):
+>   Login `login.html` · Sales: My Work `sales-home.html` · Mail `sales-mail.html` · Pipeline `sales-pipeline.html` · Quotes `sales-quotes.html`
+>   (+ teklif `sales-quote.html?quote=`) · Companies `sales-customers.html` (+ firma kartı `sales-customer.html?company=`) · Operations: Dashboard
+>   `ops-dashboard.html` · Exhibitor `ops-exhibitors.html` · Exhibitor Detail `ops-exhibitor.html?id=` · Floor plan `ops-floorplan.html` · Visitor &
+>   Access `ops-visitors.html` · Communications `ops-communications.html` · Reports `ops-reports.html` · Finance: War Room `owner-home.html` ·
+>   Contract `finance-contract.html?contract=` · Commissions `finance-commissions.html` · Ledger `finance-ledger.html` · Expo Finance
+>   `finance-expo.html?expo=` · Mobile: Dashboard `mobile-home.html` · Scan `mobile-scan.html` · Visitor List `mobile-visitors.html` · Settings
+>   `settings-appearance.html` · + prototip `/design-preview/`.
+> - **Commit zinciri (LEENA eliza-next; taban `bf217b7`):** `f362819` (CLAUDE.md faz kuralları) → `eba7970` (1 — prototip) → `6f9c4ac` (2 — yetki +
+>   tercih, 070) → `a71164f` (3 — Login + kabuk) → `e7b77ef` (4 — Operations) → `7874fa4` · `3dab8f9` (düzeltmeler) → `5032a1f` (5 — Sales) →
+>   `2418198` (düzeltme) → `e61d0a9` (6 — Finance) → `e98fe65` (düzeltme) → `caa9f09` (7 — On-site + Settings) → **`8820199`** (kapanış düzeltmesi).
+>   13 commit · 135 dosya. **PUSH: CC (YON-19), yalnız `eliza-next`.** Canlı `main` DEĞİŞMEDİ (`2db0131`, 9 Kas hotfix'i — bu pakette push yok;
+>   Y8 sorusu sorulmadı çünkü hotfix yok). Migration: yalnız `070_ui_tam` (staging, 2. parça); kayıt 72.
+> - **Ölçülenler (paket sonu, HEAD `8820199`):**
+>   - **Test zinciri:** PG 14.18 koşu 1 **945 / 945** · koşu 2 **945 / 945** · PG 17.10 **945 / 945** — 59 suite, başarısız 0 (paket başı 871 · 55
+>     suite; +74 test, +4 suite: `test_ui_tam` 24 · `test_ui_tam_access` 25 · `test_ui_tam_sales` 13 · `test_ui_tam_finance` 9 + `test_migrate`
+>     R73–R75).
+>   - **Staging regresyon turu (deploy `8820199`; Playwright, salt gezinme):** 4 araç hesabı × 21 ekran + oturumsuz Login = **85 yükleme × 2
+>     genişlik (1440 px · 390 px)** — HTTP 200 dışı 0 · **yatay taşma 0 / 170** · sayfa hatası 0 · konsol hatası genişlik başına 3, üçü de
+>     cc-staging'in (Sales) kapsamı dışındaki Finance sayfasını ADRESLE açması (sunucunun OUT_OF_SCOPE reddi — istemcide önceden bilinemez; sayfa
+>     nedeni yazar). Hesap başına durum: **cc-owner** 21 / 21 açık · **cc-project** 14 açık + 7'sinde izin notu (takip · Mail · iletişim günlüğü ·
+>     ledger · komisyon — şablonda kod yok) · **cc-staging** Sales 5 + Settings açık, Operations + On-site 10 ekranda alan kapısı, Finance'te izin /
+>     kapsam notu · **cc-external** Sales 5 + Settings açık, diğer 15 ekranda alan kapısı. Prototip sayfasında şerit var.
+>   - **TABAN** 342.00 · **TABAN-2 EŞİT** (staging, salt-okunur; deploy sonrası).
+>   - **Tek tanım kanıtları (staging, gerçek veri):** katılımcı listesi toplamı = R3 (158 kontrat · 3195,00 m²) · komisyon toplamları = ledger özeti
+>     (ödenecek 215 774,77 · 18 temsilci) = satırlardan yeniden toplam · en yüksek bakiyeli temsilci satırı = ekstresi.
+> - **Açık 🔶 (Sentez'e — parça kayıtlarından toplu):**
+>   1. EMS yazma uçları `operations.read` ile (ayrı `operations.write` yok) · Office Manager'ın ofissiz EMS kaydını yazması [2. parça].
+>   2. Firma kartı: dış kullanıcı yalnız kendi kontratı · kilitli satırda temsilci adı · "UX brief" bulunamadı (sekmeler mevcut veriden) [2 · 5].
+>   3. Project şablonunda `communications.read` / `followups.read` yok → kontrat iletişim günlüğü ve takipler Project'e kapalı [2 · 4 · 5].
+>   4. Y5'in etkisi: Project War Room'u (R7) görür [6].
+>   5. Operasyon alanlarında `sqm` düzenlenmez (RAP-04) · yazma izni `contracts.write` [4].
+>   6. Mail: "thread" = kaydın iletişim günlüğü · yalnız kendi gönderdikleri (ekip görünümü yok) [5].
+>   7. Expo Finance marj tanımı (Gross margin / Net profit işaretli) [6].
+>   8. **Telefondan oturumla check-in** — uç yalnız rozet-baskı etiketini kabul ediyor; mobil ekran check-in yazmıyor [7].
+>   9. Oturumsuz kullanıcı ui2 girişine gider (klasik giriş köprüyle) [3].
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ (paket geneli):**
+>   - **Render API anahtarı gelmedi — "anahtar bekliyor"** (Y9 adımları 1. parçada verildi; "kopyaladım" yazılmadı). Deploy durumu / loglar bu
+>     pakette Render API'siyle DEĞİL, staging'in sunduğu dosyanın değişmesiyle izlendi; Render tarafında hiçbir ayar / env okunmadı.
+>   - **Staging'e iş verisi yazan hiçbir akış koşulmadı** (Add visitor · operasyon alanı yazımı · ödeme · teklif gönder / imzala · check-in): yazma
+>     akışları yalnız test DB'sinde (olanlar) — "Add visitor" ve check-in hiçbir ortamda [4 · 7].
+>   - **Sales ekranlarının verili hali staging'de** (firma / teklif / takip / yazışma kaydı 0) · Ledger staging'de boş (hesap 0) [5 · 6].
+>   - Klasik organizer oturumu staging'de (şifre CC'de yok) · köprülerin açtığı klasik ekranların içi · kamera ile QR okuma · gerçek telefon ·
+>     Chromium dışı tarayıcı · Office Manager / Finance / Sales Operations şablonlarıyla ekran turu (araç hesabı yok — uç davranışı testlerde).
+>   - Turda iki "yükleniyor" okuması (Owner / Ops Dashboard ilk turda; dış kullanıcı / My work ikinci turda): ölçüm, sayfa oturmadan alınmış —
+>     aynı sayfalar tek başına 3'er kez yeniden yüklendi, hepsi oturdu (ilki klasik fuar listesinin 6,5–9,9 sn'sini bekliyordu → `8820199`).
+> - **Bilinçle yapılmayanlar:** canlı her şey (main · canlı DB · canlı servis / env) · kesim / göç · klasik sayfa gövdeleri · terminal akışı · yeni
+>   servis · derleme zinciri · 4-c / 4-d dışında izin kodu / şablon satırı · prototipin kaldırılması (faz sonunda) · staging tazeleme (Y6) ·
+>   işaretli öğelerin arkasındaki modeller (kuyruk).
+> - **Kuyruk:** işaretlenen her öğe (ne · hangi ekran · S / M / L) parça kayıtlarının "Kuyruğa" satırlarında [4 · 5 · 6 · 7]; ölçümle çıkan teknik
+>   kuyruk: klasik `GET /api/reports/summary` 11–13 sn · klasik `GET /api/expos` 6,5–9,9 sn (EXPLAIN — ayrı dilim) · `leena-backend` skill rota
+>   tablosu bayat · G22 klasik "Copy URL".
+> - **→ Sıradaki:** Suer'in gezisi → tek "değişiklik listesi" (UI-TAM-2, Y7). Anahtar gelirse Y9 kurulumu (dosya + izin listesi + sarmalayıcı).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**

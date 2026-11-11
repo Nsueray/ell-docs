@@ -399,3 +399,21 @@
 | `PUT /api/user-auth/preferences` | kullanıcının KENDİ tema tercihi | oturum sahibi (yetki matrisi değil) |
 
 Kuyruk (işaretlenen her öğe: ne · hangi ekran · S/M/L) defter kaydındadır — `docs/audits/EKSIK_ENVANTERI_2026-11-11.md` §4'ün devamı.
+
+---
+
+## 7. Uygulama sonrası (11 Kas, paket kapanışı) — haritadan SAPANLAR
+
+Bu harita paketin PLANIYDI (ön ölçüm). Uygulamada ölçümle değişenler — ayrıntı ve gerekçe defterde ([defter:2026-11-11 PAKET UI-TAM 4. PARÇA] …
+[defter:2026-11-11 PAKET UI-TAM KAPANIŞ]):
+
+| harita | uygulama |
+|---|---|
+| §6 "ucuz uç" tablosu 6 uç | + `GET /api/operations/exhibitors` · `GET /api/operations/expos` (hafif fuar seçici listesi) · `GET /api/communications/sent` · `GET /api/commissions/agents` · `GET /api/user-auth/preferences` · alan ekleri: takip `due_today` · teklif `sums_eur` + `?expo_id=` · bütçe `totals` |
+| §6 operasyon alanları yazımında "m²" | `sqm` YAZILMAZ (göçmüş kontratta ölçünün m² yedeği — RAP-04); beş alan yazılır |
+| §4 Scan → Check-in = `POST /api/checkins` (B) | İŞARETLİ — uç yalnız rozet-baskı terminali etiketini kabul ediyor; check-in klasik tarama ekranında (köprü) |
+| §4 Visitor List satırdan check-in (B) | İŞARETLİ (aynı neden) |
+| §3.4 Ledger dışa aktarım (B) | İŞARETLİ (ekstre ucunda dışa aktarım yok) |
+| §3.5 Gross margin / Net profit (İ — S) | İŞARETLİ kaldı (marj tanımı kararı yok) |
+| §2.3 Pipeline lead sütunları | dört aşama tek işaretli kutuda (pano = dört gerçek sütun) |
+| §2.2 Mail thread | seçili e-postanın ait olduğu kaydın iletişim günlüğü |
