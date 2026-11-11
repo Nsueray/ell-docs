@@ -115,4 +115,10 @@ Faz A restore + rollback.js. Prova ≥ 2 kez, canlının taze kopyasında.
 >   da `operations.write` ezmesi). **Klasik organizer token'ı ve terminal akışı ETKİLENMEZ** (kanıt: `tests/test_ui_tam2.js` Y2 — kapılı uç kapısız ikiziyle
 >   aynı durum + aynı gövde; `tests/test_ui_tam_access.js` G3 / G4). 072 yalnız şema ekler: `contracts`'a 4 NULLABLE, varsayılansız kolon (tablo taraması yok)
 >   + yeni tablolar + iki referans tohumu; hiçbir fuar için anahtar / kural / zincir yaratmaz.
-> - Paketin diğer kesim maddeleri (worker · gönderen doğrulaması · dosya saklama · sonraki migration'lar) parça kayıtlarıyla bu bloğa eklenir.
+> - **Exhibitor Page (2. parça; 073):** (a) **sayfa anahtarı sırrı** — canlıda İLK anahtar doğmadan ayrı ortam değişkeni tanımlanır (yoksa oturum sırrından türer;
+>   sır sonradan değişirse bütün linkler ölür); (b) **tıklama izleme** — exhibitor e-postalarında KAPALI olmalı (izleme linki sayfa anahtarını üçüncü tarafa taşır;
+>   izleme linkinin adres parçasını koruyup korumadığı ÖLÇÜLMEDİ); (c) **dosya saklama** — exhibitor dosyaları veritabanında (tek dosya 15 MB · kontrat 150 MB);
+>   tahmini büyüme yılda ~3–4 GB, tavanla ~45 GB → kesimden önce disk / saklama kararı; (d) **rozet formu** — her fuar için exhibitor rozet formu Expo settings'te
+>   elle bağlanır (073 hiçbir fuara bağlamaz); bağlanmamış fuarda Badges bölümü kapalıdır; (e) canlıda echo bayrağı YOK → rozet QR e-postası klasik akışla gerçekten
+>   gider, sistem e-postaları worker'la gider; (f) 073 yalnız NULLABLE bir kolon ekler.
+> - Paketin diğer kesim maddeleri (worker · gönderen doğrulaması · sonraki migration'lar) parça kayıtlarıyla bu bloğa eklenir.

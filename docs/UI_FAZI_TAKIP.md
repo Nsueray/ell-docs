@@ -2,7 +2,7 @@
 
 > **Ne:** UI-ÖNCE fazının (kütük YON-21) tek takip belgesi — Sentez 11 Kas PAKET UI-TAM-2 §1. Her ekran için: tasarım kaynağı · inşa durumu ·
 > Suer turu · kuyruk. Kriter bu belge DEĞİLDİR: kriter Sentez blokları (defterde AYNEN) + kütük; bu belge nerede ne olduğunu gösterir.
-> **Güncelleme:** her paket parçasında (defter kaydıyla aynı commit). **Son güncelleme:** 2026-11-11 — PAKET UI-TAM-2 1. parça (TEMEL) staging'de.
+> **Güncelleme:** her paket parçasında (defter kaydıyla aynı commit). **Son güncelleme:** 2026-11-11 — PAKET UI-TAM-2 2. parça (Exhibitor Page) staging'de.
 > **Ortam:** yalnız staging (`https://leena-staging.onrender.com/ui2/`). Canlıda bu fazın hiçbir ekranı yok. Tarihseldir (YON-01).
 
 ## 1. Tasarım kaynakları
@@ -46,7 +46,7 @@ Suer turu: Y7 — Suer kendi Owner hesabıyla gezer, cevabı tek "değişiklik l
 | 21 | Operations · On-site | Mobile Visitor List | `mobile-visitors.html` | set | staging (`caa9f09`) | bekliyor |
 | 22 | Kabuk | Settings › Appearance | `settings-appearance.html` | set | staging (`caa9f09`) | bekliyor |
 | 23 | Operations | **Expo settings** (YENİ) | `ops-expo-settings.html` | UX 3. tur C4 · UX 2. tur #4 + eskiz 4 · EXH-18 · EXH-06 (paket kuralı) | **staging (`de7d486`)** | bekliyor |
-| 24 | Exhibitor yüzü (ui2 DEĞİL) | **Exhibitor Page** (YENİ) — kabuk · Stand · Catalogue · Badges · Build-up & documents · Contacts · geçersiz link sayfası | — | UX 3. tur C1 · C1 mockup · UX 2. tur #16–17 + eskiz 0–2 · EXH-01…14 · GUV-06 | **UI-TAM-2 §2** | — |
+| 24 | Exhibitor yüzü (ui2 DEĞİL) | **Exhibitor Page** (YENİ) — kabuk · Stand · Catalogue · Badges · Build-up & documents · Contacts · geçersiz link sayfası | `/x/#<anahtar>` (repo: `exhibitor-page/`) | UX 3. tur C1 · C1 mockup · UX 2. tur #16–17 + eskiz 0–2 · EXH-01…14 · GUV-06 | **staging (`dc2e3e1`)** | bekliyor |
 | 25 | Exhibitor yüzü | Exhibitor Page — **Extra equipment + Payment** (kodlu) | — | UX 3. tur C1 · EXH-05 · EXH-10 · EXH-13 | **UI-TAM-2 §3** | — |
 | 26 | Finance | Collections — **"receipts to check"** | `finance-collections.html` (mevcut ekran) | Sentez C14 · EXH-10 | **UI-TAM-2 §3** | — |
 | 27 | Operations | **Chain status** (YENİ) | — | UX 3. tur C5 · UX 2. tur #9 · #14 + eskiz 3 · EXH-16 | **UI-TAM-2 §5** | — |

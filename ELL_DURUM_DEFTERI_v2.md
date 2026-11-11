@@ -10234,6 +10234,95 @@
 >   okuması (karar) · "kardeş fuara kopyala" (S) · sektörün ui2'de düzenlenmesi (S).
 > - **→ Sıradaki:** §2 EXHIBITOR PAGE (kimliksiz yüz: anahtar · kabuk · Stand · Catalogue · Badges · Build-up & documents · Contacts).
 
+> ## ✅ 2026-11-11 — PAKET UI-TAM-2 2. PARÇA: EXHIBITOR PAGE STAGING'DE — anahtarlı, kimliksiz yüz (`/x` · `/api/exh`) · Stand (Equipped / Space-only) · Catalogue · Badges · Build-up & documents · Contacts · geçersiz link sayfası · proje ekibi inceleme uçları · sistem e-postaları (LEENA eliza-next `dc2e3e1`) · 1023 / 1023
+>
+> - **Kriter kaynağı:** [defter:2026-11-11 SENTEZ 11 Kas: PAKET UI-TAM-2] — blok B1 · B2 · B9 · C6–C8 · C10 · C12 · C15 · E §2 · EK-1 madde 3–5 · 7 (4.1–4.5) · EK-2 N1 · H6 · H9 · EK-3 F1 · kütük
+>   EXH-01…14 · GUV-06. Orchestrator UYGULAMA 2 ("kimliksiz yüzün değişmezleri — her biri testle"). Ölçütler özetten değil dosyalardan YENİDEN okundu.
+> - **Ne yapıldı:**
+>   - **Anahtar (EXH-01 · EXH-14):** 256 bit; veritabanı YALNIZ sha256 özetini tutar; anahtar sunucu sırrı + satırın nonce'undan yeniden türetilir ("Copy link" ve e-postalar
+>     için). Anahtar adresin **parçasında** (`/x/#<anahtar>/<bölüm>`) taşınır — sunucuya, hiçbir loga ve Referer'a gitmez (ölçüm 1-c); API çağrıları onu başlıkta yollar.
+>     Yenileme = yeni satır, eskisi ölür (özetiyle tanınır: ölü linkten "Send me a new link" çalışır).
+>   - **DIŞ KAYNAK YOK (GUV-06 — EK-2 N1):** anahtarlı sayfalar başka kökenden HİÇBİR şey yüklemez. Fontlar repoda kendi dosyalarımız; `tokens.css`'e DOKUNULMADI —
+>     anahtarlı sayfaya, içindeki font içe-aktarma satırı çıkarılmış TÜRETİLMİŞ sayfa sunulur. Başlıklar: `Referrer-Policy: no-referrer` · noindex · önbelleksiz ·
+>     yalnız kendi kökenine izin veren içerik güvenlik başlığı (CSP; satır içi script / stil YOK — zorlandı, sayfa kırılmadı).
+>   - **Kabuk:** başlık (fuar · tarih · mekân · firma · stand no / m² / tip · fuara kalan gün · dil EN / FR / TR · Help) · durum şeridi (bölüm başına tek çip) · "Next step"
+>     satırı · sabit bölüm sırası · bölüm adıyla açılma (deep-link) · aynı anda tek bölüm açık · altta yalnız "Powered by ELIZA".
+>   - **Stand — Equipped:** stand özeti + dahil ekipman (TEK paket işlevinden) · fascia (sınır fuar ayarından) · layout notu + işaretli çizim · imzalı onay dosyası ·
+>     "Approved by" + onay kutusu → sürüm, anında Approved (inceleme adımı yok) · onaydan sonra kilitli, deadline'a kadar "Request a change" (4.5) · stand deadline'ı
+>     onaysız geçerse **varsayılan uygulanır** (fascia = katalogdaki ad, yoksa firma adı — C6; durum veriden türer).
+>   - **Stand — Space-only:** 3D tasarım + teknik çizim (çoklu dosya) · ölçüler (üst yükseklik aşılırsa gönderilir, işaretli gelir) · müteahhit · not · her gönderim yeni
+>     sürüm · In review → Approved / Changes requested döngüsü · deadline geçince bölüm AÇIK kalır, çip "Overdue" (4.1).
+>   - **Catalogue:** EK-1 4.2 alan kümesi · taslak (kendiliğinden kaydeder, eksik olabilir) · Preview · Submit'te zorunlu küme SUNUCUDA · sürümlü, değişmez · deadline'a kadar
+>     düzenleme = yeni sürüm + yeniden In review (4.4) · deadline'da kilit; "Reopen until {tarih}" bir OLAYDIR, kilit tarih geçince kendiliğinden döner (4.3) · H6 ·
+>     "Copy from last edition" · telefonda 4 adım · "These details will be printed and published" uyarısı.
+>   - **Badges (B9):** kayıt BUGÜNKÜ LEENA akışından geçer — sayfa, klasik kayıt ucunu (form → ziyaretçi kaydı → QR e-postası) fuarın exhibitor rozet formuyla çağırır;
+>     klasik uç DEĞİŞMEDİ. Kayıt kontrata bağlanır; listede e-posta maskeli; "Add person" · Resend QR · Remove (basılmadan önce) · ekip kayıt linki (ayrı, dar anahtar:
+>     yalnız kendini kaydeder). Hangi formun kullanılacağı fuar ayarında TEK alan (073); boşsa bölüm "Not available yet — we will e-mail you".
+>   - **Build-up & documents · Contacts:** fuar ayarının metin blokları kişinin dilinde (yoksa EN, "shown in English" notuyla) · kendi stand türünün programı üstte, diğeri
+>     kapalı · belgeler (indirme ek olarak) · ortaklar (boş rol görünmez).
+>   - **Yaşam döngüsü (C12):** Beklet → salt okunur · İptal → salt okunur "cancelled" · Aktar → eski link yeni kontratın sayfasına yönlenir, catalogue içeriği TASLAK olarak
+>     kopyalanır (görselleriyle), stand sıfır · fuar bitti → salt okunur arşiv. Geçersiz link sayfası: sade; e-postanın kayıtlı olup olmadığını SÖYLEMEZ.
+>   - **Proje ekibi uçları (kapının arkasında — `operations.read` / `.write` + `contracts.read` + kapsam):** link (Copy link · Open as exhibitor önizlemesi "açılış"
+>     sayılmaz) · Regenerate (H9: gönder / gönderme) · Send link · inceleme (Approve · Request changes — deadline sonrası tarihsiz KABUL EDİLMEZ) · Reopen until · alıcı
+>     listesi (to / cc; ana alıcı kontratın doğduğu teklifin kişisinden tohumlanır — C10). Her yazım olay kaydı + denetim kaydı. (Ekranları §4.)
+>   - **Sistem e-postaları (C15 — sabit):** Changes requested · Approved · New link — transactional kuyruk, staging'de echo; alıcı listesinin hepsine (adres başına satır),
+>     posta kaydında to / cc ayrı; yorum kaçışlı basılır; banka bilgisi YOK. Metinler EN (CC taslağı); FR / TR YOK → EN'e düşer.
+> - **Commit:** LEENA eliza-next `dc2e3e1` (PUSH: CC, yalnız `eliza-next`; canlı `main` DEĞİŞMEDİ `2db0131`). Migration: staging'de CC koştu — dry-run → apply → "Nothing to
+>   apply"; kayıt 74 → **75** (`073_exhibitor_page`: fuar ayarına rozet formu alanı, NULLABLE). Deploy `dc2e3e1` live.
+> - **Ölçülenler:**
+>   - **Test (yerel, PG 14.18):** tam zincir **1023 / 1023** — 61 suite (973 + yeni suite `test_ui_tam2_page.js` 50). Eski yetki matrisleri DEĞİŞMEDEN yeşil (hüküm gereği
+>     güncellenen beklenti bu parçada YOK). Değişmez başına test: anahtar (özet · türetim · adres yolunda / sorgusunda yok · yenileme · tahmin sınırı) · dış kaynak yok
+>     (başlıklar · sunulan HTML / CSS / JS taraması · font dosyalarının cmap'inde TR + FR harfleri) · sınır (gövdede yabancı kimlik · yabancı dosya · ekip linkinin dar kümesi
+>     · kodsuz yanıtta tutar / banka yok) · EK-1 4.1–4.5 · C6 · H6 · dosya türü içerikten · rozet (bugünkü akış + bağ + maske + echo) · yaşam döngüsü · yeni link
+>     (sızdırmaz + hız sınırı) · ekip uçlarının kapısı · H9 · EK-3 F1 (yeni kodda floor plan tablolarına giden sorgu yok · stand no boşsa "to be confirmed").
+>   - **Font (EK-2 N1):** kaynak = npm `@fontsource/space-grotesk` · `@fontsource/ibm-plex-sans` · `@fontsource/ibm-plex-mono` 5.3.0 (woff2; latin + latin-ext alt
+>     kümeleri) · lisans **SIL Open Font License 1.1** (üç paketin LICENSE dosyası görüldü, metinleri fontların yanında). 22 dosya, toplam **346.884 bayt**: Space Grotesk
+>     8 dosya 101.632 · IBM Plex Sans 8 dosya 158.928 · IBM Plex Mono 6 dosya 86.324. Tarayıcıda (headless Chrome): üç ailede TR + FR harfleri yüklü fonttan çiziliyor.
+>   - **Staging turu (SAMPLE kontratlar 7899 Equipped · 7900 Space-only; fuar 15; tarayıcıyla, girişsiz):** 1440 px — Stand onayı → Catalogue (alanlar + logo + 3
+>     fotoğraf yüklendi, Preview, Submit) → Badges (kişi eklendi, e-posta maskeli, ekip linki) → belge indirme → Contacts → FR → TR. 390 px — Space-only: dosyalar + ölçüler
+>     (üst yükseklik uyarısı) + müteahhit → Submit. Her adımda: yatay taşma 0 · konsol hatası 0 · başka kökene istek 0. Alana yazılan işaretleme (img / onerror) METİN
+>     olarak göründü, çalışmadı. Dahil ekipman 26 m² için 2 masa · 6 sandalye · 3 spot (paket kuralı sürüm 1).
+>   - **Proje ekibi adımları (cc-project):** Request changes → exhibitor yeniden gönderdi (sürüm 2) → Approve; Catalogue Approve; Regenerate link → eski link 404, yeni link
+>     çalışıyor; ölü linkten "Send me a new link" (listede olmayan adres) → aynı cümle, e-posta YOK. Kapı: Sales 409 (`operations.read`) · dış kullanıcı 409 · Owner / Project
+>     200 · anahtarsız 404 · gövdede başka kontrat kimliği → yazım yalnız anahtarın kontratına (öbür kontratta taslak 0).
+>   - **Echo e-postalar (5; hiçbiri gönderilmedi):** rozet QR e-postası (klasik akış kuyruğa yazdı, echo'ya çekildi) · Changes requested · Approved ×2 · New link.
+>     Dosyaları repo dışında, Suer'in Mac'inde (yol paket sonu raporunda). Staging'de bu turdan kalan gönderilebilir ("pending") satır: 0.
+>   - **Y2 — bu yüzde bağlı / hazır değil:** BAĞLI — kabuk · durum şeridi · Next step · Stand (iki akış) · Catalogue · Badges · Build-up & documents · Contacts · dil ·
+>     geçersiz link sayfası · ekip kayıt linki. MÜŞTERİ METNİYLE "Not available yet — we will e-mail you" — Extra equipment · Payment (§3). İç işaret müşteriye gösterilmiyor.
+>   - **Hız:** staging'de sayfa modeli yanıtı ~2,1–2,4 sn (dil değişiminde ölçüldü), ilk açılış ~4,3 sn. (İyileştirme §3'te: bağımsız sorgular birlikte.)
+>   - **TABAN** 342.00 · **TABAN-2 EŞİT** (migration sonrası) · zinciri açık fuar 0.
+> - **Ön-onaylı SAPMA + 🔶 (Sentez'e):**
+>   1. 🔶 **Anahtar sırrı:** ayrı ortam değişkeni varsa o, yoksa oturum sırrından türetilir (staging: türetilmiş). Sır değişirse bütün linkler ölür → kesim maddesi: canlıda
+>      ilk anahtar doğmadan ayrı sır tanımlanır.
+>   2. 🔶 **Bilinen sınır (davet linkleriyle aynı):** e-postanın gövdesi kuyruk satırında düz durur → sayfa linki (anahtarıyla) veritabanını okuyabilen birine görünür.
+>      Regenerate link öldürür. Ayrıca kesimde bu e-postalar için tıklama izleme KAPALI olmalı (izleme linki anahtarı üçüncü tarafa taşır) — kesim maddesi.
+>   3. 🔶 **Rozet "bugünkü akış" okuması:** sayfa klasik kayıt ucunu kendi sunucusunda çağırır + fuar ayarına "exhibitor badge form" alanı (073). Staging'de klasik akışın
+>      "pending" yazdığı QR e-postası echo'ya çekilir (gerçek e-posta çıkmaz). Formu olmayan fuarda bölüm hazır değil.
+>   4. 🔶 **Remove = listeden çıkarma:** ziyaretçi kaydı ve QR'ı silinmez (klasik akışta "rozeti iptal et" yok — ölçüldü); kaldırma History'de.
+>   5. 🔶 **"Request changes"te tarih yalnız kilitlenen bölümde zorunlu** (Catalogue). Space-only stand deadline'dan sonra da açık (4.1) → tarih istenmez. Equipped'de
+>      Reopen her zaman tarihlidir.
+>   6. **Her gönderimde "Your name" zorunlu** (UX "İz: her gönderimde yazılan ad") — Catalogue ve Space-only formuna alan eklendi.
+>   7. 🔶 **Dosya sınırı:** tek dosya 15 MB · kontrat başına 150 MB; içerik veritabanında (mevcut desen — yeni servis açılmadı). Büyük DWG / 3D dosyası 15 MB'ı aşabilir.
+>      Büyüme tahmini: staging kopyasında etkin kontrat 2024'te 388 (11 fuar) · 2025'te 272 (13 fuar); exhibitor başına ~10 MB ile yılda ~3–4 GB, tavanla (150 MB × ~300)
+>      ~45 GB → kesim maddesi "dosya saklama".
+>   8. **Aktar'da catalogue kopyası yeni sayfa İLK okunduğunda yapılır** (transfer ucuna dokunulmadı); olay kaydına düşer.
+>   9. **Ölü linkte proje ekibi kişisi yalnız tanınan (yenilenmiş) anahtarda gösterilir;** uydurma anahtarda sade sayfa. Tarayıcı 404'ü konsola bir satır yazar (beklenen).
+>   10. 🔶 **"info" tonu nötr durumda kullanılmadı** (EK-1 madde 7'nin aynısı bilgi kutusunda da görüldü: Vermillion'da kırmızımsı) → sayfada mevcut token'larla nötr kutu.
+>   11. **Mockup ↔ kriter farkları (kriter uygulandı):** address line 2 isteğe bağlı · "Open sides" / hall gösterilmiyor (EK-3) · kodlu akış ve tutarlar bu parçada yok ·
+>       mockup'ın uydurma değerleri (fascia 24 karakter · saatler) alınmadı.
+>   12. **Dil varsayılanı:** ana alıcının dili → fuarın varsayılanı → EN; kişinin seçimi tarayıcıda kalır. Proje CLAUDE.md'sindeki "yalnız İngilizce" kuralına bu yüz için
+>       istisna yazıldı (EK-1 madde 5; sözlük dosyaları).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** PG 14 ikinci koşu + PG 17 (paket sonunda) · Safari / Firefox / gerçek telefon / kamera · gerçek e-posta teslimi (echo) · e-posta izleme
+>   linkinin parçayı koruyup korumadığı · staging'de beklet / iptal / aktar / fuar-bitti ve deadline-geçti halleri (testte; o hallerde SAMPLE kontrat yok) · rozetin "QR sent"
+>   / "Printed" durumu staging'de · gerçek DWG ve 15 MB'lık dosya · "Copy from last edition" staging'de (önceki edisyon yok — testte) · ekip kayıt linki sayfası
+>   tarayıcıyla (uçtan test edildi) · FR / TR çevirilerin doğruluğu (taslak; TR'de düğmeler "siz" kipinde — gözden geçiren karar verir) · catalogue görsellerinde düşük
+>   çözünürlük uyarısı (YAPILMADI — kuyruk) · firma kaydından ön doldurma (YAPILMADI — §3 commit'inde).
+> - **Bilinçle yapılmayanlar:** canlı her şey · `tokens.css` ve ui2'nin öbür sayfaları · klasik kayıt ucu, terminal akışı, ödeme kayıt akışı · floor plan tablolarına her tür
+>   bağ · mockup CSS'i / senaryo şeridi · zincir (KAPALI) · kural motoru · TR e-posta metni.
+> - **Kuyruğa:** catalogue görsel çözünürlük uyarısı (S) · sayfa modelinin hızı (S) · rozet iptali (klasik akışta karşılığı yok — karar) · FR / TR çeviri gözden geçirme ·
+>   sistem e-postalarının FR / TR metni.
+> - **→ Sıradaki:** §3 EXTRA EQUIPMENT + PAYMENT (sepet → kod → sipariş = yeni kontrat · Payment bölümü · dekont bildirimi → Finance Collections).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
