@@ -9786,6 +9786,53 @@
 >   eksi tutar yazımı "€-250.00" (S) · eşzamanlı yükte 500 (iki tarayıcı turu aynı anda) — klasik ağır uçların EXPLAIN dilimiyle birlikte (M).
 > - **→ Sıradaki:** Suer'in gezisi → tek "değişiklik listesi" (UI-TAM-2, Y7). Render API anahtarı adımları raporda yeniden verildi (Y9).
 
+> ## ✅ 2026-11-11 — İKİ EK (Orchestrator 17:55): RENDER API ANAHTARI KURULDU (Y9 — staging izin listesi `leena-staging` + `leena-staging-db`; liste dışı her çağrı istek atılmadan reddediliyor) · UX HATTI 2. TUR ÇIKTISI ARŞİVE (`docs/ux/`, AYNEN — kriter DEĞİL) · kod değişikliği YOK
+>
+> - **Kriter kaynağı:** Orchestrator 11 Kas 17:55 "İKİ EK" (A · B) · Y9 + Y9 okuması [defter:2026-11-11 SENTEZ 11 Kas: UI-ÖNCE FAZI — KURALLAR (Y1–Y10) +
+>   PAKET UI-TAM] · kütük YON-10 / YON-20 eki · K4.
+> - **A — Render API anahtarı (Y9):**
+>   - Suer oturuma kendi eliyle "kopyaladım" yazdı (yapıştırılan bloğun DIŞINDA) → pano ancak o zaman okundu. Değer doğrudan
+>     `~/.ell-cc/render-api.key` (600) dosyasına alındı — ekrana / loga / komut satırına basılmadı; pano boşaltıldı (kalan 0 karakter).
+>     Biçim denetimi: `rnd_` ile başlıyor EVET · tek parça · uzunluk 32.
+>   - İlk kullanım = TEK hesap-geneli okuma: servis listesi, YALNIZ ad · kimlik · tür · askı → 17 servis + 6 veritabanı. **Staging izin listesi**
+>     (`~/.ell-cc/render-staging-allowlist.json`, 600): web servisi `leena-staging` + veritabanı `leena-staging-db` → 2 izinli · 21 liste dışı
+>     (canlı LEENA · LIFFY — staging'i dahil · eliza-* · konfeti · askıdakiler). Kimlikler deftere yazılmadı (dosyada).
+>   - İzinli iki kimliğin doğrulaması (sarmalayıcıdan, salt okuma): servis → dal `eliza-next` · auto-deploy açık · adres staging adresi · repo
+>     LEENA monorepo · plan `0.5c-512mb` · 1 örnek · veritabanı → `leena_staging_db` · PG 17 · available.
+>   - **Sarmalayıcı (`~/.ell-cc/render-api.js`) ilk gerçek kullanımda düzeltildi + sıkılaştırıldı:** eski desen veritabanı kimliğinin sonundaki
+>     "-a"yı kesiyordu → izinli veritabanı çağrısı da reddediliyordu (hata RET yönündeydi; liste dışına çağrı gitmedi). Yeni kural: çağrı
+>     `/services/<izinli>` ya da `/postgres/<izinli>` köküyle başlar; yol + sorgu + gövdedeki HER servis / veritabanı kimliği listede olmalı;
+>     nokta parçası · ters eğik çizgi · çift kodlama → ret. Ret kararı istekten ÖNCE verilir (ret = ağ çağrısı yok). Ret testleri 15 / 15
+>     (hesap geneli yol ×3 · liste dışı kimlik · sorguda liste dışı kimlik · gövdede liste dışı kimlik · "-a"sız veritabanı kimliği · liste dışı
+>     veritabanı · tür karışması · env grubu yolu · kodlanmış `/` · çift kodlama · `..` ×2 · `.`); izinli okuma 4 uç (servis · deploy listesi ·
+>     veritabanı · env adları).
+>   - **Anahtarla ölçülenler (yalnız staging, salt okuma):** son deploy `bb9e721` **live** (14:58:51 → 14:59:19 UTC, tetik `new_commit`) — önceki
+>     parçalarda deploy yalnız sunulan dosyanın değişmesinden izleniyordu. Servisin env'i 14 değişken (YALNIZ ad + değer uzunluğu okundu):
+>     `EMAIL_ECHO` = 1 · `INVITE_ECHO` = 1 · **`SENDGRID_API_KEY` YOK** · `REPORT_SCHEDULER_IN_PROCESS` yok. Hesapta LEENA staging'e ait worker
+>     servisi YOK (adında staging geçen tek LEENA servisi web). → [defter:2026-11-11 PAKET UI-TAM KAPANIŞ EKİ] "çalışan worker var mı —
+>     GÖZLENEMEDİ" satırı kapanır: staging kuyruğunu işleyecek servis yok, web sürecinde gönderim anahtarı yok.
+> - **B — UX hattı 2. tur çıktısı:** `docs/ux/UX_HATTI_2_TUR_2026-11-11.md` — metin bloktaki haliyle AYNEN (oturum kaydından programla alındı;
+>   eklenen yapı çıkarılınca 123 / 123 satır kaynakla birebir). Eklenen yalnız Markdown yapısı (başlık işaretleri · satır arası boş satır · tablo
+>   ayırıcı satırı) + başta arşiv notu. İçerik: 38 satırlık eksik tablosu · 7 eskiz (0–6) · açık sorular. **Statü (Orchestrator):** KRİTER DEĞİL —
+>   arşiv + takip belgesinin "tasarım kaynağı" sütunu; öncelik Sentez bloğu > UX 3. tur > UX 2. tur; UI-TAM-2 kapsamında olmayan maddeler
+>   (Fuarlar listesi · satışçı için kat planı · Owner ana sayfası ekleri · katalog üretici · War Room uyarıları …) İNŞA EDİLMEZ — "kuyruk — Sentez
+>   kararı bekliyor".
+>   - UI-TAM-2 paketi bu oturuma VERİLMEDİ ve `UI_FAZI_TAKIP.md` ell-docs'ta YOK (ölçüldü: izlenen dosyalarda ad eşleşmesi 0) → yalnız dosya kondu;
+>     "2. tur: kaynak bekleniyor" satırının kapanışı paketle birlikte.
+> - **Commit:** ell-docs — bu kayıt + `docs/ux/UX_HATTI_2_TUR_2026-11-11.md` aynı commit'te. LEENA: commit YOK (kod değişmedi; `eliza-next` HEAD
+>   `bb9e721`, canlı `main` `2db0131`). Anahtar · izin listesi · sarmalayıcı repoların DIŞINDA (`~/.ell-cc/`, dizin 700).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:**
+>   - Servise BAĞLI env grubu var mı (env grubu uçları hesap geneli → sarmalayıcı reddeder; servisin KENDİ listesinde gönderim anahtarı yok).
+>   - Canlı e-posta worker'ının hangi veritabanına baktığı (liste dışı — env OKUNMAZ). Staging kuyruğu tarafı ölçülü: kopyadan beri `sent` 0.
+>   - Render log uçları (hesap geneli `/logs` yolu reddediliyor; gerekirse kural ayrı bir ölçümle açılır) → kapanış ekindeki iki 500'ün nedeni
+>     hâlâ GÖZLENEMEDİ.
+>   - Anahtarın Render'daki adı / süresi (Suer'in ekranı) · 2. tur metninin UX hattındaki özgün biçimi (sekmeli düz metin; bu oturuma `|` ile
+>     ayrılmış hali ulaştı) · Suer'in bilgisayarındaki tasarım kopyasıyla bugünkü setin aynılığı (2. tur metninin kendi notu).
+> - **Bilinçle yapılmayanlar:** liste dışı hiçbir servise / veritabanına çağrı (okuma dahil) · staging'de env / ayar DEĞİŞİKLİĞİ · deploy tetikleme ·
+>   env DEĞERLERİNİN okunup yazdırılması (yalnız ad + uzunluk) · 2. tur maddelerinin inşası · takip belgesinin oluşturulması (UI-TAM-2 ile) ·
+>   ell-docs çalışma dizinindeki izlenmeyen dosyalar (`Claude outputs/` — CC'nin değil; eklenmedi).
+> - **→ Sıradaki:** Suer'in gezisi → tek "değişiklik listesi" (UI-TAM-2, Y7).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
