@@ -8858,6 +8858,147 @@
 >   envanterde kod değişikliği · canlıya bir şey · staging'e veri yazma (teklif oluşturmak dahil) · tasarım / cila (UX-NN kriteri yok).
 > - **→ Sıradaki:** Suer önceliği (envanter §0 tablosu) → paket sırası → paketler (tasarım fazı paketlerle iç içe, UX-NN Sentez'den).
 
+> ## ✅ 2026-11-11 — SENTEZ 11 Kas: UI-ÖNCE FAZI — KURALLAR (Y1–Y10) + PAKET UI-TAM "TASARIM SETİNİN TAMAMI CANLANIR" + EK (11:44) — AYNEN · İLK COMMIT (LEENA CLAUDE.md sabit sınırlar) · kapanış: export arşivleri KALIR
+>
+> - **Kriter kaynağı:** Suer 11 Kas (yapıştırma): Orchestrator "PAKET UI-TAM" — "KRİTER = aşağıdaki iki Sentez bloğu — deftere AYNEN. Altındaki
+>   UYGULAMA (Orchestrator) yalnız sıra / ölçüm / kapsam / okuma kararıdır; kriterle çelişirse kriter kazanır" · YON-18 / 19 / 21 ·
+>   [defter:2026-11-11 SENTEZ 11 Kas: YÖN DEĞİŞİKLİĞİ (YON-21)] · [defter:2026-11-11 EKSİK ENVANTERİ (REQ §2.1–2.8 + Part 3)].
+> - **SENTEZ 11 Kas — AYNEN (1 / 2):**
+>
+> ```
+> SENTEZ → ORCHESTRATOR — UI-ÖNCE FAZI: KURALLAR + PAKET UI-TAM "TASARIM SETİNİN TAMAMI CANLANIR" (11 Kas)
+> KB @ f35222a okundu. CC EKSİK ENVANTERİ (60 satır) + UI kuyruğu Q1–Q5 KABUL. Suer kararları
+> (11 Kas 10:55 · 11:01 · 11:33) AYNEN: sayfa sayfa DEĞİL, tasarım setinin TAMAMI tek pakette;
+> staging'de; hatalar sonra düzeltilir. YON-18 ön-onay geçerli.
+>
+> A. KAYNAK — Claude Design seti (Suer'in bilgisayarı: Downloads › "Eliza PlatformDesign",
+> 38 öğe, 11 Kas 11:30 indirildi; CC doğrudan okur; repoda kopyası var mı ÖLÇER, yoksa bu
+> klasörden alır). İçerik: 22 ürün ekranı — Login (+A Signal / B Atlas varyantı) · Sales: Mail
+> · My Work · Pipeline · Quotes · Companies · Operations: Dashboard · Exhibitor · Exhibitor
+> Detail · Floor plan · Visitor & Access · Communications · Reports · Finance: War Room ·
+> Contract · Commissions · Ledger · Expo Finance · Mobile: Dashboard · Scan · Visitor List ·
+> Settings – Appearance; "Eliza – Vermillion Screens" (ürün dizini) · "ELIZA Directions" ·
+> themes/ 12 Ops teması + warm/ 3 · styles/ (atlas · signal · themes · mobile) · export/ (Ops
+> Dashboard ve Sales Mail'in gömülü-varlıklı tam sürümleri + src) · uploads/
+> ELIZA_DESIGN_BRIEF_v1.md (10 Eyl; mimari tarifi BAYAT — iki DB / LIFFY ayrı; görsel yön
+> geçerli). Görsel yön: Signal + Vermillion (ui2'nin bugünkü signal.css'i bu setten).
+>
+> B. YÖN — UI-ÖNCE FAZI (YON-21'e ek; Suer 11 Kas)
+> Y1 Tamamı birden: 22 ekranın hepsi bu pakette ui2'ye girer. Sıra CC içinde (bekleme yok):
+>    Login + kabuk → Operations → Sales → Finance → Mobile → Settings. Suer istediği an bakar.
+> Y2 Gerçek veri kuralı: taslaklardaki uydurma sayı / ad / tarih ÜRÜNDE KALMAZ. Her öğe ya
+>    gerçek uçtan okur ya da üstünde görünür "henüz bağlı değil" işareti taşır (öğe bazında;
+>    sayfa bazında değil). Ölü düğme yok: düğme ya iş yapar ya işaretlidir. Defterde ekran
+>    başına "bağlı / işaretli" listesi.
+> Y3 Prototip katmanı (1. gün): tasarım seti olduğu gibi staging'de "Design preview" altında
+>    tıklanabilir sunulur, her sayfada "PROTOTİP — veri sahte" şeridi, kabuktan bağlantı;
+>    ürün sayfalarından AYRI; faz sonunda kaldırılır. Suer tüm resmi 1. günden görür.
+> Y4 Akış önce, cila ikinci: alan · düğme · akış bu pakette; renk/tipografi set'ten aynen
+>    (UI-04 tokens; sabit renk yasağı aynen). Settings › Appearance: setteki 15 tema seçilebilir
+>    (varsayılan Vermillion; kişi bazlı; hangilerinin kalacağı Suer sonra seçer).
+> Y5 Project şablonuna contracts.read (all) (YET-19 eki; runner'lı migration); komisyon gizli
+>    kalır (YET-23); payments.write değişmez (Suer kararı sonra). S3 = b SUPERSEDED.
+> Y6 Staging tazeleme DONUK (YON-14 eki) — faz bitene kadar.
+> Y7 Tur (YON-19 değişikliği): Suer kendi Owner hesabıyla, sınırsız, istediği zaman; cevabı tek
+>    "değişiklik listesi" → UI-TAM-2. Regresyon turu CC'de (araç hesapları + yeni cc-project).
+>    Değişiklik tasarımsa UX hattına, kuralsa Sentez'e.
+> Y8 Suer shell / commit / push YAPMAZ: eliza-next + hotfix + ell-docs CC'de; canlı main
+>    push'unu da CC yapar — yalnız hotfix (YON-16 a/b/c), Suer'in chat'teki tek kelime
+>    "onay"ından sonra. UI fazında canlıya paket GİTMEZ.
+> Y9 Sır (Suer 2 = b): staging'de kimse kimseye sır sormaz, CC her şeye sahiptir. Render API
+>    anahtarı CC'ye: Suer Render'da oluşturur (yalnız web'de tık; adımları CC yazar), CC
+>    oturumuna BİR KEZ yapıştırır, CC yerel 600 dosyasına koyar. Anahtar hesap genelidir =
+>    canlıyı da açar → CC yalnız staging servislerine dokunur, canlı servis / env YASAK. K4 +
+>    YON-20 aynen: hiçbir sır sohbete / prompta / belgeye / loga yazılmaz.
+> Y10 Kesim ve göç en son (YON-21 aynen); bu fazda prova yok.
+>
+> C. PAKET UI-TAM — ekran başına "neye bağlanır" (CC ölçer, yoksa işaretler; ucuz uç (S)
+> açılır, büyük arka plan "kuyruk"a yazılır):
+> §0 Ölçüm: repoda tasarım kopyası · Sentez ❓ listesi (teklifte konu / ödeme koşulu /
+>    geçerlilik · kontratta satış tipi + stand tasarım linki · owner cari akışı · tek gelir
+>    listesi · stat-card → kayda inme · stand tipi / satış grubu metin mi · EMS created_by).
+> §1 Login + kabuk: setin Login'i; üç sekme + alt etiket; rol görünürlüğü (dış kullanıcı: yalnız
+>    Sales — YET-15); arama kutusu kabukta (S6; RAP-16); zil = yalnız yer (işaretli; bildirim
+>    merkezi kuyruk).
+> §2 Operations (Yaprak): Dashboard = fuar seçimi + geri sayım + kartlar (imzalı kontrat ·
+>    kayıtlı ziyaretçi · check-in — gerçek; katalog / stand tasarımı / rozet / bekleyen
+>    operasyon e-postası — işaretli) · Exhibitor = fuarın kontratları (R3 kümesi; Y5) + durum
+>    sütunları (katalog · stand · rozet işaretli) · Exhibitor Detail = kontrat + firma + kişi +
+>    iletişim günlüğü + operasyon alanları (okuma + DÜZENLEME; contracts.write; yazan uç yoksa
+>    açılır) · Floor plan = klasik editöre köprü + varsa stand sayıları · Visitor & Access =
+>    ziyaretçi listesi / içe aktarma / formlar / terminaller (klasik uçlar; EMS iç kapıları
+>    YET-25 bu pakette KAPANIR — iç kullanıcı operations.read) · Communications = EMS
+>    şablon/kampanya (klasik uçlar) + operasyon zinciri bölümü işaretli · Reports = R8 + klasik
+>    rapor · fuar ana kaydı Overview + "Classic'te düzenle" köprüsü (8 son tarih etkin tarihle).
+> §3 Sales: My Work = takipler (ILT-04) · cevapsız teklifler · imzalı-çevrilmemiş (gerçek);
+>    "cevap bekleyenler" işaretli (B4 inbound) · Mail = v1: sistemden giden e-postalar
+>    (email_queue) + iletişim günlüğü (communications) thread görünümünde; Gmail bağlantısı
+>    işaretli (ayrı karar) · Pipeline = teklif durum panosu (draft / sent / signed / declined);
+>    lead aşamaları işaretli · Quotes = mevcut teklif ekranı setin düzeniyle · Companies =
+>    Customers + firma kartı (UX brief'i: kimlik · uyarılar · düğmeler · 4 sekme; başka
+>    satışçının kontratı fuar · edisyon · m² ile görünür, TUTAR KİLİTLİ — Suer kararı 11 Kas,
+>    kütüğe YET-26 adayı; "tutarı görsün" kişi başı ezme).
+> §4 Finance: War Room = R7 · Contract = mevcut ui2 kontrat + setin düzeni (satır EUR · komisyon
+>    bloğu YET-23) · Commissions = Agents + ekstre · Ledger = hesaplar / ekstre / transfer /
+>    gider · Expo Finance = bütçe + R3 gelir + gider (P&L tek ekran; §0'a göre).
+> §5 Mobile: Dashboard (bugünkü check-in sayıları) · Scan (mevcut QR check-in / lead scanner
+>    uçları) · Visitor List (arama + check-in) — telefon genişliği; terminal akışı değişmez.
+> §6 Belge (aynı commit): defter — bu blok + Suer kararları AYNEN · kütük: YON-21 eki (Y1 Y2 Y3
+>    Y4 Y6 Y10) · YON-19 değişikliği (Y7 Y8) · YET-19 eki (Y5) · YON-14 eki (Y6) · K4 / YON-20
+>    eki (Y9) · YET-25 kapanış · YET-26 (firma kartı görünürlüğü) · UI hükmü (Y2) — ID'ler CC ·
+>    BM §2/§3/§4 yaması (üç alanın alt menüleri) · sözlük: prototip katmanı · köprü (classic).
+> Kapsam dışı (kuyruk, işaretli): Gmail bağlantısı · 8 e-posta zinciri motoru · katılımcı
+> katalog formu · stand / ekstra formları · floor plan ↔ kontrat bağı · bildirim merkezi ·
+> kesim / göç. Kapı: SERBEST (staging). Rapor: 1. gün "prototip açık" tek satır; paket sonu
+> tek rapor + ekran başına bağlı / işaretli listesi; SUER BLOĞU yok.
+> ```
+>
+> - **SENTEZ 11 Kas — EK (11:44) — AYNEN (2 / 2):**
+>
+> ```
+> SENTEZ → ORCHESTRATOR — EK (11 Kas 11:44)
+> 1. CC'nin kapanış sorusu: Suer'in Downloads'ındaki 7 export arşivi KALIR, CC silmez (Suer kararı).
+> 2. Bu chat UI-ÖNCE fazının chat'idir; kesim provası hattı (KES) kapalı — YON-21.
+> ```
+>
+> - **Orchestrator UYGULAMA — okuma kararları (özet; kriter değil):**
+>   - **Y8 okuması:** canlı `main` push'u YALNIZ hotfix (YON-16 a/b/c), HER hotfix için ayrı; CC "canlı main push — onay?" diye tek satır
+>     sorar, yalnız Suer'in o soruya O OTURUMDA kendi yazdığı tek kelime "onay" geçerlidir. Orchestrator / Sentez bloklarındaki ONAY
+>     kelimeleri canlı push izni DEĞİLDİR. UI fazında paket canlıya gitmez.
+>   - **Y9 okuması (ön-onaylı SAPMA):** anahtar değeri sohbete GİRMEZ — Suer Render'da kopyalar, oturuma yalnız "kopyaladım" yazar; CC panodan
+>     doğrudan `~/.ell-cc/` altında 600 dosyaya alır (ekrana / loga basmadan), panoyu boşaltır. İlk kullanım: servis listesi (yalnız ad +
+>     kimlik) → STAGING İZİN LİSTESİ; sonraki her çağrı izin listesini denetleyen TEK sarmalayıcıdan; liste dışı serviste env / deploy / log /
+>     ayar uçları ÇAĞRILMAZ — okuma dahil.
+>   - **Y3 okuması:** prototip ui2 ağacının DIŞINDA ayrı dizinde; UI-0 testleri ürün sayfaları için AYNEN; şerit metni İngilizce (UI dili kuralı).
+>   - Çerçeve: yalnız staging; ara soru yok (YON-18); Suer'e dönüş yalnız iki yerde (anahtar adımları · "prototip açık" tek satırı);
+>     sığmazsa böl, sıra Y1; her parça = commit + push + staging + testler yeşil + defter kaydı.
+> - **Ne yapıldı (İLK COMMIT — koddan önce):**
+>   - **LEENA `CLAUDE.md` "Sabit sınırlar"** (emsal YON-19, `7d986bb`): PUSH satırı Y8'e göre yeniden yazıldı (Suer push yapmaz · canlı `main`
+>     yalnız hotfix, her biri için ayrı tek satır soru + Suer'in o oturumda yazdığı "onay" · bloklardaki ONAY izin değildir · UI fazında
+>     canlıya paket gitmez) · TUR satırı Y7 (regresyon CC, Suer kendi Owner hesabıyla; "ONAY?" ve SUER BLOĞU yok) · **STAGING TAZELEME DONUK**
+>     (Y6) · **SIR — Render API anahtarı** (Y9: `~/.ell-cc/render-api.key` 600 · izin listesi `render-staging-allowlist.json` · tek sarmalayıcı
+>     `render-api.js` · liste dışı serviste hiçbir uç çağrılmaz, okuma dahil).
+>   - **Ön-onaylı SAPMA (YON-18):** aynı bölümdeki "UI/UX bilinçle iskelet — cila yok, tasarım fazı en sonda" satırı YON-21 (madde 4) +
+>     Y1–Y4 ile çelişiyordu → "UI-ÖNCE FAZI" satırıyla değiştirildi (gerçek veri kuralı Y2 + prototip katmanı). Orchestrator metni yalnız
+>     Y6 + Y8 + Y9 diyordu; Y7 (TUR) satırı da aynı gerekçeyle güncellendi (eski satır "paket başına ONAY?" diyordu).
+>   - **Render sarmalayıcısı kuruldu (Mac, repo DIŞI, `~/.ell-cc/render-api.js`, 700):** `list` (yalnız ad · kimlik · tür · askı) + `call`
+>     (yoldaki / sorgudaki her servis / DB kimliği izin listesinde olmalı; kimliksiz hesap-geneli çağrı reddedilir; sır taşıyabilen alanlar
+>     ad + uzunluk + ilk 2 karakter maskeli). Anahtar henüz YOK → iki ret yolu ölçüldü (aşağıda).
+>   - **KAPANIŞ (Sentez EK 1):** `~/Downloads/` altındaki 7 export arşivi (`*.dir.tar.gz`, 19 Eki–10 Kas) **KALIR — CC silmez** (Suer kararı).
+>     [defter:2026-11-11 PROVA-1 + GUV ONAY]'daki "silme Suer'in" maddesi bununla KAPANDI. Dokunulmadı.
+>   - **Kütük:** YON-21 eki (Y1 Y2 Y3 Y4 Y6 Y10 AYNEN) · YON-19 değişikliği (Y7 Y8 AYNEN) · YON-14 eki (Y6) · YON-10 / YON-20 eki (Y9) ·
+>     **UI-07** (Y2 gerçek veri kuralı — ID'yi CC tahsis etti). YET-19 eki · YET-25 kapanış · YET-26 → yetki migration'ının commit'inde.
+> - **Commit:** LEENA eliza-next **`f362819`** (yalnız `CLAUDE.md`; `bf217b7` üstünde) · ell-docs bu kayıt + kütük. **PUSH: CC** (eliza-next + ell-docs — YON-19).
+> - **Ölçülenler:** LEENA `eliza-next` = origin `bf217b7` (fetch sonrası; çalışma ağacında yalnız izlenmeyen eski dosyalar) · ell-docs `main` =
+>   origin `f35222a` · LEENA repo **PRIVATE** · ell-docs **PUBLIC** (`gh repo view`) · sarmalayıcı: anahtar dosyası yokken `list` →
+>   "REFUSED: key file missing" · izin listesi boşken `call` → "REFUSED: allowlist empty", çıkış kodu 2 (çağrı yapılmadı).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Suer'in 11 Kas 10:55 · 11:01 · 11:33 kararlarının KENDİ CÜMLELERİ Orchestrator'a ulaşmadı → deftere
+>   Sentez bloğundaki haliyle yazıldı, cümle uydurulmadı · Render API'nin gerçek yanıt biçimi (anahtar gelmedi — sarmalayıcının `list` /
+>   `call` yolu gerçek çağrıyla sınanmadı; ilk kullanımda maske sahte girdide sınanacak) · KB yüklemesi (Sentez / Orchestrator beyanı).
+> - **Bilinçle yapılmayanlar:** Downloads'taki export arşivlerine dokunma · canlıya herhangi bir şey · kod (bu commit yalnız belge) ·
+>   `.claude/skills` belgeleri.
+> - **→ Sıradaki:** §1 ön ölçüm (set · tarama · ❓ listesi · bağlantı haritası · kimlik) → §3 prototip katmanı → §4 yetki migration'ı → §5 ekranlar (Y1 sırası).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
