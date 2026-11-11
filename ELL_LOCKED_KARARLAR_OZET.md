@@ -593,12 +593,19 @@ Kesim provası direktifi (KES-01..05) aynen; GUV-04 dilimi provadan önce. Hotfi
   Service · Shipment zincire girmez. **VARSAYILAN KAPALI** (EK-1 madde 2): otomatik gönderim fuar başına AÇIKÇA açılır; migration hiçbir fuar / kontrat
   için zincir başlatmaz; planlı tarihi geçmiş satır kendiliğinden gitmez (Send now + önizleme) — ADR-023 kesim maddesi. "Send all now" yalnız Planned
   satırları yollar; toplu gönderim önizlemesiz gitmez.
+  **§5 uygulaması (12 Kas):** hücre durumları posta kaydı + olay kaydından TÜRETİLİR (saklanmaz) · kendiliğinden gönderim ölçütü: takvimden gelen satır =
+  anahtarın açıldığı GÜN ya da sonrası; olaydan doğan satır (yeni kontrat · geç imza · geç girilen stand tipi) = anahtarın açıldığı ANDAN sonra · kişinin
+  başlattığı her gönderim (tek e-posta dahil) önizleme → onay; önizlemenin sayılarını taşımayan onay reddedilir · Payment Reminder e-postasında tutar ve
+  banka bilgisi YOK · dil eksikse EN'e düşer (Blocked DEĞİL) · işi e-postası gitmeden bitmiş bölümün e-postası gitmez · yerleşik metinler LEENA'da dosya,
+  organizatörün kendi sürümü tabloda (bugün boş). Açık okumalar (🔶) defterde [2026-11-12 5. parça].
 - **EXH-17** (Suer B8) — Kural motoru = İLERİDE (project team kodsuz kural + şablon tanımlayabilmeli); bu pakette "Communications › Rules" listesi
-  yerleşik satırlarla SALT OKUMA, işaretli.
+  yerleşik satırlarla SALT OKUMA, işaretli. **§5 (12 Kas):** 12 yerleşik satır (6 zincir e-postası · hatırlatma kalıbı · 5 sistem e-postası); değerler
+  gerçek (zamanlama expo ayarından · açık / kapalı = fuarın anahtarı · son çalışma + ulaşılan exhibitor sayısı posta kaydından); yazan uç yok.
 - **EXH-18** — **Expo settings** tek veri kaynağı (UX C4: 8 bölüm · hazırlık paneli · önceki edisyondan kopya "not reviewed" bayrağıyla · deadline
   değişince onay · Pause).
 - **EXH-19** (EK-2 H1) — **Exhibitors listesi** (UX C2; satır = exhibitor, "group by contract"). "Stuck" TEK tanım: deadline'a ≤ 7 gün kala To do · 5+
-  gün cevapsız Changes requested · herhangi bir bölüm Overdue (Payment DAHİL) · zincir Failed / Blocked. Sayılar sabit varsayılan (expo ayarı değil).
+  gün cevapsız Changes requested · herhangi bir bölüm Overdue (Payment DAHİL) · zincir Failed / Blocked. Sayılar sabit varsayılan (expo ayarı değil). Zincir
+  kısmı §5'te bağlandı (12 Kas): ayarı eksik fuarda bütün exhibitor'lar Stuck görünür (🔶 defterde).
 - **EXH-20** (EK-2 H4 · EK-3 F1) — **Exhibitor detail** (UX C3; "Enter on behalf" not zorunlu + History). "On behalf" girilen stand onayı ve catalogue
   doğrudan Approved; History "entered on behalf" + not; exhibitor deadline'a kadar görür, değişiklik isteyebilir. **Stand no** = Operations
   bilgilerinde ELLE yazılan metin alanı; Exhibitor Page, liste ve e-postalar bu alanı okur; boşsa "to be confirmed". `expo_stands`'a OKUMA DAHİL bağ

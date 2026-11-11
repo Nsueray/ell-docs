@@ -344,6 +344,9 @@ scope as the lists; external users find only their own records. (RAP-16)
 ### Chain (exhibitor e-mail chain)
 - **Definition:** The six built-in e-mails an exhibitor receives (Welcome · Stand · Catalogue · Build-up · Payment Reminder · Badge) plus one reminder pattern and fixed system e-mails. Off by default: automatic sending is switched on per expo; states are derived from the event log (EXH-16).
 
+### Chain cell states · Send now · Send all now · Job done
+- **Definition:** A *cell* is one built-in e-mail for one exhibitor. Its state is derived, never stored: **Planned** (date from Expo settings) · **Sent** · **Reminding** · **Stopped** (job done, or the contract is closed) · **Failed** (reason) · **Blocked** (reason written out: no recipient e-mail · no stand type · expo settings missing) · **Excluded** (with a note) · **Paused** (contract on hold). *Send now* / *Send all now* = a person sends; always preview first, then confirm; "Send all now" takes only Planned rows. *Job done* = the exhibitor has sent the section (in review included) — reminders stop (EXH-16).
+
 ### Stuck (exhibitor list)
 - **Definition:** One server-side definition: a section "To do" with ≤ 7 days to its deadline · "Changes requested" unanswered for 5+ days · any section Overdue (Payment included) · a chain e-mail Failed / Blocked (EXH-19).
 

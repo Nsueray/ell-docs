@@ -126,4 +126,11 @@ Faz A restore + rollback.js. Prova ≥ 2 kez, canlının taze kopyasında.
 >   varsayılan oranı canlıda VAR olmalı (yoksa sipariş kapalı); (c) **banka bloğu** — Payment bölümü kontratın tüzel kişisinin "belgede göster" hesabını gösterir;
 >   tüzel kişisi / belge hesabı olmayan kontratta banka görünmez (göçmüş kontratların tüzel kişi doluluğu kesimde ölçülür); (d) **kod** — canlıda echo bayrağı
 >   yok: kod yalnız e-postayla gider → worker + gönderen doğrulaması şart; (e) 074 convert günlüğünün iki kısıtını genişletir (yeni adlar "v2"), satır değiştirmez.
+> - **Zincir (5. parça; migration yok):** (a) **tik worker'da** — canlıda zinciri e-posta worker'ı işletir (5 dakikada bir; aralık worker ortamından
+>   ayarlanır); anahtarı açık fuar yokken hiçbir şey yapmaz. Staging'deki süreç içi tik canlıda YOK (echo koşuluna bağlı). (b) **açılış sırası** — bir fuarın
+>   zinciri, o fuarın kontratları göçtükten SONRA açılır: açılıştan önce doğmuş kontratların vadesi geçmiş satırları kendiliğinden gitmez (kişi "Send now" +
+>   önizleme); açılıştan SONRA doğan kontratın e-postaları hemen gider — göç, zinciri açık bir fuara yapılırsa göçen her kontrata Welcome çıkar. (c) **gönderen
+>   kutuları** — Project ve Finance kutularının canlıda gönderen doğrulaması (ILT-07); Payment Reminder Finance kutusundan gider. (d) **metinler** — yerleşik
+>   metinler kodla gelir, kesimde tohum adımı YOK; metinler gözden geçirilmedi (EN uyarlama · FR; TR ve Build-up FR yok) → zincir açılmadan önce okunmalı.
+>   (e) "Stuck" artık zincir Failed / Blocked'ı sayar: alıcı e-postası olmayan (göç) kontratlar ve ayarı eksik fuarların exhibitor'ları Stuck görünür.
 > - Paketin diğer kesim maddeleri (worker · gönderen doğrulaması · sonraki migration'lar) parça kayıtlarıyla bu bloğa eklenir.

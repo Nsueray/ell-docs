@@ -49,8 +49,8 @@ Suer turu: Y7 — Suer kendi Owner hesabıyla gezer, cevabı tek "değişiklik l
 | 24 | Exhibitor yüzü (ui2 DEĞİL) | **Exhibitor Page** (YENİ) — kabuk · Stand · Catalogue · Badges · Build-up & documents · Contacts · geçersiz link sayfası | `/x/#<anahtar>` (repo: `exhibitor-page/`) | UX 3. tur C1 · C1 mockup · UX 2. tur #16–17 + eskiz 0–2 · EXH-01…14 · GUV-06 | **staging (`dc2e3e1`)** | bekliyor |
 | 25 | Exhibitor yüzü | Exhibitor Page — **Extra equipment + Payment** (kodlu) | `/x/#<anahtar>/extra-equipment` · `/payment` | UX 3. tur C1 · EXH-05 · EXH-10 · EXH-13 | **staging (`0da9c4f`)** | bekliyor |
 | 26 | Finance | Collections — **"receipts to check"** (+ kontrat sayfasında şerit · Expo Finance'ta RAP-18 marj) | `finance-collections.html` · `finance-contract.html` · `finance-expo.html` | Sentez C14 · EXH-10 · RAP-18 | **staging (`0da9c4f`)** | bekliyor |
-| 27 | Operations | **Chain status** (YENİ) | — | UX 3. tur C5 · UX 2. tur #9 · #14 + eskiz 3 · EXH-16 | **UI-TAM-2 §5** | — |
-| 28 | Operations | **Rules** (YENİ; salt okuma, işaretli) | — | UX 3. tur C5 · EXH-17 | **UI-TAM-2 §5** | — |
+| 27 | Operations · Communications altında | **Chain status** (YENİ) — tablo · özet · next 7 days · Send now / Send all now / Resend / Exclude (önizlemeli) + listede Chain sütunu + detayda chain kartı | `ops-chain.html` | UX 3. tur C5 · C3 · UX 2. tur #9 · #14 + eskiz 3 · EXH-16 | **staging (`9cb08d4`)** | bekliyor |
+| 28 | Operations · Communications altında | **Rules** (YENİ; salt okuma — 12 yerleşik satır; kural motoru işaretli) | `ops-rules.html` | UX 3. tur C5 · EXH-17 | **staging (`9cb08d4`)** | bekliyor |
 | 29 | Exhibitor yüzü + Operations | **Pavyon**: co-exhibitor alt kayıtları · dar link · liste gruplaması | — | Sentez B6 · EK-2 H2 / H3 / H8 · C2/C3 mockup · UX 2. tur #6 · EXH-15 | **UI-TAM-2 §6** | — |
 
 ## 3. Çeviri ve metin durumu (UI-TAM-2)
@@ -58,9 +58,11 @@ Suer turu: Y7 — Suer kendi Owner hesabıyla gezer, cevabı tek "değişiklik l
 | Konu | Durum |
 |---|---|
 | Exhibitor Page arayüz metinleri FR / TR | CC taslaklar — **çeviri gözden geçirilmedi** (EK-1 madde 5) |
-| 6 yerleşik e-posta EN / FR | Drive'daki metinlerden tohumlanır (ell-docs'a metin GİRMEZ) |
+| 6 yerleşik e-posta EN / FR | LEENA'da 13 metin (7 EN + 6 FR) — Drive'daki 14 şablondan tohumlandı (12 Kas), Exhibitor Page'e uyarlandı: form linki → düğme, tutar ve kişisel imza çıktı. EN'de birkaç taslak cümle var; FR'de yalnız Drive'ın hâlâ geçerli satırları (yeni FR cümle yazılmadı). **Metin gözden geçirilmedi** (ell-docs'a metin GİRMEDİ) |
+| Build-up & Breakdown FR | **eksik** — Drive'da FR sürümü yok; EN'e düşer |
 | E-posta TR | **eksik** — EN'e düşer; CC TR e-posta metni yazmaz (UX / Yaprak sonra yazar) |
-| Hatırlatma kalıbı + sistem e-postaları | Drive'da karşılığı ölçülür; yoksa EN'i CC taslaklar — **metin gözden geçirilmedi**; FR / TR "eksik" |
+| E-posta çerçevesi (üst bilgi etiketleri · alt not) | yalnız EN — FR / TR "eksik" |
+| Hatırlatma kalıbı + sistem e-postaları | Drive'da karşılığı YOK (ölçüldü); EN'i CC taslakladı — **metin gözden geçirilmedi**; FR / TR "eksik" |
 
 ## 4. Kuyruk
 
@@ -71,6 +73,9 @@ Suer turu: Y7 — Suer kendi Owner hesabıyla gezer, cevabı tek "değişiklik l
 - stand no'nun kaynağı → yeni floor plan modülünün yerleştirme kaydı (Mimari hattı)
 - Sürümü olan kontratı yeni Equipped paket sürümüne geçirme eylemi.
 - FR / TR çeviri gözden geçirme (arayüz) · TR e-posta metinleri.
+- **Zincir (§5) kuyruğu:** zincir e-posta metinlerinin gözden geçirilmesi (EN uyarlama + FR) · Build-up FR metni · çerçeve etiketlerinin FR / TR'si · metni
+  ekrandan düzenleme (kural motoruyla) · büyük fuarda Chain status süresi ölçümü · Sentez'e iki okuma sorusu: "Stuck"ta fuar düzeyindeki bloklar sayılsın mı ·
+  "Send all now" günü gelmemiş satırı da yollasın mı.
 - **mockup eklenecek:** `Exhibitor-Page-C1-mockup.html` · `Exhibitors-C2-C3-mockup.html` — dosyalar bulundu, özetleri tutuyor; public repo taraması
   (YON-20) içlerindeki `.example` e-posta adreslerini (ve C1'deki IBAN biçimli örnek dizgiyi) engelliyor → 🔶 Sentez (tarama kuralı mı, yer mi).
 - Kural motoru (EXH-17) · Gmail / gelen cevaplar · Fair days görünümünün tam tarifi · Transfer akışı ekranı · "Add co-exhibitor" dışındaki pavyon

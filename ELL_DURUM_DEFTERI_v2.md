@@ -10467,6 +10467,118 @@
 >   "satışçı kendi kontratlarının exhibitor durumunu salt okunur görsün mü" (Suer kararı, Faz 4).
 > - **→ Sıradaki:** §5 ZİNCİR (planlama · 6 yerleşik e-posta · Chain status · Send all now / Resend / Exclude · Rules listesi).
 
+> ## ✅ 2026-11-12 — PAKET UI-TAM-2 5. PARÇA: E-POSTA ZİNCİRİ STAGING'DE — 6 yerleşik e-posta · varsayılan KAPALI anahtar · önizlemesiz gönderim reddi · Chain status · Rules (EXH-16 · EXH-17) (LEENA eliza-next `3ea2a03` + `69d5da7` + `9cb08d4`) · 1096 / 1096
+>
+> - **Kriter kaynağı:** [defter:2026-11-11 SENTEZ 11 Kas: PAKET UI-TAM-2] — blok D EXH-16 · EXH-17 · E §5 · B8 · C13 · C15 · EK-1 madde 2 · madde 5 · EK-2 H1 · H5 · H7 ·
+>   varsayım 10–11. Orchestrator UYGULAMA 4 "ZİNCİR DEĞİŞMEZLERİ". UX 3. tur C3 (chain kartı) · C5 (Chain status + Rules) · C6 (e-posta yapıları). Ölçütler dosyalardan
+>   yeniden okundu.
+> - **Ne yapıldı:**
+>   - **Altı yerleşik e-posta (EXH-16):** Welcome · Stand (stand tipine göre Equipped ya da Space-only metni) · Catalogue · Build-up & Breakdown · Payment Reminder
+>     (Finance kutusundan) · Badge. Hepsi transactional kuyruktan (ILT-05; staging'de `echo`); klasik kampanya motoru KULLANILMAZ. Ortak çerçeve (UX C6): üstte expo ·
+>     tarih · mekân · stand no; tek düğme = Exhibitor Page'in ilgili bölümü; altta proje ekibi kişileri.
+>   - **Planlama expo ayarından:** Welcome = kontrat doğunca · Stand / Catalogue / Build-up / Badge = fuardan N gün önce (ayar) · Payment Reminder = payment
+>     deadline'ından N gün önce (ayar). Kontrat planlı günden SONRA doğduysa gün = doğduğu gün ("geç imzada hemen").
+>   - **Hücre durumları TÜRETİLİR, saklanmaz:** posta kaydı + olay kaydından — Planned · Sent · Reminding · Stopped (iş bitti / kontrat kapandı) · Failed (neden) ·
+>     Blocked (neden YAZILI: alıcı e-postası yok · stand tipi yok · expo ayarı eksik + eksik kalemler · ilk gönderim günü yok · metin yok) · Excluded (not) · Paused
+>     (kontrat beklemede) · bakiyesi olmayan kontratta Payment Reminder "not needed". Kutucuk / etiket YOK.
+>   - **VARSAYILAN KAPALI (EK-1 madde 2):** otomatik gönderim fuar başına, Expo settings'teki anahtarla AÇIKÇA açılır; 071+ migration'ların hiçbiri anahtarı açmaz,
+>     posta kaydı ya da kuyruk satırı yazmaz. Tik (canlıda worker · staging'de süreç içi, rapor zamanlayıcısıyla aynı koşul) YALNIZ anahtarı açık fuarları okur.
+>     **Açıldığı anda vadesi GEÇMİŞ satır kendiliğinden gitmez** — "Send now" + önizleme bekler.
+>   - **H5 + "geç imza":** anahtarı AÇIK fuarda açılıştan SONRA doğan olay hemen gider (yeni kontratın Welcome'ı + günü geçmiş e-postaları · geç girilen stand tipinin
+>     Stand e-postası — aynı istekte). Anahtarı KAPALI fuarda hiçbir şey kendiliğinden gitmez: H5'te bölüm yine sistemce açılır, e-posta satırı "Send now" bekler.
+>   - **Kişinin başlattığı HER gönderim iki adım:** ilk çağrı ÖNİZLEME (kime hangi e-posta gidecek · kim NEDEN atlanacak; tek e-postada gidecek metnin aynısı), onay
+>     çağrısı önizlemenin sayılarını taşımak zorunda — yoksa 409, kuyruk boş. Tek hücre de toplu da. "Send all now" YALNIZ Planned satırları alır (gitmişi tekrarlamaz);
+>     Resend ayrı eylem ve hatırlatma SAYILMAZ (H7).
+>   - **"Job done" (varsayım 10):** exhibitor bölümü GÖNDERDİYSE (In review dahil) hatırlatma durur; "Changes requested" olunca takvim geri gelir. Payment'ta ödeme
+>     tamamlanınca ya da dekont bildirimi incelemedeyken durur.
+>   - **Otomatik hatırlatma:** expo ayarındaki takvimle (deadline'dan N gün önce, geçince her N günde), yalnız zincir e-postası GİTMİŞ ve işi açık bölümler için; tek
+>     e-posta hepsini listeler; günde 1 (H7 — otomatik ve elle aynı sayaç); build-up'ın ilk günü durur.
+>   - **Payment Reminder:** yalnız açık bakiye varken · Finance kutusundan · e-postada TUTAR ve BANKA bilgisi YOK — düğme kodlu Payment bölümünü açar.
+>   - **Exclude / Include:** not zorunlu; olay olarak yazılır, hücre ondan türetilir; excluded satır "Send all now"a ve otomatik gönderime girmez.
+>   - **Chain status ekranı (UX C5):** satır = exhibitor, sütun = 6 e-posta · üstte e-posta başına özet (gitti · planlı · hata · iş bitti oranı) · "Next 7 days"
+>     (kendiliğinden gidecekler; anahtar kapalıyken boş) · görünümler: Problems (varsayılan: Failed · Blocked · hatırlatması biten · 3+ hatırlatma cevapsız) ·
+>     Waiting for Send now · All · hücreyi aç → gönderim geçmişi + giden metin + detay linki · toplu Send now / Resend / Exclude / Include (önizlemeli) · metin kapsamı
+>     tablosu (dil · eksik · gözden geçirilmedi). Telefonda sorun listesi (exhibitor · e-posta · neden · eylem).
+>   - **Rules ekranı (EXH-17):** SALT OKUNUR 12 yerleşik satır — 6 zincir e-postası · hatırlatma kalıbı · 5 sistem e-postası; değerler gerçek (koşul · metin dilleri ·
+>     eylem · zamanlama expo ayarından · açık / kapalı = fuarın anahtarı · son çalışma + ulaşılan exhibitor sayısı posta kaydından). Kural motoru "Not connected yet"
+>     kutusunda; yazan uç yok.
+>   - **Exhibitors listesi + detay:** "Chain" sütunu yalnız sorun varsa dolu (Failed / Blocked + neden) · toplu "Send all now" · detayda chain kartı (6 satır:
+>     planlı · son gönderim · durum · hatırlatmalar · iş bitti mi · Send now / Resend / Exclude / Include / View). **H1 "Stuck" tanımının 4. kısmı bağlandı:** zincir
+>     Failed / Blocked olan exhibitor Stuck sayılır.
+>   - **Metin tohumu (EK-1 madde 5):** Drive'daki 14 Zoho şablonu (7 tür × EN / FR; Build-up'ın iki sürümü de EN) okundu; LEENA'ya (private) 13 metin dosyası olarak
+>     yazıldı: 7 EN + 6 FR. TR YOK → EN'e düşer, sayaçta "eksik". Build-up'ın FR'si Drive'da yok → EN. ell-docs'a metin GİRMEDİ.
+> - **Commit:** LEENA eliza-next `3ea2a03` + `69d5da7` + `9cb08d4` (PUSH: CC, yalnız `eliza-next`; canlı `main` DEĞİŞMEDİ `2db0131`). Migration YOK (kayıt 76).
+> - **Ölçülenler:**
+>   - **Test (yerel, PG 14.18; veritabanı oturumu UTC):** tam zincir tek koşuda **1096 / 1096** — 64 suite (1066 + yeni suite `test_ui_tam2_chain.js` 30).
+>     Yeni suite'in ölçtükleri: varsayılan kapalı (sütun varsayılanı · 071+ migration taraması · kapalıyken tik 0) · planlama · türetilen durumlar · önizlemesiz
+>     gönderim reddi (tek + toplu) · Send all now yalnız Planned · Resend ≠ hatırlatma · dil (FR · TR → EN) · echo · Exclude / Include · anahtar açılınca geçmiş
+>     satır gitmez · aynı gün açılıştan önce doğan kontrat gitmez · açılıştan sonra doğan hemen · Pause · H5 kapalı / açık · Job done · otomatik hatırlatma + H7 ·
+>     Payment Reminder (kutu · tutar / banka yok) · Failed · metin dosyaları (Zoho alanı / adres / telefon / tutar yok) · organizatör sürümü · Rules · yetki · tik
+>     bağları · ekranlar.
+>   - **Hüküm gereği güncellenen beklentiler (test satırında hüküm yorumu):** `test_ui_tam2_team` L3 (H1: zincir Blocked → satırlara `chain:blocked` eklendi) ·
+>     S1 (işaretli yer sayısı 2 / 1 → 1 / 0: zincir bağlandı) · `test_ui_tam` O3 ("işaret bileşenle konur" koşulu işaretli öğesi OLAN sayfalar için; Exhibitor
+>     detayı tümüyle bağlı). Diğer eski testler DEĞİŞMEDEN yeşil.
+>   - **Staging (fuar 15, cc-project; EMAIL_ECHO açık):** hazırlık paneli "Ready" (7 e-posta hazır) · anahtar açılmadan önce Chain status: 3 exhibitor · Problems 1 ·
+>     Waiting for Send now 2 · "next 7 days" boş · yanıt 1,1 sn · Sales hesabı 409 (`operations.read`) · dış kullanıcı 409.
+>   - **Eylemler (staging, uygulamanın kendi uçlarıyla; YALNIZ SAMPLE kontratlar 7899 · 7900):** önizlemesiz onay → 409 `PREVIEW_REQUIRED` · Welcome önizleme →
+>     onay → kuyrukta `echo` · "Send all now" (Equipped SAMPLE): 2 e-posta (Build-up "ahead of its planned date" + Payment Reminder) · Space-only SAMPLE'a Welcome +
+>     Catalogue, Stand "job done" diye atlandı · ikinci "Send all now": gidecek 0 ("nothing planned") · Resend Welcome gitti, gitmemiş satırın Resend'i atlandı ·
+>     notsuz Exclude 400 · notla Exclude (Payment Reminder) · **anahtar YALNIZ fuar 15'te açıldı** (staging'de `chain_auto` açık satır: 1) · açıldıktan sonra
+>     "next 7 days": 2026-11-15 Badge 1 · Build-up 1 · Reminder 2 · **kendiliğinden giden satır 0** (zincir kaydı 7, hepsi manual / send_all / resend) ·
+>     Rules 12 satır, POST 404.
+>   - **Ekranlar (staging, 1440 + 390 px):** Chain status (3 görünüm) · Rules · Exhibitor detail · Exhibitors · Communications — HTTP 200 · yatay taşma 0 · konsol
+>     hatası 0. **Tıklama turu (11 adım, hepsi geçti):** hücreyi aç → geçmiş + "View text" · Send now → önizleme → Cancel · toplu Resend → önizleme → onay →
+>     "queued (echo)" · notsuz Exclude ekranda da durur · detayda chain kartı + "Send all now" önizlemesi + View · Rules'ta ekleme / düzenleme düğmesi yok.
+>   - **Echo e-postalar (gönderilmedi) dosyada:** bu parçadan 7 zincir e-postası (Welcome ×3 · Build-up · Payment Reminder · Catalogue ×2) + gitmemiş 6 metnin
+>     önizlemesi (Stand Equipped · Stand Space-only · Badge · Catalogue · Build-up · Payment Reminder). Hiçbirinde Zoho birleştirme alanı ve sayfa anahtarı (önizlemede)
+>     yok.
+>   - **Drive:** 14 şablon dosyası indirildi (123.645 bayt; her dosyanın boyutu Drive kaydıyla eşit) — repo DIŞI klasöre. 35 ayrı Zoho birleştirme alanı; LEENA
+>     metinlerinde hiçbiri kalmadı (test T1). Hatırlatma kalıbı ve sistem e-postaları için Drive'da karşılık YOK (dosya adlarına bakıldı).
+>   - **TABAN** 342.00 · **TABAN-2 EŞİT** · migration kaydı 76 (değişmedi) · canlı `main` `2db0131`.
+>   - **Y2 — bağlı / işaretli:** Chain status BAĞLI (sayfada işaretli öğe yok) · Rules: liste BAĞLI, işaretli 1 kutu (kural motoru: New rule · metin / zaman düzenleme
+>     · ilk çalıştırma önizlemesi · kural günlüğü) · Exhibitors listesi: Chain sütunu BAĞLANDI, işaretli 1 yer kaldı (Fair days) · Exhibitor detail TÜMÜYLE bağlı ·
+>     Communications: zincir özeti BAĞLANDI (eski "8 adımlı zincir" işareti kalktı).
+> - **Ön-onaylı SAPMA + 🔶 (Sentez'e):**
+>   1. 🔶 **"Geçmiş satır" ölçütü (EK-1 madde 2 ↔ H5 okuması):** takvimden gelen satır (fuardan / deadline'dan N gün önce) → günü anahtarın açıldığı GÜN ya da
+>      sonrasıysa kendiliğinden gider; olaydan doğan satır (yeni kontrat · geç imza · geç girilen stand tipi) → olay anahtarın açıldığı ANDAN sonraysa gider. Aynı gün
+>      ama açılıştan ÖNCE doğan kontrat gitmez — kesim günü göçen kontratlar o gün açılan zincire takılmasın diye (testli).
+>   2. 🔶 **Payment Reminder e-postasında TUTAR yok.** UX C6 "bakiye + vade" diyordu; EK-1 "kod girilmeden hiçbir tutar yok" — en kilitli okuma. E-postada payment
+>      deadline'ı ve "tutar kodlu Payment bölümünde" cümlesi var. Drive metnindeki tutar alanı ve kişisel imza bloğu alınmadı.
+>   3. 🔶 **"Send all now" = Planned satırların HEPSİ** (günü henüz gelmemiş olan dahil; önizlemede "ahead of its planned date {tarih}" yazar). Alternatif: yalnız
+>      günü gelmişler.
+>   4. 🔶 **H1 aynen uygulandı: zincir Blocked → Stuck.** Sonucu: expo ayarı eksik fuarda TÜM exhibitor'lar Stuck görünür; alıcı e-postası olmayan kontrat Stuck olur
+>      (staging'de fuar 15'teki test kontratı). Alternatif: fuar düzeyindeki blokları (ayar eksik) Stuck saymamak.
+>   5. **Tek e-postanın "Send now"u da önizleme ister** (EK-1 "Send now + önizleme"); önizleme metnin kendisini gösterir.
+>   6. 🔶 **"Dil sürümü eksik" Blocked nedeni DEĞİL** (UX C3 sayıyordu): EK-1 madde 5 gereği EN'e düşer, sayaçta ve önizlemede "no TR text, English is used".
+>   7. 🔶 **İşi, e-postası gitmeden bitmiş bölümün e-postası GİTMEZ** (hücre "Done"): staging'de SAMPLE kontratların Stand / Catalogue / Badge satırları bu yüzden
+>      gönderilmedi (metinleri önizleme dosyalarında).
+>   8. 🔶 **Dekont bildirimi incelemedeyken Payment "job done"** sayılır (hatırlatma durur; Finance bildirimi kapatıp bakiye açık kalırsa yeniden başlar).
+>   9. 🔶 **Metinler gözden geçirilmedi.** EN = Drive metni + Exhibitor Page'e uyarlama (form linki → düğme; "imzala-kaşele-gönder" adımı kalktı; tutar ve kişisel
+>      imza çıktı) + birkaç TASLAK cümle (tek sayfa tanıtımı · deadline listesi · kod notu · kilit notu). FR = Drive FR'sinden geçerliliğini yitiren satırlar
+>      ÇIKARILDI, yeni Fransızca cümle YAZILMADI → FR Welcome'da sayfa tanıtımı ve deadline listesi yok; FR e-postalarda çerçeve etiketleri ve bazı düğmeler İngilizce.
+>      Build-up'ın FR'si yok. Hatırlatma kalıbı + sistem e-postaları yalnız EN (önceki parçalardan).
+>   10. 🔶 **Metinlerin yeri:** yerleşik metinler LEENA'da DOSYA (`exhibitor-mail/`); 072'deki şablon tablosu boş kalır — satır girilirse o organizatör için dosyanın
+>       yerine geçer (testli). Kesimde metin tohumu adımı gerekmez. Ekrandan düzenleme = kural motoru (kuyruk).
+>   11. **Otomatik hatırlatma yalnız zincir e-postası GİTMİŞ bölümler için** (hiç e-posta almamış bölüm otomatik kovalanmaz; elle Remind açık bölümlerin hepsini
+>       listeler).
+>   12. **Sistem, açılıştan SONRA doğan kontratın ana kişisini alıcı listesine kendisi ekler** (Welcome gidebilsin); daha eski kontratın listesine dokunmaz.
+>   13. **Chain status ve Rules, Communications'ın ALTINDA** (BM v4 yama-4): ayrı menü satırı değil — Communications · Exhibitors listesi · Expo settings'ten bağlantıyla.
+>   14. **"Waiting for Send now" görünümü eklendi** (UX'te yok): vadesi gelmiş ama kendiliğinden gitmeyecek satırlar — anahtar kapalıyken ya da açılışta geçmişken.
+>   15. **Staging turunda bulunup düzeltilen (`69d5da7`):** zincir tablosu ve chain kartı dar sütunda kırpılıyordu → tam genişlik; "info" tonu Vermillion'da hata gibi
+>       okunuyordu → açık anahtar şeridi yeşil, "Always" çipi nötr (ton sorunu UI-DÜZELTME-1'de).
+>   16. **Yardımcı ajan:** Drive dosyalarını indiren ajan istenmeden 5 ek ajan kullandı (yaklaşık 766 bin token); kendi rapor dosyasını yazamadı (araç reddetti) —
+>       içeriği elden alındı. Drive'da hiçbir şey değişmedi.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** otomatik gönderimin STAGING'de kendiliğinden çıkışı (ilk aday 2026-11-15: Build-up · Badge · hatırlatma — o gün gözlenecek;
+>   testte ölçüldü) · süreç içi tikin staging log satırı · H5'in staging kanıtı (§6'da yeni SAMPLE kontratla) · FR / TR alıcıyla staging gönderimi (SAMPLE alıcılar
+>   expo varsayılanı EN — dil testte) · gerçek bir kuyruk hatasıyla Failed (testte kayıt eklenerek) · büyük fuarda Chain status süresi (staging fuarı 3 exhibitor) ·
+>   canlı worker'da tik (canlıya paket gitmedi) · PG 14 ikinci koşu + PG 17 (paket sonunda) · Office Manager / Finance hesabıyla tur (araç hesabı yok — testte) ·
+>   Safari / Firefox / gerçek telefon.
+> - **Bilinçle yapılmayanlar:** kural motoru (yalnız salt okunur liste) · TR e-posta metni · hatırlatma kalıbı ve sistem e-postalarının FR / TR'si · pavyon zinciri (H3 —
+>   §6) · canlıda her şey (worker env · gönderen doğrulaması = kesim maddesi).
+> - **Kuyruğa:** e-posta metinlerinin gözden geçirilmesi (EN uyarlama · FR) · Build-up FR metni · TR metinleri (UX / Yaprak) · çerçeve etiketlerinin FR / TR'si ·
+>   metni ekrandan düzenleme (kural motoruyla) · büyük fuarda Chain status süresi ölçümü.
+> - **→ Sıradaki:** §6 PAVYON (iki mod · co-exhibitor alt kayıtları · dar link · liste gruplaması · H2 / H3 / H8) + kapanış (PG 14 ×2 + PG 17 · turlar · tek rapor).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
