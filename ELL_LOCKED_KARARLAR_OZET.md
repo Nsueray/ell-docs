@@ -470,7 +470,8 @@ Kapsam dışı prova: tasarım, madencilik, DENEME, dış kullanıcı daveti. İ
 - **PROVA-1** (10 Kas, canlı 10 Kas 09:23Z kopyası) — KES-02 1–10 koşuldu: göç 053→069 53 sn (VALIDATE 2 sn, ayrı pencere gerekmez) · Zoho artımlı
   14 / 16 → **DUR 2** (mevcut kontrat değişimi taşınmaz: 29 ödeme / 23 kontrat + 1 tutar) + S2 bulgusu (ülke yalnız yeni 19'da) · batch #2 geri alınabilir
   (dışa bağ 0) · geri alma (a) main taşınmış şemada 0 fark (b) tam geri yükleme 2 sa 0 dk 37 sn · iki ileri koşu birebir · GUV turu yeşil. Açık: DUR yöntemi
-  (Sentez) → PROVA-2. [defter:2026-11-10 PROVA-1]
+  (Sentez) → PROVA-2. [defter:2026-11-10 PROVA-1] · **ONAY** (Orchestrator 11 Kas 00:30) — PROVA-2 = aynı zincir, hedef DUR 0.
+  [defter:2026-11-11 PROVA-1 + GUV ONAY]
 
 ### GUV — güvenlik olayı ve kalıcı güvenlik kuralları (yeni grup, 2026-11-10, Sentez 10 Kas)
 
@@ -495,6 +496,7 @@ Kesim provası direktifi (KES-01..05) aynen; GUV-04 dilimi provadan önce. Hotfi
 - **GUV-02** — Kayıt yalnız davetle; açık kayıt ucu kodda kalmaz; kiracı açma yalnız Owner davetiyle (Admin). Çok kiracılı satış → ayrı ADR.
 - **GUV-03** — Güvenlik bildirimleri Suer'e e-posta + haftalık güvenlik özeti (push tohumu); okunmamış e-postaya dayanılmaz.
 - **GUV-04** — Erişim logu (G26) kesim listesinde, kesim ÖNCESİ dilim: istek başına zaman · kimlik · organizer · yol · durum · IP; 90 gün; Owner ekranı
-  süzgeç + dışa aktarım; gövde yok. Başarısız giriş sayacı + geçici kilit (5 / 15 dk). ADR-023 kesim maddesi.
+  süzgeç + dışa aktarım; gövde yok. Başarısız giriş sayacı + geçici kilit (5 / 15 dk). ADR-023 kesim maddesi. Dilim **ONAY** (11 Kas; `eliza-next`, kesimle canlıya).
+  [defter:2026-11-11 PROVA-1 + GUV ONAY]
 - **GUV-05** — Olay sonrası kontrol listesi: ölç → kapat → delil sakla → bilinemeyeni yaz → kural çıkar; her adım deftere. Emsal GUV-01.
 

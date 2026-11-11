@@ -8745,6 +8745,34 @@
 > - **Bilinçle yapılmayanlar:** canlıya bağlantı / yazma · DUR çözümü için kod veya tam göç uygulaması (karar Sentez) · LIFFY değişikliği · dış kullanıcı
 >   daveti · tasarım · madencilik. Yerel geçici kopyalar (PG17 küme, açılmış export, parça dosyaları) ONAY'a kadar Mac'te; repo / sohbet / ell-docs'a GİRMEDİ.
 
+> ## ✅ 2026-11-11 — PROVA-1 + GUV ONAY · yerel kopyalar silindi · PROVA-1 araç takımı saklandı (Mac, repo dışı) · BEKLE
+>
+> - **Kriter kaynağı:** Orchestrator 11 Kas 00:30 "PROVA-1 + GUV ONAY" (YON-19) · [defter:2026-11-10 PROVA-1] · [defter:2026-11-10 GUV DİLİMİ].
+> - **Ne yapıldı:**
+>   - **ONAY → PROVA-1 KAPALI · GUV dilimi ONAY** (kod `eliza-next` `9093ad7` + `60cc7f9`; kesime kadar staging'de, kesimle canlıya). DUR-1 / DUR-2 + S2
+>     bulgusu Sentez'de (Orchestrator iletti). Yöntem kararı (batch #2 geri al + tam göç | güncelleme dilimi) gelince **PROVA-2 = aynı zincir**, hedef **DUR 0 +
+>     PROVA-1 ile aynı sayılar**.
+>   - **Yerel kopyalar SİLİNDİ (11 Kas ~07:03Z):** yerel PG17 küme durduruldu (port 55432 dinleyici 0) + `pgdata` (guv01 · guv01_mig, 2,0 GB) · açılmış export
+>     (15 GB) · `email_queue` parçaları (58, 15 GB) · küme sunucu logu · PROVA-1'in staging ekran görüntüleri (7) ve adım 9 sayı dizinleri (oturum geçici dizini).
+>     Disk boş alanı 234 → 266 GiB. Time Machine hedefi YOK (`tmutil destinationinfo`: "No destinations configured") → silinenlerin yedek kopyası yok.
+>   - **SAKLANDI (PROVA-2 + kesim günü geri alma):** `~/ell-prova-tools/prova1/` (700, repo DIŞI) — `restore/` parçalı yükleyici (`eq_common` · `eq_chunk` ·
+>     `eq_chunk_rb` · `eq_load` · `stg_rollback_restore` · `staging_restore` + TOC listeleri) · `chain/` KES-02 zinciri betikleri (15, GUV-01 SQL dahil) · `logs/`
+>     süre logları (19) · `baseline/` adım 9 R2 / R5 sayıları (LOCAL_ONLY) · README (export'a bağlı yeniden üretilecekler: dump dizini · TOC kimlikleri · veri
+>     satırı sayısı N · `JOBS=2`) · `MANIFEST.sha256` (48 dosya, doğrulama 0 hata). Kaynak, kopya bayt bayt aynı ölçüldükten (cmp, 0 fark) SONRA silindi.
+>     Sır yok (bağlantı dosyadan okunur — K4); kişisel veri yalnız `baseline/`'da (R5 temsilci adları).
+>   - **CC notu — PROVA-2 "aynı sayılar" ölçütü (ölçüm, karar değil):** DUR-1'in 29 ödemesinin **6'sı 2026-10 tarihli** (ay dağılımı 2026-07 1 · 09 10 · 10 6 ·
+>     11 12 — staging, `claude_readonly`, yalnız sayı) → DUR çözülünce **R5 (2026-10) parmak izi DEĞİŞİR**; DUR-2'nin kontratı 2026 EUR → R2 değişebilir. Taze
+>     export + taze Zoho çekimi 10 Kas sonrası hareketi de getirir. CC'nin PROVA-2 karşılaştırması: değişmeyenler birebir (TABAN 342.00 · TABAN-2 EŞİT ·
+>     tablo / şema sayıları dump ile · yetki matrisi · GUV turu) + R2 / R5 farkı satır satır DUR satırlarına ve 10 Kas sonrası kayıtlara bağlanır;
+>     açıklanamayan fark = DUR.
+> - **Commit:** ell-docs bu kayıt + ★ + kütük (KES PROVA-1 · GUV-04). Kod yok. **PUSH: CC (YON-19).**
+> - **Ölçülenler:** silme öncesi / sonrası dizin listeleri · port 55432 dinleyici 0 · disk 234 → 266 GiB · MANIFEST doğrulaması 0 hata · DUR-1 ay dağılımı (yukarıda).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** silinen blokların diskte üzerine yazılması (APFS; güvenli silme yapılmadı) · iCloud / üçüncü taraf yedek (Time Machine yok).
+> - **Bilinçle yapılmayanlar:** `~/Downloads/` altındaki 7 export arşivi (`*.dir.tar.gz`, 19 Eki–10 Kas) — ONAY kapsamı dışında, dokunulmadı; kişisel veri
+>   içerir, silme Suer'in · `~/zoho_raw/` (27 Eki + 10 Kas çekimleri) — PROVA-2 taze çekiminden sonra silinir · oturum geçici dizinindeki org 2 ölçüm
+>   çıktıları (GUV-01 delili; silme Suer kararı, GUV-01) · araç takımını repoya koymak (makineye özel yollar; README'de yazılı).
+> - **→ Sıradaki: BEKLE** — Sentez: DUR yöntemi (+ S2 + kesim tarihi) → PROVA-2 (Suer taze export → aynı zincir → hedef DUR 0).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
@@ -9037,6 +9065,9 @@
 >   kontrat değişimini taşımaz: 29 ödeme / 23 kontrat + 1 tutar) + S2 bulgusu · geri alma (a) kod 0 fark (b) tam geri yükleme 2 sa 0 dk 37 sn · GUV turu yeşil —
 >   [defter:2026-11-10 PROVA-1]. **★SIRADAKİ (bu kazanır) = Suer: "PROVA-1 + GUV ONAY?" → Sentez: DUR yöntemi (tam göç | yeni dilim) + S2 + kesim tarihi →
 >   PROVA-2 (taze export).**
+>   11 Kas (1): **PROVA-1 + GUV ONAY** (Orchestrator 00:30) · yerel kopyalar silindi · araç takımı `~/ell-prova-tools/prova1/` — [defter:2026-11-11 PROVA-1 + GUV
+>   ONAY]. **★SIRADAKİ (bu kazanır) = BEKLE → Sentez: DUR yöntemi (batch #2 geri al + tam göç | güncelleme dilimi) + S2 + kesim tarihi → PROVA-2 (Suer taze
+>   export → aynı zincir → DUR 0; R5 farkı DUR satırlarıyla açıklanır).**
 >   **Eklemeler (Sentez EK 21 Eki — tarihsel):**
 >   - P2-2 sırası: ÖNCE modül + kapsam (own/team/office/all), 5 profil; ALAN gizleme bu pakette YOK — tek
 >     istisna sonraki dilim: komisyon alanları (oran/hak ediş), Sales profili görmez; şimdi yalnız kaydı:
