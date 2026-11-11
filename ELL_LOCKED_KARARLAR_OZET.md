@@ -586,6 +586,11 @@ Kesim provası direktifi (KES-01..05) aynen; GUV-04 dilimi provadan önce. Hotfi
   DIRECT → Welcome · Stand · Catalogue · Build-up · Badge co-exhibitor'a (aynı şablonlar; deep-link dar sayfaya), Payment Reminder "Excluded —
   pavilion contract"; VIA AGENCY → co-exhibitor'a HİÇBİR e-posta yok, zincir pavyon kontratı için acenteye bir kez, hatırlatma eksikleri co-exhibitor
   başına tek listede sayar.
+  **§6 uygulaması (12 Kas):** co-exhibitor = pavyon kontratının ALT KAYDI (kontrat değil); listeyi yalnız proje ekibi yazar · VIA AGENCY'de acente kendi
+  sayfasından, AYNI anahtarla co-exhibitor adına doldurur (sunucu yalnız o kontratın co-exhibitor'ı için kabul eder) · VIA AGENCY'de co-exhibitor'ı
+  ilgilendiren sistem e-postası acenteye gider · Payment Reminder / VIA AGENCY dışlamaları KURALDIR (kişi kaldıramaz) · günde 1 hatırlatma alıcı
+  başına · listede co-exhibitor kendi satırı, toplamlar (R3) kontrat sayar · co-exhibitor'ı olan kontrat "pavyon değil" yapılamaz. Açık okumalar
+  (🔶) defterde [2026-11-12 6. parça].
 - **EXH-16** (Suer B8 · C15 · EK-1 madde 2 / 5 · EK-2 varsayım 10–11) — **Zincir**: 6 yerleşik e-posta (Welcome · Stand Equipped / Space-only · Catalogue ·
   Build-up · Payment Reminder (Finance kutusu) · Badge) + tek hatırlatma kalıbı + sistem e-postaları (Changes requested · Approved · Order confirmation ·
   Payment code · New link — SABİT; kural motoru yalnız ek türler için). Tek şablon EN / FR / TR (EN / FR Drive metinlerinden; TR eksik → EN'e düşer; CC TR

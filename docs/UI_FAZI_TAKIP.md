@@ -51,7 +51,7 @@ Suer turu: Y7 — Suer kendi Owner hesabıyla gezer, cevabı tek "değişiklik l
 | 26 | Finance | Collections — **"receipts to check"** (+ kontrat sayfasında şerit · Expo Finance'ta RAP-18 marj) | `finance-collections.html` · `finance-contract.html` · `finance-expo.html` | Sentez C14 · EXH-10 · RAP-18 | **staging (`0da9c4f`)** | bekliyor |
 | 27 | Operations · Communications altında | **Chain status** (YENİ) — tablo · özet · next 7 days · Send now / Send all now / Resend / Exclude (önizlemeli) + listede Chain sütunu + detayda chain kartı | `ops-chain.html` | UX 3. tur C5 · C3 · UX 2. tur #9 · #14 + eskiz 3 · EXH-16 | **staging (`9cb08d4`)** | bekliyor |
 | 28 | Operations · Communications altında | **Rules** (YENİ; salt okuma — 12 yerleşik satır; kural motoru işaretli) | `ops-rules.html` | UX 3. tur C5 · EXH-17 | **staging (`9cb08d4`)** | bekliyor |
-| 29 | Exhibitor yüzü + Operations | **Pavyon**: co-exhibitor alt kayıtları · dar link · liste gruplaması | — | Sentez B6 · EK-2 H2 / H3 / H8 · C2/C3 mockup · UX 2. tur #6 · EXH-15 | **UI-TAM-2 §6** | — |
+| 29 | Exhibitor yüzü + Operations | **Pavyon**: mod (DIRECT / VIA AGENCY) · co-exhibitor alt kayıtları · dar link · acentenin sayfasında "Co-exhibitors" bölümü · detayda pavyon kartı + co-exhibitor görünümü · listede co-exhibitor satırları + gruplama | `/x/#<anahtar>` (dar sayfa · `…/co-exhibitors`) · `ops-exhibitor.html` (`?co=`) · `ops-exhibitors.html` (`?group=contract`) | Sentez B6 · EK-2 H2 / H3 / H8 · C2/C3 mockup · UX 2. tur #6 · EXH-15 | **staging (`934d6d0`)** | bekliyor |
 
 ## 3. Çeviri ve metin durumu (UI-TAM-2)
 
@@ -73,6 +73,9 @@ Suer turu: Y7 — Suer kendi Owner hesabıyla gezer, cevabı tek "değişiklik l
 - stand no'nun kaynağı → yeni floor plan modülünün yerleştirme kaydı (Mimari hattı)
 - Sürümü olan kontratı yeni Equipped paket sürümüne geçirme eylemi.
 - FR / TR çeviri gözden geçirme (arayüz) · TR e-posta metinleri.
+- **Pavyon (§6) kuyruğu:** pavyon payına özel Stand e-posta metni · büyük pavyonda liste süresi ölçümü · toplu Remind'in co-exhibitor satırlarını da
+  alması · Sentez'e iki okuma sorusu: VIA AGENCY'de acente co-exhibitor EKLEYEBİLSİN mi · DIRECT'te acente co-exhibitor'larının durumunu salt okunur
+  görsün mü. Yeni arayüz metinleri (co-exhibitor bölümü) FR / TR taslak — gözden geçirilmedi.
 - **Zincir (§5) kuyruğu:** zincir e-posta metinlerinin gözden geçirilmesi (EN uyarlama + FR) · Build-up FR metni · çerçeve etiketlerinin FR / TR'si · metni
   ekrandan düzenleme (kural motoruyla) · büyük fuarda Chain status süresi ölçümü · Sentez'e iki okuma sorusu: "Stuck"ta fuar düzeyindeki bloklar sayılsın mı ·
   "Send all now" günü gelmemiş satırı da yollasın mı.

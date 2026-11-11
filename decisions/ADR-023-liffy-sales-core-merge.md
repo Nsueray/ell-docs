@@ -133,4 +133,7 @@ Faz A restore + rollback.js. Prova ≥ 2 kez, canlının taze kopyasında.
 >   kutuları** — Project ve Finance kutularının canlıda gönderen doğrulaması (ILT-07); Payment Reminder Finance kutusundan gider. (d) **metinler** — yerleşik
 >   metinler kodla gelir, kesimde tohum adımı YOK; metinler gözden geçirilmedi (EN uyarlama · FR; TR ve Build-up FR yok) → zincir açılmadan önce okunmalı.
 >   (e) "Stuck" artık zincir Failed / Blocked'ı sayar: alıcı e-postası olmayan (göç) kontratlar ve ayarı eksik fuarların exhibitor'ları Stuck görünür.
+> - **Pavyon (6. parça; migration yok):** göçmüş kontratlarda pavyon modu BOŞ, co-exhibitor kaydı YOK (Zoho'da karşılığı ölçülmedi) → pavyonlar kesimden
+>   sonra elle işaretlenir, co-exhibitor'lar elle girilir. DIRECT'te eklenen co-exhibitor, zinciri AÇIK fuarda Welcome'ını kendiliğinden alır → pavyon girişi
+>   zincir açılmadan önce ya da bunu bilerek yapılır.
 > - Paketin diğer kesim maddeleri (worker · gönderen doğrulaması · sonraki migration'lar) parça kayıtlarıyla bu bloğa eklenir.

@@ -10579,6 +10579,89 @@
 >   metni ekrandan düzenleme (kural motoruyla) · büyük fuarda Chain status süresi ölçümü.
 > - **→ Sıradaki:** §6 PAVYON (iki mod · co-exhibitor alt kayıtları · dar link · liste gruplaması · H2 / H3 / H8) + kapanış (PG 14 ×2 + PG 17 · turlar · tek rapor).
 
+> ## ✅ 2026-11-12 — PAKET UI-TAM-2 6. PARÇA + KAPANIŞ: PAVYON STAGING'DE — DIRECT / VIA AGENCY · co-exhibitor alt kayıtları · dar link · acente adına doldurma · H2 / H3 / H8 (EXH-15) + H5 staging kanıtı + banka bloğu (LEENA eliza-next `274cfb0` + `934d6d0`) · 1112 / 1112
+>
+> - **Kriter kaynağı:** [defter:2026-11-11 SENTEZ 11 Kas: PAKET UI-TAM-2] — blok B6 · D EXH-15 · E §6 · EK-2 H2 · H3 · H8. Orchestrator UYGULAMA 2 ("Sınır") · 4 (H3) · 4b
+>   (H2 · H8). C2/C3 mockup'ına referans olarak bakıldı (pavyon gruplaması · sahibin kartı · co-exhibitor görünümü); CSS'i / kabuğu alınmadı. Ölçütler dosyalardan
+>   yeniden okundu.
+> - **Ne yapıldı:**
+>   - **Co-exhibitor = pavyon kontratının ALT KAYDI** (kontrat DEĞİL): ad · ülke · kişi · e-posta · dil. Listeyi YALNIZ proje ekibi yazar (ekle · düzelt · çıkar).
+>     Pavyon modu kontrat başına, proje ekibince: DIRECT · VIA AGENCY · pavyon değil.
+>   - **DIRECT:** her co-exhibitor KENDİ dar linkini alır — sayfasında yalnız Stand fascia · Catalogue · Badges (+ bilgi bölümleri); sipariş ve ödeme pavyon
+>     kontratında (dar anahtarla kapalı). Link eklendiği anda DOĞAR ama kendiliğinden GÖNDERİLMEZ (proje ekibi "Send link").
+>   - **VIA AGENCY:** ayrı link YOK. Acente KENDİ sayfasındaki "Co-exhibitors" bölümünden her firmayı açıp fascia · catalogue · badge'leri onun adına doldurur
+>     (aynı anahtar + co-exhibitor kimliği; sunucu yalnız O kontratın co-exhibitor'ı için kabul eder). **Co-exhibitor adresine HİÇBİR e-posta gitmez** — onu
+>     ilgilendiren sistem e-postası acenteye gider, düğme acentenin sayfasını açar.
+>   - **H8 mod değişimi:** onay penceresiyle (sunucu ilk çağrıda ne olacağını söyler), anında, History'de. → VIA AGENCY: co-exhibitor linkleri ÖLÜR, girilen
+>     içerik KALIR (acentenin sayfasından görünür). → DIRECT: linkler üretilir, hiçbiri gönderilmez. Co-exhibitor'ı olan kontrat "pavyon değil" yapılamaz.
+>   - **Liste (EXH-19):** co-exhibitor KENDİ satırı ("Pavilion: {sahip}"; Orders ve Payment hücresinde "at pavilion contract"); sahip kendi satırında (mod +
+>     co-exhibitor sayısı). **H2:** sahibin Catalogue hücresi "Optional" — hatırlatma yok, Stuck saymaz. "Group by contract" (sahibin ardından co-exhibitor'ları)
+>     · "Pavilions only". Sayaçlar exhibitor sayar (co-exhibitor dahil); toplamlar (R3) yine KONTRAT sayar. Stand sheet'te her co-exhibitor kendi fascia'sıyla satır.
+>   - **Zincir (H3):** DIRECT co-exhibitor → Welcome · Stand · Catalogue · Build-up · Badge KENDİ adresine (aynı metinler; düğme dar sayfaya), Payment Reminder
+>     "Excluded — pavilion contract" (KURAL: kişi Include edemez). VIA AGENCY co-exhibitor → altı hücrenin hepsi "Excluded — goes to the agency". Pavyon
+>     kontratının kendi zinciri acenteye bir kez. **Hatırlatma:** VIA AGENCY'de acenteye TEK e-posta — kendi açık bölümleri + her co-exhibitor'ın eksikleri AYNI
+>     listede; co-exhibitor'a Remind reddedilir. Günde 1 kuralı ALICI başına (acente ve her DIRECT co-exhibitor ayrı sayaç).
+>   - **Proje ekibi ekranı:** detayda pavyon kartı (mod düğmeleri + onay paneli · co-exhibitor tablosu: fascia · catalogue · badge · link · Open / Remove · ekleme
+>     formu); co-exhibitor görünümü (`?co=`): aynı kartlar, Orders / Payment "pavyon kontratında". Chain status satırları co-exhibitor'ı da taşır.
+>   - **Exhibitor Page:** acentenin sayfasında "Co-exhibitors" bölümü (yalnız VIA AGENCY) · "You are filling in for …" şeridi + geri dönüş. Yeni arayüz metinleri
+>     EN + FR / TR taslak (üç sözlük 358 anahtar, eşit).
+> - **Commit:** LEENA eliza-next `274cfb0` + `934d6d0` (PUSH: CC, yalnız `eliza-next`; canlı `main` DEĞİŞMEDİ `2db0131`). Migration YOK (kayıt 76) — şema 072'de hazırdı.
+> - **Ölçülenler:**
+>   - **Test (yerel; veritabanı oturumu UTC):** tam zincir **1112 / 1112** — 65 suite (1096 + yeni suite `test_ui_tam2_pavilion.js` 16). Eski testler DEĞİŞMEDEN
+>     yeşil (bu parçada beklenti güncellenmedi). **Kapanış koşuları (son commit `934d6d0`):** PG 14.18 iki koşu **1112 / 1112** + **1112 / 1112** · PG 17.10 **1112 / 1112**
+>     (her biri 65 suite, 0 başarısız).
+>   - **Eski ekranların turu (staging, 1440 px, salt okuma; 21 ekran):** cc-project 21 / 21 yüklendi (Finance'ın üç ekranı beklenen ret). cc-owner'da ARDIŞIK 5 ekran
+>     hata durumu gösterdi, yeniden yüklemede hepsi açıldı. Erişim logunda o dakikalarda 3 adet 500: `/api/ledger/accounts` · `/api/user-auth/me` ·
+>     `/api/report-builder/saved` (9–534 ms; bu paketin dokunmadığı uçlar), aynı anda büyük fuarın klasik rapor ucu 12–16 sn sürüyordu. Servis olaylarında o
+>     saatte yeniden başlama YOK (son deploy 23:01 UTC, hata 23:08–23:09). Hata metni OKUNAMADI (aşağıda).
+>   - **Yeni suite'in ölçtükleri:** mod onaysız değişmez · co-exhibitor'ı yalnız proje ekibi ekler · DIRECT'te link doğar, e-posta çıkmaz · dar sayfada sipariş /
+>     kod / Payment kapalı · sınır: dar anahtar + başka co-exhibitor kimliği 404; DIRECT'te sahibin anahtarı co-exhibitor adına işlem yapamaz; başka pavyonun
+>     kimliği (okuma + yazma) 404; uydurma / bozuk kimlik 404 · VIA AGENCY'de co-exhibitor adreslerine giden kuyruk satırı SIFIR · acenteye tek hatırlatma · H3
+>     hücre kuralları · açılıştan sonra eklenen DIRECT co-exhibitor'a otomatik Welcome, VIA AGENCY'ye hiçbir şey · H8 iki yön · silme · liste + gruplama · üç dil.
+>   - **Staging (fuar 15; uygulamanın kendi uçlarıyla; hepsi SAMPLE):** yeni SAMPLE kontrat 7902 (teklif → gönder (echo) → imza), tüzel kişili → **Payment
+>     bölümünde banka bloğu VAR** (ekip özetinde "shown"). Pavyon DIRECT + 2 SAMPLE co-exhibitor: liste 6 exhibitor (2 co-exhibitor · 1 pavyon) · **toplamlar R3 ile
+>     EŞİT** (5 kontrat · 75,00 m²). **Pavyon turu 18 adım, hepsi geçti:** dar sayfa (5 bölüm; sipariş / ödeme yok) · co-exhibitor fascia onayı · DIRECT'te acente
+>     anahtarı co-exhibitor adına 404 · mod değişimi onaysız 409 · → VIA AGENCY: 2 link öldü (404 LINK_INVALID), acentenin sayfası 2 co-exhibitor'ı listeliyor,
+>     girilen fascia DURUYOR, acente öbürünün fascia'sını doldurdu, co-exhibitor'a Remind reddedildi · → DIRECT: 2 link üretildi, 0 gönderildi, yeni link
+>     çalışıyor, eskisi ölü · anahtarlı sayfalarda dış kaynak isteği 0 · konsol hatası 0. Ekip ekranları 1440 + 390 px: HTTP 200 · yatay taşma 0 · konsol hatası 0.
+>   - **H5 staging kanıtı (4. parçadan devir):** stand deadline'ı geçmişe alındı (onaysız 409 · "4 exhibitor etkilenir" → onaylı) → 7902'ye stand tipi GEÇ girildi
+>     → yanıtta "late_reopen_until" = bugün + 7 · History'de SİSTEM olayı "reopened — stand type set late" (yapan: system) · zincir açık olduğu için AYNI istekte
+>     4 e-posta kendiliğinden kuyruğa girdi (Welcome · Stand · Catalogue · Payment Reminder — hepsi auto / echo; kontrat açılıştan sonra doğmuştu) → deadline
+>     eski değerine döndürüldü (2026-11-14).
+>   - **Otomatik gönderim STAGING'de gözlendi (5. parçadan devir):** süreç içi tik, DIRECT co-exhibitor'lar eklendikten sonraki turunda (5 dakika içinde) her
+>     birine Welcome + Catalogue'u KENDİLİĞİNDEN yolladı (auto · echo · kendi adreslerine; FR dilli co-exhibitor'a FR metin). Fascia'ları onaylı olduğu için Stand
+>     e-postası gitmedi (iş bitmiş).
+>   - **Gerçek e-posta çıkmadı:** staging kuyruğunda son 6 saatte `pending` 0 · `echo` 25; zinciri açık fuar sayısı 1 (fuar 15). Echo e-postalar dosyada (paket
+>     toplamı 25). **TABAN** 342.00 · **TABAN-2 EŞİT** · migration kaydı 76.
+>   - **Y2 — bağlı / işaretli:** pavyon kartı · co-exhibitor görünümü · liste satırları / gruplama BAĞLI; yeni işaretli öğe YOK. Exhibitor Page'de müşteriye iç
+>     işaret gösterilmez (bağlı olmayan öğe konmadı).
+> - **Ön-onaylı SAPMA + 🔶 (Sentez'e):**
+>   1. 🔶 **Co-exhibitor'ı yalnız proje ekibi ekler / çıkarır** (B6 "acente her şeyi doldurur" → acente BÖLÜMLERİ doldurur; firma listesi sözleşme konusu).
+>      Alternatif: VIA AGENCY'de acente de ekleyebilsin.
+>   2. 🔶 **DIRECT'te acentenin KENDİ sayfasında co-exhibitor listesi YOK** (durumlarını görmez; B6 yalnız VIA AGENCY'de liste diyor).
+>   3. 🔶 **Co-exhibitor'a giden Stand e-postası aynı metin (H3 "aynı şablonlar")** — metin bütün standdan ve ek ekipmandan söz ediyor; pavyon payına özel metin
+>      yok (kuyruk).
+>   4. **VIA AGENCY'de co-exhibitor'ı ilgilendiren sistem e-postası (Changes requested · Approved) acenteye gider**, düğme acentenin sayfasındaki listeyi açar.
+>   5. **"Link" sayısı = dar sayfa linkleri**; co-exhibitor'ın badge "ekip linki" onlarla birlikte ölür, ayrıca sayılmaz.
+>   6. **Toplu Remind / toplu seçim ana kontratlar içindir;** co-exhibitor satırının kendi Remind / Copy link düğmesi var (VIA AGENCY'de yok).
+>   7. **Dar sayfa Build-up & documents ve Contacts'ı da gösterir** (2. parçadan; B6 "Stand fascia · Catalogue · Badges" işlem bölümleridir — bilgi bölümleri okunur).
+>   8. **Anahtarlı uçta co-exhibitor kimliği:** 2. parçanın "hiçbir uç gövdeden / sorgudan kimlik okumaz" kuralı korunuyor; VIA AGENCY için kimlik yalnız
+>      BAŞLIKTAN ve yalnız sahibin anahtarıyla, o kontratın co-exhibitor'ı için kabul edilir (testli).
+>   9. **Staging turunda bulunup düzeltilen (`934d6d0`):** listede onuncu sütun (satır düğmeleri) kırpılıyordu → düğmeler firma adının altına; acente şeridinde
+>      çift nokta.
+>   10. **Staging'e eklenen SAMPLE referans verisi:** 1 tüzel kişi + SAMPLE banka hesabının "belgede göster" bağı (banka bloğunu göstermek için; uygulamanın
+>       referans veri ucundan). Staging yenilenince silinir.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging'deki 3 geçici 500'ün NEDENİ — uygulama log ucu hesap geneli bir yol, yalnız-staging sarmalayıcısı reddediyor
+>   (kural gereği etrafından dolanılmadı); erişim logu yalnız yol · durum · süreyi veriyor · VIA AGENCY'de acentenin catalogue'u SAYFADAN (tıklayarak) tam doldurması — uçtan ve testte; ekranda bölüm açılışı ölçüldü ·
+>   co-exhibitor'ın badge kaydı staging'de (rozet formu akışı 2. parçada ölçüldü; co-exhibitor için testte) · 2026-11-15'te takvimden gidecek Build-up / Badge
+>   e-postalarının çıkışı (o gün) · büyük pavyonda (onlarca co-exhibitor) liste süresi — co-exhibitor başına ayrı okuma yapılıyor, ÖLÇÜLECEK · Office Manager /
+>   Finance hesabıyla tur (araç hesabı yok — testte) · Safari / Firefox / gerçek telefon · canlı (paket gitmedi).
+> - **Bilinçle yapılmayanlar:** co-exhibitor'ı kontrata çevirme / ayrı faturalama · pavyon payı için ayrı stand tipi ve ayrı e-posta metni · acentenin
+>   co-exhibitor eklemesi · Transfer akışında co-exhibitor'ların taşınması · floor plan'a her tür bağ · canlı her şey.
+> - **Kuyruğa:** pavyona özel Stand metni · acentenin (VIA AGENCY) co-exhibitor ekleyebilmesi sorusu (Sentez) · DIRECT'te acenteye salt okunur durum listesi
+>   sorusu (Sentez) · büyük pavyonda liste süresi (S) · toplu Remind'in co-exhibitor satırlarını da alması (S).
+> - **→ Sıradaki:** paket sonu TEK rapor (UYGULAMA madde 9 sırasıyla). Suer'in staging turu EN SONDA, sınırsız.
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
