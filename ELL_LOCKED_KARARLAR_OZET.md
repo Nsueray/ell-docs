@@ -229,6 +229,10 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
   - **Staging zamanlayıcısı (ara dilim 9 Kas):** worker'sız staging'de web süreci içi tik (`REPORT_SCHEDULER_IN_PROCESS`; tanımsızken yalnız `EMAIL_ECHO=1` iken açık) — yeni servis yok (YON-16); canlıda / kesimde worker. Tohumlar staging'de kendiliğinden tetiklendi (echo). [defter:2026-11-09 ARA DİLİM (eliza-next)]
 - **RAP-16** (genel arama — 5b.4) — Tek kutu: firma · kişi · teklif no · kontrat (AF / firma adı) · fuar; basit metin eşleşmesi (`lower(...) LIKE`, joker kaçışlı) + pg_trgm GIN indeksleri (066). Her grup kendi izin + kapsamıyla (RAP-13 kuralı); izni olmayan grup atlanır ve listelenir. Dış kullanıcı yalnız kendi kayıtları, fuar grubu yok. Sonuç kayda iner. [defter:2026-11-09 PROMPT 4 (PAKET 5b): RAPOR OLUŞTURUCU · DOĞAL DİL · PUSH · ARAMA STAGING'DE]
 - **RAP-17** (önceki edisyon — Sentez S2 = a, 9 Kas) — Fuarın önceki edisyonu = aynı ad tabanı, EN YAKIN önceki yıl (yıl − 1 şartı yok); arada yıl boşluğu varsa ekranda yazılı ("N years earlier"). R3 + R6 TEK tanım (`utils/metrics.js` `previousEdition`). [defter:2026-11-09 SENTEZ: 5a/5b KABUL + S1–S8 + YON-20 + KESİM PROVASI DİREKTİFİ + EK]
+- **RAP-18** (Sentez 11 Kas PAKET UI-TAM-2 A2 + EK-1 madde 1 DÜZELTME — Expo Finance Gross margin / Net profit) — gelir = fuarın kontratlarının net toplamı
+  (EUR, donmuş kur) · doğrudan gider = `expenses` (fuara bağlı satırlar, EUR, ters kayıt netlenir — GOC-05 aynen; ledger DEĞİL) · komisyon = o
+  kontratların hak edilen komisyonu (MOT, EUR) · gross = gelir − gider · net = gross − komisyon · tahsilat ayrı satır (R3). Dışlama RAP-08 ile aynı:
+  RAP-03 kara listesi (Transferred + Cancelled dışarıda; On Hold dahil, sayaçta). Tek tanım `utils/metrics`. [defter:2026-11-11 SENTEZ 11 Kas: PAKET UI-TAM-2]
 
 ### YON — yönetim / süreç
 
@@ -301,6 +305,11 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 - **YET-18** (Sentez 5 Kas B2.6 — YET-10'un kalıcı çözümü) — 6. sistem şablonu **Sales Operations** ("Satış Operasyon"): contracts.read + sales.read (office) + communications.read / followups.read (office); YAZMA YOK. YET-04 kuralıyla (yalnız runner'lı migration — 059 / 061). [defter:2026-11-05 SENTEZ: PROMPT 1b KABUL + 7 KARAR + PROMPT 2 DİREKTİFİ] · [defter:2026-11-05 PROMPT 2: B2 + REF + B3]
 - **YET — AÇIK (Prompt 2):** EMS / ziyaretçi uçlarının iç kullanıcı kapıları (dış kullanıcı izin listesiyle dışarıda — YET-15) · temsilci YAZMA uçları (POST / PUT `/api/sales-agents`) kapısız · ledger OKUMA uçları iç kullanıcıya kapısız (Paket 2 hükmü) · ledger referans yazma uçları denetim yazmıyor (YET-08 boşluğu) · alan gizleme (Sales / Sales Operations kontrat detayında komisyonu görür; REQ §3.1 "later"). [defter:2026-11-05 PROMPT 2: B2 + REF + B3] · **Kapandı (Prompt 3):** temsilci yazma → YET-20 · ledger okuma → YET-21 · ledger referans denetimi → YET-22 · alan gizleme → YET-23 · EMS iç kapıları → YET-25 (ayrı dilim, AÇIK). [defter:2026-11-06 PROMPT 3 (1)+(2): YET-KAPSAM-2 + TÜZEL KİŞİLİK]
 - **YET-19** (Sentez 6 Kas karar 2 — b-varyantı; YET-14'ün yazım kodunu ayırır) — Kontrat yazımı İKİ kod: `contracts.write` = durum (On Hold / Cancelled / Transferred) · transfer bağı; `payments.write` = kontrat altı ödeme kaydı · ters kayıt · ödeme planı yazımı. Finance ikisi all · Office Manager ikisi office · Project `contracts.write` all, `payments.write` YOK (REQ "durum değişikliği Project'te"; ödemeyi Finance yazar). Ayrı kontrat "not" yazım ucu BULUNAMADI (`routes/contracts.js` yazım uçları: status · payments · reverse · transfer · assignment · schedule · schedule/default). Plan yazımı `payments.write`'ta (ön-onaylı SAPMA). Komisyon ATAMASI (temsilci + oran) `contracts.write` + `sensitive_finance.read` (KAT-04 notu "oranı Finans girer"; ön-onaylı SAPMA) → Project atayamaz. 062 öncesi şemada kod kayıt defterinde yoksa ödeme yazımı `contracts.write`'a düşer (push → migrate penceresi kilitlenmez; `utils/permissions.js` `requirePermissionOr`). Uygulama 062 + `routes/contracts.js`. [defter:2026-11-06 SENTEZ: PROMPT 2 KABUL + 8 KARAR + PROMPT 3 DİREKTİFİ] · [defter:2026-11-06 PROMPT 3 (1)+(2): YET-KAPSAM-2 + TÜZEL KİŞİLİK] · **Ek (Suer 11 Kas — Sentez 11 Kas Y5, AYNEN):** "Project şablonuna contracts.read (all) (YET-19 eki; runner'lı migration); komisyon gizli kalır (YET-23); payments.write değişmez (Suer kararı sonra). S3 = b SUPERSEDED." Uygulama 070: Project kontrat liste / detay / ödeme + plan OKUR, R3 (Operations fuar detayı Sales sekmesi) ve rapor kontrat modülü açılır; kontrat detayında `commission_hidden: true`; ödeme yazımı 409 (`payments.write` yok). [defter:2026-11-11 PAKET UI-TAM 2. PARÇA: YETKİ + TERCİH]
+  - **YET-19 eki (Sentez 11 Kas PAKET UI-TAM-2 — A1 · A4 · A5 · A7 · B7 · EK-1 madde 6):** yeni izin kodu `operations.write` = EMS yazma uçları (Project ·
+    Office Manager · Owner; Sales YOK); `operations.read` salt okuma. Project şablonuna + `communications.read` · `followups.read` · `operations.write` ·
+    `catalog.write` (ürün / fiyat listesini project team yazar). Telefondan check-in: terminal etiketi TAKLİT EDİLMEZ — oturuma bağlı AYRI uç,
+    `operations.write` ile. Project'in War Room görünümü kalır (YET-23 gizler); Project'in giriş sayfası Ops Dashboard. Bu pakette Sales exhibitor
+    ekranlarını GÖRMEZ; "satışçı kendi kontratlarının exhibitor durumunu salt okunur görsün mü" → kuyruk (Suer kararı, Faz 4). [defter:2026-11-11 SENTEZ 11 Kas: PAKET UI-TAM-2]
 - **YET-20** (Sentez 6 Kas karar 4) — Temsilci YAZIMI (POST / PUT `/api/sales-agents`) `agents.write`: Finance all (Owner kısa devre); diğer şablonlarda YOK. 062 öncesi şemada eski kapısız yol (pencere). Temsilci OKUMASI YET-14 aynen (`commissions.read`). [defter:2026-11-06 SENTEZ: PROMPT 2 KABUL + 8 KARAR + PROMPT 3 DİREKTİFİ] · [defter:2026-11-06 PROMPT 3 (1)+(2): YET-KAPSAM-2 + TÜZEL KİŞİLİK]
 - **YET-21** (Sentez 6 Kas karar 4) — Ledger OKUMASI kapılı: hesap listesi · ekstre · transfer · gider listeleri `ledger.read` + YET-03 satır süzgeci (Finance all · Office Manager office — yalnız ofisinin hesapları / o hesaplara değen satırlar · Project / Sales / Sales Operations YOK); tedarikçi okumaları `suppliers.read`; bütçe `budget.read`; ledger özeti · nakit öngörü · komisyon raporu kapsam **all** ister (office kapsamlı kullanıcı 409 OUT_OF_SCOPE — ofis süzgeçli görünüm Paket 5a raporlarında; ön-onaylı SAPMA). Para birimi + referans listeleri (form seçenekleri) açık. Dış kullanıcı zaten duvarda (YET-15). [defter:2026-11-06 SENTEZ: PROMPT 2 KABUL + 8 KARAR + PROMPT 3 DİREKTİFİ] · [defter:2026-11-06 PROMPT 3 (1)+(2): YET-KAPSAM-2 + TÜZEL KİŞİLİK]
 - **YET-22** (Sentez 6 Kas karar 4 — YET-08 boşluğu KAPANDI) — Ledger referans yazımları (para birimi · gider kategorisi · gider tipi · gelir kategorisi ekleme + ad / aktiflik düzeltme) `audit_log`'a `reference.create` / `reference.update` yazar (REF-03 ile aynı eylem adları). [defter:2026-11-06 SENTEZ: PROMPT 2 KABUL + 8 KARAR + PROMPT 3 DİREKTİFİ] · [defter:2026-11-06 PROMPT 3 (1)+(2): YET-KAPSAM-2 + TÜZEL KİŞİLİK]
@@ -325,6 +334,9 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 - **ILT-04** (Sentez B3.4) — Takip `follow_ups`: hedef · sahip · vade · not · open | done (done TERMİNAL, silinmez). Send'de önerilen vade +7 gün (değiştirilebilir / boşaltılabilir). Sales sekmesinin girişi "My follow-ups" (Takiplerim; vadesi geçen sunucuda işaretli). Kapsam own / team (sahip). [defter:2026-11-05 SENTEZ: PROMPT 1b KABUL + 7 KARAR + PROMPT 2 DİREKTİFİ] · [defter:2026-11-05 PROMPT 2: B2 + REF + B3]
 - **ILT-05** (Sentez B3.5) — `EMAIL_ECHO=1` YALNIZ staging env'i (INVITE_ECHO emsali): kuyruk satırı status 'echo' ile yazılır, işlenmiş içerik saklanır, GÖNDERİLMEZ (worker yalnız 'pending' okur); ekranda "echo" rozeti. Canlıda bayrak YOK — leena-email-worker satırdaki reply_to + eki kullanır (NULL'da eski davranış). [defter:2026-11-05 SENTEZ: PROMPT 1b KABUL + 7 KARAR + PROMPT 2 DİREKTİFİ] · [defter:2026-11-05 PROMPT 2: B2 + REF + B3]
 - **ILT-06** (Sentez 6 Kas TÜZEL KİŞİLİK — belge tüzel kişisi) — Teklif PDF'inin SATICI bloğu = teklifin tüzel kişisi (ad · adres · ülke · vergi no · e-posta / telefon · web) + "Contact: satışçı"; banka bloğu = o tüzel kişinin "belgede göster" hesabı (teklif para birimine uyan, yoksa ilk aktif — id sırası). Tüzel kişisiz teklif eski düzen (ofis + satışçı, banka yok). Gönderen GÖRÜNEN ADI = tüzel kişinin ADI (`email_queue.from_name`; adres worker'ın sistem adresi kalır) · reply-to satışçı (ILT-01). Sentez metni "tüzel kişinin e-postası görünen ad" — AD kullanıldı (ön-onaylı SAPMA, 🔶: görünen ad yerine e-posta dizesi = sahtecilik kalıbı, teslim edilebilirlik riski). İleride fatura / application form AYNI alanı okur. [defter:2026-11-06 SENTEZ: PROMPT 2 KABUL + 8 KARAR + PROMPT 3 DİREKTİFİ] · [defter:2026-11-06 PROMPT 3 (1)+(2): YET-KAPSAM-2 + TÜZEL KİŞİLİK]
+- **ILT-07** (Sentez 11 Kas PAKET UI-TAM-2 D — gönderen kimlikleri) — Exhibitor e-postalarının gönderen kutusu İKİ: **Project kutusu** (zincir + hatırlatma +
+  sistem e-postaları) · **Finance kutusu** (Payment Reminder); görünen ad tüzel kişi AYNEN (ILT-06). Cevap adresi gönderen kutu (UX 3. tur C6). Adresler
+  referans veride (sır değil); canlıda gönderen doğrulaması + worker = ADR-023 kesim maddesi. [defter:2026-11-11 SENTEZ 11 Kas: PAKET UI-TAM-2]
 - **ILT — KAPSAM DIŞI (sonraki paketler):** gelen e-postaların sisteme düşmesi ("B4 inbound") · 8 e-postalık operasyonel zincir (REQ §2.7, Paket 5 sonrası ayrı paket) · WhatsApp · pazarlama kampanyası. [defter:2026-11-05 SENTEZ: PROMPT 1b KABUL + 7 KARAR + PROMPT 2 DİREKTİFİ]
 
 ### UI — arayüz (yeni grup, 2026-10-22, Sentez — UI-0)
@@ -506,4 +518,89 @@ Kesim provası direktifi (KES-01..05) aynen; GUV-04 dilimi provadan önce. Hotfi
   süzgeç + dışa aktarım; gövde yok. Başarısız giriş sayacı + geçici kilit (5 / 15 dk). ADR-023 kesim maddesi. Dilim **ONAY** (11 Kas; `eliza-next`, kesimle canlıya).
   [defter:2026-11-11 PROVA-1 + GUV ONAY]
 - **GUV-05** — Olay sonrası kontrol listesi: ölç → kapat → delil sakla → bilinemeyeni yaz → kural çıkar; her adım deftere. Emsal GUV-01.
+- **GUV-06** (Sentez EK-2 N1, 11 Kas — DIŞ KAYNAK YOK; ID'yi CC tahsis etti) — Anahtarlı sayfalar (Exhibitor Page · pavyonun dar linki · geçersiz link sayfası)
+  başka kökenden HİÇBİR şey yüklemez; `Referrer-Policy: no-referrer`; fontlar = tasarım setinin 3 ailesi (Space Grotesk · IBM Plex Sans · IBM Plex Mono)
+  repoda KENDİ dosyalarımızdan (açık lisans; dosya boyutu raporda) — olmazsa sistem fontu + 🔶. Kendi-dosya fontların ui2 geneline uygulanması →
+  UI-DÜZELTME-1 (yavaşlık ölçümüyle birlikte). [defter:2026-11-11 SENTEZ 11 Kas: PAKET UI-TAM-2]
 
+### EXH — exhibitor yüzü · proje ekibi ekranları · e-posta zinciri (yeni grup, 2026-11-11, Sentez 11 Kas PAKET UI-TAM-2 + EK-1 + EK-2 + EK-3)
+
+> Sentez 11 Kas "PAKET UI-TAM-2" bloğu + EK-1 + EK-2 + EK-3 — tam metin defterde AYNEN. [defter:2026-11-11 SENTEZ 11 Kas: PAKET UI-TAM-2]
+> ID'leri CC tahsis etti (Sentez D: "CC numaralar"). Ekler öncekini düzeltir: ayrıştıkları yerde EK-3 > EK-2 > EK-1 > blok. Terimler
+> İngilizce (exhibitor · badge · floor plan · catalogue · build-up · deadline). Ekran tarifi (kriter DEĞİL): `docs/ux/UX_HATTI_3_TUR_2026-11-11.md`.
+
+- **EXH-01** (Suer B1) — Exhibitor'ın yüzü = TEK güvenli link, tek sayfa, bölümler (**Exhibitor Page**). İleride login + lead scanner + randevu
+  ("Leads" / "Meetings" bölümlerinin yeri Badges'ten sonra; bugün görünmez).
+- **EXH-02** — Durum VERİDEN türetilir; kutucuk / etiket YOK (olay kaydı yalnız eklenir, gönderimler sürümlü ve değişmez). Bölüm sırası SABİT:
+  Stand · Extra equipment · Catalogue · Badges · Payment · Build-up & documents · Contacts. Not (EK-1 madde 7): Vermillion'da chip-info ≈ chip-dang →
+  Exhibitor Page nötr durumlarda chip-info KULLANMAZ; token düzeltmesi UI-DÜZELTME-1 (ayrı küçük paket). Not (EK-2 varsayım 13): koyu "In review"
+  çipi = sıra bizde, MEVCUT token'larla (yeni token YOK, `tokens.css`'e dokunulmaz; olmuyorsa işaretli + UI-DÜZELTME-1).
+- **EXH-03** (C9 + EK-2 H7 / H3 / varsayım 10) — Hatırlatma: zamanlama expo ayarından · deep-link ilgili bölüme · iş bitince kendiliğinden durur
+  (Job done = gönderildi, In review dahil; Changes requested olunca yeniden başlar) · build-up'ın İLK GÜNÜ durur · exhibitor başına günde EN ÇOK 1
+  hatırlatma e-postası (birden çok eksik bölüm tek e-postada listelenir, link ilk eksik bölüme) · elle Remind + Send all now. Günde 1 sınırı otomatik
+  VE elle Remind için geçerli, SUNUCUDA: doluysa red ("reminded today hh:mm — next tomorrow"); zincir e-postasının Resend'i hatırlatma SAYILMAZ.
+  VIA AGENCY pavyonda günde 1 kuralı ALICI başına.
+- **EXH-04** (Suer B2) — Ödeme kilidi YOK; yalnız görünür uyarı; karar insanın.
+- **EXH-05** (Suer B3 / B4 · C1 · C3 · C4) — Extra equipment siparişi = ana kontrata bağlı YENİ kontrat (her sipariş ayrı kontrat); satıcı project team
+  ("ELAN EXPO" team ya da kişi); "Place order" KODLU. Fiyat kuralı: on-site fiyat (+%100) build-up'ın İLK GÜNÜ başlar; ön sipariş build-up'tan önceki
+  güne kadar; sayfadan sipariş fuar sonuna kadar açık kalır, build-up'tan itibaren on-site fiyatla. Panel baskı = fiyat listesinde ürün; "tam baskı
+  %10" = ayrı ürün (indirimli); baskı görseli siparişe dosya olarak yüklenir.
+- **EXH-06** (Suer B5 · C6 · EK-1 4.5 · EK-2 H5 · EK-3 F2) — **Equipped paket kural tablosu**, expo ayarında, SÜRÜMLÜ; biçim (EK-3 F2 — Mimari hattıyla
+  TEK tanım, çift tanım yok): kalem = katalog ürünü · ilk alan (m²) · başlangıç adedi · her ek alan (m²) · ek adet · üst sınır (boş = sınırsız). Kural
+  değişince mevcut kontratların hakkı kendiliğinden DEĞİŞMEZ (yeni kontratlar yeni sürüm). Ayar ekranı 9 · 12 · 18 · 30 · 60 · 90 m² için sonuç
+  tablosunu gösterir. Tohum (B5): masa 12 m² → 1, her +12 m² → +1 · sandalye 12 → 3, her +12 → +3 · spot 12 → 3, ek yok; expo başına düzenlenir, önceki
+  edisyondan kopyalanır. **Fascia varsayılanı** (C6): stand deadline onaysız geçerse fascia = katalogdaki ad (yoksa firma adı), "varsayılan uygulandı"
+  işareti; onay gelmedi diye stand kurulmaz DEĞİL — kurulur. Onaydan sonra exhibitor kendisi değiştiremez; deadline'a kadar "Request a change" notu →
+  project team "Reopen" (4.5). Stand type deadline'dan SONRA girilirse sistem Stand bölümünü kendiliğinden +7 gün açar (sistem olayı "reopened — stand
+  type set late"), Stand e-postası hemen gider; varsayılan fascia bu pencere geçince uygulanır; elle Reopen gerekmez (H5).
+- **EXH-07** (EK-1 4.1) — **Space-only** akışı: yükleme (3D · teknik çizim) · ölçü · müteahhit · üst yükseklik uyarısı · her gönderim yeni sürüm · onay /
+  Changes requested döngüsü. Stand deadline geçince bölüm AÇIK kalır, "Overdue"; gönderim / inceleme sürer; hatırlatma EXH-03'e göre. Varsayılan
+  uygulanmaz (C6 yalnız Equipped).
+- **EXH-08** (C7 · EK-1 4.2 / 4.3 / 4.4 · EK-2 H6) — **Catalogue**: taslak / gönder / incele · deadline kilidi · tekil yeniden açma · önceki edisyondan
+  kopya. Zorunlu küme (ÖLÇÜLDÜ — Zoho F1–F4, EK-1 4.2): katalogdaki ad · ürün grupları · firma profili · ana kişi (unvan · ad · soyad) · kişinin görevi ·
+  web · adres (sokak · şehir · ülke; satır 2 isteğe bağlı) · telefon · mobil · e-posta · logo · ürün fotoğrafı ×3. İsteğe bağlı: markalar · Facebook ·
+  LinkedIn · Instagram · diğer. Profil üst sınırı expo ayarı (varsayılan 600 karakter). Gönderilmiş / onaylı catalogue deadline'a kadar düzenlenir →
+  yeniden "In review"; deadline sonrası kilit. Yeniden açma = project team eylemi "Reopen until {tarih}" (tarihi project team yazar, öneri +7 gün);
+  deadline sonrası "Request changes" aynı pencerede yeniden-açma tarihi ister; History'ye düşer. Deadline'dan önce istenen değişiklik cevapsız kalıp
+  deadline geçerse: exhibitor için kilitli, "Changes requested · N gün" + "Reopen until…" (H6).
+- **EXH-09** (Suer B9 · C15) — **Badges**: limit yok; kayıt bugünkü LEENA badge akışıyla (kişi kendi e-postasıyla → QR → masada baskı); kayıt kontrata
+  bağlı. Aynı e-posta visitor olarak kayıtlıysa mevcut LEENA davranışı ölçülür, raporlanır; bu pakette değiştirilmez.
+- **EXH-10** (C13 · C14 · EK-1 "Varsayımlar KABUL") — **Payment** bölümü KODLA açılır: özet (ana + extra kontratlar TEK tabloda) · vade planı · banka
+  bilgisi · dekont bildirimi. Kod girilmeden HİÇBİR tutar görünmez (durum şeridi dahil). Banka bilgisi yalnız kodlu Payment bölümünde; e-postada YOK
+  (sahte banka e-postası riski). "I paid — upload receipt" = BİLDİRİM, ödeme kaydı değil (dekont formu kontratı sorar); Finance › Collections'ta
+  "receipts to check" listesi + kontrat sayfasında şerit; Finance ödemeyi mevcut akışla kaydeder.
+- **EXH-11** (C8) — **Build-up & documents**: expo ayarı metin blokları ×3 dil (EN / FR / TR). "Okudum" onayı YOK.
+- **EXH-12** — **Contacts**: expo ortakları; boş rol gizli.
+- **EXH-13** (C1 · C10) — Kodlu eylemler (Payment · Place order): 6 hane · 10 dk geçerli · o tarayıcıda 24 saat açık. Alıcılar = kontratın ana kişisi +
+  project team'in eklediği kişiler (to / cc ayrımı); ödeme kodunu YALNIZ bu listedekiler alır.
+- **EXH-14** (C12 · EK-2 H9 · varsayım 12 · EK-1 "Varsayımlar KABUL") — Link yaşam döngüsü: yenile → eskisi ölür; pencere "Send the new link now?"
+  varsayılan EVET → "New link" sistem e-postası alıcı listesine, HAYIR → yalnız kopyala (H9). Geçersiz link sayfası e-postanın kayıtlı olup olmadığını
+  SÖYLEMEZ. Beklet: sayfa salt okunur + zincir Paused (ekip ekranında yalnız "Reactivate") · Aktar: catalogue içeriği yeni kontrata TASLAK olarak
+  kopyalanır, stand ve siparişler sıfırlanır, eski link yeni sayfaya yönlenir · İptal: sayfa salt okunur "cancelled", zincir Stopped (eylemlerin hepsi
+  gizli) · fuar bitti: salt okunur arşiv.
+- **EXH-15** (Suer B6 · EK-2 H2 / H3 / H8) — **Pavyon iki mod**, kontrat başına project team seçer. DIRECT: acente firmaları yönlendirir, her
+  co-exhibitor kendi DAR linkini alır (Stand fascia · Catalogue · Badges); sipariş ve ödeme pavyon kontratında. VIA AGENCY: acente her şeyi doldurur —
+  pavyon sahibinin sayfasında co-exhibitor listesi; ayrı link yok. Pavyon sahibi (agent) listede kendi satırı: Stand (pavyon inşası) · Orders ·
+  Badges · Payment onda; Catalogue "Optional" (hatırlatma yok) (H2). Mod değişimi onay penceresiyle anında: VIA AGENCY'ye geçince co-exhibitor
+  linkleri ÖLÜR, girilen içerik KALIR; DIRECT'e geçince linkler üretilir ama kendiliğinden GÖNDERİLMEZ (project team "Send link") (H8). Zincir (H3):
+  DIRECT → Welcome · Stand · Catalogue · Build-up · Badge co-exhibitor'a (aynı şablonlar; deep-link dar sayfaya), Payment Reminder "Excluded —
+  pavilion contract"; VIA AGENCY → co-exhibitor'a HİÇBİR e-posta yok, zincir pavyon kontratı için acenteye bir kez, hatırlatma eksikleri co-exhibitor
+  başına tek listede sayar.
+- **EXH-16** (Suer B8 · C15 · EK-1 madde 2 / 5 · EK-2 varsayım 10–11) — **Zincir**: 6 yerleşik e-posta (Welcome · Stand Equipped / Space-only · Catalogue ·
+  Build-up · Payment Reminder (Finance kutusu) · Badge) + tek hatırlatma kalıbı + sistem e-postaları (Changes requested · Approved · Order confirmation ·
+  Payment code · New link — SABİT; kural motoru yalnız ek türler için). Tek şablon EN / FR / TR (EN / FR Drive metinlerinden; TR eksik → EN'e düşer; CC TR
+  e-posta metni YAZMAZ). Durumlar: Planned · Sent · Reminding · Stopped · Failed · Blocked · Excluded · Paused; Blocked nedenleri yazılı. Boost · Extra
+  Service · Shipment zincire girmez. **VARSAYILAN KAPALI** (EK-1 madde 2): otomatik gönderim fuar başına AÇIKÇA açılır; migration hiçbir fuar / kontrat
+  için zincir başlatmaz; planlı tarihi geçmiş satır kendiliğinden gitmez (Send now + önizleme) — ADR-023 kesim maddesi. "Send all now" yalnız Planned
+  satırları yollar; toplu gönderim önizlemesiz gitmez.
+- **EXH-17** (Suer B8) — Kural motoru = İLERİDE (project team kodsuz kural + şablon tanımlayabilmeli); bu pakette "Communications › Rules" listesi
+  yerleşik satırlarla SALT OKUMA, işaretli.
+- **EXH-18** — **Expo settings** tek veri kaynağı (UX C4: 8 bölüm · hazırlık paneli · önceki edisyondan kopya "not reviewed" bayrağıyla · deadline
+  değişince onay · Pause).
+- **EXH-19** (EK-2 H1) — **Exhibitors listesi** (UX C2; satır = exhibitor, "group by contract"). "Stuck" TEK tanım: deadline'a ≤ 7 gün kala To do · 5+
+  gün cevapsız Changes requested · herhangi bir bölüm Overdue (Payment DAHİL) · zincir Failed / Blocked. Sayılar sabit varsayılan (expo ayarı değil).
+- **EXH-20** (EK-2 H4 · EK-3 F1) — **Exhibitor detail** (UX C3; "Enter on behalf" not zorunlu + History). "On behalf" girilen stand onayı ve catalogue
+  doğrudan Approved; History "entered on behalf" + not; exhibitor deadline'a kadar görür, değişiklik isteyebilir. **Stand no** = Operations
+  bilgilerinde ELLE yazılan metin alanı; Exhibitor Page, liste ve e-postalar bu alanı okur; boşsa "to be confirmed". `expo_stands`'a OKUMA DAHİL bağ
+  kurulmaz; UI-TAM'daki Floor plan ekranına ve klasik editör köprüsüne dokunulmaz (floor plan modülü yeniden yapılıyor — Mimari hattı). Kuyruk:
+  "stand no'nun kaynağı → yeni floor plan modülünün yerleştirme kaydı (Mimari hattı)".

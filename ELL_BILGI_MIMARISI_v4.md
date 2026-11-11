@@ -290,6 +290,25 @@ Mevcut ui2 ekranları yerinde kalır; set ekranı olan bölümde set düzeni, ol
   kayıt + check-in raporları · konferans oturumları · kontrat ödeme girişi · komisyon raporu · temsilci düzenleme.
 - **Intelligence** ui2'de hâlâ YOK. **Admin** alt menüsü değişmedi.
 
+### 4.6 Exhibitor Page + proje ekibi ekranları (yama-4 — Sentez 11 Kas, PAKET UI-TAM-2; UI-01)
+
+Kaynak: Sentez 11 Kas PAKET UI-TAM-2 (+ EK-1 · EK-2 · EK-3) — kütük EXH-01…20 · YET-19 eki · RAP-18 · GUV-06; ekran tarifi UX 3. tur (`docs/ux/`).
+Yeni ekranlar bu yamayla IA'ya girer (UI-01: önce belge, sonra ekran). Takip: `docs/UI_FAZI_TAKIP.md`.
+
+| Yer | Ekran | Not |
+|---|---|---|
+| **Operations** · Expo | **Exhibitors** (EXH-19) — UI-TAM'daki "Exhibitors" listesinin yerine: satır = exhibitor · deadline sayaçları · hazır görünümler (All · Stuck · Waiting for us · Payment warning · Fair days) · "group by contract" · toplu Remind (önizlemeli) · stand sheet dışa aktarımı | Fair days yalnız iskelet (işaretli) |
+| Operations · Expo | **Exhibitor** detayı (EXH-20) — UI-TAM'daki detay ekranının yerine: durum şeridi · Stand / Orders / Catalogue / Badges / Payment kartları · E-mail chain kartı · Operations bilgileri · sekmeler Overview · Correspondence · History | "Enter on behalf" not zorunlu |
+| Operations · Expo | **Expo settings** (EXH-18) — YENİ: 8 bölüm + hazırlık paneli + önceki edisyondan kopya | klasik fuar formu köprüyle kalır; aynı bilgi için ikinci alan açılmaz |
+| Operations · Expo (Communications altında) | **Chain status** (EXH-16; satır = exhibitor, sütun = 6 e-posta) · **Rules** (EXH-17; salt okuma, işaretli) — YENİ | mevcut Communications ekranı (kampanya özetleri) aynı grupta kalır |
+| Operations · On-site | **Scan**: oturumla check-in bağlanır (YET-19 eki — ayrı uç, `operations.write`) | terminal akışı değişmez |
+| **Finance** · Executive | **Collections**: "receipts to check" listesi (EXH-10) + kontrat sayfasında şerit | ödeme kaydı mevcut akışla |
+| Finance · Expo Finance | **Expo Finance**: Gross margin / Net profit bağlanır (RAP-18) | |
+| **Exhibitor Page** — ui2 alanı DEĞİL | Ayrı, KİMLİKSİZ yüz (EXH-01): tek link, tek sayfa; ui2 kabuğu, menüsü ve oturumu YOK; ayrı adres, ayrı uç grubu (anahtar + kod — EXH-13). Pavyonun dar linki (EXH-15) ve geçersiz link sayfası aynı yüzdedir | başka kökenden hiçbir şey yüklemez (GUV-06); arama motorlarına kapalı |
+
+- Sales bu pakette exhibitor ekranlarını GÖRMEZ (YET-19 eki); satışçının salt-okur görünümü kuyrukta (Suer kararı, Faz 4).
+- Floor plan ekranı ve klasik editör köprüsü DEĞİŞMEZ; stand no Operations bilgilerinde elle yazılan metin (EXH-20).
+
 ## 5. "Sales agent nerede?" — net cevap
 
 **Sales Agent, LEENA'nın Operations modülünde DEĞİLDİR; LEENA Finance / ELIZA tab içinde yaşar.** Çoğu login olmayan komisyon entity'sidir; User ile aynı şey değildir. (Fiziksel olarak LEENA DB; LIFFY'de değil.)

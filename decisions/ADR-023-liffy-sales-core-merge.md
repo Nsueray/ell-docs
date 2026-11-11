@@ -105,4 +105,10 @@ Faz A restore + rollback.js. Prova ≥ 2 kez, canlının taze kopyasında.
 >   070 yalnız 1 kayıt defteri satırı + 1 şablon satırı + `users.ui_theme` kolonu ekler (NULLABLE, varsayılansız — tablo taraması yok).
 > - **Prototip katmanı kesimden ÖNCE kalkar:** `/design-preview/` bağlaması (`index.js`) + `design-preview/` dizini + ui2 kapı sayfası + `nav.json`
 >   `topbar` öğesi faz sonunda silinir; kesim provası listesine "prototip yok" denetimi (canlıya gitmez — Sentez 11 Kas Y3).
-
+>
+> **Kesim maddeleri (Sentez 11 Kas — PAKET UI-TAM-2 + EK-1; CC, eliza-next):**
+> - **Exhibitor e-posta zinciri VARSAYILAN KAPALI (kütük EXH-16 — EK-1 madde 2):** otomatik gönderim fuar başına AÇIKÇA açılır; migration hiçbir fuar /
+>   kontrat için zincir başlatmaz; planlı tarihi geçmiş satır kendiliğinden gitmez (Send now + önizleme). Kesimde göçmüş fuar / kontratlara toplu
+>   e-posta GİTMEZ; zincirin hangi fuarda açılacağı kesim günü listesine fuar fuar yazılır.
+> - Paketin diğer kesim maddeleri (worker · gönderen doğrulaması · dosya saklama · 071+ migration'lar · `operations.write`'ın klasik akışa etkisi)
+>   parça kayıtlarıyla bu bloğa eklenir.

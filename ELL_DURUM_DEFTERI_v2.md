@@ -9833,6 +9833,301 @@
 >   ell-docs çalışma dizinindeki izlenmeyen dosyalar (`Claude outputs/` — CC'nin değil; eklenmedi).
 > - **→ Sıradaki:** Suer'in gezisi → tek "değişiklik listesi" (UI-TAM-2, Y7).
 
+> ## ✅ 2026-11-11 — SENTEZ 11 Kas: PAKET UI-TAM-2 "EXHIBITOR PAGE + PROJE EKİBİ EKRANLARI + E-POSTA ZİNCİRİ" + EK-1 + EK-2 + EK-3 — AYNEN · İLK COMMIT (belge, koddan önce): kütük EXH-01…20 · GUV-06 · RAP-18 · ILT-07 · YET-19 eki · BM yama-4 · UX 3. tur + iki mockup notu `docs/ux/` · `docs/UI_FAZI_TAKIP.md` · mockup dosyaları ell-docs'a GİRMEDİ (YON-20)
+>
+> - **Kaynak ve sıra (Orchestrator 11 Kas 21:30 bloğu — bu oturuma verilen SON hali):** KRİTER = (1) Sentez bloğu + (1b) EK-1 + (1c) EK-2 + (1d) EK-3 —
+>   dördü aşağıda AYNEN. Sonraki ek öncekini düzeltir: ayrıştıkları yerde (1d) > (1c) > (1b) > (1) (A2 gider kaynağı · C7 zorunlu küme · "ağ çağrısı
+>   yok" notu · N2 floor plan gerekçesi ve kuyruk satırı). EKRAN TARİFİ = UX 3. tur çıktısı (`docs/ux/`, AYNEN). REFERANS (kriter değil) = iki mockup
+>   dosyası + iki UX notu. Orchestrator'ın (3) UYGULAMA bölümü yalnız sıra / ölçüm / kapsam / okuma kararıdır; kriterle çelişirse kriter kazanır.
+>   Blok bütünlüğü ölçüldü: son satır "═══ BLOK SONU ═══" · 1.044 satır.
+> - **SENTEZ 11 Kas — AYNEN (1 / 4) — blok:**
+>
+> ```
+> SENTEZ → ORCHESTRATOR — PAKET UI-TAM-2: EXHIBITOR PAGE + PROJE EKİBİ EKRANLARI + E-POSTA ZİNCİRİ (11 Kas)
+> KB @ 879cd92 okundu. UI-TAM KABUL (22 ekran · 945/945 · canlı 2db0131 değişmedi). Kapanış eki (örnek veri) KABUL — önce
+> o biter, sonra bu. Ek: UX HATTI 3. TUR ÇIKTISI (Suer'in eklediği dosya) = ekran tarifleri; bu blok = kararlar + kriterler.
+> Çelişkide bu blok kazanır. Terimler İngilizce (exhibitor · badge · floor plan · catalogue · build-up · deadline).
+>
+> A. CC'NİN 10 AÇIK MADDESİNE HÜKÜM
+> 1 Telefondan check-in: terminal etiketi TAKLİT EDİLMEZ; oturuma bağlı ayrı uç, yeni izin kodu operations.write ile.
+> 2 Expo Finance Gross margin / Net profit → RAP-18: gelir = fuarın iptal olmayan kontratlarının net toplamı (EUR, donmuş kur) ·
+>   doğrudan gider = ledger'da expo_id'li giderler (EUR) · komisyon = o kontratların hak edilen komisyonu (MOT, EUR) ·
+>   gross = gelir − gider · net = gross − komisyon · tahsilat ayrı satır (R3). Tek tanım utils/metrics.
+> 3 sqm düzenlenmez (RAP-04) — doğru, kalır.
+> 4 Project şablonuna communications.read + followups.read eklenir.
+> 5 Project'in War Room görünümü kalır (YET-23 gizler); Project'in giriş sayfası Ops Dashboard.
+> 6 Mail v1 = kendi gönderdiklerin; kalır.
+> 7 EMS yazma uçları: yeni izin kodu operations.write (Project · Office Manager · Owner; Sales yok); operations.read salt okuma.
+> 8–10 KABUL.
+>
+> B. SUER KARARLARI (11 Kas, AYNEN)
+> B1 Exhibitor'ın yüzü = TEK güvenli link, tek sayfa, bölümler (Exhibitor Page). İleride login + lead scanner + randevu.
+> B2 Ödeme kilidi YOK; yalnız görünür uyarı; karar insanın.
+> B3 Extra equipment siparişi = ana kontrata bağlı YENİ kontrat; satıcı project team ("ELAN EXPO" team ya da kişi).
+> B4 On-site fiyat (+%100) build-up'ın İLK GÜNÜ başlar; ön sipariş build-up'tan önceki güne kadar. Sayfadan sipariş fuar
+>    sonuna kadar açık kalır, build-up'tan itibaren on-site fiyatla.
+> B5 Equipped paketi m² kademeli (ilke: 12 m² → 1 masa · 3 sandalye · 3 spot; her +12–15 m² → +1 masa · 3 sandalye) ama
+>    expo başına DÜZENLENEBİLİR kural tablosu; %80 aynı → önceki edisyondan kopyalanır.
+> B6 Pavyon iki mod, kontrat başına project team seçer: DIRECT (acente firmaları yönlendirir, her co-exhibitor bizim
+>    müşterimiz gibi kendi dar linkini alır: Stand fascia · Catalogue · Badges; sipariş ve ödeme pavyon kontratında) ·
+>    VIA AGENCY (acente her şeyi doldurur: pavyon sahibinin sayfasında co-exhibitor listesi, her birinin bölümlerini
+>    acente doldurur; ayrı link yok).
+> B7 Ürün/fiyat listesini project team yazar (catalog.write Project şablonuna).
+> B8 Boost · Extra Service · Shipment bugün kullanılmıyor; zincire girmez. Esneklik gereksinimi: project team ileride
+>    KODSUZ kural + şablon tanımlayabilmeli (A10/EXH-17) — bu pakette yalnız yer.
+> B9 Badge limiti yok; kayıt bugünkü LEENA badge akışıyla (kişi kendi e-postasıyla → QR → masada baskı).
+>
+> C. UX 3. TUR SORULARINA HÜKÜM (15)
+> 1 "Place order" kodlu: EVET. 2 → B4. 3 Her sipariş ayrı kontrat: EVET. 4 Panel baskı = fiyat listesinde ürün; "tam baskı
+> %10" = ayrı ürün (indirimli); baskı görseli siparişe dosya olarak yüklenir. 5 → B5. 6 Stand deadline onaysız geçerse:
+> fascia = katalogdaki ad (yoksa firma adı), "varsayılan uygulandı" işareti; onay gelmedi diye stand kurulmaz DEĞİL —
+> kurulur. 7 Catalogue zorunlu = Zoho'daki zorunlu küme (markalar ve sosyal medya hariç hepsi); profil üst sınırı expo
+> ayarı, varsayılan 600 karakter. 8 "Okudum" onayı YOK. 9 Hatırlatma build-up ilk günü durur; exhibitor başına günde en
+> çok 1 hatırlatma e-postası (birden çok eksik bölüm varsa tek e-postada listelenir, link ilk eksik bölüme). 10 Alıcılar =
+> kontratın ana kişisi + project team'in eklediği kişiler (to/cc ayrımı); ödeme kodunu yalnız bu listedekiler alır.
+> 11 → B6. 12 Beklet: sayfa salt okunur + zincir Paused · Aktar: catalogue içeriği yeni kontrata TASLAK olarak kopyalanır,
+> stand ve siparişler sıfırlanır, eski link yeni sayfaya yönlenir · İptal: sayfa salt okunur "cancelled", zincir Stopped.
+> 13 Banka bilgisi yalnız kodlu Payment bölümünde; e-postada YOK (sahte banka e-postası riski). 14 "I paid — upload
+> receipt" = bildirim, ödeme kaydı değil; Finance › Collections'ta "receipts to check" listesi + kontrat sayfasında şerit;
+> Finance ödemeyi mevcut akışla kaydeder. 15 Sistem e-postaları (Changes requested · Approved · Order confirmation ·
+> Payment code · New link) SABİT; kural motoru yalnız ek türler için. Badge'de aynı e-posta visitor olarak kayıtlıysa:
+> CC mevcut LEENA davranışını ölçer, raporlar; bu pakette değiştirilmez.
+>
+> D. KÜTÜK — yeni grup EXH (CC numaralar; özet):
+> EXH-01 tek link/tek sayfa (B1) · EXH-02 durum veriden türetilir, kutucuk/etiket yok; bölüm sırası sabit: Stand · Extra
+> equipment · Catalogue · Badges · Payment · Build-up & documents · Contacts · EXH-03 hatırlatma kuralları (C9 + deep-link
+> + otomatik durma + expo ayarından zamanlama + elle Remind + Send all now) · EXH-04 ödeme kilidi yok (B2) · EXH-05 sipariş
+> = bağlı yeni kontrat, kodlu, fiyat kuralı (B3/B4) · EXH-06 Equipped paket kural tablosu (B5) + fascia varsayılanı (C6) ·
+> EXH-07 Space-only akışı (yükleme · ölçü · müteahhit · üst yükseklik · sürüm · onay) · EXH-08 Catalogue (alanlar · taslak/
+> gönder/incele · deadline kilidi · tekil yeniden açma · önceki edisyondan kopya) · EXH-09 Badges (B9; kayıt kontrata bağlı)
+> · EXH-10 Payment bölümü (kod · özet · plan · banka · dekont bildirimi; C13/C14) · EXH-11 Build-up & documents (expo
+> ayarı metin blokları ×3 dil) · EXH-12 Contacts (expo ortakları; boş rol gizli) · EXH-13 kodlu eylemler + alıcı listesi
+> (C1/C10; 6 hane · 10 dk · 24 saat) · EXH-14 link yaşam döngüsü (yenile · geçersiz · beklet/aktar/iptal/fuar bitti; C12)
+> · EXH-15 pavyon modları (B6) · EXH-16 zincir: 6 yerleşik e-posta (Welcome · Stand Equipped/Space-only · Catalogue ·
+> Build-up · Payment Reminder (Finance kutusu) · Badge) + tek hatırlatma kalıbı + sistem e-postaları; tek şablon EN/FR/TR;
+> durumlar Planned · Sent · Reminding · Stopped · Failed · Blocked · Excluded · Paused; Blocked nedenleri yazılı · EXH-17
+> kural motoru = ileride; bu pakette "Communications › Rules" listesi yerleşik satırlarla salt okuma, işaretli · EXH-18
+> Expo settings tek veri kaynağı (UX C4: 8 bölüm · hazırlık paneli · önceki edisyondan kopya "not reviewed" bayrağıyla ·
+> deadline değişince onay · Pause) · EXH-19 Exhibitors listesi (UX C2; satır = exhibitor, "group by contract") · EXH-20
+> Exhibitor detail (UX C3; "Enter on behalf" not zorunlu + History). Ayrıca: YET-19 eki (Project: communications.read ·
+> followups.read · operations.write · catalog.write) · RAP-18 (A2) · ILT-07 gönderen kimlikleri (Project kutusu · Finance
+> kutusu; görünen ad tüzel kişi aynen).
+>
+> E. PAKET — parçalar (tek prompt; CC parça parça defter kaydı; Suer en sonda bakar)
+> §0 ÖLÇÜM: EMAIL_ECHO + worker durumu · kontratın kişi modeli (birden çok kişi? to/cc) · expo_exhibitors tablosunun bugünkü
+>    şekli · badge formu akışı (form-public id, visitor türü, QR e-postası) · ürün × ofis × para birimi fiyat modeli (KAT-01)
+>    ile "expo fiyat listesi" nasıl türetilir · Drive'daki Zoho şablonlarına CC'nin Drive bağlayıcısıyla erişim (Elahe'nin
+>    klasörü "ELL – Zoho şablon ve formlar": 18 HTML EN/FR) · Suer'in ikinci oturum ölçüm dosyaları (ev dizininde
+>    zoho_olcum_2026-11-11/: katalog formu alan listesi).
+> §1 TEMEL: şema (sayfa anahtarı · catalogue/stand gönderimleri sürümlü ve değişmez · siparişler = kontrat + parent bağı ·
+>    badge bağı · olay kaydı) · izinler (A4 A7 B7) · gönderen kimlikleri (ILT-07) · Expo settings ekranı (EXH-18) ·
+>    Equipped paket kural tablosu · UI_FAZI_TAKIP.md (ekran envanteri × tasarım kaynağı · inşa · Suer turu · kuyruk; UX
+>    2. ve 3. tur çıktıları docs/ux altında AYNEN).
+> §2 EXHIBITOR PAGE: kabuk (başlık · durum şeridi · next step · deep-link · dil) · Stand (Equipped/Space-only) · Catalogue ·
+>    Badges · Build-up & documents · Contacts · boş/hata/kilitli durumlar · telefon · geçersiz link sayfası · sistem
+>    e-postaları (Changes requested · Approved · New link).
+> §3 EXTRA EQUIPMENT + PAYMENT: sepet → kod → sipariş = yeni kontrat (team satıcı) → Order confirmation · fiyat kuralı (B4) ·
+>    My orders · Payment bölümü (kod · özet · plan · banka · dekont bildirimi → Finance Collections "receipts to check").
+> §4 PROJE EKİBİ: Exhibitors listesi (EXH-19; sayaçlar · görünümler · toplu Remind önizlemeli · stand sheet dışa aktarım) ·
+>    Exhibitor detail (EXH-20; kartlar · chain kartı · Operations bilgileri · Correspondence/History) · Fair days görünümü
+>    yalnız iskelet (işaretli).
+> §5 ZİNCİR: planlama (expo ayarından) · 6 yerleşik e-posta + hatırlatma kalıbı, şablonlar Drive'daki EN/FR metinlerinden
+>    tohumlanır, TR "eksik" (EN'e düşer; UX/Yaprak sonra yazar) · Chain status tablosu (UX C5) · Send all now / Resend /
+>    Exclude · Blocked nedenleri · Rules listesi salt okuma (EXH-17) · Payment Reminder Finance kutusundan.
+> §6 PAVYON: iki mod (B6) · co-exhibitor alt kayıtları · dar link · liste gruplaması.
+> KURALLAR: Y2 (gerçek veri ya da görünür işaret) aynen · yeni ekran yalnız bu paketin ekranları · kapı SERBEST (staging) ·
+> migration runner'lı · TABAN 342.00 + TABAN-2 her parçada · K4 aynen · gerçek e-posta ÇIKMAZ (echo) · örnek exhibitor =
+> SAMPLE kontratlardan (kapanış ekinin verisi).
+> KABUL: cc-project turu (liste · detay · expo ayarları · chain) + token'lı Exhibitor Page turu (her bölümde bir gönderim ·
+> kod akışı · sipariş → kontrat doğdu · dekont bildirimi Finance'ta göründü) + echo'daki e-postaların dosyaya kaydı · sayaçlar
+> tek tanım (liste toplamı = R3) · ekran başına bağlı/işaretli listesi · 945+ test geçer · Suer turu EN SONDA, sınırsız.
+> Rapor: tek rapor + ekran başına bağlı/işaretli; SUER BLOĞU yok. Kapsam dışı: Gmail · kural motoru inşası · canlı · kesim.
+> ```
+>
+> - **SENTEZ EK-1 — AYNEN (2 / 4) — kriter:**
+>
+> ```
+> SENTEZ → ORCHESTRATOR — UI-TAM-2 EK-1 (11 Kas): UX C1 MOCKUP + 9 HÜKÜM — CC prompt'una işlenir, prompt YENİDEN verilir
+> UYGULAMA (3) okundu; aşağıdakiler dışında KABUL. Bu ek kriter bölümüne girer (Sentez bloğu + EK-1 = kriter); SAPMA/🔶 olarak
+> kalmaz, hüküm olur.
+>
+> 1 RAP-18 DÜZELTME (benim hatam, A2): doğrudan gider kaynağı ledger DEĞİL, `expenses` (fuara bağlı satırlar, EUR, ters kayıt
+>   netlenir) — GOC-05 aynen. Dışlama RAP-08 ile aynı: RAP-03 kara listesi (Transferred + Cancelled dışarıda; On Hold dahil,
+>   sayaçta). Tek tanım utils/metrics. 🔶 değil, hüküm.
+> 2 ZİNCİR VARSAYILAN KAPALI: UYGULAMA 4 hüküm olur (EXH-16 ek): otomatik gönderim fuar başına AÇIKÇA açılır; migration hiçbir
+>   fuar/kontrat için zincir başlatmaz; planlı tarihi geçmiş satır kendiliğinden gitmez (Send now + önizleme). ADR-023 kesim
+>   maddesi. 🔶 değil, hüküm.
+> 3 UX C1 MOCKUP = REFERANS (kriter değil): Suer'in eklediği `Exhibitor-Page-C1-mockup.html` docs/ux altına AYNEN (YON-20
+>   taraması; içindeki e-postalar .example, ağ çağrısı yok — UX ölçtü). CC §2–§3'ü inşa ederken bölüm düzeni / durum adları /
+>   telefon düzeni için buna bakar; çelişkide Sentez bloğu + EK-1 kazanır. Mockup'ın token'ları 9 Eyl arşiv kopyasından — CC ui2
+>   tokens.css kullanır, mockup CSS'i KOPYALANMAZ. Nasıl bakılır: üstteki koyu şerit senaryo seçicidir (ürün değil); Scenario →
+>   First visit · In progress · Changes requested · Deadlines passed · Build-up day 1 · After the show · On hold · Cancelled ·
+>   Invalid link; Viewport → Phone 390; deep-link #stand #extra-equipment #catalogue #badges #payment #build-up #contacts;
+>   kodlu akışta mockup'ta her 6 rakam geçer.
+> 4 UX'İN 5 SORUSUNA HÜKÜM (mockup'taki varsayımlar):
+>   4.1 Space-only'de stand deadline geçince bölüm AÇIK kalır, "Overdue"; gönderim/inceleme döngüsü sürer; hatırlatma C9'a göre
+>       (build-up ilk günü durur). Varsayılan uygulanmaz (C6 yalnız Equipped).
+>   4.2 Catalogue zorunlu küme ÖLÇÜLDÜ (Zoho F1–F4 aynı; Suer'in ikinci oturum dosyası): katalogdaki ad · ürün grupları · firma
+>       profili · ana kişi (unvan · ad · soyad) · kişinin görevi · web · adres (sokak · şehir · ülke; satır 2 isteğe bağlı) ·
+>       telefon · mobil · e-posta · logo · ürün fotoğrafı ×3. İsteğe bağlı: markalar · Facebook · LinkedIn · Instagram · diğer.
+>       Profil sınırı expo ayarı (varsayılan 600).
+>   4.3 Deadline sonrası yeniden açma = project team eylemi "Reopen until {tarih}" (tarihi project team yazar, öneri +7 gün);
+>       deadline sonrası "Request changes" aynı pencerede yeniden-açma tarihi ister; History'ye düşer.
+>   4.4 Gönderilmiş/onaylı catalogue deadline'a kadar düzenlenebilir; düzenleme → yeniden "In review"; deadline sonrası kilit
+>       (4.3 ile açılır). EVET.
+>   4.5 Equipped stand onaylandıktan sonra exhibitor kendisi değiştiremez; deadline'a kadar "Request a change" notu → project
+>       team "Reopen". EVET.
+>   Varsayımlar KABUL: başlıkta expo kimliği, altta "Powered by ELIZA" (marka kararı tasarım fazında) · Payment özeti ana +
+>   extra kontratları tek tabloda, dekont formu kontratı sorar, kod girilmeden HİÇBİR tutar yok (UYGULAMA 2 ile aynı) ·
+>   geçersiz link sayfası e-postanın kayıtlı olup olmadığını söylemez · Equipped paket gerçek kuralı expo tablosundan.
+> 5 FR/TR ARAYÜZ METİNLERİ: UYGULAMA 2'deki gibi CC taslaklar, takipte "çeviri gözden geçirilmedi". E-POSTA şablonları §5
+>   AYNEN: EN/FR Drive metinlerinden, TR eksik → EN'e düşer; CC TR e-posta metni YAZMAZ.
+> 6 SATIŞÇI VE EXHIBITOR EKRANLARI: bu pakette Sales GÖRMEZ (UYGULAMA 5 doğru). "Satışçı kendi kontratlarının exhibitor durumunu
+>   salt okunur görsün mü" → kuyruk, Suer kararı, Faz 4. 🔶 değil, kuyruk.
+> 7 TOKEN BULGUSU (UX): Vermillion'da chip-info ≈ chip-dang (info = primary). Exhibitor Page nötr durumlarda chip-info
+>   KULLANMAZ; token düzeltmesi UI-DÜZELTME-1'e (ayrı küçük paket, Suer'in staging listesiyle; bu pakette değil).
+> 8 KAPANIŞ EKİNİN 🔶'LERİ (denetim kaydı boşlukları) bana gelmedi (rapor Suer'de); ayrıca değerlendiririm, bu paketi bekletmez.
+> 9 SIRA DEĞİŞMEZ: [0 + §0 + §1] → §2 → §3 → §4 → §5 → §6. Rapor UYGULAMA 9 aynen. UX C2/C3 mockup'ı sonra gelirse §4'e
+>   REFERANS olarak eklenir; §4 onu beklemez.
+> ```
+>
+> - **SENTEZ EK-2 — AYNEN (3 / 4) — kriter:**
+>
+> ```
+> SENTEZ → ORCHESTRATOR — UI-TAM-2 EK-2 (11 Kas 21:15): 19:35 PROMPT'UNA 3 NOT + UX C2/C3 MOCKUP + 13 HÜKÜM — prompt SON KEZ
+> yenilenir, sonra CC. 19:35 prompt'u okundu: KABUL. Bu ek EK-1 gibi (1c) olarak kriter bölümüne AYNEN girer, UYGULAMA'ya işlenir.
+>
+> NOTLAR
+> N1 Google Fonts bulgusu DOĞRU; "ağ çağrısı yok" benim eksik aktarımım (UX "yalnız Google Fonts linki" demişti). "DIŞ KAYNAK
+>    YOK" HÜKÜM olur (GUV grubu, CC numaralar): anahtarlı sayfalar (Exhibitor Page · dar link · geçersiz link sayfası) başka
+>    kökenden hiçbir şey yüklemez; Referrer-Policy no-referrer; fontlar = tasarım setinin 3 ailesi (Space Grotesk · IBM Plex
+>    Sans · IBM Plex Mono) repoda KENDİ dosyalarımızdan (açık lisans; dosya boyutu raporda) — olmazsa sistem fontu + 🔶.
+>    Kendi-dosya fontların ui2 geneline uygulanması → UI-DÜZELTME-1 (yavaşlık ölçümüyle birlikte); bu pakette yalnız anahtarlı
+>    sayfalar.
+> N2 Floor plan bağı bu pakette KURULMAZ: KABUL. Gerekçe deftere AYNEN: "Paket zaten 6 parça; expo_stands ↔ kontrat bağı ayrı
+>    ölçüm ister (stand no'nun bugünkü kaynağı · çakışma kuralı); UI-TAM-2'den sonra ayrı küçük paket." "Nedeni yazmıyor"
+>    satırı deftere GİRMEZ.
+> N3 Terminal komutundaki model adını Sentez doğrulayamaz (Orchestrator'ın alanı). CC penceresi açıksa komut gerekmez.
+>
+> UX C2/C3 MOCKUP = REFERANS (kriter değil): Suer'in eklediği `Exhibitors-C2-C3-mockup.html` docs/ux altına AYNEN (Orchestrator
+> özetini ölçer, CC Mac'te adıyla arar — C1 ile aynı yöntem; YON-20 taraması; Google Fonts linki varsa aynı not). §4 ve §6
+> için referans; §4 onu beklemez ama artık elde. Nasıl bakılır: üst koyu şerit senaryo seçici (Scenario · Screen · Exhibitor ·
+> Viewport); senaryolar Expo settings missing · Fair week · Problems (Quillon · Tessar · Vestra · Lumira · Ordane) · Pavilion
+> (Meridia Trade Agency); C1'in DIRECT dar-link hali Screen: C1. 17 uydurma exhibitor, tek veri; durumlar olay kaydından türer.
+> Mockup'ta "chip-info" hiç yok; koyu "In review" çipi var (aşağıda 13).
+>
+> UX'İN 9 SORUSUNA HÜKÜM (C2/C3 varsayımları)
+> H1 "Stuck" = deadline'a ≤7 gün kala To do · 5+ gün cevapsız Changes requested · herhangi bir bölüm Overdue (Payment DAHİL) ·
+>    zincir Failed/Blocked. Sayılar sabit varsayılan (expo ayarı değil; ileride). KABUL.
+> H2 Pavyon sahibi (agent) listede kendi satırı: Stand (pavyon inşası) · Orders · Badges · Payment onda. Catalogue "—" DEĞİL,
+>    "Optional" (hatırlatma yok; acente isterse doldurur).
+> H3 Co-exhibitor zinciri. DIRECT: Welcome · Stand · Catalogue · Build-up · Badge co-exhibitor'a (aynı şablonlar; deep-link dar
+>    sayfaya); Payment Reminder "Excluded — pavilion contract". VIA AGENCY: co-exhibitor'a hiçbir e-posta yok; zincir pavyon
+>    kontratı için acenteye bir kez; hatırlatma e-postası co-exhibitor başına eksikleri tek listede sayar; günde 1 kuralı alıcı
+>    başına. KABUL + ek.
+> H4 "On behalf" girilen stand onayı ve catalogue doğrudan Approved (project team kendi girdisini ayrıca onaylamaz); History
+>    "entered on behalf" + not; exhibitor deadline'a kadar görür, 4.4 / 4.5 ile değişiklik isteyebilir. KABUL.
+> H5 Stand type deadline'dan SONRA girilirse: sistem Stand bölümünü kendiliğinden +7 gün açar (sistem olayı "reopened — stand
+>    type set late"), Stand e-postası hemen gider ("geç imzada hemen" kuralı); varsayılan fascia bu pencere geçince uygulanır.
+>    Elle Reopen gerekmez.
+> H6 Deadline'dan önce istenen değişiklik cevapsız kalıp deadline geçerse: exhibitor için kilitli, "Changes requested · N gün"
+>    + "Reopen until…" (4.3). KABUL.
+> H7 Günde 1 hatırlatma sınırı otomatik VE elle Remind için geçerli; doluysa sunucu reddeder ("reminded today hh:mm — next
+>    tomorrow"). Zincir e-postasının Resend'i (ör. geri dönen Welcome) hatırlatma sayılmaz.
+> H8 Pavyon modu değişimi: onay penceresiyle anında; VIA AGENCY'ye geçince co-exhibitor linkleri ölür, girilen içerik KALIR;
+>    DIRECT'e geçince linkler üretilir ama kendiliğinden GÖNDERİLMEZ (project team "Send link"). KABUL + ek.
+> H9 Regenerate link: pencere "Send the new link now?" varsayılan EVET → "New link" sistem e-postası alıcı listesine; HAYIR →
+>    yalnız kopyala. KABUL + seçenek.
+> Varsayımlar 10–13 KABUL: Job done = gönderildi (in review dahil), hatırlatma durur, Changes requested'da yeniden başlar ·
+> Send all now yalnız Planned · Beklet: yalnız Reactivate; İptal: hepsi gizli · koyu "In review" çipi = sıra bizde, MEVCUT
+> token'larla (yeni token YOK, tokens.css'e dokunulmaz; olmuyorsa işaretli + UI-DÜZELTME-1).
+> Mockup'ta olmayanlar (C4 · C5 · Fair days tam · satışçı görünümü · Add co-exhibitor formu · Transfer akışı · e-posta metinleri ·
+> FR/TR): kaynak (1)+(1b)+(1c) + UX 3. tur metni; kriter susuyorsa en kilitli okuma + raporda fark.
+> UYDURMA ÖRNEK DEĞERLER (karar değil): ilk gönderim tarihleri · hatırlatma aralığı (−14 gün, sonra 7 günde bir) · tutarlar ·
+> ürün fiyatları → expo ayarından / sunucudan.
+> SIRA DEĞİŞMEZ. Rapor UYGULAMA 9 aynen; rapora ek: N1 font dosya boyutları · H5 sistem olayı · C2/C3 mockup özeti ve yolu.
+> ```
+>
+> - **SENTEZ EK-3 — AYNEN (4 / 4) — kriter:**
+>
+> ```
+> SENTEZ → ORCHESTRATOR — UI-TAM-2 EK-3 (11 Kas 21:30): FLOOR PLAN "YOK" VARSAYIMI + PAKET KURALI BİÇİMİ — EK-2 gibi (1d)
+> kriter bölümüne AYNEN; prompt bununla birlikte yenilenir, sonra CC.
+> Suer 11 Kas: floor plan modülü sıfırdan yeniden yapılıyor (Mimari hattı, ayrı belge, kilitli DEĞİL; bu pakete girmez, CC
+> okumaz). UI-TAM-2 floor plan'ı YOK varsayar.
+>
+> F1 STAND NO = Operations bilgilerinde elle yazılan metin alanı (kontratın bugünkü stand no alanı varsa o — kaynağını ölç;
+>    yoksa yeni kolon). Exhibitor Page, liste ve e-postalar bu alanı okur; boşsa "to be confirmed". expo_stands'a OKUMA DAHİL
+>    bağ kurulmaz; UI-TAM'daki Floor plan ekranına ve klasik editör köprüsüne DOKUNULMAZ. N2 böyle uygulanır. Kuyruk satırı:
+>    "stand no'nun kaynağı → yeni floor plan modülünün yerleştirme kaydı (Mimari hattı)".
+> F2 EQUIPPED PAKET KURAL TABLOSU (EXH-06 / B5) şu biçimde kurulur — Mimari hattıyla aynı tanım, çift tanım OLMASIN:
+>    kalem = katalog ürünü · ilk alan (m²) · başlangıç adedi · her ek alan (m²) · ek adet · üst sınır (boş = sınırsız);
+>    expo ayarında, SÜRÜMLÜ; kural değişince mevcut kontratların hakkı kendiliğinden DEĞİŞMEZ (yeni kontratlar yeni sürüm);
+>    ayar ekranı 9 · 12 · 18 · 30 · 60 · 90 m² için sonuç tablosunu gösterir. Tohum (B5): masa 12 m² → 1, her +12 m² → +1 ·
+>    sandalye 12 → 3, her +12 → +3 · spot 12 → 3, ek yok; expo başına düzenlenir, önceki edisyondan kopyalanır.
+> F3 Başka bir şey değişmez. Rapora ek: F1 kaynak ölçümü · F2 tablo şeması + 6 m² kademesi için örnek çıktı.
+> ```
+>
+> - **Orchestrator UYGULAMA — okuma kararları (özet; kriter DEĞİL — tam metin CC'nin repo dışı çalışma dosyasında):**
+>   - **Sıra:** [0 + §0 + §1] → §2 → §3 → §4 → §5 → §6; her parça = commit + push + staging + testler yeşil + defter kaydı; parçalar arasında Suer'e
+>     dönülmez; ara soru yok — en kilitli hükme göre uygulanır, "ön-onaylı SAPMA" yazılır (YON-18). Migration 071+ (runner; staging'de CC koşar).
+>   - **Anahtar (kimliksiz yüz):** uzun rastgele; DB'de yalnız özeti; yenilenince eskisi ölür; hiçbir loga / Referer'a düşmez. Anahtarlı uçlar YALNIZ o
+>     kontratın (pavyonda o co-exhibitor'ın dar kümesinin) verisine erişir. Kodsuz yanıtta tutar · bakiye · vade planı · banka alanı YOK. Kod: 6 hane ·
+>     10 dk · 24 saat · 5 yanlış → 15 dk. Echo bayrağı varken kod ekranda da gösterilir; bayraksız ortamda ASLA. Hız sınırı · dosya türü beyaz listesi ·
+>     kaçışlı basım · noindex. Mevcut kapıların hiçbiri gevşemez.
+>   - **Sipariş + para:** sipariş kontratı MEVCUT tek çekirdekten doğar (ikinci kontrat yaratma yolu yazılmaz); fiyat SUNUCUDA; aynı sepet iki kez → TEK
+>     kontrat; dekont bildirimi ödeme DEĞİLDİR; komisyon oranı uydurulmaz (🔶).
+>   - **Equipped paket kuralı — okuma kararı (EK-3 susuyor; 🔶 Sentez'e sorulur):** adet = başlangıç + (ilk alanı aşan m²'deki TAM ek alan sayısı) × ek
+>     adet, üst sınırı aşmaz; ilk alandan küçük stand = başlangıç adedi; m² = standın toplam m²'si (m² + free m²); kural ilk kez yayımlandığında sürümü
+>     olmayan mevcut kontratlar o ilk sürüme bağlanır. Tohumun beklenen çıktısı (9 · 12 · 18 · 30 · 60 · 90 m²): masa 1 · 1 · 1 · 2 · 5 · 7 — sandalye
+>     3 · 3 · 3 · 6 · 15 · 21 — spot 3 · 3 · 3 · 3 · 3 · 3.
+>   - **Zincir — okuma kararı (EK-1 madde 2 ↔ H5 ve "geç imzada hemen"; 🔶 Sentez'e sorulur):** "geçmiş satır kendiliğinden gitmez" = zincir AÇILDIĞI
+>     anda birikmiş satırlar. Zinciri AÇIK fuarda sonradan doğan olay (yeni kontrat · geç imza · H5) hemen gider. Zinciri KAPALI fuarda hiçbir şey
+>     kendiliğinden gitmez. Staging'de otomatik tik yalnız fuar 15'te (SAMPLE).
+>   - **Stand no (EK-3 F1; (1d) > (1c)):** ayrı gerekçe satırı YAZILMAZ — gerekçe EK-2 N2 + EK-3 ile yukarıda AYNEN duruyor; EK-2 N2'deki "ayrı küçük
+>     paket" kuyruğa yazılmaz; kuyruk satırı AYNEN: "stand no'nun kaynağı → yeni floor plan modülünün yerleştirme kaydı (Mimari hattı)".
+>   - **Yetki:** A5 — Project'in giriş sayfası Ops Dashboard, AÇIK hedef olarak (diğer roller için `bb9e721` kuralı aynen). Office Manager'ın ofis boyutu
+>     olmayan EMS kaydını yazması: bugünkü gibi + 🔶. Sales'e izin EKLENMEZ.
+>   - **Mockup kuralı:** özet tutuyorsa `docs/ux/` altına bayt bayt AYNEN; bulunamazsa / tutmuyorsa paket BEKLEMEZ; SAMPLE adları müşteri listesiyle
+>     eşleşirse dosya KONMAZ (🔶).
+> - **Ne yapıldı (İLK COMMIT — belge; kod YOK):**
+>   - **Defter:** bu kayıt — dört kriter metni AYNEN (oturum kaydından programla alındı; çit içindeki satırlar kaynakla birebir).
+>   - **Kütük:** yeni grup **EXH-01 … EXH-20** (ID'ler CC — Sentez D) + **GUV-06** (dış kaynak yok — EK-2 N1) + **RAP-18** (EK-1 madde 1 düzeltmesiyle:
+>     gider kaynağı `expenses`) + **ILT-07** (gönderen kimlikleri) + **YET-19 eki** (A1 · A4 · A5 · A7 · B7 · EK-1 madde 6). EK hükümleri ilgili maddeye
+>     işlendi: EK-1 4.1 → EXH-07 · 4.2–4.4 → EXH-08 · 4.5 → EXH-06 · madde 2 → EXH-16 · madde 7 → EXH-02 notu · EK-2 H1 → EXH-19 · H2 · H3 · H8 → EXH-15 ·
+>     H3 · varsayım 10–11 → EXH-16 / EXH-03 · H4 → EXH-20 · H5 → EXH-06 · H6 → EXH-08 · H7 → EXH-03 · H9 · varsayım 12 → EXH-14 · varsayım 13 → EXH-02 notu ·
+>     EK-3 F1 → EXH-20 · F2 → EXH-06.
+>   - **BM v4 yama-4 (§4.6; UI-01 — ekrandan ÖNCE):** Expo settings · Exhibitors · Exhibitor detayı · Chain status · Rules (Operations) · Collections
+>     "receipts to check" · Expo Finance RAP-18 · mobil check-in · Exhibitor Page = ui2 alanı OLMAYAN ayrı, kimliksiz yüz.
+>   - **`docs/ux/`:** `UX_HATTI_3_TUR_2026-11-11.md` (AYNEN + arşiv notu: "ekran tarifidir; kriter Sentez bloğu + EK-1 + EK-2 + EK-3") ·
+>     `UX_C1_MOCKUP_NOTU_2026-11-11.md` · `UX_C2_C3_MOCKUP_NOTU_2026-11-11.md` (AYNEN + "referanstır, kriter değil; nasıl bakılır" + font notu).
+>   - **`docs/UI_FAZI_TAKIP.md` (YENİ):** tasarım kaynakları · 29 satırlık ekran envanteri (UI-TAM'ın 22'si + UI-TAM-2'nin 7 satırı) · çeviri / metin
+>     durumu · kuyruk (UI-DÜZELTME-1 · satışçının salt okuma sorusu · stand no satırı AYNEN · paket sürümü geçiş eylemi · çeviri · mockup · UX 2. turun paket
+>     dışı maddeleri "kuyruk — Sentez kararı bekliyor").
+>   - **Sözlük:** Exhibitor Page · exhibitor / co-exhibitor / pavilion (DIRECT · VIA AGENCY) · Equipped / Space-only · fascia · build-up / breakdown /
+>     deadline · chain · Stuck. **ADR-023:** kesim maddesi "zincir varsayılan kapalı" (EK-1 madde 2); diğerleri parça kayıtlarıyla.
+> - **Mockup'lar — ÖLÇÜLDÜ:**
+>   - İkisi de Suer'in bilgisayarında (Downloads) bulundu; özetler Orchestrator'ın ölçümüyle AYNI: `Exhibitor-Page-C1-mockup.html` sha256
+>     `1e98f0a2…fd8d2a6` · 100.909 bayt · 1.179 satır — `Exhibitors-C2-C3-mockup.html` sha256 `69afb831…3efc0aa` · 129.039 bayt · 1.176 satır.
+>   - Orchestrator'ın taraması doğrulandı: C1 → 10 e-posta adresi, hepsi `.example` · C2/C3 → 2 e-posta, ikisi `.example` · telefonlar
+>     "+00 000 555 01xx" (C1 9 · C2/C3 1) · fetch / XHR / dış script 0 · iki dosyada da 8–10. satırlarda Google Fonts'a 3 `<link>` · gizli-anahtar
+>     benzeri dizgi iki dosyada da 0 · C1'de 1 IBAN BİÇİMLİ örnek dizgi (Payment bölümünün uydurma banka satırı).
+>   - İsim karşılaştırması (yalnız sayı): C2/C3'teki "SAMPLE" önekli 19 ad (17 firma + fuar adı + stand firması), önek olmadan → staging firma tablosu
+>     0 · kontrat firma adı 0 · ziyaretçi firma adı 0 tam eşleşme.
+>   - **🔶 Dosyalar ell-docs'a KONMADI (ön-onaylı SAPMA — en kilitli okuma):** public repo taraması (YON-20) kiracı alanı dışındaki HER e-posta adresini
+>     ve IBAN biçimini engelliyor — `.example` istisnası yok. Tarama mantığı dosyalar üzerinde koşuldu: C1 **11 eşleşme** (10 e-posta + 1 IBAN) ·
+>     C2/C3 **2 eşleşme** (e-posta) → push engellenir. Dosyalar bayt bayt AYNEN girmek zorunda (değiştirilmedi); tarama kuralı da CC'nin kararıyla
+>     gevşetilmedi (YON-20 Sentez hükmü). Sonuç: notlar `docs/ux/`'te, mockup dosyaları kuyrukta ("mockup eklenecek"); CC referans olarak Suer'in
+>     bilgisayarındaki kopyalardan okur. Sentez'e: (a) taramaya RFC'nin ayırdığı `.example` alanı + bu örnek IBAN için istisna mı, (b) mockup'lar public
+>     repoya hiç girmesin mi.
+> - **Commit:** ell-docs — bu kayıt + yukarıdaki belgeler TEK commit'te. LEENA: commit YOK (`eliza-next` = `origin/eliza-next` = `bb9e721` · canlı `main`
+>   `2db0131` — ölçüldü). ell-docs başlangıcı `f307bd4` (ölçüldü).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** mockup'ların tarayıcıda senaryo senaryo gezilmesi (inşa sırasında, §2 / §4) · UX 3. tur ve iki notun UX hattındaki
+>   özgün dosyalarıyla karşılaştırması (bu oturuma Orchestrator'ın kopyası ulaştı) · §0 ön ölçümlerinin tamamı (sıradaki kayıt).
+> - **Bilinçle yapılmayanlar:** YON-20 tarama kuralının değiştirilmesi · mockup'ların başka bir repoya konması (istenmedi) · Mimari hattının floor plan
+>   belgesinin aranması / okunması (EK-3) · ell-docs çalışma dizinindeki izlenmeyen dosyalar (`Claude outputs/` — CC'nin değil).
+> - **→ Sıradaki:** §0 ön ölçüm + §1 TEMEL (şema 071+ · izinler · Expo settings · Equipped paket kuralı).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**

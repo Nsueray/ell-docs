@@ -325,6 +325,28 @@ scope as the lists; external users find only their own records. (RAP-16)
 ### Not connected yet (işaret)
 - **Definition:** The single visible mark (one component in `components.js`) on a ui2 element — card, column, field, button, tab — that is drawn from the design but has no real endpoint behind it yet. Per element, not per page; a button either works or carries the mark (no dead buttons). Each marked element is a queue line (what · which screen · S/M/L). (kütük UI-07 — Sentez 11 Kas Y2.)
 
+### Exhibitor Page
+- **Definition:** The exhibitor's face of ELIZA: ONE secure link → one page with fixed sections (Stand · Extra equipment · Catalogue · Badges · Payment · Build-up & documents · Contacts). No login; Payment and "Place order" open with a 6-digit code sent to the contract's recipient list. Not a ui2 area — a separate, unauthenticated face that loads nothing from another origin (EXH-01 · EXH-13 · GUV-06).
+- **Not:** a customer portal with accounts (login, lead scanner and meetings are a later phase).
+
+### Exhibitor · co-exhibitor · pavilion (DIRECT / VIA AGENCY)
+- **Definition:** *Exhibitor* = the company of a contract at an expo. A *pavilion* contract (an agency or a national body) carries *co-exhibitors*. Per contract the project team picks the mode: **DIRECT** — each co-exhibitor gets its own narrow link (Stand fascia · Catalogue · Badges); orders and payment stay on the pavilion contract. **VIA AGENCY** — the agency fills everything on its own page; co-exhibitors get no link and no e-mail (EXH-15).
+
+### Equipped · Space-only (stand type)
+- **Definition:** *Equipped* = the organiser builds the stand; the exhibitor confirms the fascia name and gets a package of included equipment computed from the expo's versioned rule table (EXH-06). *Space-only* = the exhibitor brings its own design and contractor; uploads are versioned and reviewed (EXH-07).
+
+### Fascia
+- **Definition:** The company name printed on the stand's front panel. If an Equipped stand is not approved by the stand deadline, the default applies: the catalogue name, else the company name (EXH-06).
+
+### Build-up · breakdown · deadline
+- **Definition:** *Build-up* = the days before the show when stands are built (its FIRST day switches extra equipment to the on-site price and stops reminders); *breakdown* = dismantling after the show. *Deadline* = the per-expo date of a section (catalogue · stand · order · payment · badge), set in Expo settings (EXH-18).
+
+### Chain (exhibitor e-mail chain)
+- **Definition:** The six built-in e-mails an exhibitor receives (Welcome · Stand · Catalogue · Build-up · Payment Reminder · Badge) plus one reminder pattern and fixed system e-mails. Off by default: automatic sending is switched on per expo; states are derived from the event log (EXH-16).
+
+### Stuck (exhibitor list)
+- **Definition:** One server-side definition: a section "To do" with ≤ 7 days to its deadline · "Changes requested" unanswered for 5+ days · any section Overdue (Payment included) · a chain e-mail Failed / Blocked (EXH-19).
+
 ### Country Manager
 
 An Elan Expo manager responsible for a specific country office.

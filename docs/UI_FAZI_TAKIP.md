@@ -1,0 +1,88 @@
+# UI FAZI — TAKİP (ekran envanteri × tasarım kaynağı · inşa · Suer turu · kuyruk)
+
+> **Ne:** UI-ÖNCE fazının (kütük YON-21) tek takip belgesi — Sentez 11 Kas PAKET UI-TAM-2 §1. Her ekran için: tasarım kaynağı · inşa durumu ·
+> Suer turu · kuyruk. Kriter bu belge DEĞİLDİR: kriter Sentez blokları (defterde AYNEN) + kütük; bu belge nerede ne olduğunu gösterir.
+> **Güncelleme:** her paket parçasında (defter kaydıyla aynı commit). **Son güncelleme:** 2026-11-11 — PAKET UI-TAM-2 ilk (belge) commit'i.
+> **Ortam:** yalnız staging (`https://leena-staging.onrender.com/ui2/`). Canlıda bu fazın hiçbir ekranı yok. Tarihseldir (YON-01).
+
+## 1. Tasarım kaynakları
+
+| Kaynak | Nerede | Statü |
+|---|---|---|
+| Tasarım seti (Claude Design, 22 ürün ekranı; Signal + Vermillion) | Suer'in bilgisayarı · taranmış kopyası LEENA `design-preview/` (private; staging'de `/design-preview/`, "PROTOTYPE" şeritli) | PAKET UI-TAM'ın kaynağı; set ell-docs'a (public) GİRMEZ |
+| Sentez blokları (UI-ÖNCE kuralları · PAKET UI-TAM · PAKET UI-TAM-2 + EK-1 + EK-2 + EK-3) | defter (AYNEN) + kütük UI-07 · EXH-01…20 · GUV-06 · RAP-18 · ILT-07 · YET-19 eki | **KRİTER** — ekler öncekini düzeltir (EK-3 > EK-2 > EK-1 > blok) |
+| UX hattı 3. tur (C1–C6: Exhibitor Page + project team ekranları) | `docs/ux/UX_HATTI_3_TUR_2026-11-11.md` (AYNEN) | ekran tarifi; kriterle çelişirse kriter kazanır |
+| UX hattı 2. tur (set × üç kullanıcının günü; 38 satır + 7 eskiz) | `docs/ux/UX_HATTI_2_TUR_2026-11-11.md` (AYNEN) | kriter DEĞİL — arşiv + bu belgenin "tasarım kaynağı" sütunu; öncelik Sentez bloğu > 3. tur > 2. tur |
+| C1 mockup (`Exhibitor-Page-C1-mockup.html`) + UX notu | not: `docs/ux/UX_C1_MOCKUP_NOTU_2026-11-11.md` · dosya: Suer'in bilgisayarı | REFERANS (kriter değil). Dosya ell-docs'a KONMADI — §4 kuyruk "mockup eklenecek" |
+| C2 + C3 mockup (`Exhibitors-C2-C3-mockup.html`) + UX teslim notu | not: `docs/ux/UX_C2_C3_MOCKUP_NOTU_2026-11-11.md` · dosya: Suer'in bilgisayarı | REFERANS (kriter değil). Dosya ell-docs'a KONMADI — §4 kuyruk "mockup eklenecek" |
+
+## 2. Ekran envanteri
+
+İnşa sütunu: **staging** = staging'de çalışıyor (LEENA `eliza-next` commit'i) · **UI-TAM-2 §n** = bu paketin o parçasında yapılacak / değişecek.
+Suer turu: Y7 — Suer kendi Owner hesabıyla gezer, cevabı tek "değişiklik listesi".
+
+| # | Alan | Ekran | Sayfa | Tasarım kaynağı | İnşa | Suer turu |
+|---|---|---|---|---|---|---|
+| 1 | — | Login | `login.html` | set | staging (`a71164f`) | bekliyor |
+| 2 | Sales | My Work | `sales-home.html` | set · UX 2. tur #22–23 | staging (`5032a1f`) | bekliyor |
+| 3 | Sales | Mail (v1) | `sales-mail.html` | set | staging (`5032a1f`) | bekliyor |
+| 4 | Sales | Pipeline | `sales-pipeline.html` | set · UX 2. tur #24 | staging (`5032a1f`) | bekliyor |
+| 5 | Sales | Quotes + teklif | `sales-quotes.html` · `sales-quote.html` | set · UX 2. tur #25–27 | staging (`5032a1f`) | bekliyor |
+| 6 | Sales | Companies + firma kartı | `sales-customers.html` · `sales-customer.html` | set · UX 2. tur #29–30 · YET-26 | staging (`5032a1f`) | bekliyor |
+| 7 | Operations | Dashboard | `ops-dashboard.html` | set · UX 2. tur #2 | staging (`e7b77ef`) | bekliyor |
+| 8 | Operations | **Exhibitors** (liste) | `ops-exhibitors.html` | set → **UX 3. tur C2 · C2/C3 mockup · EXH-19** | staging (`e7b77ef`) → **UI-TAM-2 §4** yeniden kurulur | bekliyor |
+| 9 | Operations | **Exhibitor** detayı | `ops-exhibitor.html` | set → **UX 3. tur C3 · C2/C3 mockup · EXH-20** | staging (`e7b77ef`) → **UI-TAM-2 §4** yeniden kurulur | bekliyor |
+| 10 | Operations | Floor plan | `ops-floorplan.html` | set | staging (`e7b77ef`) — DEĞİŞMEZ (EXH-20; floor plan modülü Mimari hattında) | bekliyor |
+| 11 | Operations | Visitor & Access | `ops-visitors.html` | set | staging (`e7b77ef`) | bekliyor |
+| 12 | Operations | Communications | `ops-communications.html` | set · UX 2. tur #14–15 | staging (`e7b77ef`) | bekliyor |
+| 13 | Operations | Reports | `ops-reports.html` | set · UX 2. tur #20 | staging (`e7b77ef`) | bekliyor |
+| 14 | Finance | War Room | `owner-home.html` | set · UX 2. tur #33–34 | staging (`e61d0a9`) | bekliyor |
+| 15 | Finance | Contract | `finance-contract.html` | set | staging (`e61d0a9`) → UI-TAM-2 §3: dekont şeridi | bekliyor |
+| 16 | Finance | Commissions | `finance-commissions.html` | set | staging (`e61d0a9`) | bekliyor |
+| 17 | Finance | Ledger | `finance-ledger.html` | set | staging (`e61d0a9`) | bekliyor |
+| 18 | Finance | Expo Finance | `finance-expo.html` | set · UX 2. tur #35 · RAP-18 | staging (`e61d0a9`) → UI-TAM-2 §3: Gross margin / Net profit bağlanır | bekliyor |
+| 19 | Operations · On-site | Mobile Dashboard | `mobile-home.html` | set | staging (`caa9f09`) | bekliyor |
+| 20 | Operations · On-site | Mobile Scan | `mobile-scan.html` | set · YET-19 eki (A1) | staging (`caa9f09`) → UI-TAM-2 §1: oturumla check-in | bekliyor |
+| 21 | Operations · On-site | Mobile Visitor List | `mobile-visitors.html` | set | staging (`caa9f09`) | bekliyor |
+| 22 | Kabuk | Settings › Appearance | `settings-appearance.html` | set | staging (`caa9f09`) | bekliyor |
+| 23 | Operations | **Expo settings** (YENİ) | — | UX 3. tur C4 · UX 2. tur #4 + eskiz 4 · EXH-18 · EXH-06 (paket kuralı) | **UI-TAM-2 §1** | — |
+| 24 | Exhibitor yüzü (ui2 DEĞİL) | **Exhibitor Page** (YENİ) — kabuk · Stand · Catalogue · Badges · Build-up & documents · Contacts · geçersiz link sayfası | — | UX 3. tur C1 · C1 mockup · UX 2. tur #16–17 + eskiz 0–2 · EXH-01…14 · GUV-06 | **UI-TAM-2 §2** | — |
+| 25 | Exhibitor yüzü | Exhibitor Page — **Extra equipment + Payment** (kodlu) | — | UX 3. tur C1 · EXH-05 · EXH-10 · EXH-13 | **UI-TAM-2 §3** | — |
+| 26 | Finance | Collections — **"receipts to check"** | `finance-collections.html` (mevcut ekran) | Sentez C14 · EXH-10 | **UI-TAM-2 §3** | — |
+| 27 | Operations | **Chain status** (YENİ) | — | UX 3. tur C5 · UX 2. tur #9 · #14 + eskiz 3 · EXH-16 | **UI-TAM-2 §5** | — |
+| 28 | Operations | **Rules** (YENİ; salt okuma, işaretli) | — | UX 3. tur C5 · EXH-17 | **UI-TAM-2 §5** | — |
+| 29 | Exhibitor yüzü + Operations | **Pavyon**: co-exhibitor alt kayıtları · dar link · liste gruplaması | — | Sentez B6 · EK-2 H2 / H3 / H8 · C2/C3 mockup · UX 2. tur #6 · EXH-15 | **UI-TAM-2 §6** | — |
+
+## 3. Çeviri ve metin durumu (UI-TAM-2)
+
+| Konu | Durum |
+|---|---|
+| Exhibitor Page arayüz metinleri FR / TR | CC taslaklar — **çeviri gözden geçirilmedi** (EK-1 madde 5) |
+| 6 yerleşik e-posta EN / FR | Drive'daki metinlerden tohumlanır (ell-docs'a metin GİRMEZ) |
+| E-posta TR | **eksik** — EN'e düşer; CC TR e-posta metni yazmaz (UX / Yaprak sonra yazar) |
+| Hatırlatma kalıbı + sistem e-postaları | Drive'da karşılığı ölçülür; yoksa EN'i CC taslaklar — **metin gözden geçirilmedi**; FR / TR "eksik" |
+
+## 4. Kuyruk
+
+**UI-TAM-2'den çıkanlar (Sentez / Orchestrator):**
+- **UI-DÜZELTME-1** (ayrı küçük paket, Suer'in staging listesiyle): token düzeltmesi (Vermillion'da chip-info ≈ chip-dang) · kendi-dosya fontların ui2
+  geneline uygulanması · yavaşlık ölçümü.
+- Satışçı kendi kontratlarının exhibitor durumunu salt okunur görsün mü — Suer kararı, Faz 4.
+- stand no'nun kaynağı → yeni floor plan modülünün yerleştirme kaydı (Mimari hattı)
+- Sürümü olan kontratı yeni Equipped paket sürümüne geçirme eylemi.
+- FR / TR çeviri gözden geçirme (arayüz) · TR e-posta metinleri.
+- **mockup eklenecek:** `Exhibitor-Page-C1-mockup.html` · `Exhibitors-C2-C3-mockup.html` — dosyalar bulundu, özetleri tutuyor; public repo taraması
+  (YON-20) içlerindeki `.example` e-posta adreslerini (ve C1'deki IBAN biçimli örnek dizgiyi) engelliyor → 🔶 Sentez (tarama kuralı mı, yer mi).
+- Kural motoru (EXH-17) · Gmail / gelen cevaplar · Fair days görünümünün tam tarifi · Transfer akışı ekranı · "Add co-exhibitor" dışındaki pavyon
+  ekleri — paket kapsamı dışında, işaretli.
+
+**UX 2. turun UI-TAM-2 kapsamında OLMAYAN maddeleri — kuyruk — Sentez kararı bekliyor** (satır no = 2. tur tablosu):
+- #1 Fuarlar listesi (proje ekibinin girişi; eskiz 5) · #2 Ops Dashboard'un iki modu ("bugün kimi kovalayacağım" + son tarihler).
+- #3 Convert inceleme ekranı (imzalı teklif + tarama yan yana) · #12 beklet / aktar / iptal eylemlerinin ekranı (sayfa ve zincir davranışı EXH-14'te).
+- #15 Communications › Templates düzenleyicisi (tek şablon–üç dil yan yana + önizleme) · #18 katalog üretici (PDF) · #19 fuar günü görünümü (iskelet
+  UI-TAM-2 §4'te) · #20 Ops Reports kaynak kırılımı + veri girişi raporu.
+- #21–#27 Sales alt menü / My Work / Pipeline / Quotes maddelerinden UI-TAM'da karşılanmayanlar · #28 satışçı için kat planı · #29–#30 Companies
+  listesi süzgeçleri + firma kartı ekleri · #31 lead listesi + kampanya ekranları.
+- #32 Owner ana sayfası (eskiz 6) · #33 War Room sütunları (m² · hedef % · açık bakiye · geciken) · #34 War Room uyarıları (üç kaynak, gördüm / ertele) ·
+  #35 Expo Finance: satırdan harekete inme + fuar listesi (Gross margin / Net profit RAP-18 ile UI-TAM-2'de) · #36 onaylar + Finance › Reports.
+- #37 üst çubuk (bildirim paneli) + Settings (Profile dil · Notifications · Team & roles) · #38 UX'in görmediği 7 ekran için satırlar.
