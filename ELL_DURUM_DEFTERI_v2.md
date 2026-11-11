@@ -9345,6 +9345,102 @@
 >   güncellenmemiş (bu parçada yalnız yeni satır eklendi).
 > - **→ Sıradaki:** Sales (My Work · Mail · Pipeline · Quotes düzeni · Companies + firma kartı).
 
+> ## ✅ 2026-11-11 — PAKET UI-TAM 5. PARÇA: SALES EKRANLARI STAGING'DE — My work · Mail (v1) · Pipeline · teklif set düzeninde · Companies + firma kartı (dört sekme, kilitli tutar — YET-26) (LEENA `5032a1f` + düzeltme `2418198`)
+>
+> - **Kriter kaynağı:** [defter:2026-11-11 SENTEZ 11 Kas: UI-ÖNCE FAZI — KURALLAR (Y1–Y10) + PAKET UI-TAM] (Y2 · C §3 Sales) + Orchestrator UYGULAMA §5
+>   ("ucuz uç") + bağlantı haritası §2 + BM v4 yama-3 §4.5 (Sales · Overview / Companies) + kütük YET-26 · YET-17 · ILT-01..05.
+> - **Ne yapıldı:**
+>   - **Sunucu — yalnız alan / okuma EKLEYEN üç değişiklik (yeni tablo, motor, izin kodu yok):**
+>     `GET /api/follow-ups` satırına `due_today` + `counts.due_today` (SQL'de `CURRENT_DATE` ile — `overdue` ile aynı yerde; ekran tarih
+>     karşılaştırmaz) · `GET /api/quotes` yanıtına `sums_eur` (durum başına brüt EUR toplamı + `open` = taslak + gönderilmiş; EUR karşılığı
+>     bilinmeyen teklif toplanmaz, `no_eur` sayılır — RAP-02) ve isteğe bağlı `?expo_id=` süzgeci (verilmezse AYNEN) ·
+>     **`GET /api/communications/sent`** — oturum sahibinin ELIZA'dan gönderdiği e-postalar (iletişim günlüğünde kuyruk satırı taşıyan kayıtlar),
+>     her satır hedefin kapsamıyla yeniden sınanır, firma + fuar bağlamı ve fuar klasörleri (sayılar sunucuda) ile.
+>   - **5 ekran — öğe bazında (Y2):**
+>     1. **My work** (`sales-home.html`, Sales alanının girişi; B3.4 "Takiplerim" ilk kuyruk olarak AYNEN) — *bağlı:* takipler (açık · vadesi geçen ·
+>        bugün vadeli · Done) · cevap bekleyen teklifler (gönderilmiş; sayı + EUR toplamı) · imzalı, kontratı bekleyen teklifler (convert kuyruğu) ·
+>        Today (bugün vadeli takipler) · New quote. *İşaretli:* Incoming replies kuyruğu + sayacı (gelen e-posta yok) · satır düğmeleri Reply ·
+>        Call · Send contract · Filters · takvim etkinlikleri · Quarter targets · Live rozeti.
+>     2. **Mail (v1)** (`sales-mail.html`, yeni) — ELIZA posta kutusu DEĞİL, sistemden giden e-postaların görünümü. *Bağlı:* Sent listesi (alıcı ·
+>        konu · ait olduğu kayıt · fuar · zaman · teslim durumu; echo rozeti) · fuar klasörleri · arama (yüklenen liste üstünde) · okuma bölmesi
+>        (işlenmiş e-posta) · donmuş PDF · bağlam (firma kartı sayaçları + başka sahibin açık teklifi uyarısı — YET-17) · **thread** = e-postanın ait
+>        olduğu kaydın tüm yazışması (giden e-postalar + elle girilen kayıtlar; elle kayıt formu) · My follow-ups. *İşaretli:* Inbox · Awaiting
+>        reply · Starred · Drafts · Compose · Reply · hesap seçici · "Synced" · kampanya klasörleri · Known / New? / Exhibitor etiketleri · intel /
+>        benzer firmalar · katılımcı uyarıları · "Add as lead".
+>     3. **Pipeline** (`sales-pipeline.html`, yeni) — *bağlı:* dört durum sütunu (Draft · Sent · Signed · Declined) sayı + EUR toplamıyla · kart
+>        (firma · teklif no · tutar para çifti · sahip · durum tarihi · fuar) → teklif sayfası · fuar süzgeci · Open pipeline + Signed sayaçları ·
+>        New quote. *İşaretli:* Lead · Contacted · Replied · Qualified aşamaları · Weighted pipeline · Win rate · Sort · kartta m² / şehir / "next step".
+>     4. **Teklif** (`sales-quote.html`, set düzeni: solda kâğıt, sağda ray) — mantık ve uçlar AYNEN; *eklenen bağlı öğe:* durum zaman çizelgesi
+>        (Drafted · Sent · Signed / Declined · Contract — tarihler tekliften). *İşaretli:* Subject · Payment terms (teklifte alan yok) · "Viewed by
+>        the customer" · Send reminder · Your commission.
+>     5. **Companies + firma kartı** (`sales-customers.html` başlığı · `sales-customer.html`) — *bağlı:* kimlik · sayaçlar (Open deals · Contracts ·
+>        Since · Lifetime value — yalnız GÖRÜNEN tutarlar) · uyarılar (başka sahibin açık teklifi · açık bakiye · kilitli tutar) · **dört sekme
+>        Contracts · Quotes · Contacts · Communication** · New quote · Log activity · Edit. **YET-26:** kullanıcının kontrat kapsamı dışındaki
+>        kontrat satırı fuar · edisyon · m² · temsilci gösterir; AF no / tutar / ödenen / bakiye alanı yanıtta YOK → ekranda kilit. Dış kullanıcıda
+>        EUR / ödeme sütunu çizilmez. *İşaretli:* çalışan sayısı · rozetler (VIP / cluster) · Affiliations · Quick facts · Ops liaison.
+>   - **Menü (BM v4 yama-3 §4.5):** Sales › Overview = My work · Mail · Pipeline · Performance · My commissions; grup + öğe adı **Companies** (eski
+>     "Customers" — dosya adları ve öğe kimlikleri değişmedi). Mail `communications.read`, Pipeline `sales.read` ister.
+>   - Kabuk: `ui2IsExternal` (yalnız UX — iç kullanıcı bağlantısını dış oturumda çizmemek; duvar sunucuda).
+> - **BULGU + DÜZELTME:**
+>   - **(testte, commit'ten önce)** "gönderilenler"de kapsam düşmesini teklif sahibini değiştirerek sınamak istedim — DB kuralı gönderilmiş teklifin
+>     içeriğini (sahibi dahil) kilitliyor; senaryo oluşamıyor. Test gerçek duvarı sınar: başkasının e-posta içeriği 409, satır başı yeniden sınama
+>     kodda.
+>   - **(yerel önizlemede)** dış kullanıcıda My work convert kuyruğunu çağırıp beklenen 409'u konsola düşürüyordu → dış oturumda çağrılmaz, bölüm
+>     nedenini yazar.
+>   - **(`2418198`, staging turunda ölçüldü)** Project kullanıcısının Sales girişi (takip izni yok) 409 + boş sayfaydı (davranış B3.4'ten beri
+>     böyleydi; Y5 ile Project Sales sekmesini daha çok kullanacak). Artık takip ucu çağrılmaz, o bölüm nedenini yazar, teklif kuyrukları çalışır;
+>     Mail izin yoksa çağırmadan nedenini yazar.
+> - **Ön-onaylı SAPMA'lar (YON-18) + 🔶:**
+>   1. **Üç sunucu eklemesi bağlantı haritası §6 tablosunda YOKTU** (harita "B" demişti ama uç eksikti: bugün vadeli bayrağı · durum toplamı ·
+>      hedefsiz "gönderilenler" listesi). Üçü de mevcut tablolar üstünde okuma / alan eklemesi; mevcut yanıt alanları değişmedi.
+>   2. **Mail "thread görünümü"** = seçili e-postanın ait olduğu kaydın iletişim günlüğü kartı (mevcut bileşen), posta istemcisi tarzı konu
+>      zinciri değil — ELIZA'da gelen e-posta olmadığı için zincirin karşı tarafı yok. 🔶
+>   3. **Mail yalnız KENDİ gönderdiklerini listeler** (Owner dahil — ekip görünümü yok). Kaydın yazışması kayıt sayfasında kapsamla görünür. 🔶
+>      yönetici görünümü istenirse.
+>   4. **Pipeline'da lead aşamaları tek işaretli kutu** (dört aşama, her biri işaretli) — panoda dört boş sütun olarak değil; gerçek dört sütun
+>      yatay kaydırmasız görünsün diye.
+>   5. **Firma kartı:** varsayılan sekme Contracts · Edit sekme değil, düğmeden açılan görünüm · Quotes sekmesinde tutar sütunu yok (kart ucu
+>      teklif toplamı vermiyor) · "UX brief" bulunamadığı için sekmeler mevcut veriden ([defter:2026-11-11 PAKET UI-TAM 1. PARÇA] ❓).
+>   6. **"Approvals" kuyruğunun adı "Signed — contract pending"** (imzalı, kontratı oluşmamış teklifler; ELIZA'da onay akışı yok).
+>   7. **Hüküm beklentileri (test satırında hüküm yorumu):** `test_ui2_ledger_pages` U3 Sales alt menü 7 → 9 bağlantı (Mail · Pipeline) ·
+>      `test_b1_catalog_customers` U1 (liste başlığı Companies; kişiler `?tab=contacts` sekmesinde).
+> - **Commit:** LEENA eliza-next **`5032a1f`** (`3dab8f9` üstünde; 20 dosya) · düzeltme **`2418198`** (2 dosya). **PUSH: CC (YON-19).** Migration YOK.
+> - **Ölçülenler:**
+>   - **Test (`5032a1f`):** PG 14 tam zincir **929 / 929 · 58 suite · başarısız 0** (914 + yeni suite `test_ui_tam_sales` 13 + `test_ui_tam` A1–A2).
+>     Yeni suite GERÇEK uçlarla (e-posta echo): `due_today` (bugün / geçmiş / ileri; kapatınca sayaçtan düşer) · `sums_eur` elle hesaplanan
+>     değerlerde (3240,00 · 4104,00 + 2160,00 = 6264,00 · 5832,00 · 1620,00 · açık 9504,00; kursuz USD teklif `no_eur` 1) · `?expo_id=` · kapsam
+>     (başka satışçı 0; Owner fuarın tümü) · "gönderilenler" (kendi 4 gönderimi; elle girilen e-posta kaydı listede yok; Owner yalnız kendi 1'i;
+>     başka satışçı 0; klasörler [fuar 2 → 3, fuar 3 → 1]) · kapı (Finance 409 · klasik oturum 409 · token yok 401) · başkasının e-posta içeriği
+>     409 · **ekranlar tarayıcısız çizimle, Sales (own) oturumunda hatasız** · **firma kartında başka satışçının kontratının AF numarası ve tutarı
+>     sayfa metninde YOK, "Locked" var** · TABAN. `2418198` sonrası ilgili 4 suite yeniden (72 test, başarısız 0); tam zincir yeniden koşulmadı
+>     (değişen iki sayfa — sonraki parçanın zincirinde).
+>   - **Yerel önizleme (test DB + fikstür, Playwright; staging'de Sales verisi YOK):** Sales (own) 10 sayfa 1440 px + 5 sayfa 390 px · dış kullanıcı ·
+>     Owner · başka satışçı · Project — hepsi yatay taşma 0; konsol hatası yalnız kapsam dışı kayda doğrudan gidişte (beklenen 409). Pano toplamı
+>     ekranda sunucu değeriyle (€9504.00 = 1 taslak + 2 gönderilmiş).
+>   - **Staging API (deploy `5032a1f`; 4 araç hesabı × 6 çağrı):** cc-owner + cc-staging (Sales) hepsi 200 — sayaçlar 0, `sums_eur.open` 0.00,
+>     gönderilen 0 (staging'de firma / teklif / takip / yazışma kaydı yok) · cc-project takip + gönderilenler 409 `PERMISSION_REQUIRED` (şablonda
+>     kod yok), teklif + firma + kuyruk 200 · cc-external convert kuyruğu 409 `EXTERNAL_NOT_ALLOWED`, diğerleri 200.
+>   - **Staging ekran turu (4 hesap × 5 ekran × 1440 px + 390 px = 40 yükleme):** hepsi 200 · yatay taşma 0 · işaret sayıları My work 10 · Mail 9 ·
+>     Pipeline 11. Konsol hatası yalnız cc-project'te My work + Mail (4 yükleme — izinsiz uç çağrısı); `2418198` sonrası cc-project
+>     1440 px: My work 200 · işaret 10 · konsol hatası 0 (teklif kuyrukları çizildi) · Mail 200 · konsol hatası 0 (izin notu).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:**
+>   - **Sales ekranlarının VERİLİ hali staging'de** (kayıt 0; staging'e iş verisi yazılmaz) — verili çizim yalnız test DB'sinde (test + yerel
+>     önizleme). Firma kartı / teklif / Mail okuma bölmesi staging'de açılmadı (açılacak kayıt yok).
+>   - Yazma akışları bu parçada DEĞİŞMEDİ ve yeniden ölçülmedi (teklif gönder / imzala / takip kapat — mevcut suite'lerde).
+>   - 500 teklif tavanında pano (`truncated` uyarısı yalnız kod) · 200 e-posta tavanında Mail · gerçek (echo olmayan) teslim durumları ekranda.
+>   - Sales Operations ve Office Manager şablonlarıyla ekran turu (araç hesabı yok; uçların kapsamı mevcut suite'lerde).
+>   - Tarayıcısız çizim ilk çizimi ölçer; sonradan dolan bölümler (My work teklif kuyrukları, Mail okuma bölmesi) Playwright'la yerelde görüldü,
+>     zincirde yok.
+>   - PG 17 koşusu + ikinci PG 14 koşusu (paket sonunda) · Render API anahtarı ("anahtar bekliyor").
+> - **Bilinçle yapılmayanlar:** Gmail / gelen e-posta bağlantısı · Compose / Reply (sistemden gönderim yalnız teklif Send — ILT-01) · lead
+>   aşamaları (LIFFY'de) · kişi / çeyrek hedefi · teklifte konu / ödeme koşulu alanı · e-posta açılma izleme · teklifte komisyon önizlemesi ·
+>   firma ilişkileri / rozetleri · ekip Mail görünümü · klasik sayfalar · staging'e iş verisi · canlıya herhangi bir şey.
+> - **Kuyruğa (işaretlenenler; S / M / L):** gelen e-posta + Inbox / Awaiting reply (L — ayrı karar) · Compose / Reply (L) · lead aşamaları (L) ·
+>   kişi / çeyrek hedefi (M) · teklif konu + ödeme koşulu alanları (S) · Send reminder (S) · "Viewed" izleme (M) · komisyon önizlemesi (M — YET-23) ·
+>   Weighted pipeline / Win rate (M) · Sort (S) · kart m² / şehir (S) · Mail etiketleri (S) · firma rozetleri / çalışan sayısı / Quick facts (S) ·
+>   Affiliations (M) · Ops liaison (S) · Filters (S) · takvim (M) · canlı yenileme (S).
+> - **→ Sıradaki:** Finance (War Room · Contract düzeni · Commissions · Ledger · Expo Finance).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
