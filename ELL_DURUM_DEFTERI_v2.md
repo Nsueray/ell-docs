@@ -9675,6 +9675,117 @@
 >   tablosu bayat · G22 klasik "Copy URL".
 > - **→ Sıradaki:** Suer'in gezisi → tek "değişiklik listesi" (UI-TAM-2, Y7). Anahtar gelirse Y9 kurulumu (dosya + izin listesi + sarmalayıcı).
 
+> ## ✅ 2026-11-11 — PAKET UI-TAM KAPANIŞ EKİ: ÖRNEK VERİ + YAZMA AKIŞLARININ STAGING KANITI — Sales 5 ekran + Ledger artık DOLU · 4 teklif gönderimi 4 / 4 `echo` (staging'den e-posta ÇIKMADI) · turda bulunan 2 küçük hata düzeltildi (LEENA eliza-next `bb9e721`) · **947 / 947** · canlıya HİÇBİR ŞEY gitmedi
+>
+> - **Kriter kaynağı:** Orchestrator 11 Kas "UI-TAM KAPANIŞ EKİ" (YON-18 ön-onaylı SAPMA; dayanak KES-01 "örnek veri CC'nin" + [defter:2026-11-05 B1-b
+>   STAGING'DE] emsali) · kapanış kaydının iki ÖLÇÜLMEDİ satırı ("Sales ekranlarının verili hali staging'de" · "staging'e iş verisi yazan hiçbir akış
+>   koşulmadı") [defter:2026-11-11 PAKET UI-TAM KAPANIŞ].
+> - **Ne yapıldı:** yalnız STAGING. Örnek veri uygulamanın KENDİ uçlarıyla, araç hesaplarıyla girildi (doğrudan SQL ile iş verisi YOK; DB yalnız
+>   salt-okunur doğrulama için açıldı). Her kayıt adında / notunda görünür "SAMPLE"; firma ve kişi adları açıkça kurgusal; e-postalar `.example`
+>   alanında. Yeni ekran / uç YOK. İki yeni yazma akışı (Add visitor · operasyon alanları) EKRANDAN (Playwright) koşuldu; diğerleri uçtan girilip
+>   ekranda doğrulandı.
+> - **1. adım — ÖNCE ÖLÇ (yazmadan):**
+>   - **EMAIL_ECHO etkin (ölçüldü):** staging kuyruğunda kopya anından (son `sent` satırı 2026-11-09 18:06 UTC) beri `sent` 0 · `pending` 0 ·
+>     `processing` 0; yalnız 6 `echo` satırı (10–11 Kas, süreç içi güvenlik tik'inin bildirimleri — aynı ortam değişkeni, `utils/security.js:74`).
+>     Teklif gönderimi tek yoldan kuyruğa yazar (`utils/salesMail.js:82` → echo'da `echo`; worker yalnız `pending` okur). İlk gönderimde yanıtın
+>     `echo: true` olması şart koşuldu (değilse koşu duracaktı) — 4 / 4 `echo`, `sent_at` boş.
+>   - **"Add visitor" kuyruğa HİÇBİR ŞEY yazmaz:** `POST /api/visitors/manual` gövdesinde kuyruk / gönderim çağrısı yok (`routes/visitors.js:542-642`);
+>     koşudan sonra kuyrukta ziyaretçiye ait satır 0. Ekrandaki "The registration e-mail follows the classic rules" notu doğru: klasik kural = bu
+>     yolda e-posta yok.
+>   - **Çalışan worker var mı — GÖZLENEMEDİ:** Render servis listesi okunamıyor (API anahtarı yok). DB'de worker izi yok (yukarıdaki sayılar; aktif
+>     kampanya 0). Koşulan akışların hiçbiri `pending` satırı yazmadı → gönderim riski doğmadı.
+>   - **Önkoşul bulgusu:** `sellable_territories` staging'de BOŞ → "tabloda satırı olmayan ofis satamaz" (B2.4) gereği HER teklif açılışı 422
+>     `TERRITORY_NOT_SELLABLE` (ilk deneme böyle reddedildi — beklenen davranış). Satışa açık fuar yalnız 2 ve ikisi de test fuarı (id 15 "test" ·
+>     id 11 "[TEST] Reactivation Smoke Test Expo"); tüzel kişi 0.
+> - **Akış tablosu (beklenen · görülen · kanıt):**
+>
+>   | Akış (hesap) | Beklenen | Görülen | Kanıt |
+>   |---|---|---|---|
+>   | Firma + kişi aç (cc-staging) | 201 · denetim satırı | 4 firma · 6 kişi | `company.create` 4 · `contact.create` 6 · Companies listesinde 4 satır |
+>   | Bölge tablosu boşken teklif (cc-staging) | ret | 422 `TERRITORY_NOT_SELLABLE` | yanıt metni "The Turkey office may not sell to customers in TR…" |
+>   | Bölge satırı ekle (cc-owner, Admin › Territories ucu) | 201 · denetim | Turkey × TR · Turkey × DE | `territory.add` 2 |
+>   | Taslak teklif + satır ekle (cc-staging) | draft · toplam sunucudan | QTR-200000 · 2 satır · 3860.00 EUR | `quote.create` · `quote.line_add` 2 · Pipeline "Draft 1 · €3860.00" |
+>   | Teklif gönder + takip iste (cc-staging) | sent · PDF donar · kuyruk `echo` · günlük satırı · takip | QTR-200001 · 8130.00 EUR · `echo` · takip 14 Kas | `quote.send` · kuyruk 785268 `echo` · Mail satırı "ECHO — STAGING, NOT SENT" |
+>   | Gönder → imzala → kontrat (cc-staging; m² kalemi + RF) | signed · kontrat doğar · SR yok → needs_agent | QTR-200002 → kontrat 7899 `ATR-200002` · 24 m² · 10190.00 EUR | `quote.sign` · convert kaydı `succeeded` 201 · Convert queue "Converted 2 · Needs agent 2" |
+>   | Gönder → reddet (cc-staging) | declined | QTR-200003 · 5030.00 EUR | `quote.decline` · Quotes listesi |
+>   | İkinci teklif → kontrat (cc-owner, aynı firma) | kontrat başka sahibin | QTR-200004 → kontrat 7900 `ATR-200004` · 15 m² · 6370.00 EUR | `quote.sign` · convert `succeeded` |
+>   | Firma kartı kilidi (cc-staging gözünden, YET-26) | başka sahibin kontratı: fuar · m² görünür, tutar kilitli | "Contracts 2 · 1 locked" · satır `Locked · test · 15.00 · Locked · Locked` · kendi kontratı tutarıyla | ekran görüntüsü (CC makinesinde, yol raporda) · cc-owner'da kilit 0 |
+>   | Takip ekle (cc-staging) | 201 · vadesi geçen / bugün türetilir | 6 + gönderimden 1 = 7 açık (2 vadesi geçmiş · 1 bugün) | `followup.create` 6 · My Work "7 · 2 overdue · 1 due today" |
+>   | İletişim notu (cc-staging) | 201 · yalnız eklenir | 6 kayıt (note 2 · phone 2 · meeting 1 · whatsapp 1) + 4 e-posta satırı | `communication.create` 6 |
+>   | Hesap aç ×2 (cc-owner) | 201 | "SAMPLE Bank EUR" · "SAMPLE Cash TRY" | Ledger sekmeleri · **denetim satırı YOK** (ledger uçları `audit_log`'a yazmaz; kayıtta `created_by`) |
+>   | Transfer EUR → TRY (cc-owner) | iki bacak · kur donar | 1000.00 EUR çıkış · 50 000.00 TRY giriş (1000.00 EUR) | `ledger_entries` 2 satır · ekstrede "Transfer to SAMPLE Cash TRY" |
+>   | Gider (cc-owner; TRY hesabı, fuar 15) | gider + ledger hareketi | 12 500.00 TRY = 250.00 EUR | `expenses` +1 · `ledger_entries` 1 · Expenses listesi |
+>   | Operasyon alanları — EKRANDAN (cc-owner, kontrat 7899) | kaydedilir · denetim · m² / tutar değişmez | "Saved: stand_type, catalogue_page, stand_design_link, transportation, free_sqm." | `contract.operations_update` (5 alan, eski → yeni) · sayfa yeniden okuyunca aynı değerler |
+>   | Add visitor — EKRANDAN (cc-project, fuar 15) | kayıt · QR · listeye döner · e-posta YOK | 200 · ziyaretçi 114725 (source `manual` · origin `manual_entry`) | `visitors` satırı · kuyrukta ziyaretçi satırı 0 · **denetim satırı YOK** (klasik uç) |
+>
+> - **ETKİ KAYDI — örnek kayıtlar (staging tazelemesine kadar KALIR; kimlikler CC makinesinde `state.json`'da da durur):**
+>   - Firma 4 (id 1–4: SAMPLE Demo Cooling Co. · SAMPLE Example Ventilation GmbH · SAMPLE Fictional Heat Pumps A.S. · SAMPLE Placeholder Insulation
+>     GmbH; ofis Turkey; ülke TR · DE · TR · DE) · kişi 6 (id 1–6).
+>   - Teklif 5: QTR-200000 draft · QTR-200001 sent · QTR-200002 signed · QTR-200003 declined (cc-staging) · QTR-200004 signed (cc-owner) — satır 12 ·
+>     donmuş PDF 4. Kontrat 2: id 7899 `ATR-200002` · id 7900 `ATR-200004` (ikisi de fuar 15, kontrat tarihi 2026-11-11, temsilcisiz).
+>   - Takip 7 (id 1–7) · iletişim günlüğü 10 (id 1–10; 4'ü gönderim satırı) · kuyruk satırı 4 (id 785268–785271, `echo`) · convert kaydı 4.
+>   - Hesap 2 (id 1 · 2) · transfer 1 (id 1) · gider 1 (id 2951) · ledger hareketi 3 (id 1–3). Ziyaretçi 1 (id 114725, fuar 15).
+>   - Bölge satırı 2 (id 1 · 2: Turkey × TR · Turkey × DE) — örnek değil AYAR satırı; aşağıda SAPMA.
+>   - Denetim kaydı 10 → 49 (+39). Değişmeyenler (ölçüldü): ödeme 2361 · komisyon ödemesi 187 · check-in 46 233 · tüzel kişi 0 · tedarikçi 296.
+> - **Rapor sayılarına etki (staging, önce → sonra):**
+>   - **R2 2026** (1 Oca – 11 Kas): kontrat 518 → **520** · m² 5926.00 → **5965.00** (+39) · brüt 1 488 246.50 → **1 504 806.50** EUR (+16 560.00 = 10 190 +
+>     6 370) · net 1 338 609.22 → 1 354 469.22 (+15 860.00; iki kayıt ücreti 700 net dışı) · "temsilcisiz" 1 → 3. Önceki yıl sütunu değişmedi.
+>   - **R7:** fuar 15 "test" 1 kontrat · 0.00 m² · 18 600.00 → **3 kontrat · 39.00 m² · 35 160.00** · fuar 11 değişmedi (teklifleri kontrata dönmedi) ·
+>     son 7 gün aktivite boş → cc-staging 18 · cc-owner 3 · milat öncesi kova değişmedi. War Room "Cash position" 0 hesap → **−250.00 EUR** (örnek
+>     hesaplara para girişi yok: giriş yalnız tahsilatla olur, örnek tahsilat istenmedi) · "Commission accrued" değişmedi (215 774.77 · 18 temsilci).
+>   - **TABAN** 342.00 · **TABAN-2 EŞİT** — örnek veriden SONRA ve düzeltme deploy'undan sonra ölçüldü; kayıt 72 migration (değişmedi).
+> - **Turda bulunan 2 küçük hata — düzeltildi (LEENA eliza-next `bb9e721`; PUSH: CC, yalnız `eliza-next`; canlı `main` DEĞİŞMEDİ `2db0131`):**
+>   1. **Giriş hedefi:** Sales ve Project oturumu girişte Finance › Summary'ye düşüp "Could not load summary (HTTP 409 … ledger.read)" görüyordu
+>      (ölçüm: cc-staging + cc-project; Owner ve dış kullanıcı etkilenmiyordu). Kök neden: alanın kök sayfası kendi izin kodunu taşıyan bir nav öğesi,
+>      giriş kuralı yalnız alanın görünürlüğüne bakıyordu. Düzeltme `shell.js` `ui2Landing`: oturumun AÇAMAYACAĞI sayfaya inilmez — sıradaki
+>      açılabilir alan kökü; yoksa eski kural. Sonuç (staging, ölçüldü): Sales → My Work · Project → Operations Dashboard · Owner → War Room · dış
+>      kullanıcı → My Work; Finance ve klasik oturum Finance › Summary'de (testte). Rol başına "ana sayfa" haritası TANIMLANMADI (🔶).
+>   2. **Erişim logu kimliği (GUV-04):** ui2 kullanıcısının `dualAuth` yolundaki çağrıları (`/api/visitors/paginated` · `/import` · `/manual`)
+>      `organizer`, EMS kapısının kendi retleri `anonymous` yazılıyordu — "Add visitor"ı KİMİN yaptığı logdan okunamıyordu. Düzeltme
+>      `middleware/emsGate.js`: kullanıcı satırı bulununca `req.userSession` işaretlenir (erişim logu zaten okuyordu). Staging'de ölçüldü: aynı uç
+>      Project 200 · Sales 409 · dış kullanıcı 409 — üçü de `user` + doğru hesap. Klasik organizer token'ı `organizer` (değişmedi).
+>   - Test: `test_ui_tam.js` 24 → 25 (S6) · `test_ui_tam_access.js` 25 → 26 (G7). Mevcut beklenti DEĞİŞMEDİ (hüküm gerektiren güncelleme yok).
+> - **SAPMA + açık 🔶 (Sentez'e):**
+>   1. **SAPMA — bölge tablosuna 2 satır (Turkey × TR · DE), cc-owner, Admin › Territories ucuyla:** örnek teklifin ÖNKOŞULU (tablo boşken hiçbir
+>      teklif açılmıyor). Örnek veri değil ayar satırı; adında "SAMPLE" taşıyamaz; aynı uçtan kaldırılabilir (`territory.remove`). KES-01'in
+>      "ana veri Suer'in" çizgisine en yakın adım bu — geri alınması istenirse tek çağrı. Yan fayda: Suer kendi gezisinde TR / DE firmasına teklif
+>      açabilir; başka ülke için Admin › Territories'e satır eklemesi gerekir.
+>   2. **🔶 Rol başına giriş sayfası:** düzeltme yalnız "açılamayan sayfaya inme"yi kapattı; Sales / Project / Finance / Office Manager için istenen
+>      ana sayfa kararı yok.
+>   3. **🔶 EMS yazımında iz:** "Add visitor" `audit_log`'a yazmıyor (klasik uç) ve `visitors` tablosunda `created_by` yok — düzeltmeden sonra iz
+>      yalnız erişim logunda (90 gün saklama). Kalıcı iz istenirse karar gerekir (kapanış kaydının 1. 🔶'siyle birlikte).
+>   4. **🔶 Ledger yazımları `audit_log`'a yazmıyor** (hesap · transfer · gider): değişmezlik + `created_by` var, denetim satırı yok — YET-08 kapsamı mı?
+>   5. Örnek hesaplar eksi bakiyede görünür (yukarıda); "€-250.00" yazımı (eksi işareti simgeden sonra) cila kalemi.
+> - **Ölçülenler:**
+>   - **Test zinciri (HEAD `bb9e721` içeriği):** PG 14.18 koşu 1 **947 / 947** · koşu 2 **947 / 947** · PG 17.10 **947 / 947** — 59 suite, başarısız 0.
+>   - **Dolu ekran turu (deploy `8820199`, 1440 px, salt gezinme):** cc-staging 12 · cc-owner 15 · cc-project 5 · cc-external 3 = 35 yükleme — HTTP 200
+>     dışı 0 · yatay taşma 0 · konsol hatası 0 · hata durumu 0. Dış kullanıcı örnek veriyi GÖRMÜYOR (My Work · Companies · Pipeline'da "SAMPLE" 0 —
+>     duvar aynen).
+>   - **Düzeltme sonrası regresyon turu (deploy `bb9e721`):** 4 araç hesabı × 21 ekran + oturumsuz Login = **85 yükleme × 2 genişlik (1440 px · 390 px)** —
+>     HTTP 200 dışı 0 · **yatay taşma 0 / 170** · konsol hatası genişlik başına 7 = bilinen 3 (cc-staging'in kapsam dışı Finance sayfaları — kapanıştakiyle
+>     aynı) + 4 GEÇİCİ: iki genişlik AYNI ANDA koşturuldu (CC'nin tercihi — süre) ve 15:05:58 UTC'de staging iki isteğe 500 verdi
+>     (`/api/user-auth/me` · `/api/operations/expos`; erişim logunda 2 satır); o anda açılan 4 sayfa hata durumu gösterdi (1440: cc-project Mobile
+>     Visitor List · Settings — 390: cc-owner Exhibitor Detail · Floor plan). Dördü yük yokken 2'şer kez yeniden yüklendi: hata durumu 0 · konsol
+>     hatası 0. 500'ün nedeni GÖZLENEMEDİ (sunucu logu yok); bilinen aday: havuz `utils/db.js` max 20 · bağlantı bekleme 5 sn + klasik ağır uçlar
+>     (6–13 sn). Giriş hedefi (4 hesap) ve erişim logu kimliği (3 çağrı) ayrıca ölçüldü (yukarıda).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:**
+>   - Çalışan e-posta worker'ı var mı (Render API anahtarı yok — "anahtar bekliyor"); `pending` satırını kimin işleyeceği sınanmadı (satır yazılmadı).
+>   - Sales akışlarının (firma · teklif · gönder · imzala · reddet · takip · not) ve Ledger akışlarının EKRAN FORMLARI staging'de sürülmedi — uçtan
+>     girildi, ekranda sonuç doğrulandı. Ekrandan sürülen iki akış: Add visitor · operasyon alanları.
+>   - Suer'in kendi Owner hesabıyla görünüm (CC o hesapla girmez): Mail yalnız kişinin KENDİ gönderdiklerini listeler → Suer'de boş açılır
+>     (kapanış kaydının 6. 🔶'si); dolu hali cc-staging gözünden ekran görüntüsünde.
+>   - Ödeme / tahsilat · komisyon ödemesi · teklifin ret sonrası yeniden açılması · convert reddi ("signed — pending") · EUR dışı teklif (kur donması) ·
+>     transfer / gider ters kaydı — örnek kapsamında koşulmadı.
+>   - Telefondan check-in (🔶, Sentez'de) · kamera ile QR · gerçek telefon · Chromium dışı tarayıcı · Office Manager / Finance / Sales Operations
+>     şablonlarıyla tur (araç hesabı yok) · klasik ekranların içi.
+>   - "Bugün" kovası gün değişince kayar: takipler 11 · 12 · 13 · 14 Kas vadeli girildi (dört gün boyunca "today" dolu), sonrası vadesi geçmişe düşer.
+> - **Bilinçle yapılmayanlar:** canlı her şey · doğrudan SQL ile iş verisi · gerçek kişi / firma adı · tüzel kişi / banka bilgisi (KES-01) · göçmüş
+>   (Zoho) kayıtlara dokunmak (operasyon alanları yalnız örnek kontratta) · örnek tahsilat · telefondan check-in yazımı · yeni ekran / uç · gerçek
+>   fuara ziyaretçi eklemek (test fuarı 15 seçildi) · staging tazeleme (Y6).
+> - **Kuyruğa:** rol başına giriş sayfası (S) · EMS yazımlarında kalıcı iz — `audit_log` ya da `created_by` (M) · ledger yazımlarının denetimi (S) ·
+>   eksi tutar yazımı "€-250.00" (S) · eşzamanlı yükte 500 (iki tarayıcı turu aynı anda) — klasik ağır uçların EXPLAIN dilimiyle birlikte (M).
+> - **→ Sıradaki:** Suer'in gezisi → tek "değişiklik listesi" (UI-TAM-2, Y7). Render API anahtarı adımları raporda yeniden verildi (Y9).
+
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
