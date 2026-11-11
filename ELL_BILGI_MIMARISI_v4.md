@@ -1,5 +1,12 @@
 # ELL — Bilgi Mimarisi (Information Architecture) v4
 
+> ## v4 YAMASI-3 (2026-11-11 — UI-ÖNCE FAZI, PAKET UI-TAM; UI-01 "önce BM, sonra ekran")
+>
+> Tasarım setinin 22 ürün ekranı ui2'ye giriyor (Sentez 11 Kas, kütük YON-21 eki Y1). **§4.5 eklendi:** üç alanın (Operations · Sales · Finance)
+> ui2 alt menüleri + kabuk (arama · Settings › Appearance · Design preview) + On-site (mobil) grubu + klasik köprüler. §2 / §3 / §4 bölüm
+> tabloları hedef IA olarak AYNEN; §3'teki "Sales domain = LIFFY" dili ADR-023 ile zaten yamalıydı (satış çekirdeği LEENA'da).
+> Ekran başına öğe → uç eşlemesi: `docs/audits/UI_TAM_BAGLANTI_HARITASI_2026-11-11.md`. [defter:2026-11-11 SENTEZ 11 Kas: UI-ÖNCE FAZI — KURALLAR (Y1–Y10) + PAKET UI-TAM]
+
 > ## v4 YAMASI-2 (2026-11-05 — ADR-023 BİRLEŞME; UI-01 "önce BM, sonra ekran")
 >
 > LIFFY'nin satış çekirdeği LEENA'ya birleşiyor. **LEENA'ya giren (B1):** katalog · firma / kişi (B1-a, 5 Kas) · teklif · çevirme · kuyruk
@@ -253,6 +260,35 @@ ui2'de Finance alt menüsü yukarıdaki bölümlerden türetilir ve **dört grup
 - Sales sekmesinin boş-durumu kalktı: Customers grubu + Handoff. Admin › Catalog Owner işidir (sistem şablonlarına verilmedi); satış
   ekranları kataloğu `sales.read` ile okur.
 - LIFFY'de kalan bölümler (§3: İşim / Action Screen · Prospecting · pipeline board) kesime kadar LIFFY'dedir; nihai kader envanter sonrası (ADR-023).
+
+### 4.5 ui2 alt menüleri — üç alan + kabuk (yama-3 — Sentez 11 Kas, PAKET UI-TAM; UI-01)
+
+Kaynak: tasarım setinin alt menüleri (Ops: Dashboard · Exhibitor · Floor plan · Visitor & Access · Communications · Reports — §2 ile aynı altı
+bölüm; Sales: My Work · Pipeline · Quotes · Companies · Mail — §3; Finance: War Room · Contract · Commissions · Ledger · Expo Finance — §4).
+Mevcut ui2 ekranları yerinde kalır; set ekranı olan bölümde set düzeni, olmayan mevcut ekran aynı grupta.
+
+| ui2 alanı · grubu | dayandığı bölüm | ekranlar |
+|---|---|---|
+| **Operations** · Expo (kök = seçilen fuar — §2 "Kök = Expo bağlamı") | §2 bölüm 1–6 | **Dashboard** (fuar seçimi + geri sayım + kartlar + 8 son tarih) · **Exhibitors** (fuarın kontratları) + **Exhibitor** detayı (kontrat + firma + kişi + iletişim + operasyon alanları) · **Floor plan** (salonlar + stand sayıları; editör klasikte) · **Visitor & Access** (ziyaretçiler · konferanslar · terminaller · rozetler · formlar) · **Communications** (kampanyalar · şablonlar) · **Reports** |
+| Operations · Expos | §2 bölüm 1 "Expolar" | **Expos** — tüm fuar portföyü + fuar satış detayı (R3) (mevcut) |
+| Operations · On-site | §2 bölüm 4 (check-in konsolu) — sahadaki telefon ekranları | **On-site home** · **Scan** · **Visitors** (390 px; terminal akışı değişmez, terminal ekranları klasikte) |
+| **Sales** · Overview | §3 bölüm 1 "İşim / Action Screen" | **My Work** (takipler · cevapsız teklifler · imzalı-çevrilmemiş) · **Mail** (v1: sistemden giden e-postalar + iletişim günlüğü) · **Pipeline** (teklif durum panosu — §3 bölüm 4) · Performance · My commissions (mevcut) |
+| Sales · Quotes | §3 bölüm 4 | **Quotes** + teklif düzenleyici (set düzeni) |
+| Sales · Companies | §3 bölüm 3 "Contacts & Companies" | **Companies** (eski "Customers") + **firma kartı** (kimlik · uyarılar · düğmeler · dört sekme; YET-26) |
+| Sales · Contracts · Handoff | §4.2 / §4.4 | mevcut (Contracts · Convert queue) |
+| **Finance** · Executive | §4 bölüm 1 | **War Room** (= R7 Owner ana sayfası, set düzeni) · Summary · Collections · Payments by agent (mevcut) |
+| Finance · Contracts | §4 bölüm 2 + 4 | Contracts + **Contract** (set düzeni) · **Commissions** (temsilciler + ekstre — ui2 ikizi artık VAR; §4.1'deki "ui2 ikizi yok" notu bununla kapanır) · Agents (mevcut) |
+| Finance · Money | §4 bölüm 3 | **Ledger** (hesaplar + ekstre tek ekran) · Accounts · Transfers · Expenses · Suppliers · Drafts (mevcut) |
+| Finance · Expo Finance | §4 bölüm 5 | **Expo Finance** (fuar P&L tek ekran: bütçe + R3 gelir + gider) · Expo budget (mevcut) |
+| Finance · Reports | §4.1 | mevcut |
+| **Kabuk** (alan değil) | §6 "Global search" · "Settings → Appearance" | **Search** (tek kutu, üst çubukta — Sales alt menüsünden kabuğa taşındı; her kullanıcı kendi kapsamıyla, RAP-16) · **Settings › Appearance** (setteki 15 tema, kişi bazlı) · **Design preview** (prototip katmanı — GEÇİCİ, faz sonunda kalkar) · zil (bildirim merkezi — yalnız yer) |
+
+- **Mobile ayrı alan DEĞİLDİR:** setin üç mobil ekranı Operations'ın On-site grubudur (aynı oturum, aynı yetki — `operations.read`); terminal anahtarıyla
+  açılan klasik ekranlar (tarayıcı · rozet · konferans tarayıcı · lead scanner) ui2 kabuğuna taşınmaz (envanter §5).
+- **Klasik köprüler** (GEÇİCİ; `nav.json` `legacy` öğeleri, menüde ayrı satır değil — ilgili ui2 ekranının içinden açılır): fuar ana kaydı düzenleme ·
+  kat planı editörü · ziyaretçi listesi / içe aktarma · form editörü · terminaller · rozet şablonları · e-posta şablonları / kampanya / gönderim ·
+  kayıt + check-in raporları · konferans oturumları · kontrat ödeme girişi · komisyon raporu · temsilci düzenleme.
+- **Intelligence** ui2'de hâlâ YOK. **Admin** alt menüsü değişmedi.
 
 ## 5. "Sales agent nerede?" — net cevap
 
