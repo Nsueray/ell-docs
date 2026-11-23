@@ -11094,6 +11094,89 @@
 >   (özet ucunun sunucu süresi) · design-preview'daki serif aile (prototip faz sonunda kalkar).
 > - **→ Sıradaki:** 4. parça — menü ekleri E1–E4.
 >
+> ## ✅ 2026-11-23 — PAKET KABUK-2 4. PARÇA: MENÜ EKLERİ E1–E4 (staging) — Finance › Money › Payments · Operations › Expo › Stand drawings · Company › Catalogue + katalog kopyasının kaynağı (firmanın herhangi bir fuardaki son ONAYLI kataloğu) · Exhibitors listesinde toplu "Send e-mail" (LEENA eliza-next `200b4d3` · `aaa2efb` · `6a9d837` · belge `5641945`) · 1208 / 1208
+>
+> - **Kriter kaynağı:** [defter:2026-11-23 SENTEZ 23 Kas: PAKET KABUK-2] — blok (E) E1–E4 + SIRA §4. Orchestrator UYGULAMA U5. Menü YAPISI KALDI
+>   (Suer 23 Kas); yalnız iki menü satırı, bir sekme ve bir toplu eylem eklendi — taşıma yok.
+> - **Ne yapıldı:**
+>   - **E1 — Finance › Money › Payments (RAP-12 "gelir listesi = payments'ın ikinci görünümü"; REQ 2.6-09):** çağıranın kontrat kapsamındaki TÜM
+>     ödemeler, en yeni üstte, YALNIZ OKUMA. Kaynak `payments` — yeni tablo / ikinci hesap YOK. Süzgeç: ofis · fuar · tarih aralığı · yöntem. Sayfalama
+>     sunucuda. Toplamlar süzülen kümenin TAMAMI üzerinden ve R5 (Payments by agent) ile AYNI ifade biçimiyle — aynı ay için iki toplam EŞİT (test +
+>     staging). Ters kayıt KENDİ satırıdır (eksi, işaretli); ters çevrilen ödeme de işaretlidir — hiçbir şey gizlenmez / netleştirilmez. Dışa aktarım
+>     (CSV / Excel) = süzülen kümenin tamamı, AYNI kapsam + AYNI süzgeçle; sayılar bugünkü dışa aktarım deseninde (ham). Kontratsız ödemeler (göç
+>     denetim satırları) kapsamlanamaz: sayılır (tüm kapsam, süzgeçsiz), listelenmez — R5'teki kural. Yeni izin YOK (mevcut kontrat okuma izni + kapsam).
+>     Alt başlık: "Counterpart of the Revenues list in Zoho". Satır → kontrat.
+>   - **E2 — Operations › Expo › Stand drawings:** fuarın stand gönderimleri (EXH-07), salt okunur liste — exhibitor başına SON sürüm: firma · stand no
+>     (ELLE yazılan alan; kat planına bağ yok) · stand tipi · o sürümün dosyaları · sürüm · durum · gönderen / tarih. Durum, Exhibitors listesiyle AYNI
+>     türetimden (aynı yükleyici → aynı kapı, aynı kapsam; ikinci tanım yok). İndirme MEVCUT oturumlu dosya ucundan (ek olarak iner, tür tahmini kapalı).
+>     Yükleme / onay eylemi YOK (onay Exhibitor detail'de). Kontraktöre yayın paketi (KP-22) YOK.
+>   - **E3 — Company › Catalogue sekmesi + katalog kopyasının kaynağı (EXH-08 eki):** "firmanın onaylı katalog kayıtları" TEK tanım: firmanın (firma
+>     KİMLİĞİYLE; ad benzerliğiyle değil) ana kontratlarının katalog gönderim sürümlerinden, o sürümün SON inceleme olayı "onaylandı" olanlar. Sekme: son
+>     onaylı kayıt (alanlar formun sırasıyla · logo · ürün fotoğrafları) + geçmiş (fuar · tarih · sürüm); salt okunur; görünürlük Company sayfasının
+>     bugünkü kapısı ve kapsamı; yanıtta tutar yok. Sekmenin dosyası yalnız O firmanın ONAYLI kaydına aitse verilir.
+>     **Exhibitor Page:** katalog kopyasının kaynağı artık AYNI firmanın HERHANGİ bir fuardaki son ONAYLI kaydı ("önceki edisyon" şartı kalktı). TASLAK
+>     olarak gelir (tam o onaylı sürüm; görseller yeni kontrata kopyalanır); kendiliğinden gönderilmez / onaylanmaz. Firma bağı olmayan kontratta ve
+>     co-exhibitor'da kaynak YOK. Düğme ve kopya sonrası mesaj kaynağı adıyla söyler (EN kaynak + FR / TR sözlükleri).
+>   - **E4 — Exhibitors listesi toplu eylemi "Send e-mail" (EXH-16 eki):** seçili exhibitor'lara zincirin DÖRT e-postasından biri — Build-up &
+>     Breakdown · Stand · Catalogue · Badge (Welcome ve Payment Reminder bu eylemde YOK: sunucu reddeder). Önizleme SUNUCUDA zorunlu: ilk çağrı
+>     önizlemedir (kime gider · ilk gönderim ve Resend AYRI sayılır · kim atlanır, NEDEN); onay çağrısı üç sayıyı da yinelemezse HİÇBİR ŞEY gitmez.
+>     Atlananlar ve nedenleri: Excluded · alıcısı yok · stand tipi boş (Stand) · VIA AGENCY co-exhibitor (adresine hiçbir şey gitmez; acentenin kendi
+>     satırı alır) · bölümü bitmiş · fuar bitmiş / kontrat kapalı · kapsam dışı. Zincir e-postasıdır, hatırlatma DEĞİL: günde 1 hatırlatma kuralı bu eylemi
+>     kapsamaz (iki yönde de testli); fuarın otomatik zinciri KAPALIYKEN de serbest (insan + önizleme). Gönderim zincir kaydına düşer (satır "Sent";
+>     otomatik aynı e-posta sonradan tekrar gitmez); daha önce gitmişe gönderim "resend" olarak kaydolur. Stand e-postası stand tipine göre metin seçer.
+>   - **Menü:** `Payments` Money grubunda Ledger'dan sonra · `Stand drawings` Expo grubunda setin ekranlarından sonra; ikisi de mevcut kontrat okuma
+>     izniyle, yalnız iç kullanıcıya; iki düzende de açılıyor.
+>   - **Y2 — bağlı / işaretli:** dört ek de BAĞLI (gerçek uçtan okur); bu parçada eklenen "Not connected yet" işareti YOK.
+> - **Commit:** LEENA eliza-next `200b4d3` (E1–E4) · `aaa2efb` (atlanan "stopped" satırı NEDEN durduğunu söyler) · `6a9d837` (iki boş mesaj şeridi) ·
+>   `5641945` (CLAUDE.md + docs/ux) — PUSH: CC, yalnız `eliza-next`; canlı `main` DEĞİŞMEDİ `2db0131`. Bu parçada migration YOK (kayıt **79**).
+> - **Ölçülenler:**
+>   - **Test:** `200b4d3` temiz çalışma kopyasında 69 suite · **1208 / 1208**. Yeni suite `test_kabuk2_menu.js` (25): P1–P8 (kapı · liste · toplam = R5 ·
+>     süzgeç · sayfalama · kapsam + dışa aktarımda kapsam · dışa aktarım = tüm küme · ekran) · D1–D4 · C1–C6 (aynı adlı iki firma dahil) · M1–M6 · TABAN.
+>   - **Staging (uç düzeyi):** Payments — tüm kapsamda 1.980 ödeme · 6 ters kayıt · kontratsız 381 (sayılıyor, listelenmiyor) · Kasım 2026 için liste
+>     toplamı = R5 toplamı (5 ödeme; ikisi EŞİT) · aynı ayın dışa aktarımı 5 satır = liste toplamı · sunucu süresi ortanca **476 ms** (33 istek) ·
+>     `cc-project` tüm kapsam · `cc-staging` (Sales, kapsam "kendi") 0 satır · `cc-external` 409. Stand drawings (SAMPLE fuarı) — 6 exhibitor, 4 satır
+>     (2'si co-exhibitor), 1 satırda 2 dosya, indirme ek olarak + tür tahmini kapalı · sunucu ortanca **222 ms** · `cc-staging` 409. Company ›
+>     Catalogue (SAMPLE firması) — son onaylı kayıt v1, logo + 3 fotoğraf, dosya ek olarak; sunucu ortanca 10 ms. Exhibitor Page (SAMPLE Space-only
+>     linki) — "kopyalanabilir: evet", kaynak fuar adıyla. Toplu e-posta — dört e-postanın önizlemesi (ilk / resend / atlanan + nedenler) · Welcome 400 ·
+>     önizleme sayıları olmadan onay 409 · Sales 409 · önizleme / retlerle kuyruğa hiçbir şey girmedi · TEK bir SAMPLE exhibitor'a gönderim: 1 e-posta,
+>     kuyrukta "echo" (dışarı çıkmadı), zincir kaydı "resend".
+>   - **Ekranlar (staging, `cc-owner`):** dört yeni yer 1440 / 1280 / 390 px'te açıldı — sayfa taşması 0 · konsol hatası 0; ekran görüntüleri repo dışı.
+>   - **Firma bağı (E3 için ölçüm, staging):** 3.953 ana kontratın **3.950'sinde firma bağı YOK** (göçmüş kontratlar; 3.370'i Active) — bağ yalnız yeni
+>     akıştan (teklif → kontrat) doğan kontratlarda var. Co-exhibitor kaydında firma bağı alanı hiç yok (staging'de 2 co-exhibitor).
+>   - **TABAN:** 342.00 EUR OK · TABAN-2 EŞİT.
+> - **SAPMA (hepsi ön-onaylı — YON-18):**
+>   1. **Hükümle değişen test beklentileri:** `test_ui_tam` F1 (E1: Money'de Ledger'dan sonra Payments) · O1 (E2: Expo grubuna Stand drawings) ·
+>      `test_ui_tam2_page` S26 (E3: onaylanmamış gönderim artık kopya kaynağı DEĞİL) — test satırlarında hüküm numarasıyla.
+>   2. **E3 okuması (🔶):** "ön dolum" kendiliğinden DEĞİL — mevcut EXH-08 düzeneği (exhibitor düğmeye basar → taslak) korundu, yalnız KAYNAK değişti.
+>      Gerekçe: kopya dosya satırı üretir (kota) ve bölümü "To do"dan "Draft"a çevirir; exhibitor'ın eylemi olmadan hiçbir şey değişmesin.
+>   3. **E3 — göçmüş kontratlar (🔶):** kaynak firma KİMLİĞİYLE bulunduğundan, firma bağı olmayan kontratta (bugün neredeyse hepsi) düğme çıkmaz ve
+>      Company sekmesi boştur. Ad benzerliğiyle eşleme YAPILMADI (hüküm). Göçmüş kontratlara firma bağının kurulması ayrı iş → kuyruk.
+>   4. **E3 — iptal edilmiş kontratın kaydı** kaynak sayılmaz (değiştirilen kuraldaki gibi). **Kota:** kopyalanan logo + 3 fotoğraf yeni kontratın 150 MB
+>      sınırına sayılır; kopyanın kendisi kotaya takılmaz (mevcut desen — U1-g).
+>   5. **E3 — sekmenin dosya ucu:** onaylı katalog dosyası için Company kapısının arkasında yeni bir OKUMA ucu açıldı (Sales, proje ekibi dosya ucuna
+>      erişemediği için); yalnız o firmanın onaylı kaydının dosyasını verir.
+>   6. **E4 — seçim ana kontratlardır** (listenin mevcut toplu eylem kuralı: co-exhibitor satırı seçilemez). Sunucu eylemi co-exhibitor satırını kabul
+>      eder (DIRECT → kendi adresine; VIA AGENCY → atlanır, nedeni yazılı — testli); listede co-exhibitor seçimi → kuyruk.
+>   7. **E4 — fuar düzeyi eksik ayar** (ör. ilk gönderim günü yok) satırı Blocked yapar ve elle gönderim de onu atlar (zincirin mevcut kuralı; "zincir
+>      kapalıyken serbest" ayrı şeydir ve geçerli).
+>   8. **E1 okumaları:** Payments kutusunda toplam TAM tutarla (kısa biçim değil — liste Zoho'yla karşılaştırılacak) · uçta satıcı süzgeci de var,
+>      ekranda Sentez'in saydığı dört süzgeç.
+>   9. **STAGING SAMPLE verisi değişti:** SAMPLE fuarı 20 Kas'ta bitmişti → bütün SAMPLE Exhibitor Page'ler salt okunur, zincir satırlarının hepsi
+>      "durdu" idi. Fuarın BÜTÜN tarihleri ürünün kendi uçlarından (Owner araç hesabı; denetim kaydına düşer) **14 gün ileri** alındı: fuar 18–20 Kas
+>      → 2–4 Ara · build-up 16 / 17 Kas → 30 Kas / 1 Ara · katalog ve stand son tarihi 14 → 28 Kas · ödeme son tarihi 13 → 27 Kas · rozet son tarihi
+>      16 → 30 Kas · söküm 21 Kas → 5 Ara. O fuarda otomatik zincir AÇIK olduğundan staging zamanlayıcısı ardından 5 e-postayı kuyruğa "echo" olarak
+>      park etti (dışarı çıkmadı). Canlıya dokunulmadı.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** gerçek e-posta (staging'de yalnız echo) · ofis kapsamlı gerçek bir kullanıcıyla Payments (araç hesaplarında Office
+>   Manager yok — ofis kapsamı ve dışa aktarımda kapsam yalnız test paketinde ölçüldü) · büyük fuarda Stand drawings süresi (aynı yükleyici: 179 kontratlı
+>   fuarda Exhibitors listesinin sunucu ortancası 1,1 sn) · çok kontratlı firmada Catalogue sekmesi · Exhibitor Page'de kopya düğmesine TARAYICIDAN basmak
+>   (uç durumu ölçüldü; SAMPLE'da düğme Suer'in turu için basılmadan bırakıldı) · 300'den çok seçili satır (sunucu sınırı 300) · Safari / Firefox.
+> - **Bilinçle yapılmayanlar:** yükleme / onay (Stand drawings) · kontraktöre yayın paketi · ad benzerliğiyle firma eşleme · kendiliğinden ön dolum ·
+>   Welcome / Payment Reminder'ın toplu gönderimi · rozet iptali · yeni izin kodu · Suer'in iki açık kararı (sipariş komisyon oranı · Payment Reminder'da
+>   tutar) — dokunulmadı.
+> - **Kuyruğa:** göçmüş kontratlara firma bağı (E3'ün kaynağı onsuz boş) · listede co-exhibitor satırının seçilebilmesi · kontraktöre yayın paketi (KP-22) ·
+>   Exhibitors yükleyicisinin büyük fuardaki süresi · fatura / makbuz belge üretimi · Plus Design modülü · Suer'in iki açık kararı.
+> - **→ Sıradaki:** 5. parça — belge (kütük ekleri · UI_FAZI_TAKIP · REQ amendment · UX notu · ADR-023 kesim maddeleri) + kapanış.
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
