@@ -11177,6 +11177,96 @@
 >   Exhibitors yükleyicisinin büyük fuardaki süresi · fatura / makbuz belge üretimi · Plus Design modülü · Suer'in iki açık kararı.
 > - **→ Sıradaki:** 5. parça — belge (kütük ekleri · UI_FAZI_TAKIP · REQ amendment · UX notu · ADR-023 kesim maddeleri) + kapanış.
 >
+> ## ✅ 2026-11-23 — PAKET KABUK-2 5. PARÇA + KAPANIŞ: BELGE (kütük ekleri · UI_FAZI_TAKIP · REQ amendment · UX notu · mockup'lar LEENA'da · ADR-023) + kapanış ölçümleri — PG 14 ×2 + PG 17: 1210 / 1210 · iki hesap × iki düzen × üç genişlik: sayfa taşması 0 · kapanış turunun bulduğu iki kaçak düzeltildi (elle birleştirilen tarihler · font stil dosyasının ikinci gidiş-dönüşü) (LEENA eliza-next `745b8c5` · `e0e9c9f` · belge `7e068f1` · `0af41d7`)
+>
+> - **Kriter kaynağı:** [defter:2026-11-23 SENTEZ 23 Kas: PAKET KABUK-2] — SIRA §5 + KABUL + "Rapor". Orchestrator UYGULAMA U6 · U7 · U9.
+> - **Ne yapıldı:**
+>   - **Kütük (bu commit):** EXH-05 eki (S1) · EXH-08 eki (E3) · EXH-09 eki (S3) · EXH-10 eki (T9: dekont reddi · "contact Finance") · EXH-16 eki (E4 + T9:
+>     "Send all now" · hatırlatma ön dolumu) · EXH-19 eki (T2; eski 🔶 KAPANDI) · EXH grubuna 23 Kas'ın kalan hükümleri (S2 · T3 · T5 · T8) · GUV-06 eki
+>     (dış kaynak yok — ui2 + Exhibitor Page + design-preview) · **UI-08…UI-14** (kabuk · kabukta ortak · bileşen ölçeği · Contracts girişi + tek kaynak +
+>     rol girişi · tek biçimlendirici · font · menü ekleri) · YET eki (T7) · **AD-02** (Plus Design — karar: kesim sonrası). Sentez metni tırnak içinde AYNEN.
+>   - **`docs/UI_FAZI_TAKIP.md`:** Sentez E6 satırı AYNEN · envanterde 6 yeni satır (kabuk · Fonts · Payments · Stand drawings · Company › Catalogue ·
+>     toplu Send e-mail) · T5 satırı ("metin gözden geçirilmedi — EN / FR / TR") · kuyruk · yeni §5: üç mockup'ın adı + sha256 + "LEENA'da".
+>   - **REQ amendment (2026-11-23):** mevcut metne DOKUNULMADI; üstteki amendment bloklarının yanına yeni blok + değişiklik günlüğüne bir satır — Plus
+>     Design kapsam notu (kesim sonrası; AD-02) · fatura / makbuz kuyrukta (8 Eki kararı) · Suer'in iki açık kararı kuyrukta · menü ekleri bilgi olarak.
+>   - **UX notu:** `docs/ux/UX_KABUK-2_TESLIM_NOTU_2026-11-14.md` — prompttaki (2) bölümünden programla alındı (112 satır, AYNEN); başında "REFERANSTIR, kriter
+>     Sentez bloğu".
+>   - **T8 — mockup'lar LEENA'da (private `docs/ux/`):** üç HTML dosyası bayt bayt AYNEN; özetler kopyadan önce, sonra ve commit'teki dosyada ölçüldü —
+>     prompttakilerle AYNI. ell-docs'ta yalnız ad + sha256 (YON-20 taraması değişmedi).
+>   - **T5:** e-posta metni değişiklik özeti LEENA private belgede (her metin dosyasının kendi "kaynak" satırından üretildi; 13 metin, hepsi "gözden
+>     geçirilmedi").
+>   - **ADR-023 kesim maddeleri (23 Kas bloğu):** sayfa anahtarı sırrı değişkeni · 075 dizinleri (kurma süreleriyle) · JIT kapalı · font dosyaları · menü
+>     düzeni kolonu · rol başına giriş · `visitors.created_by` + denetim · S2 saklama yeri (ön koşul) · katalog kopyasının firma bağına bağlı olması.
+>   - **LEENA `CLAUDE.md`:** test sayısı · kabuk / font / menü ekleri bölümleri · T4 istisnası (1. parçada) · biçim kuralına ek · tek istekli stil kuralı.
+>   - **Kapanış turunun bulduğu iki kaçak — düzeltildi:**
+>     1. **Biçim (B3) — elle birleştirilen tarih (`745b8c5`):** SAMPLE fuarı yeniden canlı olunca zincir ekranları günleri ISO biçiminde yazdı ("Sent
+>        2026-11-12" · "next reminder 2026-11-29"). 1. parçanın kaynak taraması dilimleme / sayı biçimlemeyi arıyordu; bir tarih ALANININ metne elle
+>        eklenmesini değil. 12 satır tek biçimlendiriciye bağlandı (Chain status · Exhibitor detail · teklif sayfası) ve kaynak taraması bu yazımı da
+>        reddediyor (eski dosyalarda 12 satırı yakalıyor, düzeltilmiş ağaçta 0).
+>     2. **Hız — font stil dosyasının ikinci gidiş-dönüşü (`e0e9c9f`):** font parçasından beri HER ui2 sayfasında ilk veri isteği 205 ms geç başlıyordu
+>        (gezinmeden sonra ortanca 655 ms; önce 450 ms): token stil dosyası, üretilen font stil dosyasını kendi içinden çağırıyordu — kendi kökenimize
+>        ikinci bir istek, sayfanın betiklerini bekletiyor. Sunucu artık token stil dosyasını font kurallarıyla BİRLİKTE, tek istekte veriyor (aynı
+>        kurallar, aynı yerde; diskteki dosya değişmedi). Sonra: ortanca **453 ms** — gerileme kapandı.
+> - **Commit:** LEENA eliza-next `5641945` (CLAUDE.md + docs/ux) · `745b8c5` (tarih düzeltmesi) · `7e068f1` (belge) · `e0e9c9f` (tek istek) · `0af41d7`
+>   (belge) — PUSH: CC, yalnız `eliza-next`; canlı `main` DEĞİŞMEDİ `2db0131`. ell-docs: bu commit + 2. / 3. / 4. parça kayıtları (aşağıda SAPMA 1).
+> - **Ölçülenler:**
+>   - **Test (yerel; veritabanı oturumu UTC; temiz çalışma kopyası; zincirler TEK TEK):** son başta (`0af41d7`) **PG 14 ×2 + PG 17 → 1210 / 1210**, 69
+>     suite, 0 başarısız. Ara başlarda da üçlü koşu temiz: `5641945` 1208 / 1208 · `745b8c5` 1209 / 1209. Paketin başı 1112 (65 suite) → sonu 1210 (69
+>     suite): +98 test, 4 yeni suite. **TABAN** 342.00 EUR OK · **TABAN-2 EŞİT** · migration kaydı **79** (075 · 076 · 077 bu pakette).
+>   - **Kabuk kapanış turu (staging, `6a9d837`):** `cc-owner` 318 yükleme (53 sayfa × A / B2 × 1440 / 1280 / 390 px) — sayfa taşması 0 · konsol hatası 0 ·
+>     yol 0 hata · etkin satır 0 hata · 36 px altı düğme 0 · "Loading…" 0 · hata durumu 0 · HTTP ≠ 200: 0 · yanlış düzen 0; A → B2 geçişi üç genişlikte
+>     YENİLEMEDEN. `cc-project` 186 yükleme (31 sayfa): aynı sayaçlar 0; konsolda 18 satır = üç sayfada (Collections · Payments by agent · Performance)
+>     satıcı listesi ucunun Project'e kapalı olması (mevcut sunucu duvarı). İçerik genişliği: 1440 px A 1120 · B2 1180 · 1280 px A 960 · B2 1044 · 390 → 390.
+>   - **Kart içi tablo kayması (son):** 1280 px — A'da 1 sayfa (Exhibitors), B2'de 0 · 1440 px — iki düzende 3 sayfa (Commissions · War Room fuar tablosu ·
+>     Exhibitor detail'in kişi listesi). Sayfa taşması her yerde 0.
+>   - **Biçim taraması (staging, `745b8c5`):** 67 sayfa + 28 SAMPLE ekranı — ISO damgası **0** · ayraçsız tutar **0** · "Loading…" 0 · hata durumu 0 ·
+>     taşma 0 · konsol 0 (tek "eksi" eşleşmesi bir kayıt ADI).
+>   - **Süre (staging · `cc-owner` · 1440 px · 67 sayfa × 3 koşu, ortanca; son tur `e0e9c9f`):**
+>
+>     | | 0. parça | 1. parça sonu | kapanış |
+>     |---|---|---|---|
+>     | veri > 2 sn olan sayfa | 23 / 62 | 8 / 62 | **10 / 67** (eski 62 sayfada 9) |
+>     | sunucu ortancası > 1 sn uç | 13 / 87 | 5 / 87 | **5 / 95** |
+>     | hata durumuna düşen yükleme | 20 | 0 | **0** |
+>     | başka kökene istek atan yükleme | — | — | **0 / 201** |
+>     | ilk veri isteği (gezinmeden sonra, ms) | 449 | 450 | **453** (düzeltmeden önce 655) |
+>     | tur süresi (dk) | 16,4 | 7,0 | **7,5** |
+>     | War Room | 10.888 | 2.108 | **2.288** (koşular 2.503 · 1.927 · 2.288) |
+>     | Contracts listesi | 9.195 | 1.287 | **1.064** |
+>     | finance-drafts | 15.471 | 791 | **817** |
+>     | finance-expo | 15.453 | 1.788 | **2.286** |
+>     | ops-reports | 19.598 | 12.260 | **13.487** |
+>     | Payments (yeni) | — | — | **1.260** (uç sunucuda 551 ms) |
+>     | Stand drawings (yeni; 179 kontratlı fuar) | — | — | **2.268** (uç sunucuda 859 ms) |
+>     | `/api/expos` (sunucu, ms) | 8.246 | 10 | **12** |
+>
+>   - **KABUL "5 sayfada veri ≤ 2 sn":** kapanış turunda Contracts ✓ · finance-drafts ✓ · **finance-expo 2,29 sn ✗** (1. parça sonunda 1,79 ✓) · **War Room
+>     2,29 sn ✗** · **ops-reports 13,5 sn ✗**. finance-expo ve War Room 2 sn'nin çevresinde oynuyor (turdan tura 1,6–2,7 sn): uçları 0,1 çekirdekli
+>     staging veritabanında aynı anda koşunca uzuyor — fuar detayı ucu tek başına çağrıldığında sunucuda ≈ 0,3–0,6 sn. ops-reports klasik rapor ucu
+>     (Sentez kararı, 1. parça 🔶 3).
+>   - **Menü sayımı (U1-b, son):** nav.json 102 öğe = **52 menü sayfası** (Operations 12 · Finance 18 · Admin 13 · Sales 9) + 16 alt sayfa + 25 klasik köprü
+>     + 14 kabuk öğesi (başta 99 öğe / 49 menü sayfası; eklenen: Fonts · Payments · Stand drawings). ui2 ekran dosyası 77 = nav.json yolu 77; istisna 0.
+> - **SAPMA (hepsi ön-onaylı — YON-18):**
+>   1. **Defter sırası:** 2., 3. ve 4. parçanın KODU parça parça commit + push edildi ve staging'de ölçüldü; ama defter kayıtları 4. parçanın kodundan
+>      SONRA yazıldı ve ell-docs'a bu commit'le birlikte (parça başına ayrı commit olarak) push edildi. U0 "her parça = … + defter kaydı" sırasından sapma.
+>   2. **Kapanışta kod değişti** (yukarıdaki iki kaçak): kapanış koşuları (PG 14 ×2 + PG 17) her yeni başta yinelendi; son sayılar son baştandır.
+>   3. **Font parçası hız hedefini bir süre BOZDU** (U4 "font dosyaları hız hedefini bozmaz"): `b2fe20d` → `e0e9c9f` arasında staging'de her sayfa ≈ 0,2 sn
+>      yavaştı; kapanış turu yakaladı, düzeltildi.
+>   4. **Staging SAMPLE fuarının tarihleri 14 gün ileri alındı** (4. parça kaydı SAPMA 9) — SAMPLE Exhibitor Page'ler 4 Aralık'tan sonra yeniden salt okunur olur.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** canlı (her şey — U0) · Safari · Firefox · gerçek telefon · Finance / Office Manager / Sales Operations hesabıyla tur
+>   (araç hesabı yok) · gerçek e-posta (yalnız echo) · `e0e9c9f` sonrası iki düzenli tam kabuk turu yinelenmedi (o commit yalnız stil dosyasının TESLİMİNİ
+>   değiştirir; süre turunun 201 yüklemesinde hata / taşma 0 ve bir ekran görüntüsüne bakıldı) · tarayıcının stil dosyasını koşullu istekle yeniden
+>   kullanıp kullanmadığı (elle atılan koşullu istek 200 döndü; sıkıştırılmış aktarım ≈ 7 KB) · aracın "iki satıra bölünen sayı" sayacı 14–16 sayfada
+>   bileşik hücreleri sayıyor: War Room'da bakıldı (tek bir tutar bölünmüyor), diğer sayfalar tek tek bakılmadı · boş önbellekli ilk ziyaret.
+> - **Bilinçle yapılmayanlar:** canlıda her şey · plan / uyku ayarı · klasik rapor ucu · klasik sayfa gövdeleri · B1 kabuk · kural motoru · floor plan ·
+>   Plus Design · fatura / makbuz · telefon tasarımı · rozet iptali · T7-4'ün hesap yazımları · Suer'in iki açık kararı.
+> - **Kuyruğa (paketin tamamı):** klasik rapor ucu (Sentez kararı) · War Room / Expo Finance ≤ 2 sn (ortak `facts` kuruluşu, küçük veritabanı) · klasik
+>   check-in listesi · kuyruk sayaçları · Exhibitors yükleyicisi (büyük fuar) · klasik 43 sayfanın Google Fonts'u (Sentez) · Fonts izni (Sentez) · göçmüş
+>   kontratlara firma bağı · listede co-exhibitor seçimi · 1440 px'te üç geniş tablo (UX) · hesap menüsüne "Sign out" · izin yokken satıcı listesinin
+>   istenmemesi · B1 kabuk · telefon tasarımı · kontraktöre yayın paketi · rozet iptali · Plus Design · fatura / makbuz · Suer'in iki açık kararı · takvim
+>   bağımlı test tarihleri (Aralık) · e-posta ve arayüz metinlerinin gözden geçirilmesi (EN / FR / TR).
+> - **→ Sıradaki:** Suer turu (EN SONDA, sınırsız) → tek "değişiklik listesi".
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**

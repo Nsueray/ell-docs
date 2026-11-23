@@ -270,6 +270,8 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 
 - **AD-01** (A, Suer 9 Eyl) — **ELIZA** = platformun ürün/marka adı (kullanıcının gördüğü); **ELL** = yalnız iç kod adı (repo/dosya adlarında yaşar); eski bağımsız sistem = **"eliza-legacy"**. LEENA Finance sekmesi yalnız "Finance"; nav'da `liffy`/`leena` küçük etiket. ⚠️ **CUTOFF: Bu kayıttan ÖNCEKİ tüm defter/kod kayıtlarında ELIZA = eliza-legacy.** [defter:2026-09-09 SUER HÜKÜMLERİ] · **Not (8 Eki):** eliza-legacy emekli = üzerine inşa edilmez; birleşmeye kadar okuma aracı olarak serviste. [defter:2026-10-08 SENTEZ KAPANIŞ KARARLARI + 034 (dal)] · **Düzeltme (Sentez 26 Eki, YON-01 — "emekli" kaydı yanlıştı):** eliza-legacy **CANLI okuma aracıdır** (Zoho aynası + WhatsApp botu); üzerine inşa edilmez; kapatma **Paket 6**'da, yeni sistem aynı cevapları verince (Suer kararı 8 Eki zaten böyleydi). Paket 4'ün kaynağı ELIZA DB DEĞİL, Zoho API. LEENA `CLAUDE.md:44` aynı düzeltmeyi taşır. [defter:2026-10-26 SENTEZ: PAKET 4 KRİTER TURU] · **Not (ADR-023, 5 Kas):** LIFFY = madencilik / kampanya aracı (GEÇİCİ); satış çekirdeği LEENA'ya birleşir; nihai kader envanter sonrası karar. [defter:2026-11-05 MİMARİ KARAR: BİRLEŞME] · **Not (Sentez 5 Kas, karar 6):** ui2 Sales sekmesinin `liffy` alt etiketi B1-b'de KALKTI (nav.json `sub: ""`); Operations `leena` etiketi aynen. [defter:2026-11-05 B1-b: TEKLİF · SEND · SIGN]
 
+- **AD-02** (Suer 23 Kas — Sentez 23 Kas PAKET KABUK-2 E5; ID'yi CC tahsis etti) — **Plus Design** = ayrı modülün adı (web talepleri + tasarım sözleşmeleri; Suer: "sonraki aşama, ayrı modül, belki ayrı servis"). **Karar: kesim sonrası.** REQ'e kapsam notu (amendment 2026-11-23). [defter:2026-11-23 SENTEZ 23 Kas: PAKET KABUK-2]
+
 ### YZ — yapay zeka (yeni grup, 2026-10-21)
 
 - **YZ-01** (Suer, 21 Eki) — Çalışma anındaki yapay zeka iş verisi YAZMAZ, yalnız okur; ürettiği her şey insan onayıyla girer; yapay zekasız yapılabilen yapay zekasız yapılır. Claude Code'un inşa zincirinde kod/migration yazması kapsam DIŞI. [defter:2026-10-21 TEKNOLOJİ GÜNCELLEME TURU]
@@ -317,6 +319,11 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 - **YET-24** (Sentez 6 Kas karar 8) — nav.json öğesinde `internalOnly: true` → dış oturumda (/me `external`) alt menüde GİZLİ; ilk uygulama Sales › Convert queue. Yalnız UX — duvar sunucuda (authMiddleware izin listesi `/api/convert-queue`'yu içermez → 409). Dış kullanıcının imzası kendi kontrat listesine düşer. [defter:2026-11-06 SENTEZ: PROMPT 2 KABUL + 8 KARAR + PROMPT 3 DİREKTİFİ] · [defter:2026-11-06 PROMPT 3 (1)+(2): YET-KAPSAM-2 + TÜZEL KİŞİLİK]
 - **YET-25** (Sentez 6 Kas karar 1 + REQ amendment 6 Kas ek satırı) — Dış duvar izin listesiyle YETERLİ; EMS / ziyaretçi uçlarının İÇ kullanıcı kapıları ayrı dilim — AÇIK. Veri girişi yapan freelancer da hesapla girer, DAR şablonla (genel form YOK) — REQ 297 ikinci kez SUPERSEDED; şablonun içeriği (kod / kapsam) ayrı dilim — AÇIK. [defter:2026-11-06 SENTEZ: PROMPT 2 KABUL + 8 KARAR + PROMPT 3 DİREKTİFİ] · ✅ **EMS İÇ KAPISI KAPANDI (staging; Sentez 11 Kas PAKET UI-TAM §2 — "EMS iç kapıları YET-25 bu pakette KAPANIR — iç kullanıcı operations.read"):** `middleware/emsGate.js`, `index.js`'te 23 klasik EMS bağlamasının + satır içi `GET /api/templates`'in önünde; rota dosyaları değişmedi. İç kullanıcı (`user_id` taşıyan oturum) `operations.read` ister (Owner kısa devre; şablon: Project all · Office Manager office — EMS kaydında ofis boyutu yok, kod kapıyı açar); **Finance · Sales · Sales Operations 409 `PERMISSION_REQUIRED`**. DEĞİŞMEYENLER: klasik organizer token'ı (DB'ye gidilmez, aynı yanıt — testle) · terminal / call-center anahtarı · kimliksiz uçlar · servis imzası · EMS-01 fuar sahipliği · dış duvar (YET-15) — dış ve pasif kullanıcı artık `dualAuth` JWT yolunda da (`/paginated` · `/import` · `/manual`) reddedilir. İstisna: `GET /api/expos` (fuar listesi) iç kullanıcıya açık referans okumasıdır (Finance / Sales ekranlarının seçim listesi — YET-21 "referans listeleri açık" emsali; ön-onaylı SAPMA). **Yazma:** kayıt defterinde `operations.write` YOK → yazım uçları da `operations.read` ile (ön-onaylı, 🔶 Sentez: ayrı yazma kodu + ofissiz kayıtta Office Manager kapsamı). Veri-girişi freelancer şablonu AÇIK kalır. Canlıya kesimde (ADR-023 maddesi). [defter:2026-11-11 PAKET UI-TAM 2. PARÇA: YETKİ + TERCİH]
 - **YET-26** (Suer kararı 11 Kas — Sentez 11 Kas PAKET UI-TAM §3 "Companies", AYNEN; ID Sentez'den) — "firma kartı (…): başka satışçının kontratı fuar · edisyon · m² ile görünür, TUTAR KİLİTLİ — Suer kararı 11 Kas, kütüğe YET-26 adayı; "tutarı görsün" kişi başı ezme." Uygulama: `GET /api/customers/:id/card` (`sales.read` + firma okunabilir). Kullanıcının KONTRAT kapsamı (`contracts.read` — YET-03) dışındaki kontrat yalnız fuar · edisyon · m² (+ temsilci) taşır; tutar / AF / durum alanı yanıtta YOK, satır `locked: true` (YET-23 deseni — SUNUCUDA süzülür), ekranda kilit. Sayaçlar yalnız GÖRÜNEN tutarlardan; kilitli kontrat sayısı ayrıca döner (RAP-02). Kilidi açan: yeni kod **`company_amounts.read`** (070; alan sales; HİÇBİR şablonda yok — yalnız kişi başı ezme) ya da Owner. Dış kullanıcı (YET-15 tavanı AYNEN — genişletme = ADR): kartta yalnız KENDİ kontratları, başkasınınki kilitli satır olarak da gelmez (ön-onaylı, 🔶). Kartın dört sekmesi mevcut verinin sekmeleri (Contracts · Quotes · Contacts · Communication) — "UX brief'i" defter / kütük / sette BULUNAMADI (ön-onaylı SAPMA, 🔶). [defter:2026-11-11 PAKET UI-TAM 2. PARÇA: YETKİ + TERCİH]
+  - **YET eki (T7 — Sentez 23 Kas PAKET KABUK-2, AYNEN):** "(2) rol başına giriş: Owner → War Room · Finance → War Room · Project ve Office Manager → Ops
+    Dashboard · Sales → My Work · dış kullanıcı → My Work · (3) ui2'den Add visitor + check-in audit_log'a; `visitors.created_by` migration · (4) değişmez
+    olay satırları için created_by YETER; değişebilir ayar yazımları audit_log'a". Giriş için izin EKLENMEZ (oturumun açamadığı hedef atlanır). (4)'ün hesap
+    yazımları kısmı bu pakette uygulanmadı (kuyruk); paketin kendi kurum ayarı (Fonts) denetim kaydına yazar ve mevcut `reference.write` iznine bağlıdır
+    (yeni izin kodu açılmadı — 🔶). [defter:2026-11-23 SENTEZ 23 Kas: PAKET KABUK-2]
 - **YET — AÇIK (Prompt 3):** ~~EMS iç kapıları (YET-25)~~ (KAPANDI 11 Kas — YET-25) · veri-girişi freelancer şablonu (YET-25) · "Komisyonlarım" ayrı ekranı (UI kuyruğu) · ofis süzgeçli ledger özeti / nakit öngörü / komisyon raporu (Paket 5a) · klasik giriş kullanıcılarının ui2'ye geçişi (karar 3 — SEM-05 notu, ADR-023 kesim maddesi). [defter:2026-11-06 PROMPT 3 (1)+(2): YET-KAPSAM-2 + TÜZEL KİŞİLİK] · **"Komisyonlarım" YAPILDI** (UI kuyruğu Q3, `fa24645`, 11 Kas — Sales › Overview › My commissions + `GET /api/sales-agents/mine`; staging) [defter:2026-11-11 EKSİK ENVANTERİ …]
 
 ### REF — referans veri (yeni grup, 2026-11-05, Prompt 2)
@@ -353,6 +360,13 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 - **UI-07** (Suer 11 Kas — Sentez 11 Kas Y2 "Gerçek veri kuralı", AYNEN; ID'yi CC tahsis etti) — "taslaklardaki uydurma sayı / ad / tarih ÜRÜNDE KALMAZ. Her öğe ya gerçek uçtan okur ya da üstünde görünür "henüz bağlı değil" işareti taşır (öğe bazında; sayfa bazında değil). Ölü düğme yok: düğme ya iş yapar ya işaretlidir. Defterde ekran başına "bağlı / işaretli" listesi." Uygulama: işaret TEK bileşen (`components.js`, ekran metni İngilizce "Not connected yet" — UI dili kuralı); set sayfası kopyalanıp içine veri bağlanmaz — DÜZEN setten, bileşen `components.js`'ten (UI-03); işaretlenen her öğe kuyruğa (ne · hangi ekran · S/M/L). Prototip katmanı (YON-21 eki Y3) ürün sayfalarından AYRIDIR ve bu kuralın dışındadır (şeritli, faz sonunda kaldırılır). [defter:2026-11-11 SENTEZ 11 Kas: UI-ÖNCE FAZI — KURALLAR (Y1–Y10) + PAKET UI-TAM]
 - **AÇIK SORULAR — KAPANDI** (Sentez 22 Eki): taslaklar = gider taslakları → Money · Intelligence ui2'de YOK · Commissions & Agents → Contracts grubu, ui2 ikizi yok (UI-1 adayı). [defter:2026-10-22 UI-0 KRİTERLERİ]
 - **Not (Suer 26 Eki — UI-1 kuyruğu):** Expenses / Drafts formunda kategori ve tip İKİ ayrı kutu (bugün tek "KATEGORİ / Tip" listesi). [defter:2026-10-26 PAKET 3 CANLIDA] · **YAPILDI** (UI kuyruğu Q1, `eliza-next` `ee28499`, 11 Kas — staging). UI kuyruğunun tek listesi: `docs/audits/EKSIK_ENVANTERI_2026-11-11.md` §4 [defter:2026-11-11 EKSİK ENVANTERİ …]
+- **UI-08** (Suer 14 Kas + 23 Kas — Sentez 23 Kas PAKET KABUK-2 C1, AYNEN; ID'leri UI-08…UI-14 CC tahsis etti) — KABUK: "İki düzen, TEK kabuk: A (modüller solda, sayfalar solda) · B2 (modüller üstte, sayfalar solda). B1 (açılır menü) YAPILMAZ, kuyruk. Düzen = kullanıcı ayarı (hesap menüsü › "Menu layout"), varsayılan A. Her kullanıcı kendi seçer. UX mockup'ı referans; token'lar ui2 tokens.css'ten, mockup CSS'i kopyalanmaz." [defter:2026-11-23 SENTEZ 23 Kas: PAKET KABUK-2]
+- **UI-09** (Sentez 23 Kas C2, AYNEN) — KABUKTA ORTAK: "nerede olduğum (yol) her sayfada · Operations'ta fuar seçici kabukta · arama ⌘K · zil · hesap menüsü (Settings · Menu layout · Design preview buraya iner, üst çubuktan kalkar) · modül içi sayfa listesi daraltılabilir · dar ekranda (< 900 px) sol liste çekmeceye dönüşür; 390 px'te yatay taşma yok (UI-0 kuralı)." [defter:2026-11-23 SENTEZ 23 Kas: PAKET KABUK-2]
+- **UI-10** (Sentez 23 Kas C3, AYNEN) — BİLEŞEN ÖLÇEĞİ (tüm ui2, Exhibitor detail dahil): "düğme ≥ 36 px, üç kademe (birincil/ikincil/üçüncül), ikon + metin · kart ve tablo başlıkları normal yazı (mono caps yalnız meta bilgide) · yükleme = iskelet, "Loading…" metni yok · "Not connected yet" küçük gri işaret, KALKMAZ (Y2) · boş durum = tek cümle + düğme · koyu "In review · ours" çipi mevcut token'larla. 15 tema çalışmaya devam eder". Exhibitor Page (müşteri yüzü) bu ölçeği almaz (Orchestrator okuması). [defter:2026-11-23 SENTEZ 23 Kas: PAKET KABUK-2]
+- **UI-11** (Sentez 23 Kas C4 · C5 · T7-2, AYNEN) — "Contracts" menü girişi rolle: "Sales → Sales › Contracts; diğerleri → Finance › Contracts." · "nav.json + shell.js + components.js tek kaynak: 30+ ekranın HİÇBİRİ kendi menü/kabuk kodunu taşımaz — iki yönlü test" · rol başına giriş: "Owner → War Room · Finance → War Room · Project ve Office Manager → Ops Dashboard · Sales → My Work · dış kullanıcı → My Work"; kurallar nav.json'da, ekran kodunda değil. [defter:2026-11-23 SENTEZ 23 Kas: PAKET KABUK-2]
+- **UI-12** (Sentez 23 Kas B3, AYNEN) — TEK BİÇİMLENDİRİCİ (components.js): "tablo/detay tam, binlik virgül, 2 ondalık (€1,520,776.50) · −€250.00 · özet kutusunda kısa (€1.5M · €934K; üstüne gelince tam) · tarih "17 May 2026" · ISO damgası ekranda yok". Yalnız gösterim: API değerleri, hesaplar ve dışa aktarımın verdiği sayı değişmez. [defter:2026-11-23 SENTEZ 23 Kas: PAKET KABUK-2]
+- **UI-13** (Suer 18 Kas — Sentez 23 Kas D1–D3, AYNEN) — FONT: "Kurum geneli font ayarı: Admin › Organization (yeni satır "Fonts"); seçili takım tüm iç ekranlara + Exhibitor Page'e uygulanır; PDF ve e-postalar değişmez. Varsayılan: DM Sans (metin) + DM Mono (rakam/etiket)". Aday listesi: "DM Sans + DM Mono · Space Grotesk + IBM Plex Sans + IBM Plex Mono (tasarım seti) · IBM Plex Sans · Inter · Manrope · Public Sans · Source Sans 3 · Nunito Sans"; "Yalnız seçili takım yüklenir." · "Yeni font eklemek = bir klasör + listeye bir satır" (adımı LEENA `docs/ui/FONTS.md`). [defter:2026-11-23 SENTEZ 23 Kas: PAKET KABUK-2]
+- **UI-14** (Suer 23 Kas — Sentez 23 Kas E + E6, AYNEN) — MENÜ: "YAPI KALIR + EKLER" (taşıma yok): Finance › Money › **Payments** (E1; RAP-12) · Operations › Expo › **Stand drawings** (E2) · Company › **Catalogue** sekmesi (E3) · Exhibitors listesi toplu **Send e-mail** (E4). "23 Kas: menü yapısı Suer'in kararıyla kabul; Yaprak turu: taşıma yok, 6 istek → E1–E5". [defter:2026-11-23 SENTEZ 23 Kas: PAKET KABUK-2]
 
 ### KAT — katalog / quote → kontrat köprüsü (yeni grup, 2026-10-24, Paket 3)
 
@@ -522,6 +536,9 @@ Kesim provası direktifi (KES-01..05) aynen; GUV-04 dilimi provadan önce. Hotfi
   başka kökenden HİÇBİR şey yüklemez; `Referrer-Policy: no-referrer`; fontlar = tasarım setinin 3 ailesi (Space Grotesk · IBM Plex Sans · IBM Plex Mono)
   repoda KENDİ dosyalarımızdan (açık lisans; dosya boyutu raporda) — olmazsa sistem fontu + 🔶. Kendi-dosya fontların ui2 geneline uygulanması →
   UI-DÜZELTME-1 (yavaşlık ölçümüyle birlikte). [defter:2026-11-11 SENTEZ 11 Kas: PAKET UI-TAM-2]
+  - **GUV-06 eki (Sentez 23 Kas PAKET KABUK-2 D2, AYNEN):** "hepsi açık lisans, repodan KENDİ dosyalarımızla; Google Fonts hiçbir yerde kalmaz — GUV-06
+    her yere yayılır". Uygulama: ui2 + Exhibitor Page + design-preview başka kökenden font yüklemez (tek klasör + tek liste; ağ kaydında Google Fonts
+    isteği 0). ui2 DIŞI klasik sayfalar (43 dosya) bu pakette DEĞİŞMEDİ — kapsamı Sentez'e soruldu (🔶). [defter:2026-11-23 PAKET KABUK-2 3. PARÇA]
 
 ### EXH — exhibitor yüzü · proje ekibi ekranları · e-posta zinciri (yeni grup, 2026-11-11, Sentez 11 Kas PAKET UI-TAM-2 + EK-1 + EK-2 + EK-3)
 
@@ -545,6 +562,10 @@ Kesim provası direktifi (KES-01..05) aynen; GUV-04 dilimi provadan önce. Hotfi
   ("ELAN EXPO" team ya da kişi); "Place order" KODLU. Fiyat kuralı: on-site fiyat (+%100) build-up'ın İLK GÜNÜ başlar; ön sipariş build-up'tan önceki
   güne kadar; sayfadan sipariş fuar sonuna kadar açık kalır, build-up'tan itibaren on-site fiyatla. Panel baskı = fiyat listesinde ürün; "tam baskı
   %10" = ayrı ürün (indirimli); baskı görseli siparişe dosya olarak yüklenir.
+  - **EXH-05 eki (S1 — Sentez 23 Kas PAKET KABUK-2 blok A, AYNEN):** "sipariş kontratı KAT-03 ve YET-16 kapılarından MUAF; ofis · tüzel kişi · para birimi ·
+    kur ANA kontrattan miras; ana kontrat Active (Cancelled · Transferred · On Hold → ret, sayfa salt okunur) ve fuar bitişi geçmemiş (B4)." Muafiyet
+    YALNIZ ana kontrat bağı taşıyan sipariş yolunda — olağan kontrat doğumunda iki kapı aynen (iki yönlü test). Okuma (CC): bitiş günü DAHİL sipariş açık.
+    [defter:2026-11-23 SENTEZ 23 Kas: PAKET KABUK-2] · 1. PARÇA
 - **EXH-06** (Suer B5 · C6 · EK-1 4.5 · EK-2 H5 · EK-3 F2) — **Equipped paket kural tablosu**, expo ayarında, SÜRÜMLÜ; biçim (EK-3 F2 — Mimari hattıyla
   TEK tanım, çift tanım yok): kalem = katalog ürünü · ilk alan (m²) · başlangıç adedi · her ek alan (m²) · ek adet · üst sınır (boş = sınırsız). Kural
   değişince mevcut kontratların hakkı kendiliğinden DEĞİŞMEZ (yeni kontratlar yeni sürüm). Ayar ekranı 9 · 12 · 18 · 30 · 60 · 90 m² için sonuç
@@ -563,12 +584,22 @@ Kesim provası direktifi (KES-01..05) aynen; GUV-04 dilimi provadan önce. Hotfi
   yeniden "In review"; deadline sonrası kilit. Yeniden açma = project team eylemi "Reopen until {tarih}" (tarihi project team yazar, öneri +7 gün);
   deadline sonrası "Request changes" aynı pencerede yeniden-açma tarihi ister; History'ye düşer. Deadline'dan önce istenen değişiklik cevapsız kalıp
   deadline geçerse: exhibitor için kilitli, "Changes requested · N gün" + "Reopen until…" (H6).
+  - **EXH-08 eki (E3 — Sentez 23 Kas PAKET KABUK-2 blok E, AYNEN):** "Sales › Companies › Company detail: **Catalogue** sekmesi = firmanın son ONAYLI
+    katalog içeriği + geçmiş (fuar · tarih); Exhibitor Page katalog ön dolumu = firmanın herhangi bir fuardaki son onaylı kataloğu (EXH-08 ek; "önceki
+    edisyon" şartı kalkar); exhibitor düzenler, gönderir." Firma = firma KİMLİĞİ (ad benzerliği DEĞİL — aynı adlı iki firma birbirinin içeriğini almaz);
+    TASLAK olarak gelir, kendiliğinden gönderilmez / onaylanmaz; "onaylı" TEK tanım (sürümün son inceleme olayı onay); firma bağı olmayan kontratta ve
+    co-exhibitor'da ön dolum yok. [defter:2026-11-23 SENTEZ 23 Kas: PAKET KABUK-2] · 4. PARÇA
 - **EXH-09** (Suer B9 · C15) — **Badges**: limit yok; kayıt bugünkü LEENA badge akışıyla (kişi kendi e-postasıyla → QR → masada baskı); kayıt kontrata
   bağlı. Aynı e-posta visitor olarak kayıtlıysa mevcut LEENA davranışı ölçülür, raporlanır; bu pakette değiştirilmez.
+  - **EXH-09 eki (S3 — Sentez 23 Kas, AYNEN):** "S3 = a şimdi, b kuyruk: "Remove from list" + "Removes the person from this list; the badge stays valid —
+    ask the project team to cancel it."; C3 Badges kartında aynı not." Rozet iptali kuyrukta. [defter:2026-11-23 SENTEZ 23 Kas: PAKET KABUK-2] · 1. PARÇA
 - **EXH-10** (C13 · C14 · EK-1 "Varsayımlar KABUL") — **Payment** bölümü KODLA açılır: özet (ana + extra kontratlar TEK tabloda) · vade planı · banka
   bilgisi · dekont bildirimi. Kod girilmeden HİÇBİR tutar görünmez (durum şeridi dahil). Banka bilgisi yalnız kodlu Payment bölümünde; e-postada YOK
   (sahte banka e-postası riski). "I paid — upload receipt" = BİLDİRİM, ödeme kaydı değil (dekont formu kontratı sorar); Finance › Collections'ta
   "receipts to check" listesi + kontrat sayfasında şerit; Finance ödemeyi mevcut akışla kaydeder.
+  - **EXH-10 eki (T9 — Sentez 23 Kas, AYNEN):** "tüzel kişisiz kontratta banka bloğu yok + "Payment details: contact Finance"" · "dekont incelemedeyken
+    Payment job done + Finance reddederse hatırlatma yeniden". Ret eylemi "receipts to check"te (not zorunlu · History); dekont yine ödeme DEĞİLDİR.
+    [defter:2026-11-23 SENTEZ 23 Kas: PAKET KABUK-2] · 1. PARÇA
 - **EXH-11** (C8) — **Build-up & documents**: expo ayarı metin blokları ×3 dil (EN / FR / TR). "Okudum" onayı YOK.
 - **EXH-12** — **Contacts**: expo ortakları; boş rol gizli.
 - **EXH-13** (C1 · C10) — Kodlu eylemler (Payment · Place order): 6 hane · 10 dk geçerli · o tarayıcıda 24 saat açık. Alıcılar = kontratın ana kişisi +
@@ -603,6 +634,12 @@ Kesim provası direktifi (KES-01..05) aynen; GUV-04 dilimi provadan önce. Hotfi
   başlattığı her gönderim (tek e-posta dahil) önizleme → onay; önizlemenin sayılarını taşımayan onay reddedilir · Payment Reminder e-postasında tutar ve
   banka bilgisi YOK · dil eksikse EN'e düşer (Blocked DEĞİL) · işi e-postası gitmeden bitmiş bölümün e-postası gitmez · yerleşik metinler LEENA'da dosya,
   organizatörün kendi sürümü tabloda (bugün boş). Açık okumalar (🔶) defterde [2026-11-12 5. parça].
+  - **EXH-16 eki (E4 + T9 — Sentez 23 Kas, AYNEN):** "Exhibitors listesi toplu eylem: **Send e-mail → Build-up · Stand · Catalogue · Badge** (seçili
+    firmalar; zincir şablonları; Excluded atlanır; önizleme; günde 1 hatırlatma kuralı bu eylemi KAPSAMAZ — zincir e-postası, hatırlatma değil)."
+    Welcome ve Payment Reminder bu eylemde YOK; önizleme sunucuda zorunlu; daha önce gitmişe gönderim = Resend (önizlemede ayrı sayı); zinciri KAPALI fuarda
+    da elle gönderim serbest; VIA AGENCY co-exhibitor'a e-posta gitmez. "Send all now" DÜZELTME (T9): "varsayılan yalnız günü gelmiş satırlar; günü
+    gelmemişler ayrı onay kutusu + sayı". Hatırlatma zamanlaması (T9): "boş = planlanmaz + yeni/kopya expo formunda ön dolu (14 gün önce · 7 günde bir ·
+    son = build-up ilk günü)". [defter:2026-11-23 SENTEZ 23 Kas: PAKET KABUK-2] · 1. PARÇA · 4. PARÇA
 - **EXH-17** (Suer B8) — Kural motoru = İLERİDE (project team kodsuz kural + şablon tanımlayabilmeli); bu pakette "Communications › Rules" listesi
   yerleşik satırlarla SALT OKUMA, işaretli. **§5 (12 Kas):** 12 yerleşik satır (6 zincir e-postası · hatırlatma kalıbı · 5 sistem e-postası); değerler
   gerçek (zamanlama expo ayarından · açık / kapalı = fuarın anahtarı · son çalışma + ulaşılan exhibitor sayısı posta kaydından); yazan uç yok.
@@ -611,6 +648,14 @@ Kesim provası direktifi (KES-01..05) aynen; GUV-04 dilimi provadan önce. Hotfi
 - **EXH-19** (EK-2 H1) — **Exhibitors listesi** (UX C2; satır = exhibitor, "group by contract"). "Stuck" TEK tanım: deadline'a ≤ 7 gün kala To do · 5+
   gün cevapsız Changes requested · herhangi bir bölüm Overdue (Payment DAHİL) · zincir Failed / Blocked. Sayılar sabit varsayılan (expo ayarı değil). Zincir
   kısmı §5'te bağlandı (12 Kas): ayarı eksik fuarda bütün exhibitor'lar Stuck görünür (🔶 defterde).
+  - **EXH-19 eki (T2 — Sentez 23 Kas, AYNEN):** "T2 "Stuck" (EXH-19 ek): Blocked yalnız EXHIBITOR düzeyi nedenlerle Stuck; EXPO düzeyi Blocked (deadline ·
+    metin · dil · zincir kapalı) Stuck DEĞİL, expo şeridi + hazırlık paneli gösterir." → yukarıdaki "ayarı eksik fuarda bütün exhibitor'lar Stuck görünür"
+    🔶'si KAPANDI. [defter:2026-11-23 SENTEZ 23 Kas: PAKET KABUK-2] · 1. PARÇA
+  - **EXH — 23 Kas'ın diğer hükümleri (Sentez PAKET KABUK-2 blok A; metinleri defterde AYNEN):** S2 dosya sınırı 15 MB / dosya · 150 MB / kontrat, aşımda
+    "Larger files: e-mail the project team" (saklama yeri ADR-023 kesim ön koşulu) · T3 sayfa anahtarı sırrı AYRI ortam değişkeni (oturum sırrından
+    türetilmez; yokken anahtarlı sayfalar kapalı) · T5 e-posta metinleri: uyarlama kabul, değişiklik özeti LEENA private, "gözden geçirilmedi — EN / FR /
+    TR", gözden geçiren Suer'in seçeceği kişi (kesim öncesi) · T8 HTML mockup'lar LEENA private `docs/ux`, ell-docs'ta ad + sha256 (YON-20 değişmez).
+    [defter:2026-11-23 SENTEZ 23 Kas: PAKET KABUK-2]
 - **EXH-20** (EK-2 H4 · EK-3 F1) — **Exhibitor detail** (UX C3; "Enter on behalf" not zorunlu + History). "On behalf" girilen stand onayı ve catalogue
   doğrudan Approved; History "entered on behalf" + not; exhibitor deadline'a kadar görür, değişiklik isteyebilir. **Stand no** = Operations
   bilgilerinde ELLE yazılan metin alanı; Exhibitor Page, liste ve e-postalar bu alanı okur; boşsa "to be confirmed". `expo_stands`'a OKUMA DAHİL bağ

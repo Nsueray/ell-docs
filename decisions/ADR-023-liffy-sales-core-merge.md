@@ -137,3 +137,26 @@ Faz A restore + rollback.js. Prova ≥ 2 kez, canlının taze kopyasında.
 >   sonra elle işaretlenir, co-exhibitor'lar elle girilir. DIRECT'te eklenen co-exhibitor, zinciri AÇIK fuarda Welcome'ını kendiliğinden alır → pavyon girişi
 >   zincir açılmadan önce ya da bunu bilerek yapılır.
 > - Paketin diğer kesim maddeleri (worker · gönderen doğrulaması · sonraki migration'lar) parça kayıtlarıyla bu bloğa eklenir.
+>
+> **Kesim maddeleri (Sentez 23 Kas — PAKET KABUK-2; CC, eliza-next):**
+> - **Sayfa anahtarı sırrı (T3):** Exhibitor Page anahtarları AYRI bir ortam değişkeninden türer (`EXH_PAGE_SECRET`, en az 32 karakter); oturum sırrından
+>   TÜRETİLMEZ. Değişken yokken anahtarlı sayfalar ve uçları açılmaz (503) ve sunucu açılışta günlüğe yazar → kesim günü env listesine, web servisine.
+>   Değer değişirse o güne kadar verilmiş bütün linkler ölür (linkler yeniden üretilir / gönderilir).
+> - **Dizinler (075 — klasik tablolar):** ziyaretçiler · check-in'ler · e-posta kuyruğu üzerine üç dizin + `visitors.created_by` kolonu. Staging'de ölçülen
+>   kurma süreleri: 1,3 sn · 0,3 sn · 4,1 sn (kurulurken tablonun yazımı kilitli) → kesimde migration zinciriyle, düşük trafikte. Canlı tablo boyutu
+>   kesim provasında yeniden ölçülür.
+> - **JIT kapalı:** uygulamanın veritabanı oturumları JIT kapalı açılır (kodla gelir; ayar / plan değişikliği YOK). Staging'in küçük planlı veritabanında fuar
+>   listesi ucunun 8,4 sn'sinin 6,4 sn'si bu derlemeydi; kesimde canlı planda süreler yeniden ölçülür.
+> - **Font dosyaları:** fontlar repodan gelir (10 aile, 74 dosya, ≈ 1,2 MB; hepsi açık lisans); kesimde tohum / dış bağlantı adımı YOK. Kurum ayarı tablosu
+>   (077) boş başlar = varsayılan DM Sans + DM Mono; ui2 ve Exhibitor Page Google Fonts'a gitmez. Klasik sayfalar bu pakette değişmedi (hâlâ gidiyor).
+> - **Menü düzeni (076):** kullanıcı satırında yeni kolon boş başlar = herkes A düzeninde; kişi hesap menüsünden değiştirir.
+> - **Rol başına giriş (T7-2):** Finance → War Room · Project ve Office Manager → Ops Dashboard · Sales ve dış kullanıcı → My Work · Owner → War Room;
+>   kural nav.json'da. Giriş için izin EKLENMEZ: rolün hedef sayfaya izni yoksa oturumun açabildiği ilk alana düşer → kesim günü davet listesinde
+>   şablonlar buna göre gözden geçirilir.
+> - **`visitors.created_by` + denetim (T7-3):** ui2 kullanıcı oturumundan eklenen ziyaretçi ve yapılan check-in denetim kaydına yazar; klasik akış
+>   (organizer token · terminal) değişmez. Kolon 075'te, yalnız klasik tablolar varken eklenir.
+> - **S2 dosya saklama yeri:** sınırlar 15 MB / dosya · 150 MB / kontrat; dosyalar veritabanında durur → saklama yeri kararı kesim ÖN KOŞULU (Sentez S2).
+> - **Katalog kopyasının kaynağı (E3):** firma KİMLİĞİYLE çalışır; göçmüş kontratlarda firma bağı YOK (staging ölçümü: 3.953 ana kontratın 3.950'si) →
+>   kesimden sonra göçmüş bir exhibitor'a "son onaylı kataloğundan kopyala" çıkmaz, Company › Catalogue sekmesi boştur; firma bağı ayrı iş (kuyruk).
+> - **Prototip katmanı** (`/design-preview/`) font dosyalarını artık kendi kökenimizden alır; kesimden önce kaldırılması kuralı AYNEN.
+

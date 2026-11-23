@@ -134,6 +134,20 @@
 >   Participation Fee, Partner Commission Income, Sponsorship Income, Stand Construction. The other
 >   listed names are not seeded; the Owner adds them from the admin screen when needed.
 
+> **Amendment 2026-11-23 (scope notes — Suer decisions 23 Nov 2026, Sentez "PAKET KABUK-2 (BİRLEŞİK)" block E5; ledger `ELL_DURUM_DEFTERI_v2.md`
+> "2026-11-23 — SENTEZ 23 Kas: PAKET KABUK-2"; rules AD-02 and UI-14 in `ELL_LOCKED_KARARLAR_OZET.md`).** Original text is kept; this amendment
+> changes no sentence of the document.
+> - **Plus Design — scope note (NOT in the current scope):** a module for web requests and design contracts, named "Plus Design". Suer, 23 Nov 2026:
+>   "sonraki aşama, ayrı modül, belki ayrı servis" (a later stage, a separate module, possibly a separate service). **Decision: after the cutover.**
+>   No requirement in this document describes it; it is recorded here so that it is not read into the exhibitor or operations workflows.
+> - **Invoice / receipt document generation:** stays in the queue under the existing decision (8 Oct 2026: next phase). Not part of the UI-first phase.
+> - **Two decisions still open with Suer (queue; today's behaviour stays until decided):** the commission rate of an extra-equipment order contract ·
+>   whether the Payment Reminder e-mail carries an amount (today it carries none).
+> - **Menu (for information):** the menu structure is accepted as it is (Suer, 23 Nov 2026; nothing is moved). Added: Finance › Money › Payments — the
+>   income list as the second view of payments (Part 2.6) · Operations › Expo › Stand drawings · a Catalogue tab on the Company page, and the catalogue
+>   copy on the Exhibitor Page now offers the company's last APPROVED catalogue from ANY expo (not only the previous edition) · a bulk "Send e-mail"
+>   (Build-up · Stand · Catalogue · Badge) on the Exhibitors list.
+
 **Version:** 1.0 (Document complete — all parts filled) *(amended 2026-10-08 — see top)*
 **Date:** 2026-05-06
 **Status:** In progress — being filled section by section *(historical — v1.0 complete with amendments, 2026-10-08)*
@@ -2429,6 +2443,7 @@ Selected terms used throughout the document:
 - v1.0 (2026-05-08): Part 4 ("Better Than Zoho" Targets), Part 5 (Out of Scope), Part 6 (Appendices) added. Document complete and ready as input for the architecture phase.
 - v1.0 amendment (2026-10-08): ledger criteria (Sentez rulings, Suer decisions) — status, payment methods, currencies (ISO, TRY), Transferred In/Out as derived display, rate corrections, LIFFY per-user daily email limit — see top; rules LED-01..09.
 - v1.0 amendment (2026-10-21): technology review — AI principle (3.10, YZ-01..03), acquisition pipeline with pluggable finder, email-required lead definition with secondary-records table (SAT-01/02), ownership/pool/territory tables (SAT-03/04), catalogue rendering external with up-front templates, report module kept with AI-drafted definitions, insight module dropped, WhatsApp bot kept as API client (later), notification matrix and saved filters dropped, §2.3 and §5.2 sentences superseded — see top.
+- v1.0 amendment (2026-11-23): scope notes — Plus Design (a separate module, after the cutover; AD-02), invoice / receipt generation stays queued, two decisions open with Suer; menu structure accepted with four additions (UI-14) — see top.
 
 ---
 

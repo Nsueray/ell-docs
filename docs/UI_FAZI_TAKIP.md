@@ -2,7 +2,7 @@
 
 > **Ne:** UI-ÖNCE fazının (kütük YON-21) tek takip belgesi — Sentez 11 Kas PAKET UI-TAM-2 §1. Her ekran için: tasarım kaynağı · inşa durumu ·
 > Suer turu · kuyruk. Kriter bu belge DEĞİLDİR: kriter Sentez blokları (defterde AYNEN) + kütük; bu belge nerede ne olduğunu gösterir.
-> **Güncelleme:** her paket parçasında (defter kaydıyla aynı commit). **Son güncelleme:** 2026-11-12 — PAKET UI-TAM-2 4. parça (proje ekibi ekranları) staging'de.
+> **Güncelleme:** her paket parçasında (defter kaydıyla aynı commit). **Son güncelleme:** 2026-11-23 — PAKET KABUK-2 (teknik düzeltme · kabuk A / B2 · font · menü ekleri E1–E4) staging'de.
 > **Ortam:** yalnız staging (`https://leena-staging.onrender.com/ui2/`). Canlıda bu fazın hiçbir ekranı yok. Tarihseldir (YON-01).
 
 ## 1. Tasarım kaynakları
@@ -13,8 +13,10 @@
 | Sentez blokları (UI-ÖNCE kuralları · PAKET UI-TAM · PAKET UI-TAM-2 + EK-1 + EK-2 + EK-3) | defter (AYNEN) + kütük UI-07 · EXH-01…20 · GUV-06 · RAP-18 · ILT-07 · YET-19 eki | **KRİTER** — ekler öncekini düzeltir (EK-3 > EK-2 > EK-1 > blok) |
 | UX hattı 3. tur (C1–C6: Exhibitor Page + project team ekranları) | `docs/ux/UX_HATTI_3_TUR_2026-11-11.md` (AYNEN) | ekran tarifi; kriterle çelişirse kriter kazanır |
 | UX hattı 2. tur (set × üç kullanıcının günü; 38 satır + 7 eskiz) | `docs/ux/UX_HATTI_2_TUR_2026-11-11.md` (AYNEN) | kriter DEĞİL — arşiv + bu belgenin "tasarım kaynağı" sütunu; öncelik Sentez bloğu > 3. tur > 2. tur |
-| C1 mockup (`Exhibitor-Page-C1-mockup.html`) + UX notu | not: `docs/ux/UX_C1_MOCKUP_NOTU_2026-11-11.md` · dosya: Suer'in bilgisayarı | REFERANS (kriter değil). Dosya ell-docs'a KONMADI — §4 kuyruk "mockup eklenecek" |
-| C2 + C3 mockup (`Exhibitors-C2-C3-mockup.html`) + UX teslim notu | not: `docs/ux/UX_C2_C3_MOCKUP_NOTU_2026-11-11.md` · dosya: Suer'in bilgisayarı | REFERANS (kriter değil). Dosya ell-docs'a KONMADI — §4 kuyruk "mockup eklenecek" |
+| C1 mockup (`Exhibitor-Page-C1-mockup.html`) + UX notu | not: `docs/ux/UX_C1_MOCKUP_NOTU_2026-11-11.md` · dosya: **LEENA (private) `docs/ux/`** (T8, 23 Kas) | REFERANS (kriter değil). Burada yalnız ad + sha256 — §5 |
+| C2 + C3 mockup (`Exhibitors-C2-C3-mockup.html`) + UX teslim notu | not: `docs/ux/UX_C2_C3_MOCKUP_NOTU_2026-11-11.md` · dosya: **LEENA (private) `docs/ux/`** (T8, 23 Kas) | REFERANS (kriter değil). Burada yalnız ad + sha256 — §5 |
+| Sentez 23 Kas "PAKET KABUK-2 (BİRLEŞİK)" bloğu | defter (AYNEN) + kütük UI-08…UI-14 · EXH-05 / 08 / 09 / 10 / 16 / 19 ekleri · GUV-06 eki · YET eki · AD-02 | **KRİTER** (13 Kas direktifinin yerine geçer) |
+| KABUK-2 mockup (`ELIZA-Kabuk-2-A-B-mockup.html`) + UX "KABUK-2 TESLİM" notu (14 Kas) | not: `docs/ux/UX_KABUK-2_TESLIM_NOTU_2026-11-14.md` (AYNEN) · dosya: **LEENA (private) `docs/ux/`** | REFERANS (kriter değil). B1 kurulmadı; mockup CSS'i / fontları ürüne taşınmadı |
 
 ## 2. Ekran envanteri
 
@@ -52,6 +54,12 @@ Suer turu: Y7 — Suer kendi Owner hesabıyla gezer, cevabı tek "değişiklik l
 | 27 | Operations · Communications altında | **Chain status** (YENİ) — tablo · özet · next 7 days · Send now / Send all now / Resend / Exclude (önizlemeli) + listede Chain sütunu + detayda chain kartı | `ops-chain.html` | UX 3. tur C5 · C3 · UX 2. tur #9 · #14 + eskiz 3 · EXH-16 | **staging (`9cb08d4`)** | bekliyor |
 | 28 | Operations · Communications altında | **Rules** (YENİ; salt okuma — 12 yerleşik satır; kural motoru işaretli) | `ops-rules.html` | UX 3. tur C5 · EXH-17 | **staging (`9cb08d4`)** | bekliyor |
 | 29 | Exhibitor yüzü + Operations | **Pavyon**: mod (DIRECT / VIA AGENCY) · co-exhibitor alt kayıtları · dar link · acentenin sayfasında "Co-exhibitors" bölümü · detayda pavyon kartı + co-exhibitor görünümü · listede co-exhibitor satırları + gruplama | `/x/#<anahtar>` (dar sayfa · `…/co-exhibitors`) · `ops-exhibitor.html` (`?co=`) · `ops-exhibitors.html` (`?group=contract`) | Sentez B6 · EK-2 H2 / H3 / H8 · C2/C3 mockup · UX 2. tur #6 · EXH-15 | **staging (`934d6d0`)** | bekliyor |
+| 30 | Kabuk (tüm ui2) | **Kabuk A / B2** — TEK kabuk, iki düzen; kişisel "Menu layout" (varsayılan A; yenilemeden geçiş) · yol · fuar seçici kabukta · hesap menüsü · çekmece + bileşen ölçeği | `shell.js` · `nav.json` · `components.js` · stil | Sentez 23 Kas C1–C5 · UX KABUK-2 notu + mockup (referans) · UI-08…UI-11 | **staging (`df9e6ef` · `a6b4772` · `7c90e8f`)** | bekliyor |
+| 31 | Admin › Organization | **Fonts** (YENİ) — kurum geneli font takımı (8 aday; varsayılan DM Sans + DM Mono) | `admin-fonts.html` | Sentez 23 Kas D1–D3 · UI-13 | **staging (`b2fe20d` · `a83a88b`)** | bekliyor |
+| 32 | Finance › Money | **Payments** (YENİ; salt okuma — "Counterpart of the Revenues list in Zoho") | `finance-payments.html` | Sentez 23 Kas E1 · RAP-12 · UI-14 | **staging (`200b4d3`)** | bekliyor |
+| 33 | Operations › Expo | **Stand drawings** (YENİ; salt okuma) | `ops-stand-drawings.html` | Sentez 23 Kas E2 · EXH-07 · UI-14 | **staging (`200b4d3`)** | bekliyor |
+| 34 | Sales › Companies + Exhibitor yüzü | Company › **Catalogue** sekmesi (YENİ) + Exhibitor Page'de katalog kopyasının kaynağı (firmanın son onaylı kataloğu) | `sales-customer.html` (Catalogue sekmesi) · `/x/#<anahtar>/catalogue` | Sentez 23 Kas E3 · EXH-08 eki | **staging (`200b4d3`)** | bekliyor |
+| 35 | Operations | Exhibitors listesi — toplu **"Send e-mail"** (Build-up · Stand · Catalogue · Badge; önizlemeli) | `ops-exhibitors.html` | Sentez 23 Kas E4 · EXH-16 eki | **staging (`200b4d3`)** | bekliyor |
 
 ## 3. Çeviri ve metin durumu (UI-TAM-2)
 
@@ -63,8 +71,23 @@ Suer turu: Y7 — Suer kendi Owner hesabıyla gezer, cevabı tek "değişiklik l
 | E-posta TR | **eksik** — EN'e düşer; CC TR e-posta metni yazmaz (UX / Yaprak sonra yazar) |
 | E-posta çerçevesi (üst bilgi etiketleri · alt not) | yalnız EN — FR / TR "eksik" |
 | Hatırlatma kalıbı + sistem e-postaları | Drive'da karşılığı YOK (ölçüldü); EN'i CC taslakladı — **metin gözden geçirilmedi**; FR / TR "eksik" |
+| **E-posta metinleri — T5 (Sentez 23 Kas)** | uyarlama KABUL; değişiklik özeti LEENA (private) `docs/ux/EMAIL_TEXT_CHANGES_T5.md` (her metnin kendi kaynak satırından üretildi) — **metin gözden geçirilmedi — EN / FR / TR**; gözden geçiren Suer'in seçeceği kişi, kesim öncesi |
+| Exhibitor Page katalog düğmesi + mesajı (E3) | EN kaynak; FR / TR sözlük satırları CC taslağı — **çeviri gözden geçirilmedi** |
 
 ## 4. Kuyruk
+
+**23 Kas: menü yapısı Suer'in kararıyla kabul; Yaprak turu: taşıma yok, 6 istek → E1–E5** (Sentez 23 Kas E6, AYNEN).
+
+**PAKET KABUK-2'den çıkanlar (23 Kas):**
+- B1 kabuk (açılır menü) — YAPILMAZ, kuyruk (Sentez C1) · telefon tasarımı (UX turu sonra) · hesap menüsüne "Sign out".
+- 1440 px'te kart içinde yana kayan iki geniş tablo (Commissions · War Room fuar tablosu) — sütun / yazı kararı UX turunda.
+- Klasik (ui2 dışı) 43 sayfanın Google Fonts başvurusu — "hiçbir yerde kalmaz" onları da kapsıyor mu: Sentez kararı.
+- Göçmüş kontratlara firma bağı — Company › Catalogue ve katalog kopyasının kaynağı firma kimliğiyle çalışır; göçmüş kontratlarda bağ yok.
+- Listede co-exhibitor satırının toplu eylemler için seçilebilmesi · kontraktöre yayın paketi (KP-22) · rozet iptali (S3-b).
+- Plus Design modülü (kütük AD-02 — karar: kesim sonrası) · fatura / makbuz belge üretimi (8 Eki kararı: sonraki faz).
+- **Suer'in iki açık kararı:** sipariş kontratının komisyon oranı · Payment Reminder e-postasında tutar.
+- Hız: War Room ve Expo Finance 2 sn'nin çevresinde (turdan tura 1,6–2,7 sn; hedef ≤ 2 sn) · klasik rapor ucu (Ops Reports ≈ 12–14 sn) — Sentez kararı (üç seçenek 1. parça kaydında).
+- ~~mockup eklenecek~~ → KAPANDI (T8): dosyalar LEENA (private) `docs/ux/`'ta bayt bayt; burada ad + sha256 (§5).
 
 **UI-TAM-2'den çıkanlar (Sentez / Orchestrator):**
 - **UI-DÜZELTME-1** (ayrı küçük paket, Suer'in staging listesiyle): token düzeltmesi (Vermillion'da chip-info ≈ chip-dang) · kendi-dosya fontların ui2
@@ -94,3 +117,14 @@ Suer turu: Y7 — Suer kendi Owner hesabıyla gezer, cevabı tek "değişiklik l
 - #32 Owner ana sayfası (eskiz 6) · #33 War Room sütunları (m² · hedef % · açık bakiye · geciken) · #34 War Room uyarıları (üç kaynak, gördüm / ertele) ·
   #35 Expo Finance: satırdan harekete inme + fuar listesi (Gross margin / Net profit RAP-18 ile UI-TAM-2'de) · #36 onaylar + Finance › Reports.
 - #37 üst çubuk (bildirim paneli) + Settings (Profile dil · Notifications · Team & roles) · #38 UX'in görmediği 7 ekran için satırlar.
+
+## 5. Mockup dosyaları — ad + sha256 (T8, Sentez 23 Kas)
+
+Dosyaların kendisi **LEENA'da** (private repo, `docs/ux/`) bayt bayt AYNEN durur; public ell-docs'a KONMAZ (YON-20 taraması değişmez).
+Kopyadan önce ve sonra ölçülen özetler promptta verilenlerle AYNI.
+
+| Dosya | sha256 | Bayt | Nerede |
+|---|---|---|---|
+| `ELIZA-Kabuk-2-A-B-mockup.html` | `384a6c1034eebb38f84860bb9ab658acce1d2650d702a80abb71dc5efffa891b` | 76.182 | LEENA'da — `docs/ux/` |
+| `Exhibitor-Page-C1-mockup.html` | `1e98f0a2d03acf9fd3077e11de59701e5fd9f1c4a14bd94d80513ac35fd8d2a6` | 100.909 | LEENA'da — `docs/ux/` |
+| `Exhibitors-C2-C3-mockup.html` | `69afb8315182ff861fc04cef17ae5ea3c954a536f19a46ea6a0a1ec433efc0aa` | 129.039 | LEENA'da — `docs/ux/` |
