@@ -10978,6 +10978,66 @@
 >   takvim bağımlı test tarihleri (Aralık) · ui2'de "Sign out" yok (hesap menüsü kabuk parçasında geliyor; çıkış kapsamda değil).
 > - **→ Sıradaki:** 2. parça — kabuk A + B2 (tek kabuk · kişisel "Menu layout" · neredeyim · fuar seçici kabukta · hesap menüsü · bileşen ölçeği).
 >
+> ## ✅ 2026-11-23 — PAKET KABUK-2 2. PARÇA: KABUK A + B2 (staging) — TEK kabuk, iki düzen · kişisel "Menu layout" (varsayılan A; yenilemeden geçiş) · yol her sayfada · fuar seçici kabukta · hesap menüsü · bileşen ölçeği · 52 menü sayfası iki düzende 1440 / 1280 / 390 px: sayfa taşması 0 (LEENA eliza-next `df9e6ef` · `a6b4772` · `7c90e8f`)
+>
+> - **Kriter kaynağı:** [defter:2026-11-23 SENTEZ 23 Kas: PAKET KABUK-2] — blok (C) C1–C5 + SIRA §2 + KABUL'ün kabuk maddeleri. Orchestrator UYGULAMA U3.
+>   UX "KABUK-2 TESLİM (14 Kas)" notu + mockup = REFERANS (kriter değil); mockup CSS'i / token'ları / B1 KOPYALANMADI.
+> - **Ne yapıldı:**
+>   - **C1 — iki düzen, TEK kabuk kodu:** kabuk tek işaretleme üretir; **A** (modüller solda dikey şerit) ile **B2** (modüller üstte) arasındaki fark
+>     yalnız bir sayfa niteliği + stil ızgarasıdır. İkinci kabuk dosyası / ikinci menü listesi YOK. Sol sayfa listesi, yol ve fuar seçici iki düzende
+>     AYNI. B1 KURULMADI, maliyeti ÖLÇÜLMEDİ (Sentez C1; kuyruk).
+>   - **"Menu layout" = KİŞİSEL ayar:** kullanıcı satırında yeni kolon (migration **076**; boş = varsayılan **A**), tema tercihiyle aynı uçta okunur /
+>     yazılır; izinli iki değer dışındaki değer reddedilir; bir kullanıcının seçimi başkasını etkilemez (testle). Hesap menüsünden seçilir; geçiş sayfa
+>     YENİLENMEDEN olur, sunucu reddederse eski düzene döner.
+>   - **C2 — kabukta ortak:** yol (Modül › Grup › [üst sayfa ›] Sayfa — nav.json'dan, her sayfada) · Operations'ta fuar seçici KABUKTA (adresteki fuarla
+>     tutarlı; sayfa içi seçici kalktı) · arama kutusu = BUGÜNKÜ arama sayfası (yeni arama ucu AÇILMADI) · zil: verisi yok → "Not connected yet" işaretli
+>     (Y2) · hesap menüsü: ad · rol · Settings · Menu layout · Design preview (üst çubuktan kalktı) · sayfa listesi daraltılabilir, grupları açılır /
+>     kapanır · 900 px altında liste çekmece · 390 px'te yatay taşma yok.
+>   - **C3 — bileşen ölçeği (tüm ui2, Exhibitor detail dahil; Exhibitor Page ALMADI — okuma kararı):** düğme en az 36 px, üç kademe · kart / tablo / kutu
+>     başlıkları normal yazı (mono büyük harf yalnız meta bilgide) · yükleme = gri iskelet ("Loading…" metni kaynakta 0) · boş durum = tek cümle +
+>     isteğe bağlı düğme · "Not connected yet" küçük gri işaret, DURUYOR · koyu "In review · ours" çipi MEVCUT token'larla (sabit renk yok).
+>   - **C4:** "Contracts" girişi rolle — Sales → Sales › Contracts · diğerleri → Finance › Contracts; kural nav.json'da, ekran kodunda değil.
+>   - **C5:** kabuk yalnız `shell.js` + `nav.json` + `components.js` + stil dosyalarında. İki yönlü test: hiçbir ekran dosyası menü / kabuk
+>     işaretlemesi taşımaz · nav.json'daki her sayfanın dosyası var ve kabuğu ortak dosyadan alır · nav.json'da olmayan ekran dosyası: istisna listesi **0**.
+>   - **Dar içerik düzeltmesi (`a6b4772` · `7c90e8f` — yalnız stil):** sayfa listesi açıkken içerik alanı eskisinden dar (1280 px'te A: 960 px). Sayfa
+>     taşması 0'dı ama GENİŞ TABLOLAR kartının içinde yana kayıyordu. Liste açıkken dar pencerede iki sütunlu yerleşimler tek sütuna iner ve tablo
+>     hücrelerinin yan boşluğu sıkışır; 1440 px bandında yerleşim aynı kalır, yalnız hücre boşluğu sıkışır.
+> - **Commit:** LEENA eliza-next `df9e6ef` (kabuk) · `a6b4772` · `7c90e8f` (dar içerik) — PUSH: CC, yalnız `eliza-next`; canlı `main` DEĞİŞMEDİ `2db0131`.
+>   Migration **076** staging'de: dry-run → apply → ikinci apply "Nothing to apply" (kayıt **78**; 6 kullanıcı satırı, hiçbirinde değer yok = hepsi A).
+> - **Ölçülenler:**
+>   - **Test:** `df9e6ef` temiz çalışma kopyasında 67 suite · **1167 / 1167** · `a6b4772` 68 suite · **1182 / 1182** (font parçasıyla birlikte). Yeni suite
+>     `test_kabuk2_shell.js` (21): düzen listesi = kolon kısıtı = kabuk listesi · izinsiz değer reddi · kişiye özel · nav ↔ dosya iki yönlü · her sayfanın
+>     yolu · Contracts ≤ 2 tık (nav.json üzerinden, her menü sayfasından, iki düzende) · "Loading…" 0 · dar içerik kuralları · TABAN.
+>   - **Otomatik tur (staging · `df9e6ef`):** `cc-owner` 300 yükleme (50 sayfa × A / B2 × 1440 / 1280 / 390 px) · `cc-project` 174 yükleme (29 sayfa):
+>     yatay sayfa taşması **0** · yanlış düzen 0 · yol her sayfada sayfa adıyla bitiyor · etkin satır doğru · 36 px altı düğme 0 · "Loading…" metni 0 ·
+>     hata durumu 0 · HTTP ≠ 200: 0. A → B2 geçişi hesap menüsünden YENİLEMEDEN (pencere işareti yaşıyor) üç genişlikte de. İçerik genişliği: 1440 px
+>     A 1120 · B2 1180 · 1280 px A 960 · B2 1044 · 390 px → 390. Tur sonunda araç hesaplarının düzen tercihi boşa döndürüldü.
+>   - **15 tema (War Room, A, 1440 px):** 15 ekran görüntüsü (repo dışı) · 15 farklı renk takımı · taşma 0 · konsol hatası 0; tur sonunda tema ve düzen
+>     tercihi boşa döndürüldü.
+>   - **Kart içi tablo kayması (`cc-owner` · 52 sayfa · liste açık):** düzeltmeden önce 1440 px A 4 · B2 4 sayfa · 1280 px A 11 · B2 7 sayfa → `a6b4772`
+>     sonrası staging'de 1280 px A **1** (Exhibitors, 20 px) · B2 **0**; 1440 px 4 → `7c90e8f` ile (yerel önizlemede) **2** (Commissions · War Room fuar
+>     tablosu; sayfa taşması 0).
+>   - **Menü sayımı (U1-b):** nav.json ↔ ekran dosyası 74 = 74. Menüde görünen sayfa: 2. parça sonunda 49; 3. parça + Fonts = 50; 4. parça + Payments +
+>     Stand drawings = **52** (+ Exhibitor detail). Sentez / UX'in "43"ü mockup sayımıdır; kriter okuması: "nav.json'da menüde görünen sayfaların HEPSİ".
+>   - **Token değişimi:** yalnız dört yerleşim ölçüsü eklendi (modül şeridi · sayfa listesi · üst çubuk · yol yüksekliği). Renk token'ı DEĞİŞMEDİ.
+>   - **TABAN:** 342.00 EUR OK · TABAN-2 EŞİT.
+> - **SAPMA (hepsi ön-onaylı — YON-18):**
+>   1. **Hükümle değişen test beklentileri:** `test_ui2_ui0` K2 (kabuk sınıf listesi) + K6 (yükleme = iskelet) · `test_ui_tam` P6 + S3 (Design preview hesap
+>      menüsünde) · `test_ui_tam2_team` S1 (çip tonu) — test satırlarında hüküm numarasıyla (C2 / C3).
+>   2. **C5 "ekran dosyasında kabuk değişikliği gerekmez":** kabuk için değişen ekran dosyası **0**. C3 çip tonu için 2 ekran dosyasında tek sözcük
+>      değişti (Exhibitors listesi · Exhibitor detail).
+>   3. **C4 okuması:** A / B2'de ayrı bir "kısayol" satırı YOK (o B1'in parçasıydı); kural nav.json'da durur ve "≤ 2 tık" modül → sayfa yoluyla sağlanır.
+>   4. **C3 "ikon + metin":** ikon, düğmeyi BİLEŞENİN çizdiği yerlerde (dışa aktarım · indirme) geldi; sayfaların kendi düğmeleri metinle kaldı.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Safari · Firefox (tur Chromium'la) · 1280 px altı ile 390 px arası ara genişlikler tek tek · gerçek telefon · gerçek
+>   kullanıcıyla "alışma" · `7c90e8f`'nin 1440 px ölçümü yerel önizlemede yapıldı (staging ölçümü kapanış turunda) · `cc-project` turunda üç sayfada
+>   (Collections · Payments by agent · Performance) konsolda bir "409" satırı: satıcı listesi ucu Project'e kapalı — MEVCUT sunucu duvarı, kabuk hatası
+>   değil (kuyruk: izin yokken o liste istenmesin).
+> - **Bilinçle yapılmayanlar:** B1 (açılır menü) · yeni arama ucu · zil verisi · telefon TASARIMI (yalnız taşma kuralı) · Exhibitor Page'in bileşen
+>   ölçeği · hesap menüsüne "Sign out" (bugün de yok; kuyruk) · 1440 px'te kalan iki geniş tablo için sütun azaltma / yazı küçültme (UX turu).
+> - **Kuyruğa:** B1 (açılır menü) · hesap menüsüne "Sign out" · izin yokken satıcı listesinin istenmemesi (üç Finance / Sales sayfası) · 1440 px'te
+>   Commissions ve War Room fuar tablosunun kart içi kayması (sütun / yazı kararı — UX turu) · telefon tasarımı (UX turu).
+> - **→ Sıradaki:** 3. parça — font (kurum ayarı · kendi dosyalarımız · aday ölçümleri).
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
