@@ -11038,6 +11038,62 @@
 >   Commissions ve War Room fuar tablosunun kart içi kayması (sütun / yazı kararı — UX turu) · telefon tasarımı (UX turu).
 > - **→ Sıradaki:** 3. parça — font (kurum ayarı · kendi dosyalarımız · aday ölçümleri).
 >
+> ## ✅ 2026-11-23 — PAKET KABUK-2 3. PARÇA: FONT (staging) — kurum geneli font ayarı (Admin › Organization › Fonts; varsayılan DM Sans + DM Mono) · 8 aday takım, 10 aile, hepsi KENDİ dosyalarımız · ui2 + Exhibitor Page + design-preview'da Google Fonts isteği 0 · yeni font = bir klasör + listeye bir satır (LEENA eliza-next `b2fe20d` · `a83a88b`)
+>
+> - **Kriter kaynağı:** [defter:2026-11-23 SENTEZ 23 Kas: PAKET KABUK-2] — blok (D) D1–D3 + SIRA §3 + KABUL "font" maddesi. Orchestrator UYGULAMA U4.
+> - **Ne yapıldı:**
+>   - **D1 — kurum ayarı:** Admin › Organization grubunda yeni sayfa **Fonts**. Seçilen takım tüm ui2 ekranlarına ve Exhibitor Page'e uygulanır (sayfa
+>     kimlik isteyen bir uç çağırmaz: takım, anahtarın zaten istediği sayfa modeliyle gelir). PDF ve e-postalar DEĞİŞMEDİ. Değer sunucuda LİSTEDEKİ
+>     anahtarlara karşı doğrulanır (serbest metin / adres kabul edilmez); boş ya da listede olmayan değer = varsayılan **DM Sans + DM Mono**. Değişiklik
+>     denetim kaydına yazılır (kim · ne zaman · eski → yeni). Ayar yeni tabloda (migration **077**, kurum başına tek satır).
+>   - **D2 — adaylar (Sentez listesi, 8 takım):** DM Sans + DM Mono (varsayılan) · Space Grotesk + IBM Plex Sans + IBM Plex Mono (tasarım seti) · IBM Plex
+>     Sans · Inter · Manrope · Public Sans · Source Sans 3 · Nunito Sans. Dosyalar repoda, TEK klasörde (aile başına alt klasör + lisans metni); kaynak
+>     UI-TAM-2'deki paketle AYNI (@fontsource 5.3.0; latin + latin-ext; 400 / 500 / 600 / 700). Exhibitor Page'in 22 dosyası bu klasöre taşındı (ikinci
+>     kopya yok). Stil dosyası listeden ÜRETİLİR; tarayıcı yalnız çizilen metnin ailesini indirir → yalnız seçili takım yüklenir.
+>   - **Sabit font adı kalmadı:** ekran, tema ve bileşen dosyaları yalnız üç token kullanır (metin · başlık · rakam); kaynak taraması testte. Sayı yazan
+>     her yerde eşit genişlikte rakam ayarı açık.
+>   - **Dış kaynak yok, her yerde (GUV-06'nın yayılımı):** ui2 stil dosyasındaki Google Fonts içe aktarımı KALKTI · design-preview'daki üç başvuru kendi
+>     dosyalarımıza döndü (prototip kendi görünümünü korur: yalnız yazı yüzleri, kurum token'ları değil — `a83a88b`).
+>   - **D3:** "yeni font eklemek" adımı LEENA `docs/ui/FONTS.md`'de: dosyaları al · bir klasör · listeye bir satır · ölç (test) · bak.
+> - **Commit:** LEENA eliza-next `b2fe20d` · `a83a88b` — PUSH: CC, yalnız `eliza-next`; canlı `main` DEĞİŞMEDİ `2db0131`. Migration **077** staging'de:
+>   dry-run → apply → ikinci apply "Nothing to apply" (kayıt **79**).
+> - **Ölçülenler:**
+>   - **Test:** `b2fe20d` temiz çalışma kopyasında 68 suite · **1180 / 1180** · `a83a88b` **1181 / 1181**. Yeni suite `test_kabuk2_fonts.js` (14): klasör ↔
+>     liste iki yönlü · lisans metni · harfler (dosyanın kendi harf tablosundan) · üretilen stil · değer doğrulama + denetim kaydı · kaynakta sabit font
+>     adı 0 · Google Fonts başvurusu 0.
+>   - **Her aday için (D2):** lisans — 10 ailenin hepsi SIL Open Font License 1.1, metni dosyaların yanında · Türkçe + Fransızca harfler, rakamlar ve €
+>     (39 karakter: ğ Ğ ş Ş ı İ ö Ö ü Ü ç Ç é è à ê œ É â î ô û ë ï ù À È Œ · 0–9 · €) — HER ailede, HER ağırlıkta VAR · rakam genişliği: IBM Plex Sans ·
+>     Source Sans 3 · Nunito Sans kendiliğinden eşit; Inter · Manrope · Public Sans ayarla eşit (ayar açık); **DM Sans'ta rakamlar orantılı ve ayarı
+>     YOK** → sütunlardaki sayılar takımın rakam yüzüyle (DM Mono) yazılır · takım başına dosya boyutu (KB): DM 132,5 · tasarım seti 338,8 · IBM Plex
+>     239,5 · Inter 318,9 · Manrope 171,8 · Public Sans 182,4 · Source Sans 3 274,0 · Nunito Sans 192,4 · toplam 74 dosya, 1.189 KB.
+>   - **Ağ kaydı (staging; sayfa başına taze tarayıcı; 11 sayfa — ui2 ekranları · giriş · Exhibitor Page · design-preview):** başka kökene istek **0** ·
+>     Google Fonts isteği **0**. ui2 ekranları ve Exhibitor Page yalnız DM Sans + DM Mono dosyalarını indirdi (4–6 dosya); Fonts sayfası örnekleri
+>     göstermek için 10 aileyi de indirir (yalnız o yönetim sayfası).
+>   - **Her aday takımla gerçek ekranlar (staging; 8 takım × War Room · Contracts · Exhibitors · Exhibitor detail · Expo settings × 1440 / 1280 px = 80
+>     yükleme):** sayfa taşması **0** · her yüklemede doğru yüzler (metin · başlık · rakam) · 36 px altı düğme 0 · konsol hatası 0. Kart içi tablo
+>     kayması ve iki satıra bölünen sayı hücreleri 8 takımda AYNI (yerleşimden, fonttan değil — 2. parçanın dar içerik düzeltmesi). Tur sonunda ayar
+>     varsayılana döndürüldü.
+>   - **Hız (font ayrı satır):** War Room, fontlar kendi kökenimizdeyken 5 koşu: 2.362 · 2.666 · 1.986 · 2.090 · 2.487 ms (ortanca **2.362 ms**; 1.
+>     parça sonu 2.108 ms) — başka kökene istek 0. Fontun yerelleşmesi ölçülebilir bir kazanç getirmedi; süreyi özet ucunun sunucu süresi belirliyor
+>     (ortanca 1.480 ms; 0,1 CPU'luk staging veritabanında ortak `facts` kuruluşu). **≤ 2 sn hedefi War Room'da TUTMUYOR** (koşuların 1'i altında) — 🔶.
+>   - **PDF ve e-posta DEĞİŞMEDİ (testle):** kurum fontu başka bir takıma alınıp geri alındığında üretilen PDF bayt bayt AYNI (PDF üreticisi gömülü
+>     Helvetica kullanır, font listesini bilmez); e-posta gövdeleri kendi yazı tipi yığınını taşır, listeye başvurmaz.
+>   - **TABAN:** 342.00 EUR OK · TABAN-2 EŞİT.
+> - **SAPMA (hepsi ön-onaylı — YON-18):**
+>   1. **Fonts sayfasının yetkisi (🔶):** yeni izin kodu AÇILMADI; sayfa ve yazma ucu grubun mevcut `reference.write` iznine bağlandı (Reference data ile
+>      aynı kişi: kurum geneli, seyrek değişen bir liste değeri).
+>   2. **Kapsam okuması (🔶):** seçili takım ui2 + Exhibitor Page'e uygulanır; bu ikisinde ve design-preview'da Google Fonts 0. ui2 DIŞI klasik sayfalara
+>      (43 dosya Google Fonts'a gidiyor) DOKUNULMADI — "Google Fonts hiçbir yerde kalmaz" onları da kapsıyor mu, Sentez'e soru.
+>   3. **Hükümle değişen test beklentileri:** `test_ui_tam2_page` G3 / G4 (font dosyalarının yeri) · `test_ui2_p2_pages` S5 (Admin listesine Fonts).
+>   4. **Design-preview'da bir prototip yönü** listede olmayan bir serif aileyi (Spectral) istiyordu → sistem serif'ine düşer (prototip faz sonunda kalkar).
+>   5. **DM Mono'da 600 ağırlığı ve ₺ işareti yok; → ← ✓ hiçbir pakette yok** — sistem yedeğiyle çizilir (ölçüldü, belgede).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Safari · Firefox · Windows'ta yazı tipi çizimi · yavaş bağlantıda ilk boyama (yedek font → asıl font geçişi gözle
+>   bakılmadı) · her aday takımla 5 ekran DIŞINDAKİ ekranlar · Exhibitor Page aday takımlarla (yalnız varsayılanla bakıldı) · gerçek bir e-postanın alıcıdaki görünümü (staging'de e-posta çıkmaz).
+> - **Bilinçle yapılmayanlar:** klasik sayfa gövdeleri · PDF ve e-posta fontları · kişi başına font · yeni izin kodu · serbest font adresi.
+> - **Kuyruğa:** klasik 43 sayfanın Google Fonts başvurusu (Sentez kararı) · Fonts sayfası için ayrı izin kodu gerekir mi (Sentez) · War Room'da ≤ 2 sn
+>   (özet ucunun sunucu süresi) · design-preview'daki serif aile (prototip faz sonunda kalkar).
+> - **→ Sıradaki:** 4. parça — menü ekleri E1–E4.
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
