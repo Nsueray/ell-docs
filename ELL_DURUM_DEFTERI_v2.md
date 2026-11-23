@@ -10662,6 +10662,197 @@
 >   sorusu (Sentez) · büyük pavyonda liste süresi (S) · toplu Remind'in co-exhibitor satırlarını da alması (S).
 > - **→ Sıradaki:** paket sonu TEK rapor (UYGULAMA madde 9 sırasıyla). Suer'in staging turu EN SONDA, sınırsız.
 
+> ## ✅ 2026-11-23 — SENTEZ 23 Kas: PAKET KABUK-2 (BİRLEŞİK) "UI-TAM-2 KABUL + TEKNİK DÜZELTME + KABUK A/B2 + FONT + MENÜ EKLERİ" — AYNEN
+>
+> - **Kaynak ve sıra (Orchestrator 23 Kas 2026 15:40 — prompt dosyadan):** bu oturumun promptu diskteki tek dosyadır; bütünlüğü işe başlamadan ÖLÇÜLDÜ
+>   (sha256 `f40b3f13b222b3c9666a980a38f75f5a9c219f69b07a593e380e4a6e845bc4ce` · 43.310 bayt · 461 satır · son satır "═══ BLOK SONU ═══" — dördü
+>   beklenenle AYNI). KRİTER = (1) Sentez bloğu — aşağıda AYNEN (107 satır). REFERANS (kriter değil) = (2) UX "KABUK-2 TESLİM" notu (14 Kas) + mockup
+>   dosyası — `docs/ux/`'e 5. parçada AYNEN. (3) Orchestrator UYGULAMA (U0–U9) yalnız sıra / ölçüm / kapsam / okuma kararıdır; kriterle çelişirse kriter
+>   kazanır. Bu blok 13 Kas direktifinin YERİNE geçer ((C) dondurma kalkar); 13 Kas'tan kalan yarım iş ÖLÇÜLDÜ: yok (dal · commit · izlenmeyen dosya 0).
+> - **SENTEZ 23 Kas — AYNEN:**
+>
+> ```
+> SENTEZ → ORCHESTRATOR — PAKET KABUK-2 (BİRLEŞİK): UI-TAM-2 KABUL + TEKNİK DÜZELTME + KABUK A/B2 + FONT + MENÜ EKLERİ (23 Kas)
+> Ölçüm: ell-docs main defterinde son kayıt 12 Kas "UI-TAM-2 6. parça + kapanış" (LEENA eliza-next 934d6d0 · 1112/1112). 13 Kas
+> direktifi uygulanmadı; bu blok onun YERİNE geçer ve (C) dondurmayı kaldırır. Tek CC prompt'u, parçalı; Suer EN SONDA bakar.
+> Ek: UX "KABUK-2 TESLİM (14 Kas)" + `ELIZA-Kabuk-2-A-B-mockup.html` (Suer ekler) = kabuk referansı; kriter bu blok.
+>
+> ═══ (A) UI-TAM-2 KABUL + HÜKÜMLER (13 Kas, aynen) ═══
+> KABUL. S1 = a, iki şartla: sipariş kontratı KAT-03 ve YET-16 kapılarından MUAF; ofis · tüzel kişi · para birimi · kur ANA
+> kontrattan miras; ana kontrat Active (Cancelled · Transferred · On Hold → ret, sayfa salt okunur) ve fuar bitişi geçmemiş (B4).
+> EXH-05 ek. S2 = a: 15 MB / dosya · 150 MB / kontrat; aşımda "Larger files: e-mail the project team"; saklama yeri ADR-023 kesim
+> ön koşulu. S3 = a şimdi, b kuyruk: "Remove from list" + "Removes the person from this list; the badge stays valid — ask the
+> project team to cancel it."; C3 Badges kartında aynı not.
+> T1 üç test beklentisi (L3 · S1 · O3) TEYİT; L3 T2 ile yeniden değişir. T2 "Stuck" (EXH-19 ek): Blocked yalnız EXHIBITOR
+> düzeyi nedenlerle Stuck; EXPO düzeyi Blocked (deadline · metin · dil · zincir kapalı) Stuck DEĞİL, expo şeridi + hazırlık
+> paneli gösterir. T3 anahtar sırrı AYRI değişken (oturum sırrından türetilmez), staging'de şimdi, canlı ADR-023; link kuyruk
+> satırında düz: kabul. T4 Render log ucu: sarmalayıcı yalnız iki staging kimliğine sabit süzgeçle izin verir. T5 e-posta
+> metinleri: uyarlama kabul; değişiklik özeti LEENA private; "gözden geçirilmedi — EN/FR/TR"; gözden geçiren Suer'in seçeceği
+> kişi, kesim öncesi. T6 okuma kararları (i)–(iv) TEYİT; (ii) kuyruk: floor plan gelince kaynak fiziksel alan (KP-10).
+> T7 kapanış eki: (1) bölge satırları SAPMA kabul · (2) rol başına giriş: Owner → War Room · Finance → War Room · Project ve
+> Office Manager → Ops Dashboard · Sales → My Work · dış kullanıcı → My Work · (3) ui2'den Add visitor + check-in audit_log'a;
+> `visitors.created_by` migration · (4) değişmez olay satırları için created_by YETER; değişebilir ayar yazımları audit_log'a ·
+> (5) "€-250.00" → −€250.00. UI-TAM kapanış 9 🔶: 1·3·4·5·6·7·8 KAPANDI; 2 ve 9 olduğu gibi KABUL.
+> T8 mockup'lar: YON-20 değişmez; HTML mockup'lar (C1 · C2/C3 · KABUK-2) LEENA private docs/ux; ell-docs'ta ad + sha256.
+> T9 rapor 🔶'leri — 1. parça: non-equipped = Space-only KABUL · paket sürümü doğumda türer KABUL · hatırlatma zamanlaması boş =
+> planlanmaz + yeni/kopya expo formunda ön dolu (14 gün önce · 7 günde bir · son = build-up ilk günü) · fuar kimliği klasik
+> kayıtta KABUL · Finance/Sales Expo settings görmez KABUL · Office Manager ofissiz EMS KABUL. 2. parça: badge formu fuara
+> bağlanır KABUL · "Request changes" tarihi yalnız kilitli bölümde KABUL · nötr kutu KABUL. 3. parça: satıcı tek aktif team
+> KABUL; ORAN Suer kararı (açık; kuyruk) · kur = ana kontrat KABUL · fiyat listesi/sepet kodsuz, sipariş/tutar kodlu KABUL ·
+> Payment kontrat para biriminde KABUL · tüzel kişisiz kontratta banka bloğu yok + "Payment details: contact Finance".
+> 4. parça: "In review · ours" primary KABUL · elle Remind build-up ilk günü durur KABUL · "Waiting for us" KABUL · hall yok
+> KABUL. 5. parça: kendiliğinden gönderim ölçütü KABUL · Payment Reminder'da tutar: Suer kararı (açık; kuyruk) · "Send all
+> now" DÜZELTME: varsayılan yalnız günü gelmiş satırlar; günü gelmemişler ayrı onay kutusu + sayı · dil eksikliği Blocked
+> değil KABUL · işi bitmiş bölümün e-postası gitmez KABUL · dekont incelemedeyken Payment job done + Finance reddederse
+> hatırlatma yeniden · 072 şablon tablosu dosyayı ezer KABUL. 6. parça: co-exhibitor ekleme yalnız project team KABUL ·
+> DIRECT'te acente sayfasında salt okunur co-exhibitor listesi → kuyruk · pavyona özel Stand metni → kuyruk.
+> T10 yardımcı ajan en çok 1, alt ajan yok.
+>
+> ═══ (B) TEKNİK DÜZELTME (13 Kas ölçümü üzerine) ═══
+> Sentez ölçümü (13 Kas, Suer'in Mac'i, Owner, 1440 px): `/api/user-auth/me` 0,23 sn · `/api/contracts?paged=1&page=1&limit=50`
+> 0,98 sn · `/api/offices` 0,23 sn · `/api/expos` 8,96 sn (7 KB); War Room kutuları ve Contracts listesi 10 sn sonra hâlâ
+> "Loading…"; sayılar ayraçsız (€1520776.50 · "€-250.00" · "EUR 15110.00"); fontlar doğru yükleniyor; 800 px'te arama kutusu
+> sekmelere biniyor.
+> B1 ÖLÇÜM: sayfa başına istek listesi + süre (sunucu süresi ayrı) · en yavaş 10 uç · `/api/expos` neden 9 sn (plan · fuar
+> başına toplamlar · N+1 · dizin) · klasik rapor ucu 12–16 sn · 3 geçici 500'ün hata metni (T4) · uyku davranışı (plan adı
+> raporda, değiştirme) · eksik dizin adayları.
+> B2 HIZ: `/api/expos` ve > 1 sn çıkan her liste/pano ucu düzeltilir (dizin · sorgu · tek sorguda toplam · değişmeyen listelerin
+> oturum önbelleği) · ardışık istekler paralel · hedef: liste/pano ucu < 1 sn sunucu süresi, sayfa verisi ≤ 2 sn · önce/sonra
+> tablosu · iş kuralı değişmez (R-testleri geçer).
+> B3 BİÇİM: tek biçimlendirici (components.js): tablo/detay tam, binlik virgül, 2 ondalık (€1,520,776.50) · −€250.00 · özet
+> kutusunda kısa (€1.5M · €934K; üstüne gelince tam) · tarih "17 May 2026" · ISO damgası ekranda yok · kaynak taraması:
+> ui2'de ham toFixed/ISO yazımı 0.
+> B4 HÜKÜM UYGULAMALARI: T2 · T3 · T7-2 (roleLanding) · T7-3 (audit_log + migration) · T9 düzeltmeleri (hatırlatma ön dolu ·
+> Send all now · dekont reddi · "contact Finance") · S1 muafiyet + şartlar · S2 metni · S3 düğme + not · T8 · T10.
+>
+> ═══ (C) KABUK A + B2 (Suer 14 Kas + 23 Kas) ═══
+> C1 İki düzen, TEK kabuk: A (modüller solda, sayfalar solda) · B2 (modüller üstte, sayfalar solda). B1 (açılır menü) YAPILMAZ,
+> kuyruk. Düzen = kullanıcı ayarı (hesap menüsü › "Menu layout"), varsayılan A. Her kullanıcı kendi seçer. UX mockup'ı
+> referans; token'lar ui2 tokens.css'ten, mockup CSS'i kopyalanmaz.
+> C2 Kabukta ortak: nerede olduğum (yol) her sayfada · Operations'ta fuar seçici kabukta · arama ⌘K · zil · hesap menüsü
+> (Settings · Menu layout · Design preview buraya iner, üst çubuktan kalkar) · modül içi sayfa listesi daraltılabilir ·
+> dar ekranda (< 900 px) sol liste çekmeceye dönüşür; 390 px'te yatay taşma yok (UI-0 kuralı).
+> C3 Bileşen ölçeği (tüm ui2, Exhibitor detail dahil): düğme ≥ 36 px, üç kademe (birincil/ikincil/üçüncül), ikon + metin ·
+> kart ve tablo başlıkları normal yazı (mono caps yalnız meta bilgide) · yükleme = iskelet, "Loading…" metni yok · "Not
+> connected yet" küçük gri işaret, KALKMAZ (Y2) · boş durum = tek cümle + düğme · koyu "In review · ours" çipi mevcut
+> token'larla. 15 tema çalışmaya devam eder (token değişimi yalnız bu ölçek için gerekenler; raporda listesi).
+> C4 "Contracts" menü girişi rolle: Sales → Sales › Contracts; diğerleri → Finance › Contracts.
+> C5 nav.json + shell.js + components.js tek kaynak: 30+ ekranın HİÇBİRİ kendi menü/kabuk kodunu taşımaz — iki yönlü test;
+> ekran dosyalarında kabuk değişikliği gerekmez (gerekirse SAPMA + sayı).
+>
+> ═══ (D) FONT (Suer 18 Kas) ═══
+> D1 Kurum geneli font ayarı: Admin › Organization (yeni satır "Fonts"); seçili takım tüm iç ekranlara + Exhibitor Page'e
+> uygulanır; PDF ve e-postalar değişmez. Varsayılan: DM Sans (metin) + DM Mono (rakam/etiket) — Sentez 18 Kas ölçümü:
+> eski ELIZA (eliza.elanfairs.com) bunları kullanıyor.
+> D2 Aday listesi (hepsi açık lisans, repodan KENDİ dosyalarımızla; Google Fonts hiçbir yerde kalmaz — GUV-06 her yere yayılır):
+> DM Sans + DM Mono · Space Grotesk + IBM Plex Sans + IBM Plex Mono (tasarım seti) · IBM Plex Sans · Inter · Manrope ·
+> Public Sans · Source Sans 3 · Nunito Sans. Her aday için CC ölçer: lisans dosyası · Türkçe ve Fransızca harfler · rakamlar
+> eşit genişlikte (yoksa `tnum` ayarı açık) · dosya boyutu. Yalnız seçili takım yüklenir.
+> D3 Yeni font eklemek = bir klasör + listeye bir satır; adımı docs'a yaz (Suer "yolu bir kere açtım mı eklemek kolay olsun").
+>
+> ═══ (E) MENÜ: YAPI KALIR + EKLER (Suer 23 Kas: "optimum buysa bununla başlayalım"; Yaprak 23 Kas: taşıma yok, 6 istek) ═══
+> E1 Finance › Money › **Payments** (RAP-12 "gelir listesi = payments'ın ikinci görünümü"; REQ 2.6-09): tüm ödemeler, ofis ·
+> fuar · tarih · yöntem süzgeci, CSV/Excel; satır → kontrat. Sayfa alt başlığı "Zoho'daki Revenues listesinin karşılığı".
+> Görünürlük mevcut kapsam kurallarıyla (ofis kendi kapsamını görür); yeni izin yok.
+> E2 Operations › Expo › **Stand drawings**: salt okunur liste (firma · stand no · tip · dosya(lar) · sürüm · onay durumu ·
+> indir); veri = EXH-07 gönderimleri. Kontraktöre yayın paketi (Mimari KP-22) bu pakette DEĞİL.
+> E3 Sales › Companies › Company detail: **Catalogue** sekmesi = firmanın son ONAYLI katalog içeriği + geçmiş (fuar · tarih);
+> Exhibitor Page katalog ön dolumu = firmanın herhangi bir fuardaki son onaylı kataloğu (EXH-08 ek; "önceki edisyon" şartı
+> kalkar); exhibitor düzenler, gönderir.
+> E4 Exhibitors listesi toplu eylem: **Send e-mail → Build-up · Stand · Catalogue · Badge** (seçili firmalar; zincir
+> şablonları; Excluded atlanır; önizleme; günde 1 hatırlatma kuralı bu eylemi KAPSAMAZ — zincir e-postası, hatırlatma değil).
+> E5 Kuyruk / REQ amendment: Plus Design modülü (web talepleri + tasarım sözleşmeleri; Suer 23 Kas: "sonraki aşama, ayrı
+> modül, belki ayrı servis") → REQ'e kapsam notu, kütük AD (karar: kesim sonrası) · fatura/makbuz belge üretimi → mevcut
+> karar (8 Eki: sonraki faz), kuyrukta kalır · Suer'in iki açık kararı (sipariş komisyon oranı · Payment Reminder'da tutar)
+> kuyrukta.
+> E6 UI_FAZI_TAKIP: "23 Kas: menü yapısı Suer'in kararıyla kabul; Yaprak turu: taşıma yok, 6 istek → E1–E5".
+>
+> SIRA (parça parça defter): §0 B1 ölçüm → §1 B2 hız + B3 biçim + B4 hükümler → §2 kabuk C1–C5 → §3 font D1–D3 → §4 menü
+> ekleri E1–E4 → §5 belge (defter · kütük UI/GUV/EXH ekleri · UI_FAZI_TAKIP · REQ amendment E5 · T8 mockup'lar).
+> KURALLAR: yalnız staging · TABAN 342.00 + TABAN-2 her parçada · migration runner'lı · gerçek e-posta ÇIKMAZ · testler 1112'nin
+> altına düşmez · canlı main dokunulmaz · yardımcı ajan en çok 1 · kapı serbest (Y9).
+> KABUL: B1 önce/sonra süre tablosu · `/api/expos` < 1 sn · 5 sayfada veri ≤ 2 sn · biçim taraması 0 · T2/T3/rol girişi/audit
+> testleri · kabuk: A ve B2 arasında geçiş ekranı yenilemeden; 43 menü sayfasının hepsi iki düzende de açılıyor (otomatik tur
+> cc-project + cc-owner) · "Contracts" her sayfadan ≤ 2 tık (nav.json üzerinden test) · 1280 ve 1440'ta taşma yok, 390'da
+> yatay kaydırma yok · font: varsayılan takım yüklü, Google Fonts isteği 0 (ağ kaydı) · E1–E4 ekranları bağlı, Y2 işaretleri
+> listeli · 15 tema ekran görüntüsü (War Room) · Suer turu EN SONDA, sınırsız.
+> Rapor: tek rapor; parça başına bağlı/işaretli · önce/sonra · SAPMA/🔶 · ölçülmedi · kuyruk. SUER BLOĞU yok.
+> KAPSAM DIŞI: B1 kabuk · kural motoru · floor plan · Plus Design · fatura/makbuz · canlı · kesim · telefon tasarımı (UX turu
+> sonra).
+> ```
+>
+> - **Sıra (Sentez SIRA — değişmez):** §0 B1 ölçüm → §1 B2 hız + B3 biçim + B4 hükümler → §2 kabuk C1–C5 → §3 font D1–D3 → §4 menü ekleri E1–E4 →
+>   §5 belge. Her parça = commit + push + staging'de + testler yeşil + defter kaydı; parçalar arasında Suer'e dönülmez; paket sonu TEK rapor.
+>
+> ## ✅ 2026-11-23 — PAKET KABUK-2 0. PARÇA: B1 ÖLÇÜM + U1 ÖN ÖLÇÜM (staging, salt okuma) — `/api/expos` kök nedeni JIT derlemesi · en yavaş 13 uç · 23 sayfa > 2 sn · geçici 500'lerin hata metni (T4) · takvim bağımlı test (LEENA eliza-next `ea61837` + `68df59b`) · 1112 / 1112
+>
+> - **Kriter kaynağı:** [defter:2026-11-23 SENTEZ 23 Kas: PAKET KABUK-2] — blok (B) B1 + SIRA §0. Orchestrator UYGULAMA U1 (a–k). Ölçüm ile düzeltme AYRI
+>   commit (U0): bu parçada davranış değiştiren kod YOK.
+> - **Ne yapıldı:**
+>   - **Sayfa turu:** nav.json'daki 62 sayfa (49 menü + 13 alt / kabuk sayfası) × 3 koşu = 186 yükleme, `cc-owner`, 1440 px, tek tur. Her `/api` isteğinin
+>     süresi tarayıcıda + **sunucu süresi ayrı** (staging erişim logu `duration_ms`; 675 isteğin 622'si eşlendi). Uyanık serviste 3 koşunun ortancası.
+>   - **Sorgu düzeyi:** staging'de `pg_stat_statements` + `EXPLAIN (ANALYZE, BUFFERS)`; `/api/expos` için JIT açık / kapalı karşılaştırması ve aday yeniden
+>     yazımın yanıt eşitliği (JSON karşılaştırması).
+>   - **T4 (Render log ucu):** yalnız-staging sarmalayıcısına hesap geneli LOG yolu eklendi — YALNIZ kaynak süzgeci izin listesindeki iki staging kimliğine
+>     sabitken; süzgeci sarmalayıcı kurar, `call GET /logs?…` aynı denetimden geçer; çıktı log maskesinden geçer (bağlantı dizesi · anahtar · jeton ·
+>     e-posta · IP). Test (kuru koşu — hiçbir istek çıkmaz, anahtar dosyası okunmaz): **25 / 25** — süzgeçsiz / boş süzgeçli / başka kimlikli / karışık
+>     listeli / GET olmayan / çift kodlanmış çağrı ATILMADAN reddedilir; diğer hesap geneli yollar eskisi gibi reddedilir; maske sahte girdide sınandı.
+>   - **Ölçüm belgesi (LEENA private):** `docs/audits/KABUK2_B1_OLCUM_2026-11-23.md` — sayfa tablosu (62 satır) · uç tablosu · kök nedenler · hata metinleri ·
+>     dizin adayları · ölçülmeyenler.
+>   - **Takvim bağımlı test düzeltildi (yalnız fikstür tarihi):** aşağıda SAPMA 1.
+> - **Commit:** LEENA eliza-next `ea61837` (test fikstürü) + `68df59b` (ölçüm belgesi) — PUSH: CC, yalnız `eliza-next`; canlı `main` DEĞİŞMEDİ `2db0131`.
+>   Staging deploy `68df59b` canlı (15:07 UTC). Migration YOK (kayıt 76).
+> - **Ölçülenler:**
+>   - **Plan · uyku (ayar DEĞİŞTİRİLMEDİ):** web `leena-staging` planı `0.5c-512mb` (1 örnek) · veritabanı `leena-staging-db` planı `0.1c-256mb`
+>     (PostgreSQL 17.11). **Uyku yok:** son istekten 10 gün sonraki İLK istek 0,29 sn. İstek başına ağ tabanı 205–240 ms (sunucuda 2–30 ms süren uç).
+>   - **Sayfalar:** veri > 2 sn olan **23 / 62**. En yavaşlar (ortanca): ops-reports 19,6 sn · finance-drafts 15,5 · finance-expo 15,5 · sales-performance
+>     12,9 · ops-communications 11,7 · ops-dashboard 11,6 · War Room 10,9 · collections 10,9 · migration-sd 10,4 · Contracts listesi 9,2.
+>   - **Uçlar (sunucu ortancası):** > 1 sn olan **13 / 87**. En yavaş 10: `/api/reports/summary` 14,4 sn (en çok 33,3) · `/api/expos` 8,2 sn (en çok 14,9;
+>     30 istekte 3 × 500 + 6 istemci zaman aşımı) · `/api/operations/communications-summary` 4,6 · `/api/analytics/performance` 4,2 · `/api/checkins` 3,6 ·
+>     `/api/operations/dashboard` 3,2 · `/api/ledger/budgets/:id` 3,2 · `/api/analytics/collections` 2,8 · `/api/ledger/summary` 2,8 · `/api/analytics/expo/:id` 2,1.
+>   - **`/api/expos` neden 9 sn — KÖK NEDEN: JIT derlemesi.** Fuar başına 4 ilişkili alt sorgu × 213 fuar (dizinler VAR; N+1 istek yok). Planlayıcının maliyet
+>     tahmini JIT eşiklerinin üstünde → her çağrıda derleme: çalışma **8.436 ms'nin 6.396 ms'si JIT** (0,1 çekirdekli veritabanı). Aynı sorgu JIT kapalıyken
+>     **1.135 ms**. Aday yeniden yazım (tek geçişte iki toplam): **923 ms**, yanıtı bugünküyle AYNI (213 satır · alanlar · değerler · sıra).
+>   - **JIT'in toplam payı:** yavaş 23 sayfanın tek geçişinde en ağır 24 ifadenin 125,7 sn'sinin **73,1 sn'si (%58) JIT** (`/api/expos` · açık alacak
+>     sorgusu · konferans konu sayımı). JIT'siz ağırlar: raporların ortak `facts` tanımı (tüm kontratlarda bir geçiş ≈ 1,0 sn; bir uç birkaç kez kuruyor) ·
+>     klasik check-in listesi (3,0–3,6 sn) · klasik rapor ucu (ardışık ~12 toplam sorgusu).
+>   - **Geçici 500'lerin hata metni (UI-TAM-2 kapanışından açık kalan):** `Connection terminated due to connection timeout` (neden: `Connection terminated
+>     unexpectedly`) — uygulama havuzu 5 sn içinde veritabanı bağlantısı açamadı; hemen öncesinde 15 sn'de istemcinin vazgeçtiği istekler var. Uygulama hatası
+>     değil, veritabanı doygunluğu. Erişim logundaki 5xx satırları: 11 Kas 15:05 (2) · 23:08 (2) · 23:09 (1). **Bu turda yeniden üretildi** (14:41 UTC):
+>     vazgeçilen `/api/expos` sorguları sunucuda sürüp birikiyor → `statement timeout` (30 sn) iptalleri + ilgisiz hafif uçlarda 500. Veritabanı yeniden
+>     başlamadı.
+>   - **U1 zemin ölçümleri:** (b) menü sayımı — nav.json 99 öğe = **49 menü sayfası** (Operations 11 · Finance 17 · Admin 12 · Sales 9) + 12 alt sayfa + 25
+>     klasik köprü + 13 kabuk öğesi; mockup 42 (+ Exhibitor detail = 43). Fark YALNIZ Admin: mockup grup başına tek sayfa (5), nav.json 12 (Organization 4 ·
+>     Migration 4 · Security 2 · Users 1 · Catalog 1); Sales / Operations / Finance listeleri ad ad AYNI. (c) 69 ui2 sayfasının HİÇBİRİ kendi kabuk
+>     işaretlemesini taşımıyor (hepsi iki bağlama noktası + shell.js); hesap menüsü bugün YOK; kişisel tema `users.ui_theme`. (d) Google Fonts: ui2'de 1 dosya
+>     (tokens.css) · design-preview 4 dosya · exhibitor-page 0 · klasik sayfalarda 43 / 51 html + 2 ortak dosya + 1 uçtan servis edilen sayfa; PDF (yerleşik
+>     Helvetica) ve e-postalar (Arial) web fontuna bağlı DEĞİL. (e) ui2'de `toFixed` 0 — tutarlar sunucudan METİN gelip olduğu gibi basılıyor (C.eur 157 ·
+>     C.money 29 · C.pair 41 çağrı); tarih 60+ yerde ISO dizgesi kesilerek basılıyor. (f) sunucuda / istemcide veri önbelleği YOK; kapsam süzgeci istek
+>     başına SQL'de. (g) tüm ödemeleri listeleyen uç YOK (kontrat başına + temsilci toplamı var); dışa aktarım sayıyı HAM verir; "Copy from last edition"
+>     dosyaları KOPYALAR (kotaya girer). (h) Admin › Organization izinleri: territories.read · expo_publish.write · reference.write · templates.write.
+>     (i) rol girişi: T7-2'deki her rolün hedef sayfayı açma izni VAR (Finance contracts.read → War Room · Office Manager operations.read → Ops Dashboard ·
+>     Sales ve dış kullanıcı followups.read → My Work). (j) dört SAMPLE linki açılıyor (200); anahtar sırrı bugün ayrı değişken yoksa oturum sırrından
+>     türüyor. (k) tüzel kişisiz kontrat: **3.953 / 3.954** (3.373'ü Active).
+>   - **Test (yerel; veritabanı oturumu UTC; temiz çalışma kopyası `68df59b`):** tam zincir **1112 / 1112** — 65 suite, 0 başarısız (PG 14).
+>     **TABAN** 342.00 · **TABAN-2 EŞİT** · migration kaydı 76.
+> - **Ön-onaylı SAPMA + 🔶 (Sentez'e):**
+>   1. **Takvim bağımlı test (SAPMA — hüküm yok, beklenti DEĞİŞMEDİ):** dokunulmamış başlangıç kodunda (`934d6d0`) zincir 23 Kas'ta `test_b3_comm` F1'de
+>      kırmızıydı (1111 geçti · 1 başarısız): takip vadesi SABİT gün `2026-11-20` ve "vadesi geçmemiş" bekleniyor; takvim o günü geçti. Yalnız fikstür
+>      tarihi koşudan 14 gün ileriye alındı; karşılaştırma aynı değerle. Aynı sınıfta başka sabit tarihler var (ör. `2026-12-01` · `2026-12-31`) —
+>      Aralık'ta kırılır → kuyruk.
+>   2. 🔶 **"43 menü sayfası" okuması (U1-b):** KABUL'deki sayı = nav.json'da menüde görünen sayfaların HEPSİ (bugün 49; E1 + E2 + Fonts ile 52) + Exhibitor
+>      detail. Mockup'ta olup nav.json'da olmayan sayfa eklenmez; nav.json'da olup mockup'ta olmayan çıkarılmaz.
+>   3. 🔶 **Hız düzeltmesinin ilk adımı JIT'in kapatılması olacak (1. parça):** B2 listesinde (dizin · sorgu · tek sorguda toplam · önbellek) adı geçmiyor
+>      ama ölçülen kök neden bu. Uygulamanın kendi bağlantılarında kapatılır (sorgu anlamı ve yanıtlar değişmez); canlı için kesim maddesi.
+>   4. **T4 sarmalayıcı kuralı repo DIŞI** (`~/.ell-cc/`); testi de orada. LEENA `CLAUDE.md` SIR satırına istisna 1. parçada işlenir.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** canlı (her şey — U0); canlı veritabanında JIT süresi ve plan · klasik rapor ucunun ifade ifade dökümü (yakalama
+>   geçişinde sayfa önceki istekte zaman aşımına düştü) · Finance / Office Manager / Sales Operations hesabıyla tur (araç hesabı yok) · `cc-project` süre
+>   turu (kabuk parçasında) · Safari / Firefox · boş önbellekli ilk ziyarette statik dosya süreleri ayrıca raporlanmadı.
+> - **Bilinçle yapılmayanlar:** plan / uyku ayarı değişikliği · staging veritabanında elle bakım komutu · canlıda okuma dahil her şey · bu parçada
+>   davranış değiştiren kod.
+> - **Kuyruğa:** takvim bağımlı diğer test tarihleri (S) · klasik rapor ucunun dökümü (1. parçada, JIT kapandıktan sonra yeniden ölçülecek).
+> - **→ Sıradaki:** 1. parça — B2 hız (önce JIT, sonra `/api/expos` + > 1 sn kalan uçlar; her adım ayrı commit + ayrı ölçüm) · B3 biçim · B4 hükümler.
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
