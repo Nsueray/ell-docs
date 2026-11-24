@@ -12301,6 +12301,54 @@
 > - **Bilinçle yapılmayanlar:** "Catalogue status · Orders · Payment warnings" menü satırı DEĞİL (Sentez 2.2) · "Expo partners" / "Build-up" sayfası yok ·
 >   Communications sayfasının içeriği (kampanyalar · şablonlar + zincir bağları) aynı kaldı · klasik ekranlara dokunulmadı (lead-scan dahil).
 >
+> ## ✅ 2026-11-24 — DİLİM TUR-1b P5: ÇOK FUARLI LİSTELER — Exhibitors + Stand drawings çok fuarlı uç (tek türetme) · Chain status ve Expos liste kalıbında · sayaç / toplu işlem yalnız tek fuarda
+>
+> - **Kriter kaynağı:** [defter:2026-11-24 SENTEZ 24 Kas: "ARALIK-1 KABUL · 3 KARAR · TUR LİSTESİ HÜKÜMLERİ · DİLİM TUR-1 (+ ARALIK-2 §0 ÖLÇÜMLERİ)"] — D-2 2.3 · 2.6 · 2.7 +
+>   [defter:2026-11-24 SENTEZ 24 Kas (21:40): "TUR-1a KABUL · KARARLAR (S1 · S2 · S3 · CC 🔶1–3 · H3) · TUR-1b EK HÜKÜMLER"] — D · S2.
+> - **Ne yapıldı:**
+>   - **Çok fuarlı uç (2.3 / 2.7):** `GET /api/exh-team/exhibitors?expo=live|all|<id>` (varsayılan `live` = yaklaşan + süren) ve `GET /api/exh-team/stand-drawings?expo=…` —
+>     sunucuda sıralı (liste kalıbının TEK sıra kuralı, bellekteki yazımı) ve sayfalı (50). **Durum türetme TEK kaynak:** `utils/exhList.loadMany` — bugünkü tek
+>     fuar yükleyicisi `load` artık AYNI fonksiyonun tek kimlikli çağrısı (ikinci bir sorgu / kural kopyası yok); her satır KENDİ fuarının ayarı ve KENDİ fuarının
+>     günüyle (fuarın saat dilimi) türetilir. Fuar ayar modeli çok fuar için sabit sayıda sorguyla okunur (`utils/expoSettings.loadMany`; `load` = tek kimlik).
+>     Tek fuara ait olan (sayaç kutuları · son tarihler · fuar şeritleri · R3 toplamları · seçilebilir satırlar) yalnız TEK fuar seçiliyken yanıtta (`single`).
+>   - **Exhibitors sayfası:** liste kalıbında; fuar süzgeci araç satırının İLK kontrolü (Upcoming + ongoing · All expos · tek fuar; kullanıcı başına hatırlanır —
+>     P3'teki `expo_filter`; adreste; klasik ekranların ortak fuar anahtarına YAZMAZ — S2); çok fuarda "Expo" sütunu, tek fuarda çıkar; sayı seçimin içinden
+>     ("40 exhibitors · Upcoming + ongoing · 9 expos"). **Çok fuarda sayaç kutuları ve toplu işlemler (Remind… · Send e-mail… · Send all now…) PASİF + "Select one
+>     expo"** (Orchestrator okuması aynen; fuarlar arası toplu gönderim yok). Seçim sayfalar arasında yaşar; "Select all active" süzgecin gösterdiği TÜM etkin
+>     satırları alır (sunucu adlandırır). Satır eylemleri (Remind · Copy link) satır menüsünde (⋯). Dışa aktarım = stand yüklenicisi sayfası, ekrandaki sırayla
+>     (çok fuarda ilk sütun fuar).
+>   - **Stand drawings:** aynı süzgeç ve kalıp. **Chain status:** matris, kalıbın tablosu (`…/chain?list=1`); e-posta türü başına öncelik (Stand · Catalogue hep;
+>     Payment Reminder · Badge sonra; Welcome · Build-up önce gizlenir) — gizlenen tür "Columns · N hidden" altında; seçim sayfalar arasında yaşar.
+>   - **Expos (2.6):** liste kalıbında (`GET /api/operations/expos?list=1`); kendi sırası = TEK fuar sırası (süren → en yakın yaklaşan → en son biten; "bugün" =
+>     fuarın kendi günü, 1a'daki sayaçla aynı tanım); Status süzgeci "Upcoming + ongoing" ile açılır; ad → Dashboard; ⋯ = Open dashboard · Expo settings · Floor
+>     plan · Expo reports · Expo record [classic]; "New expo" = klasik fuar formu ("classic" etiketli, yalnız yazma yetkisiyle). Sayfa artık tarayıcı deposuna
+>     YAZMIYOR (S2): "Registration report" o fuarın Expo reports sayfasından; R3 satış detayı Expo reports'a bağlandı.
+>   - **Liste kalıbı (genel):** fuar süzgeci yeri · sayfanın kendi blokları (kartın üstü / içi / altı) · bağlantı ve sayfa eylemi taşıyan satır menüsü · yalnız
+>     bazı yanıtlarda var olan sütun · sıralanmayan işaret kutusu sütunu. **Etiket sözlüğü:** `exh_view` · `payment_state` · `chain_problem` · `chain_cell` ·
+>     `chain_view` · `expo_state` (sunucu durum sütunlarını AYNI sözlükle sıralar).
+>   - **Hız:** bellekteki sıra kuralı anahtarı satır başına BİR kez hesaplar (3.953 satır: 1,4 sn → 35 ms; kural aynı) · fuarın yerel günü için saat dilimi
+>     biçimlendiricisi dilim başına bir kez kurulur (tüm fuarlarda türetmenin 0,9 sn'si buydu).
+> - **Commit:** LEENA eliza-next `a634944` + `3e8a6c5` (staging'de CANLI). Canlı `main` DEĞİŞMEDİ. Migration yok.
+> - **Ölçülenler:** yeni suite `test_tur1b_lists.js` (**20**) · zincir 80 suite **1429 / 1429** · TABAN 342.00 · TABAN-2 EŞİT (her deploy sonrası).
+>   **Eşitlik (staging, Owner araç hesabı):** tek fuar seçiliyken yeni uç = bugünkü fuar ucu, SATIR SATIR — SAMPLE fuar (15): 7 / 7 satır, fark 0; göç fuarı (9):
+>   179 / 179 satır (4 sayfa), fark 0; tek fuara ait parçalar (sayaçlar · son tarihler · toplamlar · gün) ve görünüm sayıları eşit; Stand drawings 4 / 4 ve 0 / 0.
+>   Yükleyici değişikliğinden önce / sonra bugünkü uçların yanıtı aynı (12 adres; 24 Kas içinde). **Süre (staging, sunucu yanıtı, 3 koşu):** tek fuar 0,41–0,59 sn (15)
+>   · 0,50–1,40 sn (9) · "Upcoming + ongoing" (9 fuar · 40 satır) 0,43–0,51 sn · **"All expos" (213 fuar · 3.953 satır) 2,4–3,4 sn** (ilk ölçüm 7–8 sn; düzeltmeden
+>   sonra) · Stand drawings live 0,35–0,45 sn · all 2,4–3,1 sn. **Genişlik (staging, 8 sayfa × A / B2 × 1440 / 1280 = 32 yükleme, bulgu 0):** kart içi kayma HİÇBİR
+>   yüklemede yok; 1280 A'da Exhibitors 4 · Stand drawings 4 · Chain status 2 · Expos 1 sütun "Columns · N hidden" altında.
+> - **SAPMA:** (1) **"All expos" 2 sn'yi geçiyor (2,4–3,4 sn)** — 🔶 raporda; varsayılan "Upcoming + ongoing" 0,5 sn. (2) "Satır satır aynı" satırların KENDİSİ için;
+>   SIRA liste kalıbının kuralı (ad A→Z, aksan / büyük harf yer değiştirmez; co-exhibitor satırları kendi adıyla araya girer) — bugünkü uç co-exhibitor
+>   satırlarını listenin sonuna koyuyordu. (3) Yeni uçta arama kutusu kalıbın kuralıyla (aksansız eşleşir); bugünkü uç yalnız küçük harfe çeviriyordu.
+>   (4) Satıra `expo_id` alanı eklendi (iki uçta da). (5) Hükümle değişen testler: `test_p3d` R8 · `test_p3e` E15 (S2 — Expos sayfası depoya yazmaz) ·
+>   `test_aralik1` C1 · `test_tur1a_fixes` T4 (2.7 — liste kalıbı; anlam aynı).
+> - **MOCKUP ↔ SENTEZ:** U2'deki "More filters · N" açılır kutusu için hüküm yok → Exhibitors'ın altı süzgeci araç satırında (iki satıra sarar) · Expos'ta satıra
+>   tıklayınca Dashboard (Sentez 2.4); R3 detayı satır menüsünde DEĞİL (hükmün beş maddesi), Expo reports'tan.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** toplu gönderimler yeni sayfadan staging'de GÖNDERİLMEDİ (önizleme / onay kodu aynı; uçlar değişmedi) · proje ve yetkisiz araç
+>   hesabıyla tur (kapanışta) · sayfa yükleme süreleri önce / sonra (kapanışta, on sayfa) · 24 Kas anlık görüntüsüyle 25 Kas karşılaştırması gün sayaçları
+>   yüzünden farklı (kod değil saat) — aynı anda sorulan iki ucun eşitliği ölçüldü.
+> - **Bilinçle yapılmayanlar:** fuarlar arası toplu gönderim · co-exhibitor listesi tasarımı · Send e-mail önizleme gövdesi (ARALIK-2) · Chain status'ta fuar
+>   süzgeci (fuara özel ekran — başlık seçicisi, 2.4) · "All expos" için önbellek / ayrı özet tablo (ölçüm raporda, karar Sentez'in).
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
