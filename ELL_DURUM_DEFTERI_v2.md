@@ -11465,6 +11465,70 @@
 > - **Kuyruğa:** tüzel kişi banka alanlarının denetim kaydında maskelenmesi (🔶 1) · tedarikçi · bütçe · temsilci açma yazımlarının denetimi.
 > - **→ Sıradaki:** 3. parça — madde 3 (klasik rapor ucu: üç önlem + ölçüm).
 >
+> ## ✅ 2026-11-24 — DİLİM ARALIK-1 3. PARÇA: MADDE 3 — KLASİK RAPOR UCU (staging) — yeniden yazılmadı; yanıt önce / sonra AYNI (14 / 14) · en büyük fuarda 8,2 sn → 5,5 sn, sunucu ortancası 3,6 → 2,2 sn · hedef ≤ 3 sn altı büyük fuarın dördünde tutuyor · dizin kurma 9,2 sn (LEENA eliza-next `7016fca` + `04f3dcc`) · 1251 / 1251
+>
+> - **Kriter kaynağı:** [defter:2026-11-24 SENTEZ 24 Kas: "KABUK-2 KABUL + 3 KARAR + TEYİTLER + DİLİM ARALIK-1"] — karar S1 ("klasik rapor ucu YENİDEN YAZILMAZ;
+>   ölçülen üç önlem uygulanır … hedef ≤ 3 sn") + DİLİM ARALIK-1 madde 3 ("S1 üç önlem + ölçüm — önce / sonra; dizin kurma süresi"). Orchestrator UYGULAMA
+>   U1-c + U2-3: yanıt önce / sonra AYNI (alanlar · değerler · sıra; staging verisiyle); tutmazsa zorlamadan bırak + ölçüm + 🔶.
+> - **Ne yapıldı:**
+>   - **Önlem 1 — dizin (uygulandı):** e-posta günlüğüne iki kolonlu dizin (ziyaretçi + durum), runner'lı migration **079** (yalnız tablo varsa). Raporun
+>     e-posta sayımı günlüğün tamamını okumak yerine fuarın ziyaretçileri için yalnız dizini okur.
+>   - **Önlem 2 — rapor işlemine bellek ayarı (uygulandı, YALNIZ istatistik ifadesine):** raporun süresinin çoğunu alan istatistik ifadesi kendi
+>     bağlantısında, kendi işleminde, o işleme özel sıralama belleğiyle koşar; ayar işlem bitince (onay ya da geri alma) kendiliğinden eski değerine
+>     döner — havuzun ve veritabanının genel ayarı değişmez (testle: rapordan sonra her bağlantıda değer aynı; hatada da). İfadenin metni ve tek satırlık
+>     yanıtı aynı.
+>   - **Önlem 3 — ziyaretçilerin tek geçişte okunması (ÖLÇÜLDÜ, UYGULANMADI):** ilk sürüm (`7016fca`) fuarın ziyaretçilerini bir kez geçici tabloya okuyup
+>     ifadeleri oradan koşturuyordu. Staging ölçümü: geçici tabloyu kurmak 0,9 sn + istatistiğini çıkarmak 2,9 sn; ifadelerin kendisi hızlanmadı (süre
+>     veriyi okumakta değil, metin dönüşümü + sıralamada) → uç YAVAŞLADI (en büyük fuar 8,2 → 8,6 sn) ve EŞİT sayılı satırların sırası değişti (14 yanıtın
+>     8'i farklı — "yanıt aynı" koşulu bozuldu). Aynı gün düzeltildi (`04f3dcc`): geçici tablo kaldırıldı; liste ifadelerine HİÇ dokunulmuyor (havuzun
+>     kendi ayarıyla, eski metinleriyle) — böylece eşit sayılı satırların sırası da eskisi gibi.
+> - **Commit:** LEENA eliza-next `7016fca` (ilk sürüm) + `04f3dcc` (düzeltme) — PUSH: CC, yalnız `eliza-next`; canlı `main` DEĞİŞMEDİ `2db0131`. Migration
+>   **079** staging'de: dry-run → apply → ikinci apply "Nothing to apply" (kayıt **81**).
+> - **Ölçülenler (staging · `cc-owner` · her çağrı 3 kez · istemci süresi, sn):**
+>
+>   | Fuar (ziyaretçi) | önce (`47f14ec`) | sonra (`04f3dcc` + dizin) | yanıt |
+>   |---|---|---|---|
+>   | expo 9 (21.684) | 7,7 · 9,8 · 8,2 | 5,5 · 4,8 · 6,1 | AYNI |
+>   | expo 1 (30.455) | 8,9 · 5,7 · 4,9 | 5,7 · 4,6 · 3,8 | AYNI |
+>   | expo 7 (12.088) | 3,6 · 2,5 · 2,5 | 3,0 · 2,3 · 2,3 | AYNI |
+>   | expo 13 (11.001) | 4,3 · 4,1 · 6,9 | 2,9 · 2,5 · 2,5 | AYNI |
+>   | expo 18 (10.222) | 4,0 · 4,1 · 3,5 | 2,7 · 2,5 · 2,3 | AYNI |
+>   | expo 3 (9.815) | 3,2 · 4,1 · 3,9 | 1,9 · 2,1 · 2,8 | AYNI |
+>   | expo 9 + ayrıntı | 8,9 · 9,9 · 8,0 | 5,9 · 7,9 · 5,7 | AYNI |
+>   | sunucu ortancası / en uzun (36 istek, erişim logu) | 3.586 ms / 9.681 ms | **2.239 ms / 7.656 ms** | — |
+>
+>   - **Yanıt eşitliği:** 14 çağrı (6 büyük + 4 küçük fuar · ayrıntılı 2 · tarih süzgeçli 1 · başka kiracının fuarı 1) — saate bağlı iki alan (üretim anı ·
+>     kayıttan bu yana ortalama gün) dışında bayt bayt karşılaştırma: **14 AYNI · 0 farklı**. (İlk sürümde: 6 aynı · 8 farklı — yukarıda.)
+>   - **Dizin kurma süresi (079, staging):** 733.953 satır · tablo 149 MB → **9,5 sn** (dry-run) · **9,2 sn** (apply); kurulurken tablonun yazımı kilitli.
+>   - **İstatistik ifadesi tek başına (sunucu süresi):** expo 9 önce 6,2–8,0 sn (23 Kas ölçümü) → dizinle 2,4–3,1 sn; expo 1 → 1,9–2,8 sn. Sıralama belleği:
+>     en büyük sıralama 11,2 MB ister (varsayılan 1,6 MB'ta diske taşıyordu; işlem içi ayarla bellekte).
+>   - **Test:** `7016fca` 71 suite · 1251 / 1251 · `04f3dcc` 71 suite · **1251 / 1251**. Yeni suite `test_aralik1_report.js` (6): her sayı ve her liste ESKİ
+>     ifadenin aynı veride verdiğiyle eşit (referans = eski metin) · bellek ayarı rapordan sonra hiçbir bağlantıda kalmıyor (hatada da) · liste ifadeleri
+>     dokunulmamış, geçici tablo yok · 079 yalnız tablo varsa, yalnız runner'la, ikinci koşu değişiklik yapmaz.
+>   - **TABAN:** 342.00 EUR OK · TABAN-2 EŞİT. ui2 Operations › Reports (expo 9) açılıyor, konsol hatası 0.
+> - **SAPMA (ön-onaylı — YON-18):**
+>   1. **Üç önlemden ikisi uygulandı.** Sentez "ölçülen üç önlem uygulanır" dedi; üçüncüsü (tek geçiş) ölçümde kazanç vermedi ve yanıtın sırasını
+>      değiştirdi → Uygulama'nın "yanıt AYNI · tutmazsa zorlamadan bırak" hükmüne göre uygulanmadı (23 Kas'taki "üç önlemle ≈ 2,5–3 sn" bir tahmindi, tek
+>      geçiş o gün ölçülmemişti).
+>   2. **Staging'de ≈ 12 dakika yavaş ve sırası farklı sürüm yayındaydı** (`7016fca`, 08:37–08:49 UTC): Reports sayfası o arada 1–3 sn daha yavaş açıldı,
+>      eşit sayılı satırların sırası farklıydı. Veri yazılmadı.
+>   3. **Hız düzeltmesi ile ölçüm aynı parçada, iki commit** (ilk sürüm + düzeltme); çıktı değişikliği yok.
+>   4. Uygulanmış migration dosyasının (079) başlık yorumu hâlâ "üç önlem" diyor — uygulanmış dosya değiştirilmedi.
+> - **🔶 Sentez'e:**
+>   1. **Hedef ≤ 3 sn iki en büyük fuarda tutmuyor** (expo 9 ortanca 5,5 sn · expo 1 4,6 sn; diğer dört büyük fuar 2,1–2,5 sn). Kalan süre: firma listesi
+>      ifadesi ≈ 1,8 sn (firma başına tekil ziyaretçi sayımı — metin dönüşümü + sıralama, bellekle değişmiyor) · istatistik ≈ 2,5 sn · ülke listesi ≈ 0,4 sn ·
+>      13 ifadenin ardışık gidiş-dönüşü. Zorlanmadı. Sıradaki adım ifadeleri birleştirmek / saklı toplam olurdu = ucun yeniden yazımı (Sentez: ui2 Reports
+>      kendi veri modelini alınca).
+>   2. **Mevcut hata (değiştirilmedi):** fuar + tarih süzgeciyle çağrı 500 dönüyor (önce de sonra da) — eski ifadeler tanımsız bir takma ada bakıyor.
+>      ui2 Reports bu süzgeci yollamıyor; klasik rapor sayfasında tarih seçilirse görülür.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** canlı veritabanında dizin kurma süresi (tablo 3,1 GB — Sentez; kesimde ÖNCE ölçülür) ve uç süresi · bellek ayarının ve
+>   dizinin ayrı ayrı katkısı uçtan uca (istatistik ifadesinde ayrı ölçüldü; fark 0,1 çekirdekli veritabanının gürültüsü içinde) · kiracı geneli rapor (fuar
+>   seçilmeden — dokunulmadı) · klasik rapor sayfasının tarayıcıda görünümü (aynı ucu çağırır; yanıt eşitliğiyle kapsandı) · eşzamanlı birden çok rapor.
+> - **Bilinçle yapılmayanlar:** ucun yeniden yazımı · ifadelerin birleştirilmesi · tarih süzgeci hatasının düzeltilmesi · kiracı geneli rapor · klasik
+>   check-in listesi ve kuyruk sayaçları (kuyrukta).
+> - **Kuyruğa:** klasik rapor ucunda tarih süzgeci hatası · iki en büyük fuarda ≤ 3 sn (yeniden yazımla).
+> - **→ Sıradaki:** 4. parça — EK madde 9 · 10 (oran = ayar, ileriye dönük · Payment Reminder varsayılan metni).
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
