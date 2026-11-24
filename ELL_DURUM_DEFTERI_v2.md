@@ -11529,6 +11529,94 @@
 > - **Kuyruğa:** klasik rapor ucunda tarih süzgeci hatası · iki en büyük fuarda ≤ 3 sn (yeniden yazımla).
 > - **→ Sıradaki:** 4. parça — EK madde 9 · 10 (oran = ayar, ileriye dönük · Payment Reminder varsayılan metni).
 >
+> ## ✅ 2026-11-24 — DİLİM ARALIK-1 4. PARÇA: EK MADDE 9 · 10 (staging) — proje ekibi kaydının komisyon oranı %5, AYAR olarak (ürünün kendi ucundan); oran değişikliği artık İLERİYE DÖNÜK: mevcut 415 hak ediş satırının hiçbiri değişmedi · Payment Reminder varsayılan metni şablon satırı — beş yer tutucu, bakiye + vade + link, banka bilgisi yok, çözülemeyen yer tutucuyla e-posta gitmez (LEENA eliza-next `93c5056` + `0f47a87`) · 1277 / 1277
+>
+> - **Kriter kaynağı:** [defter:2026-11-24 SENTEZ 24 Kas: … + "ARALIK-1 EK"] — kural ("İş parametreleri … koddan değil ayardan gelir … değişiklik ileriye dönük; geçmiş
+>   kayıtlar değişmez") + EK madde 9 · 10. Orchestrator UYGULAMA U1-h / i + U2-9 / 10.
+> - **Ne yapıldı — madde 9 (oran):**
+>   - **Ön ölçüm (U1-h):** oran, temsilci kaydının varsayılan oranıdır (proje ekibi kaydı = "ELAN EXPO", tür `team`; staging'de %2 idi) ve ürünün mevcut ucundan
+>     düzenlenir (klasik Agents ekranı; `agents.write` — Finance / Owner). **Hak ediş bir yere YAZILMIYOR:** komisyon motoru her okumada "kontratın kendi oranı,
+>     yoksa kaydın o anki varsayılanı" ile hesaplar. Yani oran sipariş kontratına doğumda donmuyordu ve "yazılmış earned satırı" diye bir şey yoktu: varsayılan
+>     değişince kendi oranı olmayan BÜTÜN mevcut kontratların geçmiş hak edişi de yeniden hesaplanıyordu.
+>   - **Ölçülen etki (düz değişiklik yapılsaydı):** proje ekibi kaydı staging'de 539 kontratın satış temsilcisi (yalnız siparişlerin değil): 318'i kendi oranıyla %5 ·
+>     128'i %2 · **93'ünün kendi oranı YOK** (92 göçmüş ana kontrat + SAMPLE sipariş 7901). O 92 kontratın 25'i ödemeli; varsayılan %2 → %5 olsaydı hak edişleri
+>     414,31 → 1.035,78 EUR'ya çıkardı (+621,47 EUR, geriye dönük).
+>   - **Yapılan:** oran değişikliği ileriye dönük hale getirildi — bir temsilci kaydının varsayılan oranı değiştiğinde, AYNI işlemde, o kaydın kendi oranı
+>     olmayan kontratlarına YÜRÜRLÜKTEKİ (eski) oran yazılır. Böylece mevcut kontratların kazandığı ve kazanacağı değişmez; yeni oran, değişiklikten SONRA bu
+>     kayda bağlanan kontratlara uygulanır. Oranı hiç olmayan kayıtta yazılacak eski oran yoktur (ilk oran "oranı eksik" kontratları doldurur — eskisi gibi).
+>     Değişiklik denetim kaydına yazar (hangi oran, eski → yeni, kaç kontrat eski oranda kaldı). Kodda sabit oran YOK; migration oran YAZMAZ.
+>   - **Staging'de ayar:** oran ürünün kendi ucundan %2 → **%5** girildi (`cc-owner`; kaydın öbür alanları aynen geri yollandı — uç "tam set" düzenler).
+> - **Ne yapıldı — madde 10 (Payment Reminder varsayılan metni):**
+>   - **Ön ölçüm (U1-i):** şablon tablosu (kiracı · e-posta · dil · konu · gövde · kaynak · gözden geçirildi) boştu; satır varsa dosyanın yerine geçer. Zoho
+>     metni (Drive, EN / FR — 12 Kas'ta alınan kopya): bakiye alanı İKİ kez · kişi adı · fuar adı · firma adı · kişisel imza; **banka satırı YOK**, vade ve
+>     link YOK. Motorun bugünkü alanları çift süslü ve "boşsa cümleyi düşür" kuralıyla; tutar / tarih biçimleyen sunucu işlevi yoktu.
+>   - **Yapılan:** migration **080** her kiracıya EN + FR satırı ekler (satır varsa DOKUNMAZ; TR satırı yok → EN). Metin = Zoho metni, YALNIZ beş yer tutucuyla:
+>     `{balance}` · `{due_date}` · `{contract_no}` · `{expo}` · `{payment_link}`.
+>     (a) **{balance}** = Payment bölümünün gösterdiği açık bakiye (kontrat + ödenmemiş siparişleri), kontrat para biriminde; yazılışı ekranların TEK
+>     biçimlendiricisinden — sunucu ayrı bir kural yazmaz, tarayıcının koştuğu AYNI dosyayı koşar (ortak örnek değerlerle test: iki çıktı aynı).
+>     (b) **{due_date}** = ödenmemiş kısmın en yakın vadesi (planın birikimli kuralıyla ilk karşılanmamış taksit; geçmişse o geçmiş tarih), planı olmayan
+>     kontratta fuarın ödeme son günü; "17 May 2026" biçimi, e-postanın dilinde.
+>     (c) **{payment_link}** = Exhibitor Page'in Payment bölümü (bölüm yine kodla açılır); önizlemede link yerine not yazar (önizleme sayfa anahtarı üretmez).
+>     (d) banka bilgisi YOK — metinde yok, yer tutucusu da yok. (e) **Çözülemeyen yer tutucuyla e-posta GİTMEZ:** bilinmeyen ad ya da bu exhibitor için değeri
+>     çıkarılamayan yer tutucu → satır Blocked + neden (yer tutucunun adıyla); önizleme reddedilir; hiçbir e-postada ham "{…}" kalmaz. (f) değerler kaçışlı.
+>     (g) e-posta yine yalnız açık bakiye varken gider. (h) tohum yalnız satır yoksa ekler. Bakiye / vade türetilmiş duruma GİRMEZ (kodsuz sayfa tutar taşımaz).
+> - **Commit:** LEENA eliza-next `93c5056` (madde 9 + 10) + `0f47a87` (listenin Chain sütununda yeni engel nedeninin etiketi) — PUSH: CC, yalnız `eliza-next`; canlı
+>   `main` DEĞİŞMEDİ `2db0131`. Migration **080** staging'de: dry-run → apply → ikinci apply "Nothing to apply" (kayıt **82**; 2 kiracı → 4 satır).
+> - **Ölçülenler:**
+>   - **Test:** `93c5056` temiz çalışma kopyasında 72 suite · **1277 / 1277**. Yeni suite `test_aralik1_settings.js` (26): P1–P8 oran (değişiklikten önce / sonra
+>     her kontratın hak edişi aynı · sonra doğan kontrat ve sipariş yeni oranda · ikinci değişiklik · oranı olmayan kayıt · yetki kapısı · denetim kaydı ·
+>     kodda / migration'da oran yok) · M1–M16 metin (beş yer tutucu · banka / kişisel veri yok · tek biçim kuralı · vade kuralı · kaçış · dil · açık bakiye ·
+>     çözülemeyen yer tutucu · tohum yalnız yoksa · bakiye durumda yok) · TABAN (o temsilcinin oranı sonradan değişse de 342.00).
+>   - **Oran (staging, önce / sonra — salt okuma ölçümü):** proje ekibi kaydının hak ediş satırı 415 → 415 · **tutarı değişen satır 0** · toplam 10.711,55 →
+>     10.711,55 EUR · bütün temsilciler 286.580,52 → 286.580,52 EUR. Eski oranda kalan kontrat **93** (yanıtta ve denetim kaydında). Kaydın kontratlarında oran
+>     dağılımı: %5 × 318 · %2 × 221 (128 + 93) · oransız 0.
+>   - **SAMPLE siparişler hangi oranla:** staging'de TEK sipariş kontratı var (7901, 11 Kas doğumlu, ödemesi yok → hak ediş satırı YOK). Doğduğu gün yürürlükteki
+>     oran %2 idi; değişiklik anında üstüne %2 yazıldı → gelecekteki ödemesi %2 ile hak edilir. Değişiklikten SONRA doğan sipariş (7904, kendi SAMPLE kaydımda):
+>     kendi oranı yok, kullanılan oran **%5** ("default"), 400,00 EUR için tam pay 20,00 EUR.
+>   - **Payment Reminder (staging, kendi SAMPLE kaydım — kontrat 7903, 5.270,00 EUR, iki taksitli plan):** önizleme → konu "{fuar} — Payment reminder" · "remaining
+>     balance of EUR 5,270.00" · "(contract ATR-200007)" · "Payment due date: 22 Nov 2026" (ilk taksit, 2 gün önce — geçmiş tarih) · link yerine not. BİR gönderim
+>     (elle; **echo** — dışarı çıkmadı): Finance kutusundan · bakiye + vade + Payment bölümüne giden link metinde · ham yer tutucu yok · banka bilgisi yok
+>     (kontratın tüzel kişisinde belgede gösterilen SAMPLE banka hesabı olduğu halde). Dosyalar repo dışında (LEENA makinesi):
+>     `~/ell-ui-tools/aralik-1/evidence/payment-reminder-preview.txt` · `payment-reminder-echo-1.html` (sayfa anahtarı maskeli).
+>   - **Yeni satırın etkisi (staging):** SAMPLE fuarda ve 179 satırlı gerçek fuarda yer tutucu yüzünden Blocked olan satır **0**.
+>   - **TABAN:** 342.00 EUR OK · TABAN-2 EŞİT (oran değişikliğinden sonra da).
+> - **SAPMA (hepsi ön-onaylı — YON-18):**
+>   1. **Davranış değişti — Uygulama "davranışı değiştirme, raporla" demişti.** Uygulama oranın ya doğumda donduğunu ya da hak edişin yazıldığını varsayıyordu;
+>      ölçüm ikisinin de olmadığını gösterdi. Düz bir oran değişikliği kriterin "geçmiş kayıtlar değişmez (hak ediş olayları değişmez)" hükmünü 25 gerçek
+>      kontratta bozardı (+621,47 EUR). En kilitli hüküm (kriter + yeni YON kuralı) uygulandı: oran değişikliği mevcut kontratlara eski oranı yazar.
+>   2. **Kural BÜTÜN temsilci kayıtları için geçerli** (yalnız proje ekibi kaydı değil): herhangi bir temsilcinin varsayılan oranı değişince kendi oranı olmayan
+>      kontratları eski oranda kalır. Yanlış girilmiş bir varsayılanı düzeltmek artık geçmişi kendiliğinden düzeltmez — kontrat tek tek kendi sayfasından
+>      düzeltilir.
+>   3. **Staging verisi değişti:** 93 kontrata (92 göçmüş + Suer'in SAMPLE'ındaki sipariş 7901) "%2" oranı yazıldı; tutarlar aynı, kontrat sayfasında oran artık
+>      "default" değil "override" görünür.
+>   4. **Hükümle değişen test beklentileri (EK madde 10):** `test_ui_tam2_chain` P1 (e-posta artık bakiye + vade taşır; 12 Kas'taki "tutar yok" durumu Suer'in
+>      kararıyla değişti) · `test_migrate` R77 · `test_ui_tam2` M2 ("şablon satırı 0" → tohumlanan iki satırın dışında 0) — test satırlarında hüküm numarasıyla.
+>   5. **Beş yer tutucu okuması:** Zoho metnindeki KİŞİ ADI ve FİRMA ADI alanlarının beşlide karşılığı yok → selam genel ("Dear Exhibitor"), firma adı yerine
+>      kontrat no. Beşlinin Zoho metninde karşılığı olmayan üçü (vade · kontrat no · link) için bir satır ve bir cümle EKLENDİ. Kişisel imza (ad · telefon ·
+>      e-posta) alınmadı. Zoho metninde çıkarılacak banka satırı yoktu.
+>   6. **FR satırındaki üç ek TASLAKTIR** ("contrat {…}" · "Date d'échéance" · link cümlesi) — Zoho FR metninde yoktu; satır "gözden geçirilmedi" işaretli.
+>   7. **Vade okuması:** planı olmayan kontratta {due_date} = fuarın ödeme son günü (Payment durumunun "gecikti" kuralı zaten bunu kullanıyor).
+>   8. **{contract_no}** = açık bakiyenin ait olduğu kontrat numaraları (ana kontrat + ödenmemiş siparişler) — bakiye onların toplamı olduğu için.
+>   9. **Sentez'in yer tutucu yazımı tek süslü** ({balance}); motorun eski çift süslü alanları ({{…}}) aynen çalışır — iki yazım yan yana, karışmaz.
+>   10. **Kodda sabit kalan iş parametresi (yeni YON kuralına göre SAPMA sayımı):** bu dilimde eklenen sabit yok. Rapor işleminin bellek ayarı teknik bir
+>       dağıtım ayarıdır (ortam değişkeni, varsayılan 32 MB) — iş parametresi sayılmadı.
+> - **🔶 Sentez'e:**
+>   1. **Mevcut sipariş kontratlarının GELECEK hak edişi:** bu çözümle doğdukları günkü oranda kalır (7901: %2). Sentez "eski siparişler de %5 olsun" derse
+>      kontratın kendi sayfasından oranı düzeltmek yeter (tek kontrat).
+>   2. **Proje ekibi kaydı yalnız siparişlerin değil 539 kontratın satış temsilcisi.** "Proje ekibi kaydının oranı %5" kararı o kaydın kendi oranı olmayan
+>      ileride doğacak HER kontratına uygulanır (yalnız siparişlere değil). İstenen yalnız siparişse ayrı bir ayar gerekir (ARALIK-2 havuzuyla birlikte).
+>   3. **Selamda kişi adı / metinde firma adı** istenirse motorun mevcut alanları satıra eklenebilir (ARALIK-2 yer tutucu kataloğu).
+>   4. **E-posta çerçevesinin başlığındaki fuar tarihi ISO yazılıyor** ("2026-12-02 – 2026-12-04") — mevcut, bütün exhibitor e-postalarında; bu dilimde
+>      dokunulmadı.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** gerçek e-posta (staging yalnız echo) · e-postanın gerçek bir posta istemcisinde görünümü · FR / TR alıcıya staging'de gönderim
+>   (testte) · başka para biriminde kontratla staging gönderimi (testte: biçim altı para biriminde) · oran değişikliği canlıda (canlıya hiçbir şey gitmedi) ·
+>   Finance hesabıyla Agents ekranından elle giriş (araç hesabı yok; aynı uç `cc-owner` ile çağrıldı) · çözülemeyen yer tutucunun staging ekranındaki görünümü
+>   (staging'de öyle bir satır yok — testte).
+> - **Bilinçle yapılmayanlar:** havuz bölüşümü · Templates sayfası · yer tutucu kataloğu · şablon sürümleri (ARALIK-2) · oran için yeni ekran · tarihli oran
+>   tablosu · yerleşik dosya metninin değiştirilmesi (satırı olmayan kiracı eski dosya metnini — tutarsız — kullanır) · TR metni.
+> - **Kuyruğa:** e-posta çerçevesindeki ISO tarih · satış temsilcisi AÇMA yazımının denetimi · FR eklerinin gözden geçirilmesi.
+> - **→ Sıradaki:** 5. parça — belge + kapanış.
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
