@@ -12349,6 +12349,32 @@
 > - **Bilinçle yapılmayanlar:** fuarlar arası toplu gönderim · co-exhibitor listesi tasarımı · Send e-mail önizleme gövdesi (ARALIK-2) · Chain status'ta fuar
 >   süzgeci (fuara özel ekran — başlık seçicisi, 2.4) · "All expos" için önbellek / ayrı özet tablo (ölçüm raporda, karar Sentez'in).
 >
+> ## ✅ 2026-11-24 — DİLİM TUR-1b P6: FİNANS LİSTELERİ — aynı fuar süzgeci (Upcoming + ongoing · All expos · tek fuar), varsayılan "All expos" KALDI
+>
+> - **Kriter kaynağı:** [defter:2026-11-24 SENTEZ 24 Kas: "ARALIK-1 KABUL · 3 KARAR · TUR LİSTESİ HÜKÜMLERİ · DİLİM TUR-1 (+ ARALIK-2 §0 ÖLÇÜMLERİ)"] — D-2 2.3 son cümle ("AYNI
+>   bileşen Finance listelerinde … bugünkü düz listenin yerine") + Orchestrator U3 P6 (varsayılan "All expos" kalır — okuma kararı).
+> - **Ne yapıldı:** altı listede düz fuar seçim kutusunun yerine AYNI bileşen (gruplu Ongoing · Upcoming · Past; aranabilir; satırda "in 8 days"): **Finance ›
+>   Payments · Collections · Contracts · Expenses (liste süzgeci) · Sales › Performance · Admin › Migration › SD.** Seçenekler aynı; **VARSAYILAN "All expos"** — bir
+>   şey seçilmedikçe istek bugünkü istektir (toplamlar ve sayılar DEĞİŞMEDİ); seçim hatırlanmaz, depoya yazılmaz (Operations listelerinin hatırlanan süzgeci
+>   Finance'e taşınmaz — yoksa varsayılan değişirdi). Sunucu: `expo_id=live` = yaklaşan + süren fuarlar (`utils/expoTime.liveIds`; fuarın kendi günü) —
+>   `/api/analytics/payments` · `/collections` · `/performance` · `/payments-by-agent` · `/api/contracts?paged=1` · `/api/ledger/expenses` ·
+>   `/api/migration/sd-unassigned`. Kimlik bugünkü gibi; parametresiz istek aynen.
+> - **Uygulanan / uygulanmayan sayfalar (0-d listesine göre):** uygulandı — finance-payments · finance-collections · finance-contracts · finance-expenses ·
+>   sales-performance · admin-migration-sd. **Süzgeç değil, dokunulmadı:** finance-drafts · finance-transfers · gider giriş formu (kaydın KENDİ "Expo" alanı — veri) ·
+>   finance-budget · finance-expo (sayfanın KONUSU olan tek fuar seçimi — "— choose —"; 🔶 raporda) · admin-liffy-expos (fuar listesi, süzgeç yok) ·
+>   operations-expos (P5'te kalıba alındı) · ops-dashboard (başlık seçicisi, P3).
+> - **Commit:** LEENA eliza-next `fbcd000` + `141df47` (staging'de CANLI). Canlı `main` DEĞİŞMEDİ. Migration yok.
+> - **Ölçülenler:** `test_tur1b_lists.js` 20 → **24** (F1–F4) · zincir 80 suite **1433 / 1433** · TABAN 342.00 · TABAN-2 EŞİT. Staging (Owner araç hesabı): altı uç üç değerle
+>   200 — Payments tümü 1.980 · live 24 · tek fuar (9) 212 ödeme; Contracts 3.956 · 40 · 179; SD 806 · 7 · 97; Performance 524 · 40 · 128 kontrat. Altı sayfada
+>   tarayıcıda: açılışta düğme "All expos" ve gizli değer boş; seçici açılıyor (Upcoming + ongoing 9 expos · All expos 213 expos · gruplar); "Upcoming + ongoing"
+>   seçilince form uygulanıyor, hata 0.
+> - **SAPMA:** (1) seçici bir form alanının (`<label>`) içinde ilk denemede AÇILMIYORDU (yeniden çizilen düğmeye etiket ikinci kez tıklıyordu) — staging turunda
+>   yakalandı, düzeltildi (`141df47`). (2) `test_tur1b_expo` A1 fikstürü UTC gününe bağlıydı (akşam geç saatte İstanbul bir gün ileride → kırmızı); fikstür fuarın
+>   kendi gününe alındı — beklenti aynı (kendi P3 testim; hüküm değişikliği değil).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** "live" seçiliyken sayfa toplamlarının elle sağlaması (uç sayıları ölçüldü) · dışa aktarım "live" ile indirilmedi (aynı süzgeç
+>   ifadesi) · proje / yetkisiz hesap (bu sayfalar Finance alanı; kapanış turunda Owner + yetkisiz hesap).
+> - **Bilinçle yapılmayanlar:** Finance listelerini liste kalıbına (U2) almak — hüküm yalnız süzgeç bileşeni · Budget / Expo Finance'te başlık seçicisi (🔶).
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
