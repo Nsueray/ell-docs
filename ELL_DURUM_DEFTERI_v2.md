@@ -11267,6 +11267,139 @@
 >   bağımlı test tarihleri (Aralık) · e-posta ve arayüz metinlerinin gözden geçirilmesi (EN / FR / TR).
 > - **→ Sıradaki:** Suer turu (EN SONDA, sınırsız) → tek "değişiklik listesi".
 >
+> ## ✅ 2026-11-24 — SENTEZ 24 Kas: "KABUK-2 KABUL + 3 KARAR + TEYİTLER + DİLİM ARALIK-1" + "ARALIK-1 EK" (kural + madde 9–10) — AYNEN
+>
+> - **Kaynak ve sıra (Orchestrator 24 Kas 2026 10:30 — prompt dosyadan):** bu oturumun promptu diskteki tek dosyadır; bütünlüğü işe başlamadan ÖLÇÜLDÜ
+>   (sha256 `76da6d8fbe7cf10a918b0517fcf310d2f951afe9883441063e76468c3c7663c1` · 18.476 bayt · 191 satır · son satır "═══ BLOK SONU ═══" — dördü
+>   beklenenle AYNI). KRİTER = (1) Sentez "KABUK-2 KABUL + 3 KARAR + TEYİTLER + DİLİM ARALIK-1" bloğu + (1b) Sentez "ARALIK-1 EK" (kural + madde 9–10) —
+>   ikisi aşağıda AYNEN (47 + 11 satır). (2) Orchestrator UYGULAMA (U0–U6) yalnız sıra / ölçüm / kapsam / okuma kararıdır; kriterle çelişirse kriter
+>   kazanır, çelişki raporlanır.
+> - **(1) SENTEZ 24 Kas — KABUK-2 KABUL + DİLİM ARALIK-1 — AYNEN:**
+>
+> ```
+> SENTEZ → ORCHESTRATOR — KABUK-2 KABUL + 3 KARAR + TEYİTLER + DİLİM ARALIK-1 (24 Kas)
+> Okunan: CC paket sonu raporu (tamamı) + defter 1e7e540 (23 Kas 7 kayıt; 1. parça SAPMA-7 test listesi; klasik rapor ucu üç
+> önlem ölçümü). KABUL — Suer turu hariç (4 Ara'dan önce). Rapordaki önce/sonra tablosu kabul ölçütü olarak yeterli: 2 sn üstü
+> sayfa 23 → 10, hata durumuna düşen yükleme 20 → 0, başka kökene istek 0/201, `/api/expos` 8.246 → 12 ms.
+>
+> KARARLAR
+> S1 = a + küçük dilim. Klasik rapor ucu YENİDEN YAZILMAZ; ölçülen üç önlem uygulanır (e-posta günlüğüne iki kolonlu dizin ·
+>    rapor işlemine bellek ayarı · ziyaretçilerin tek geçişte okunması), hedef ≤ 3 sn (2 sn değil). ADR-023: dizin kurma süresi
+>    canlı tabloda (e-posta günlüğü 3,1 GB) kesim penceresine yazılır. War Room / Expo Finance 2,1–2,3 sn KABUL — 0,1 çekirdekli
+>    staging veritabanında; canlıda yeniden ölçüm kesim listesine. ops-reports: ui2 Reports kendi veri modelini alınca ifade
+>    yeniden yazılır → kuyruk.
+> S2 = a, zamanı belli: kontrat ↔ firma bağı Zoho kimliğinden (ad benzerliği YOK), GOC-06 "Accounts / Contacts göçü" dilimiyle
+>    birlikte — Suer 11 Kas: göç EN SON; kesim ÖN KOŞULU; önce ölçüm dilimi (kaç kontrat eşleşir, eşleşmeyen ne olur).
+>    O güne kadar ara çözüm = b: göçmüş kontratta alıcıyı project team elle girer (Exhibitor detail alıcı listesi), Company ›
+>    Catalogue sekmesi boş; ekranda "firma bağı yok (göç)" işareti, sayaç Admin › Migration'da. ADR-023'e madde.
+> S3 = a: GUV-06 kapsamı ui2 + Exhibitor Page + design-preview; klasik sayfalar emekli olana kadar Google Fonts'ta kalır (iç
+>    sayfa, linkte sır yok). Kütüğe not.
+>
+> TEYİTLER
+> - Hükümle değişen test beklentileri TEYİT (1. parça SAPMA-7 + rapordaki C2/C3 · D · E1–E3; her satırda hüküm numarası).
+>   S1 için O2/O8'in tersine dönmesi beklenen sonuç.
+> - JIT kapalı + klasik tablolara üç dizin → ADR-023 TEYİT; kesimde önce canlı veritabanının JIT ayarı ve dizin kurma süresi
+>   ÖLÇÜLÜR, sonra uygulanır.
+> - SAPMA (2.–4. parça kayıtları koddan sonra, birlikte push): kabul; bir daha olmaz — YON: defter kaydı işle aynı turda,
+>   aynı commit'te.
+> - Okuma kararların: (i) 43 → 52 menü sayfası TEYİT · (ii) T7-4 (hesap aç/düzenle → audit_log) bu pakette yoktu, doğru;
+>   ARALIK-1'e · (iii) Fonts sayfası reference.write ile KABUL (yeni izin yok) · (iv) Payments alt başlığı arayüz dilinde KABUL.
+> - B3 okumaları KABUL: kısa biçim yalnız 10 genel bakış sayfasının kutularında · Exhibitor Page tarihleri arayüz dilinde ·
+>   simgesiz para birimi "KOD + boşluk + tutar" (gösterim politikası Suer'in; itiraz gelmezse kalır).
+> - T2 "geri döndü" nedeni: veri yok → üretilmez; kuyruk "geri dönen e-posta kaydı" (gerçek gönderim başlayınca).
+> - T9-a / T9-c / S1 okumaları (yeni = ayar satırı olmayan fuar · "reddedildi" olaydan türer · bitiş günü dahil · sipariş
+>   kontratı ana kontrat olamaz) KABUL. T7-2: Sales Operations şablonu eski kuralda — KABUL, Faz 4'te.
+> - Plan adı raporda yok; 0. parça kaydında varsa yeter, yoksa ARALIK-1 raporuna bir satır.
+>
+> DİLİM ARALIK-1 (küçük; 1 ARALIK'TAN ÖNCE biter; Suer turuyla PARALEL — ekran görünümü değişmez, değişirse raporda)
+> 1 Takvim bağımlı testlerin HEPSİ göreli tarihe (Aralık'ta kırılacak olanlar dahil).
+> 2 Hesap menüsüne "Sign out" (sunucuda oturumu da kapatır; fuar bilgisayarı ortak kullanım) — yeni ekran değil, menü satırı.
+> 3 S1 üç önlem + ölçüm (önce/sonra; dizin kurma süresi).
+> 4 T7-4: hesap aç/düzenle yazımları audit_log'a.
+> 5 İzin yokken satıcı listesinin istenmemesi (CC kuyruğu).
+> 6 Exhibitors listesinde co-exhibitor satırı seçilebilir: DIRECT'te e-posta alır, VIA AGENCY atlanır (sunucu zaten böyle).
+> 7 S2 ara çözüm işareti + sayaç; ADR-023 maddeleri (S1 dizin süresi · S2 göç ön koşulu · JIT · canlı yeniden ölçüm).
+> 8 Staging SAMPLE fuar tarihleri Suer turu için 4 Ara'ya kadar kalır; tur sonrası gerekirse ürünün uçlarından yine ileri.
+> Rapor tek; test sayısı 1210'un altına düşmez; canlı main dokunulmaz; yardımcı ajan en çok 1.
+> Kuyruk aynen (1440'ta üç geniş tablo → UX, telefon tasarımıyla aynı tur; B1 kabuk; kontraktöre paket; rozet iptali; Plus
+> Design AD-02; fatura/makbuz; metin gözden geçirme EN/FR/TR). Suer'in iki açık kararı kuyrukta; turda gelirse ARALIK-1'e girer.
+> SIRADAKİ: ARALIK-1 prompt'u → CC · Suer turu (4 Ara'dan önce) → tek liste → Sentez.
+> ```
+>
+> - **(1b) SENTEZ 24 Kas — ARALIK-1 EK (kural + madde 9–10) — AYNEN.** Orchestrator notu (prompt dosyasından, aynen):
+>
+> ```
+> (Bu, Sentez'in "ARALIK-1 EK + PAKET ARALIK-2 ön kriter" bloğunun İLK bölümüdür. Bloğun devamı — PAKET ARALIK-2 ön kriteri —
+> bu dosyaya ALINMADI ve deftere bu dilimde GİRMEZ: ARALIK-1'in kapsamı değil; ayrıca kişi adlarıyla pay oranı içeriyor ve
+> ell-docs herkese açık. Orchestrator kararı; ARALIK-2'de ele alınır.)
+> ```
+>
+> ```
+> SENTEZ → ORCHESTRATOR — ARALIK-1 EK + PAKET ARALIK-2 "HAVUZ + ŞABLON" ÖN KRİTER (24 Kas)
+> Suer 24 Kas: iki açık karar KARAR değil AYAR olacak. Kural (kütük YON, CC numaralar): "İş parametreleri — oranlar · paylaşımlar ·
+> metinler · süreler · listeler — koddan değil ayardan gelir; Owner (gerekirse yetkili rol) düzenler; değişiklik ileriye dönük;
+> geçmiş kayıtlar değişmez (ödeme / hak ediş olayları değişmez)." Bundan sonra "sabit mi olsun" sorusu yok: sabit = SAPMA, raporda.
+>
+> ARALIK-1 EK (dilim küçük kalır; iki geçici ayar)
+> 9  Proje ekibi kaydının komisyon oranı %5 (tek kayıt; havuz bölüşümü ARALIK-2'de). Mevcut SAMPLE siparişlerin hak edişi
+>    değişmez; raporda hangi oranla yazıldıkları.
+> 10 Payment Reminder varsayılan metni (072 şablon satırı; dosyayı ezer): Zoho'daki metin, yer tutucularla — {balance}
+>    (kontrat para biriminde, biçimlendiriciyle) · {due_date} · {contract_no} · {expo} · {payment_link}; banka bilgisi YOK (C13).
+>    EN/FR Drive metninden, TR eksik → EN. Önizleme + echo gönderimi raporda.
+> ```
+>
+> - **Sıra (Orchestrator U0):** küçük dilim, 1 Aralık'tan önce; yalnız staging; ara soru yok (YON-18). Bölünürse madde sırası; her parça = commit + push +
+>   staging'de + testler yeşil + defter kaydı AYNI turda. Suer turu paralel: SAMPLE linkleri yeniden üretilmez · Suer'in gezdiği SAMPLE kayıtları denemede
+>   kullanılmaz · kurum fontu / menü düzeni / SAMPLE fuar tarihleri olduğu gibi kalır · ekranda değişen her şey raporun başında sayılır. Rapor TEK (U6).
+>
+> ## ✅ 2026-11-24 — DİLİM ARALIK-1 1. PARÇA: TAKVİM BAĞIMLI TESTLER (madde 1) — iki saat (Node + PostgreSQL) birlikte ileri alınarak ölçüldü: Aralık 2026 / Ocak 2027'de kırılan test YOK · takvime bağlı 4 fikstür göreli tarihe alındı · 10 ileri tarihte tam zincir + kırılan üç suite 5 uzak tarihte yeşil (LEENA eliza-next `47f14ec`) · 1210 / 1210
+>
+> - **Kriter kaynağı:** [defter:2026-11-24 SENTEZ 24 Kas: "KABUK-2 KABUL + 3 KARAR + TEYİTLER + DİLİM ARALIK-1"] — DİLİM ARALIK-1 madde 1 ("Takvim bağımlı testlerin
+>   HEPSİ göreli tarihe — Aralık'ta kırılacak olanlar dahil"). Orchestrator UYGULAMA U1-a + U2-1: yalnız fikstür / tarih üretimi göreli olur; test mantığı ve
+>   beklenti DEĞİŞMEZ; kanıt = kaynak taraması + saati ileri alınmış en az üç tam zincir.
+> - **Ne yapıldı:**
+>   - **Ölçüm düzeneği (repo dışı):** testleri koşan Node sürecinin saati bir ön yükleme dosyasıyla, PostgreSQL'in saati ise GEÇİCİ bir PG 14 kümesi saat
+>     kaydırma kitaplığı (libfaketime) altında başlatılarak AYNI süre kadar ileri alındı — `now()` · `CURRENT_DATE` · `clock_timestamp()` ile `Date.now()`
+>     birlikte ilerler. Testlerin kendi başlattığı alt süreçlere de (uygulamayı ayağa kaldıran üç suite) aynı kayma aktarılır. Sistem saatine ve çalışan
+>     PG 14 / PG 17 kümelerine DOKUNULMADI. Denetim koşusu (kayma 0, geçici küme): 69 suite · 1210 / 1210.
+>   - **Önce (0af41d7, değişmemiş testler — 9 ileri tarih):** 1 Ara 2026 · 15 Ara 2026 · 1 Oca 2027 · 15 Oca 2027 · 1 Mar 2027 → **1210 / 1210** (kırılan yok).
+>     2 Tem 2027 → 1 test · 1 Oca 2028 ve 1 Şub 2029 → 2 test · 20 Tem 2031 → 4 test. Takvime bağlı test toplamı **4** (aşağıda).
+>   - **Göreli yapılan 4 fikstür (yalnız tarih üretimi; beklenti ve test mantığı aynı):**
+>     1. `test_p3c` R7 — Owner ana sayfası yalnız BİTMEMİŞ fuarları listeler; iki fikstür fuarı sabit 2027 tarihliydi → yıl "koşu yılı + 1" (ay / gün aynı).
+>        2 Tem 2027'den itibaren kırılırdı.
+>     2. `test_cash_forecast` T1 — ödenmiş ilk taksit sabit 2026-07-31'di; sorgu penceresi zaten görelidir (bugün ± 400 gün) → satır Eyl 2027'de
+>        pencereden çıkardı. Taksit "120 gün önce", ödemesi "127 gün önce" oldu.
+>     3. `test_cash_forecast` T13 — "gelecek vade" sabit 2030-01-01'di → "bugünden ≈ 3 yıl sonra".
+>     4. `test_kabuk2` H4 — "yaklaşan fuarlar önce" sırasını sınayan üç fuar sabit 2031 tarihliydi → yıl "koşu yılı + 5".
+>   - **Sonra (`47f14ec`):** bugünün saatiyle PG 14: 69 suite · **1210 / 1210**. İki saat birlikte ileri, TAM zincir — **10 tarih:** +4 · +6 · +7 · +21 · +22 ·
+>     +37 · +38 · +52 · +68 · +96 gün (28 Kas · 30 Kas · 1 Ara · 15 Ara · 16 Ara · 31 Ara 2026 · 1 Oca · 15 Oca · 31 Oca · 28 Şub 2027 — ay sonu / ay başı ·
+>     yıl dönümü · haftanın farklı günleri) → her biri **1210 / 1210**. Değişen üç suite (`test_p3c` · `test_cash_forecast` · `test_kabuk2`) ayrıca kırıldıkları
+>     ve ötesindeki beş tarihte: +220 · +403 · +800 · +1700 · +2500 gün (2 Tem 2027 · 1 Oca 2028 · 1 Şub 2029 · 20 Tem 2031 · 28 Eyl 2033) → her biri **107 / 107**.
+>     Uzak tarihlerde ve dört saat diliminde TAM zincir, dilimin SON başında koşulur (yeni testleri de kapsasın diye) → kapanış kaydında.
+> - **Commit:** LEENA eliza-next `47f14ec` — PUSH: CC, yalnız `eliza-next`; canlı `main` DEĞİŞMEDİ `2db0131`. Staging'e 47f14ec yayında (yalnız test dosyaları;
+>   migration yok — kayıt 79).
+> - **Ölçülenler:**
+>   - **Kaynak taraması (koşu günü 2026-11-24):** `tests/` 90 dosya · 60'ında sabit takvim tarihi · 651 değişmez (182 farklı). Geçmiş yıllar 92 · bu yıl
+>     içinde, geçmiş 469 · **GELECEK tarihli 87** (23 dosya; en geç 2031-01-01) · tarih olmayan 3 (13. ay / 30 Şubat gibi doğrulama girdileri). Gelecek
+>     tarihli her değişmez "önce" koşularının en az biriyle GEÇİLDİ (0af41d7'de son koşunun saati 2031-07-20; en geç değişmez 2031-01-01) ve o koşularda
+>     kırmızıya düşen dört testin dışında hiçbir test etkilenmedi → düzeltmeden sonra "bugün"e göre anlam değiştiren sabit tarih **0**; kalan sabit tarihler
+>     zararsız veridir (istisna listesi = bu sayım: 651 değişmez).
+>   - **Test:** 69 suite · 1210 / 1210 (sayı değişmedi; yeni test yok). **TABAN:** 342.00 EUR OK · TABAN-2 EŞİT (staging, 47f14ec).
+> - **SAPMA (ön-onaylı — YON-18):**
+>   1. **Aralık'ta kırılan test bulunmadı.** 23 Kas kuyruğundaki "takvim bağımlı test tarihleri (Aralık'ta kırılır)" maddesi ölçümle doğrulanmadı: zincir
+>      1 Ara · 15 Ara · 31 Ara · 1 Oca · 15 Oca'da yeşil. Kırılma tarihleri: Tem 2027 · Eyl 2027 · 2030 · 2031.
+>   2. **Araç kurulumu:** saat kaydırma kitaplığı (libfaketime 0.9.14) geliştirme makinesine Homebrew ile kuruldu (PostgreSQL kurulumları değişmedi).
+>   3. `test_report_tick` K3 ilk ölçümde kırmızı göründü: testin başlattığı alt süreç kendi ortamıyla açıldığı için saati kaymamıştı (uygulama saati
+>      ileri alınmamış, veritabanı ileri alınmış). Ölçüm düzeneğinin kusuruydu, düzeltildi; test ve ürün kodu değişmedi (yeniden koşuda 5 / 5).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** `47f14ec` başında uzak tarihlerde (Mar 2027 sonrası) TAM zincir ve gün içi saat dilimleri — kapanışta, son başta ·
+>   PG 17'de saati ileri alınmış koşu (kaydırma yalnız geçici PG 14 kümesinde kuruldu) · 28 Eyl 2033'ten sonrası · yaz / kış saati geçişi (testler veritabanı oturumunu UTC'de açar) · zincir dışındaki tur betikleri
+>   (`*_tour.js`, 8 dosya — sabit tarihleri duruyor, testi sayılmaz) · ürün kodunda takvime bağlı hata ARANMADI (bu koşularda kırmızıya düşen ürün
+>   davranışı çıkmadı).
+> - **Bilinçle yapılmayanlar:** zararsız sabit tarihlerin (651) göreliye çevrilmesi · test mantığı / beklenti değişikliği · ürün kodu değişikliği ·
+>   tur betikleri.
+> - **Kuyruğa:** —
+> - **→ Sıradaki:** 2. parça — madde 2 · 4 · 5 · 6 · 7 (Sign out · hesap yazımları denetim kaydına · satıcı listesi · co-exhibitor seçimi · firma bağı işareti).
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
