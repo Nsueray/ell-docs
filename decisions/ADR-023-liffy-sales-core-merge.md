@@ -159,4 +159,23 @@ Faz A restore + rollback.js. Prova ≥ 2 kez, canlının taze kopyasında.
 > - **Katalog kopyasının kaynağı (E3):** firma KİMLİĞİYLE çalışır; göçmüş kontratlarda firma bağı YOK (staging ölçümü: 3.953 ana kontratın 3.950'si) →
 >   kesimden sonra göçmüş bir exhibitor'a "son onaylı kataloğundan kopyala" çıkmaz, Company › Catalogue sekmesi boştur; firma bağı ayrı iş (kuyruk).
 > - **Prototip katmanı** (`/design-preview/`) font dosyalarını artık kendi kökenimizden alır; kesimden önce kaldırılması kuralı AYNEN.
-
+>
+> **Kesim maddeleri (Sentez 24 Kas — DİLİM ARALIK-1; CC, eliza-next):**
+> - **E-posta günlüğü dizini (079 — klasik rapor ucu, karar S1):** `email_logs (visitor_id, status)`. Staging'de kurma süresi **9,2 sn** (733.953 satır · tablo
+>   149 MB; kurulurken tablonun yazımı kilitli — runner tek işlem). CANLIDA tablo 3,1 GB (Sentez 24 Kas) → kurma süresi kesim penceresine yazılır; kesimde ÖNCE
+>   canlı tablo boyutu ve kurma süresi ÖLÇÜLÜR, sonra uygulanır (düşük trafikte).
+> - **Rapor işleminin bellek ayarı:** klasik raporun istatistik ifadesi kendi işleminde daha fazla sıralama belleğiyle koşar (varsayılan 32 MB; ortam değişkeni
+>   `REPORT_WORK_MEM`); veritabanının / havuzun genel ayarı DEĞİŞMEZ. Canlı planda fuar boyutlarıyla yeniden ölçülür (staging'de en büyük sıralama 11 MB).
+> - **JIT (teyit — Sentez 24 Kas):** uygulama oturumları JIT kapalı açılır (kodla). Kesimde ÖNCE canlı veritabanının JIT ayarı ve etkisi ÖLÇÜLÜR, sonra uygulanır.
+> - **War Room / Expo Finance — canlıda yeniden ölçüm:** staging'de 2,1–2,3 sn (0,1 çekirdekli veritabanı) KABUL edildi; canlı planda yeniden ölçülür (hedef ≤ 2 sn).
+>   Klasik rapor ucu: hedef ≤ 3 sn — staging'de altı büyük fuarın dördünde tutuyor (en büyük ikisi 4,6 · 5,5 sn); canlıda yeniden ölçülür.
+> - **Kontrat ↔ firma bağı (karar S2) — kesim ÖN KOŞULU:** bağ Zoho kimliğinden kurulur (ad benzerliği YOK), GOC-06 "Accounts / Contacts göçü" dilimiyle birlikte;
+>   önce ölçüm dilimi (kaç kontrat eşleşir, eşleşmeyen ne olur). O güne kadar ara çözüm: göçmüş kontratta alıcıyı project team elle girer; ekranda
+>   "No company link (migration)" işareti; sayaç Admin › Migration'da (staging: 3.953 ana kontratın 3.950'si bağsız).
+> - **Proje ekibi kaydının komisyon oranı (EK madde 9):** oranı Owner (ya da temsilci düzenleme yetkisi olan rol) EKRANDAN girer — kodda / migration'da oran yok.
+>   Oran değişikliği ileriye dönüktür: girildiği anda o kaydın kendi oranı olmayan mevcut kontratlarına YÜRÜRLÜKTEKİ (eski) oran yazılır (staging'de 93 kontrat);
+>   canlıda oran girilmeden ÖNCE o kaydın kendi oranı olmayan kontrat sayısı ve hak ediş toplamı ölçülür, girdikten sonra hak ediş toplamının değişmediği doğrulanır.
+> - **Payment Reminder varsayılan metni (080):** migration her kiracıya EN + FR şablon satırı ekler (satır varsa dokunmaz). Metin tutar + vade + link taşır; banka
+>   bilgisi yok. Kesimden önce metin (EN / FR; FR'deki üç ek taslak) gözden geçirilir.
+> - **Çıkış listesi (078):** boş doğar; kesimde ek adım yok. Dağıtım ile migration arasındaki pencerede oturumlar eskisi gibi çalışır (liste yokken çıkış yalnız
+>   tarayıcıyı temizler).

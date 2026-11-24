@@ -11617,6 +11617,65 @@
 > - **Kuyruğa:** e-posta çerçevesindeki ISO tarih · satış temsilcisi AÇMA yazımının denetimi · FR eklerinin gözden geçirilmesi.
 > - **→ Sıradaki:** 5. parça — belge + kapanış.
 >
+> ## ✅ 2026-11-24 — DİLİM ARALIK-1 5. PARÇA + KAPANIŞ: BELGE (kütük YON-22 · RAP-19 · GUV-07 · GUV-06 / YET / GOC-06 / EXH ekleri · ADR-023 kesim maddeleri · UI_FAZI_TAKIP) + kapanış ölçümleri — PG 14 ×2 + PG 17: 1277 / 1277 (72 suite) · son baş iki saat ileri alınmış 18 tam zincir koşusu (28 Kas 2026 … 28 Eyl 2033 + iki saat dilimi) yeşil · staging turu temiz (LEENA `79eb2dc`)
+>
+> - **Kriter kaynağı:** [defter:2026-11-24 SENTEZ 24 Kas: "KABUK-2 KABUL + 3 KARAR + TEYİTLER + DİLİM ARALIK-1" + "ARALIK-1 EK"] — Orchestrator UYGULAMA U3 (belge) + U4
+>   (test + kabul). Madde 8 (SAMPLE fuar tarihleri): DOKUNULMADI.
+> - **Ne yapıldı — belge:**
+>   - **Kütük:** **YON-22** (Suer 24 Kas kuralı — Sentez'in tırnak içindeki metni AYNEN: iş parametreleri koddan değil ayardan; değişiklik ileriye dönük; geçmiş
+>     kayıtlar değişmez) + YON teyidi (defter kaydı işle aynı turda) · **RAP-19** (S1 — klasik rapor ucu) · **GUV-06 eki** (S3 — klasik sayfalar emekli olana kadar
+>     Google Fonts'ta) · **GUV-07** (Sign out) · **YET eki** (T7-4 + satıcı listesi) · **GOC-06 eki** (S2 — firma bağı Zoho kimliğinden, göçle; ara çözüm) ·
+>     **EXH-05 eki** (oran %5 — ayar) · **EXH-16 eki** (Payment Reminder metni — beş yer tutucu) · **EXH-19 eki** (co-exhibitor seçimi). Numaraları CC tahsis etti;
+>     Sentez cümleleri prompt dosyasından alındı (elle yeniden yazılmadı).
+>   - **ADR-023:** sekiz kesim maddesi — e-posta günlüğü dizininin kurma süresi (staging 9,2 sn; canlıda tablo 3,1 GB → kesimde ÖNCE ölçülür) · rapor işleminin
+>     bellek ayarı · JIT (önce canlı ayar ölçülür) · War Room / Expo Finance ve klasik rapor ucu canlıda yeniden ölçüm · kontrat ↔ firma bağı (kesim ön koşulu;
+>     Zoho kimliğinden, önce ölçüm dilimi) · proje ekibi kaydının oranını Owner ekrandan girer (ileriye dönük; önce / sonra hak ediş toplamı ölçülür) · Payment
+>     Reminder satırı (080) · çıkış listesi (078).
+>   - **UI_FAZI_TAKIP:** ekran envanterine 36–38 (Sign out · co-exhibitor seçimi · firma bağı işareti + sayaç) · kuyruktan kapananlar · bu dilimden çıkanlar.
+>   - **LEENA `CLAUDE.md`:** test sayısı 1277 · "DİLİM ARALIK-1" bölümü (dokuz madde; tuzaklar: her tarayıcı deposu anahtarı iki listeden birinde olmalı · liste
+>     ifadelerine bellek ayarı verilmez · hak ediş türetilir) · çıkış ucu.
+> - **Commit:** LEENA eliza-next `0f47a87` (liste etiketi) + `79eb2dc` (CLAUDE.md) — PUSH: CC, yalnız `eliza-next`; canlı `main` DEĞİŞMEDİ `2db0131`. Dilimin bütün
+>   LEENA commit'leri (0af41d7'den sonra 7): `47f14ec` · `e351e8b` · `7016fca` · `04f3dcc` · `93c5056` · `0f47a87` · `79eb2dc`. ell-docs: bu commit.
+> - **Ölçülenler — kapanış (son baş `79eb2dc`, temiz çalışma kopyası):**
+>   - **Test:** PG 14 koşu 1 · PG 14 koşu 2 · PG 17 (17.10) → her biri 72 suite · **1277 / 1277**. Başlangıç 1210 (69 suite) → +67 test, 3 yeni suite
+>     (`test_aralik1` 35 · `test_aralik1_report` 6 · `test_aralik1_settings` 26). Parça başına: 1. 1210 · 2. 1245 (70) · 3. 1251 (71) · 4. 1277 (72).
+>   - **İleri alınmış saatle TAM zincir (iki saat birlikte; geçici PG 14 kümesi) — son başta, yeni testler dahil:** **16 tarih** — +4 · +6 · +7 · +21 · +22 · +37 · +38 · +52 · +68 · +96 · +97 ·
+>     +127 · +220 · +403 · +1700 · +2500 gün (28 Kas · 30 Kas · 1 Ara · 15 Ara · 16 Ara · 31 Ara 2026 · 1 Oca · 15 Oca · 31 Oca · 28 Şub · 1 Mar · 31 Mar · 2 Tem 2027 ·
+>     1 Oca 2028 · 20 Tem 2031 · 28 Eyl 2033) → her biri **1277 / 1277**.
+>     **2 saat dilimi** — 23:30 UTC ve 31 Ara 2026 23:57 UTC (koşu yıl dönümünü geçer) → her biri **1277 / 1277**. (Makine yükü
+>     nedeniyle planlanan setten dört koşu çıkarıldı: +462 · +800 gün ve 00:30 · 21:30 UTC — aşağıda ÖLÇÜLMEDİ.)
+>   - **Staging (yayındaki baş `79eb2dc`):** TABAN 342.00 EUR OK · TABAN-2 EŞİT · migration kaydı **82** (078 çıkış listesi · 079 e-posta günlüğü dizini · 080 Payment
+>     Reminder satırları; her biri dry-run → apply → "Nothing to apply"). Regresyon turu: `cc-owner` 106 yükleme (53 menü sayfası × A / B2, 1440 px) · `cc-project`
+>     31 yükleme — sayfa taşması 0 · konsol hatası 0 (Project'te 23 Kas'ta görülen üç sayfadaki 409 satırları kalktı) · hata durumu 0 · HTTP ≠ 200: 0 · yanlış
+>     düzen 0; A ↔ B2 geçişi yenilemeden. Araç hesaplarının tema / düzen tercihi boş (tur sonunda geri alındı). Kurum fontu ve SAMPLE fuar tarihleri değişmedi.
+>   - **Firma bağı sayacı:** ana kontrat 3.953 · bağsız 3.950 (göçle 3.947). **Oran:** proje ekibi kaydı %5 (staging); eski oranda kalan kontrat 93; hak ediş
+>     toplamı değişmedi.
+> - **SAPMA (ön-onaylı — YON-18):**
+>   1. **Staging'e bu dilimde eklenen SAMPLE kayıtlar** (Suer'in gezdiği 7899 · 7900 · 7902 kullanılmadı): firma "SAMPLE ARALIK-1 Fictional Tools Ltd" · teklif ·
+>      kontrat **7903** (SAMPLE fuarda yeni bir exhibitor satırı) · sipariş **7904** · sayfa linki · bir alıcı (.example) · iki taksitli plan. Bu kayda 3 echo
+>      e-posta gitti (teklif · Payment Reminder · sipariş onayı); dışarı çıkan yok. Fuarın otomatik zinciri AÇIK olduğu için bu kayda başka echo e-postalar da
+>      kendiliğinden gidebilir.
+>   2. **Staging verisinde kalan değişiklikler:** proje ekibi kaydının oranı %2 → %5 · 93 kontrata "%2" yazıldı (4. parça) · Payment Reminder şablon satırları
+>      (2 kiracı × EN / FR) · araç hesabının üç kapatılmış oturumunun özeti.
+>   3. **Uzak tarihli tam zincirler 1. parçada değil kapanışta koşuldu** (yeni testleri de kapsasın diye; 1. parçada 10 tarihte tam zincir + kırılan üç suite 5 uzak
+>      tarihte koşulmuştu).
+>   4. **Araç:** saat kaydırma kitaplığı geliştirme makinesinde kurulu kaldı (ölçümü yinelemek için).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** canlı (hiçbir şey — okuma dahil) · Safari · Firefox · gerçek telefon · Finance / Office Manager / Sales Operations hesabıyla tur
+>   (araç hesabı yok) · gerçek e-posta (yalnız echo) · 1280 / 390 px ve 15 tema turu bu dilimde yinelenmedi (görünüm değişikliği: bir menü satırı · seçim kutuları ·
+>   bir işaret) · PG 17'de ileri alınmış saat · son başta +462 (29 Şub 2028) · +800 gün ve 00:30 · 21:30 UTC koşuları (+800 yalnız "önce" ölçümünde ve
+>   değişen üç suite için `47f14ec`'de koşuldu; +462 ile bu iki saat dilimi HİÇ koşulmadı) · klasik (ui2 dışı) sayfalar (dokunulmadı; yalnız rapor ucunun yanıt eşitliği ölçüldü) · Suer'in gezdiği SAMPLE
+>   kayıtlarda toplu gönderim (yapılmadı — kural gereği).
+> - **Bilinçle yapılmayanlar:** ARALIK-2'nin her şeyi (havuz bölüşümü · Templates sayfası · yer tutucu kataloğu · şablon sürümleri · yetki bölünmesi) · klasik rapor
+>   ucunun yeniden yazımı · klasik sayfaların fontu · kontrat ↔ firma bağının kurulması · rozet iptali · B1 · 1440'taki üç geniş tablo · telefon tasarımı · SAMPLE
+>   tarihleri · canlı.
+> - **Kuyruğa (dilimin tamamı):** klasik rapor ucu — iki en büyük fuarda ≤ 3 sn (yeniden yazım) + tarih süzgeci hatası · tüzel kişi banka alanlarının denetim
+>   kaydında maskelenmesi · tedarikçi / bütçe / temsilci açma yazımlarının denetimi · bütün cihazlardan çıkış / parola değişince oturum düşürme · e-posta
+>   çerçevesindeki ISO tarih · Payment Reminder'da kişi / firma adı ve FR eklerinin gözden geçirilmesi (ARALIK-2 kataloğu) · mevcut siparişlerin oranı ve "yalnız
+>   sipariş için oran" (Sentez) · kontrat ↔ firma bağı (göç dilimi; önce ölçüm) · geri dönen e-posta kaydı (gerçek gönderim başlayınca) · 23 Kas kuyruğunun
+>   kalanı aynen (1440'ta üç geniş tablo · telefon tasarımı · B1 kabuk · kontraktöre paket · rozet iptali · Plus Design AD-02 · fatura / makbuz · metin gözden
+>   geçirme EN / FR / TR).
+> - **→ Sıradaki:** Suer turu (4 Ara'dan önce) → tek liste → Sentez · PAKET ARALIK-2 ön kriteri (Sentez'de).
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**

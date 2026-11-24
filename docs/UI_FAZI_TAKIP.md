@@ -60,6 +60,9 @@ Suer turu: Y7 — Suer kendi Owner hesabıyla gezer, cevabı tek "değişiklik l
 | 33 | Operations › Expo | **Stand drawings** (YENİ; salt okuma) | `ops-stand-drawings.html` | Sentez 23 Kas E2 · EXH-07 · UI-14 | **staging (`200b4d3`)** | bekliyor |
 | 34 | Sales › Companies + Exhibitor yüzü | Company › **Catalogue** sekmesi (YENİ) + Exhibitor Page'de katalog kopyasının kaynağı (firmanın son onaylı kataloğu) | `sales-customer.html` (Catalogue sekmesi) · `/x/#<anahtar>/catalogue` | Sentez 23 Kas E3 · EXH-08 eki | **staging (`200b4d3`)** | bekliyor |
 | 35 | Operations | Exhibitors listesi — toplu **"Send e-mail"** (Build-up · Stand · Catalogue · Badge; önizlemeli) | `ops-exhibitors.html` | Sentez 23 Kas E4 · EXH-16 eki | **staging (`200b4d3`)** | bekliyor |
+| 36 | Kabuk (tüm ui2) | Hesap menüsü — **Sign out** (son satır; oturumu SUNUCUDA da kapatır; tarayıcıda oturuma ait her şey silinir) | `shell.js` | Sentez 24 Kas madde 2 · GUV-07 | **staging (`e351e8b`)** | bekliyor |
+| 37 | Operations | Exhibitors listesi — co-exhibitor satırı da **seçilebilir** (toplu Remind · Send e-mail · Send all now; VIA AGENCY atlanır, nedeni önizlemede) | `ops-exhibitors.html` | Sentez 24 Kas madde 6 · EXH-19 eki | **staging (`e351e8b`)** | bekliyor |
+| 38 | Operations · Sales · Admin | **"No company link (migration)"** işareti (Exhibitor detail alıcı listesi · Company › Catalogue boş durumu) + Admin › Migration sayacı | `ops-exhibitor.html` · `sales-customer.html` · `admin-migration.html` | Sentez 24 Kas madde 7 · S2 · GOC-06 eki | **staging (`e351e8b`)** | bekliyor |
 
 ## 3. Çeviri ve metin durumu (UI-TAM-2)
 
@@ -77,6 +80,16 @@ Suer turu: Y7 — Suer kendi Owner hesabıyla gezer, cevabı tek "değişiklik l
 ## 4. Kuyruk
 
 **23 Kas: menü yapısı Suer'in kararıyla kabul; Yaprak turu: taşıma yok, 6 istek → E1–E5** (Sentez 23 Kas E6, AYNEN).
+
+**DİLİM ARALIK-1 (24 Kas) — kuyruktan KAPANANLAR:** hesap menüsüne "Sign out" (GUV-07) · izin yokken satıcı listesinin istenmemesi · listede co-exhibitor seçimi ·
+takvim bağımlı test tarihleri (4 fikstür göreli; Aralık'ta kırılan yoktu) · göçmüş kontratta firma bağı için ARA çözüm (işaret + sayaç; bağın kendisi göç diliminde) ·
+klasik sayfaların Google Fonts'u (Sentez S3: emekli olana kadar kalır) · Suer'in iki açık kararı AYAR oldu (oran %5 · Payment Reminder metni tutar taşır — YON-22).
+
+**DİLİM ARALIK-1'den çıkanlar (24 Kas):**
+- Payment Reminder satırı: selamda kişi adı / metinde firma adı yok (beş yer tutucu kuralı) · FR'deki üç ek taslak → metin gözden geçirme turu (ARALIK-2 yer tutucu kataloğu).
+- E-posta çerçevesinin başlığında fuar tarihi ISO yazılıyor (bütün exhibitor e-postaları) — biçim kuralı e-postaya yayılacak mı: Sentez.
+- Klasik rapor ucu: iki en büyük fuarda > 3 sn (yeniden yazımla — ui2 Reports kendi veri modelini alınca) · fuar + tarih süzgeci hatası (mevcut).
+- Denetim: tüzel kişi banka alanlarının maskelenmesi · tedarikçi / bütçe / temsilci açma yazımları · bütün cihazlardan çıkış.
 
 **PAKET KABUK-2'den çıkanlar (23 Kas):**
 - B1 kabuk (açılır menü) — YAPILMAZ, kuyruk (Sentez C1) · telefon tasarımı (UX turu sonra) · hesap menüsüne "Sign out".
