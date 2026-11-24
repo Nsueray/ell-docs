@@ -11400,6 +11400,71 @@
 > - **Kuyruğa:** —
 > - **→ Sıradaki:** 2. parça — madde 2 · 4 · 5 · 6 · 7 (Sign out · hesap yazımları denetim kaydına · satıcı listesi · co-exhibitor seçimi · firma bağı işareti).
 >
+> ## ✅ 2026-11-24 — DİLİM ARALIK-1 2. PARÇA: MADDE 2 · 4 · 5 · 6 · 7 (staging) — hesap menüsünde "Sign out" (oturumu SUNUCUDA da kapatır) · hesap aç / düzenle denetim kaydında (T7-4) · izin yokken satıcı listesi istenmiyor · listede co-exhibitor satırı seçilebilir · "No company link (migration)" işareti + Admin › Migration sayacı (LEENA eliza-next `e351e8b`) · 1245 / 1245
+>
+> - **Kriter kaynağı:** [defter:2026-11-24 SENTEZ 24 Kas: "KABUK-2 KABUL + 3 KARAR + TEYİTLER + DİLİM ARALIK-1"] — DİLİM ARALIK-1 madde 2 · 4 · 5 · 6 · 7 + karar S2 +
+>   teyit (ii) T7-4. Orchestrator UYGULAMA U1-b / d / e / f / g + U2-2 / 4 / 5 / 6 / 7.
+> - **Ne yapıldı:**
+>   - **Madde 2 — Sign out.** Hesap menüsünün son satırı (yeni ekran yok, nav.json'a öğe eklenmedi). Çıkış bir YAZMA isteğidir (POST; GET yok).
+>     *Ön ölçüm (U1-b):* ui2 oturumu 30 günlük bir jetondu ve sunucu tek bir oturumu süresinden önce kapatamıyordu (pasifleştirilen kullanıcı 401 alıyordu;
+>     parola değişimi jetonu düşürmüyordu). *En küçük düzenek:* çıkış yapılan jetonun ÖZETİ (sha256 — jetonun kendisi saklanmaz) bir listeye yazılır
+>     (migration **078**); kullanıcı oturumu kabul eden her kapı (genel kapı · oturum uçları · EMS kapısı — onun arkasındaki ikili kimlik yolu dahil) listeye
+>     bakar ve **401** döner. Genel kapıda bu, zaten koşan kullanıcı sorgusunun içindedir (ek gidiş-dönüş yok). Yalnız O oturum kapanır: her giriş kendi
+>     oturum kimliğini taşır (aynı saniyede iki giriş iki ayrı jeton), başka cihazdaki oturum ve klasik organizer / terminal oturumları hiç sorgulanmaz.
+>     Liste satırı jetonun kendi bitişinden sonra güvenlik tikiyle silinir. *Tarayıcı:* oturuma ait her anahtar silinir (jeton · kim olduğu ve ne
+>     görebildiği · çalıştığı fuar · kişisel menü düzeni · oturum deposunun tamamı); görünüme ait dört anahtar (tema · font · yan panel · açık gruplar)
+>     kalır. Sayfa giriş ekranıyla DEĞİŞTİRİLİR; geri tuşuyla dönülen sayfa ve aynı tarayıcının öbür sekmeleri oturum yoksa giriş ekranına gider.
+>     Ağ yokken de tarayıcı temizlenir. Çıkış erişim loguna her API isteği gibi düşer.
+>   - **Madde 4 — T7-4.** Ledger hesabı AÇMA ve DÜZENLEME denetim kaydına yazar (kim · ne zaman · hangi alan · eski → yeni), mevcut desenle; kayıt, yazımla
+>     AYNI işlemde (biri olmadan öbürü kalmaz). Değişiklik getirmeyen düzenleme kayıt yazmaz; reddedilen yazım kayıt yazmaz. *Maskeleme:* kodda mevcut bir
+>     maskeleme kuralı YOKTU (U1-d) → hesap adı ve notta banka / hesap numarasına benzeyen metnin (IBAN biçimi ya da 8+ rakam) yalnız SON 4 hanesi yazılır.
+>     Hesap tablosunda ayrı bir numara kolonu yok (ad · tür · para birimi · ofis · kişi · varsayılan · etkin · not). Transfer · gider · ödeme satırlarına
+>     dokunulmadı (değişmez olay).
+>   - **Madde 5 — satıcı listesi.** Sayfalar listeyi tek bir yardımcıdan ister; `commissions.read` izni olmayan oturum isteği HİÇ atmaz (Collections ·
+>     Payments by agent · Performance · SD unassigned). Sunucu duvarı aynen.
+>   - **Madde 6 — co-exhibitor seçimi.** Exhibitors listesinde her etkin satırın (pavyonun co-exhibitor'ı dahil) seçim kutusu var; üç toplu eylem (Remind ·
+>     Send e-mail · Send all now) seçimi "kontrat + co-exhibitor" satırları olarak yollar. Toplu Remind ucu bu satırları da alır (eskiden yalnız ana kontrat).
+>     DIRECT co-exhibitor KENDİ adresine alır; VIA AGENCY atlanır ve nedeni önizlemede yazar (H3). Günde 1 hatırlatma kuralı alıcı başınadır (co-exhibitor
+>     ile pavyon sahibi iki ayrı alıcı); zincir e-postası o hakkı tüketmez. Co-exhibitor'a Payment Reminder yok (pavyon kontratında).
+>   - **Madde 7 — firma bağı ara çözümü (S2).** TEK tanım: "ana kontrat (sipariş kontratı değil) + firma kimliği boş"; "(migration)" eki = kontrat bir göç
+>     partisiyle gelmiş. İşaret "No company link (migration)": Exhibitor detail'de alıcı listesinin yanında ve Company › Catalogue'un boş durumunda (sayıyla).
+>     Sayaç Admin › Migration'da, partinin öbür açık kalemlerinin yanında (yeni menü sayfası yok). Alıcıyı project team mevcut alıcı listesinden elle girer
+>     (yeni düzenek yok). Bağ KURULMADI; ad benzerliğiyle eşleme yok (aynı adlı firmaya içerik geçmediği testle).
+> - **Commit:** LEENA eliza-next `e351e8b` — PUSH: CC, yalnız `eliza-next`; canlı `main` DEĞİŞMEDİ `2db0131`. Migration **078** staging'de: dry-run → apply →
+>   ikinci apply "Nothing to apply" (kayıt **80**; tablo boş doğar).
+> - **Ölçülenler:**
+>   - **Test:** `e351e8b` temiz çalışma kopyasında 70 suite · **1245 / 1245**. Yeni suite `test_aralik1.js` (35): S1–S13 çıkış (eski jeton her kapıda 401 ·
+>     yalnız o oturum · özet saklanır · erişim logu · 078 yokken hiçbir şey kırılmaz · tarayıcı anahtarlarının iki yönlü taraması: istisna 0 · geri tuşu /
+>     öbür sekme) · T1–T6 denetim kaydı + maske · A1–A2 satıcı listesi · C1–C7 co-exhibitor · L1–L6 firma bağı · TABAN.
+>   - **Staging, gerçek tarayıcı (Chromium, `cc-staging`):** menüde "Sign out" son satır · çıkış isteği POST 200 · sayfa giriş ekranına döndü · tarayıcıda kalan
+>     anahtarlar yalnız tema ve font · eski jeton dört ayrı uçta **401** · geri tuşu → giriş ekranı (tabloda 0 satır) · adres elle açılınca → giriş ekranı ·
+>     ikinci sekme kendiliğinden giriş ekranına gitti.
+>   - **Firma bağı sayacı (staging, tek tanım):** ana kontrat 3.953 · firma bağı olmayan **3.950** (3.370'i Active) · bunun göçle gelen **3.947**'si (parti #2:
+>     3.928 · parti #4: 19 — Admin › Migration'daki iki sayı, SQL ile EŞİT) · göçle gelmeyen 3. Göçmüş bir kontratın detayında işaret var, alıcı listesi boş;
+>     SAMPLE kontratta (bağı var) işaret yok; kontratı olmayan firmanın Catalogue sekmesi işaret + 3.950 sayısını gösteriyor.
+>   - **Satıcı listesi (staging, `cc-project`):** üç sayfada konsol hatası önce 1 + 1 + 1 → sonra **0 + 0 + 0**; doğrudan çağrı yine 409.
+>   - **TABAN:** 342.00 EUR OK · TABAN-2 EŞİT.
+> - **SAPMA (hepsi ön-onaylı — YON-18):**
+>   1. **Hükümle değişen test beklentisi:** `test_kabuk2_menu` M6'nın kaynak satırı beklentisi (liste artık "satır" yolluyor) — madde 6, test satırında not.
+>   2. **Madde 2 okuması — kişisel menü düzeni çıkışta SİLİNİR** (hesaptan gelir; sonraki girişte hesaptaki değer uygulanır). Tema, font, yan panel ve açık
+>      gruplar kalır (kişiyi değil ekranı anlatır).
+>   3. **Madde 2:** klasik organizer oturumunda (kullanıcı satırı yok) sunucuda kapatılacak bir oturum yoktur; menü satırı yine vardır ve tarayıcıyı temizler.
+>   4. **Madde 4:** maskeleme kuralı yeni yazıldı (son 4 hane). Bu kural yalnız HESAP denetim kayıtlarına uygulanır.
+>   5. **Madde 6:** VIA AGENCY co-exhibitor satırı da seçilebilir (önizlemede atlanma nedeni yazsın diye — Sentez "atlanır").
+> - **🔶 Sentez'e:**
+>   1. **Mevcut bir denetim yazımı banka numarasını TAM yazıyor:** tüzel kişinin belgede gösterilen banka hesabı (IBAN) Reference data'dan düzenlenince
+>      gönderilen gövde denetim kaydına olduğu gibi giriyor (kod notu: "IBAN sır değil, belgeye basılır"). Bu dilimde DEĞİŞTİRİLMEDİ; yeni maske kuralı oraya
+>      da uygulansın mı?
+>   2. **Ledger'da denetimsiz kalan başka ayar yazımı (yalnız sayım — kuyruk):** tedarikçi aç / düzenle (2 uç) · bütçe kaydetme (1 uç; kilitleme
+>      denetimli). Ledger dışında: satış temsilcisi AÇMA (1 uç; düzenleme 4. parçada denetime bağlandı).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Safari · Firefox · gerçek telefon (tarayıcı denetimi Chromium'la) · geri tuşunda sayfanın tarayıcı belleğinden geri gelmesi
+>   durumu yalnız testte benzetildi (staging'de sayfa yeniden yüklendi) · Finance / Office Manager hesabıyla tur (araç hesabı yok) · staging'de toplu Remind /
+>   Send e-mail co-exhibitor satırıyla GÖNDERİLMEDİ (Suer'in gezdiği SAMPLE pavyon; davranış testte) · canlı.
+> - **Bilinçle yapılmayanlar:** bütün cihazlardan çıkış · parola değişince oturum düşürme · firma bağının kurulması (göç) · göçmüş gerçek kontratlara alıcı
+>   ekleme · kontrat 4'e dokunma · tedarikçi / bütçe / temsilci açma yazımlarının denetimi (kuyruk).
+> - **Kuyruğa:** tüzel kişi banka alanlarının denetim kaydında maskelenmesi (🔶 1) · tedarikçi · bütçe · temsilci açma yazımlarının denetimi.
+> - **→ Sıradaki:** 3. parça — madde 3 (klasik rapor ucu: üç önlem + ölçüm).
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
