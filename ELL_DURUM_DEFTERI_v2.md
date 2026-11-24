@@ -12375,6 +12375,29 @@
 >   ifadesi) · proje / yetkisiz hesap (bu sayfalar Finance alanı; kapanış turunda Owner + yetkisiz hesap).
 > - **Bilinçle yapılmayanlar:** Finance listelerini liste kalıbına (U2) almak — hüküm yalnız süzgeç bileşeni · Budget / Expo Finance'te başlık seçicisi (🔶).
 >
+> ## ✅ 2026-11-24 — DİLİM TUR-1b P7: D-3 MAIL — önce ölçüm; 16 SAMPLE giden e-posta uygulamanın kendi yoluyla (araç hesabı · echo); gelen kutusu / zincir cevabı için yol YOK → 🔶
+>
+> - **Kriter kaynağı:** [defter:2026-11-24 SENTEZ 24 Kas: "ARALIK-1 KABUL · 3 KARAR · TUR LİSTESİ HÜKÜMLERİ · DİLİM TUR-1 (+ ARALIK-2 §0 ÖLÇÜMLERİ)"] — D-3 + Orchestrator U3 P7.
+> - **Ölçüm (yazmadan önce; kod `routes/communications.js` + staging):**
+>   - **(a) Liste kime göre:** "Sent" = iletişim günlüğünde e-posta kuyruğu satırına bağlı VE `user_id` = OTURUM SAHİBİ olan satırlar (`SENT_SQL`: `cm.email_queue_id IS NOT NULL
+>     AND cm.user_id = $2`), sonra her satır hedefinin kapsamıyla ayrıca süzülür. **Owner başkasının gönderdiğini bu listede GÖRMEZ** (Owner istisnası yok) — staging'de
+>     ölçüldü: Owner araç hesabı 1, Sales araç hesabı 5 satır görüyordu; biri ötekinin satırını görmüyor.
+>   - **(b) Gelen e-posta / zincir cevabı yazan yol:** YOK. İletişim günlüğüne `direction: 'in'` satırı yalnız ELLE kayıt olarak yazılabilir (`POST /api/communications` —
+>     özet metni; e-posta kuyruğu bağı yok, bu yüzden Mail listesine girmez). Gelen e-postayı günlüğe bağlayan bir uç / tablo yok; kuyruk satırı yazan tek yol teklif
+>     gönderimi (`POST /api/quotes/:id/send`).
+> - **Ne yapıldı:** Owner araç hesabıyla, uygulamanın KENDİ yolundan 16 SAMPLE teklif taslağı açılıp gönderildi (4 uydurma SAMPLE firma · 6 kişi · `.example` adresler ·
+>   2 fuar · "SAMPLE quote — fictional data" notu); her gönderimin yanıtı `echo: true` (staging kuyruğa park eder, dışarı çıkmaz — ilk gönderim doğrulanmadan
+>   devam edilmedi). SQL YOK; Suer'in hesabı adına kayıt YOK. Araç: `~/ell-ui-tools/ui-tam/sample/seed8_mail.js` (repo dışı; yeniden koşulursa çoğaltmaz).
+> - **Commit:** YOK (LEENA'da kod değişmedi). Staging verisi: 16 teklif (durum `sent`) · 16 PDF kopyası · 16 kuyruk satırı (`echo`) · 16 günlük satırı · 4 takip.
+> - **Ölçülenler:** Owner araç hesabının Mail listesi 1 → **17** satır (2 fuar klasörü), Sales araç hesabı 5 (değişmedi); sayfa açılıyor, konsol hatası 0; teslim durumu
+>   "Echo — staging, not sent". TABAN 342.00 · TABAN-2 EŞİT (P6 deploy'undan sonra; bu parçada deploy yok).
+> - **🔶 (raporda, seçenekleriyle):** (1) **Suer'in kendi Mail sayfasında bu e-postalar GÖRÜNMEZ** — liste yalnız oturum sahibinin gönderdiklerini gösterir; Suer'in adına
+>   gönderim / kayıt yapılmadı. (2) **Inbox ve zincir cevabı örnekleri YAPILMADI** — yazan yol / tablo yok; yeni şema açılmadı.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Suer'in hesabıyla Mail sayfası (hesap kullanılmadı) · e-postaların bir gelen kutusuna teslimi (staging echo — tasarım gereği yok) ·
+>   FR / TR şablonla gönderim (SAMPLE kişilerin dili EN'e düştü).
+> - **Bilinçle yapılmayanlar:** gelen e-posta için uç / tablo · Mail sayfasında "herkesin gönderdikleri" görünümü · SAMPLE tekliflerin imzalanması (kontrat doğmasın) ·
+>   Suer'in SAMPLE kayıtlarına (7899 · 7900 · 7902 · sipariş 7901) ve SAMPLE fuar tarihlerine dokunulmadı.
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
