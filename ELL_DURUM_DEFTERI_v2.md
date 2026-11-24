@@ -11885,6 +11885,183 @@
 > - **Bilinçle yapılmayanlar:** 0.3'ün düzeltmesi (ne eliza-next'te ne hotfix dalında) · ödeme girişine tarih doğrulaması (bugün yok → 🔶) · göçle gelen ileri
 >   tarihli ödemenin düzeltmesi (kesimde) · H3 şema kararı (seçim Sentez'in).
 >
+> ## ✅ 2026-11-24 — DİLİM TUR-1a D-1 1.1: LİSTE KALIBI — ortak bileşen (sunucuda sıralama · arama · süzgeç · 50'lik sayfa · sütun önceliği · Columns seçimi kullanıcı × liste · yan panel 440 px) + tek etiket sözlüğü · migration 081
+>
+> - **Kriter kaynağı:** [defter:2026-11-24 SENTEZ 24 Kas: "ARALIK-1 KABUL · 3 KARAR · TUR LİSTESİ HÜKÜMLERİ · DİLİM TUR-1 (+ ARALIK-2 §0 ÖLÇÜMLERİ)"] — D-1 1.1 (UX U2 mockup,
+>   LEENA private `docs/ux/ELIZA-U2-Liste-Kalibi-mockup.html`). Orchestrator UYGULAMA U2. Kütük: **UI-15** (liste kalıbı) · **UI-16** (etiket sözlüğü).
+> - **Ne yapıldı:**
+>   - **Sunucu — tek kural dosyası** (`utils/listQuery.js`): sıralama TÜM sonuca, sonra sayfa (50 / sayfa; sondan öteki sayfa = son sayfa). Sıralama anahtarı harfi
+>     KATLAR (büyük / küçük harf ve aksan sırayı bozmaz — "Ç", "C"nin yanında) ve veritabanının karşılaştırma ayarından BAĞIMSIZ kurulur (staging PG 17, yerel PG 14
+>     ve PG 17 aynı sırayı verir). Boş değer iki yönde de sonda. Eşitlikte listenin kendi sırası. Arama iki tarafı da katlar. Ziyarette eklenen satır
+>     (`new=<kimlik>`) sıralama ne olursa olsun üstte, süzgeç onu dışarıda bıraksa da görünür. Bilinmeyen sıralama anahtarı / bozuk sayfa listeyi kırmaz. Kod
+>     sütunu ekranda görünen SÖZCÜĞE göre sıralanır. Dışa aktarım = süzülmüş bütün satırlar, ekran sırasıyla (sayfa kesilmez).
+>   - **Columns seçimi kullanıcı × liste başına sunucuda:** migration `081_tur1_list_prefs.sql` (`user_list_prefs`; satır YAZMAZ) + `GET` / `PUT
+>     /api/user-auth/list-prefs/:key` (kayıtlı olmayan liste 400; pasif kullanıcı 401; 081'den önce okuma boş döner, yazma 503). Liste anahtarları TEK kayıtta
+>     (`utils/listPrefs.js`), iki yönlü testli.
+>   - **Tarayıcı:** işaretlemenin tamamı `components.js`'te (UI-03): başlık satırı (ad + sayı "40 of 164 agents" · Export CSV / Excel · "New …" — yetki yoksa
+>     ÇİZİLMEZ; iş klasik ekrandaysa aynı yere "classic" işaretli köprü düğmesi gelir) · araç satırı (arama · süzgeçler · Clear · Columns) · sıralanabilir başlık (düğme; 1. tık A→Z / 0→9 · 2. Z→A · 3. kendi sıra; tek sütun; 1. sayfaya
+>     döner) · sayfalama kartın altında ("1–50 of 164 · Page 1 / 4 · Previous · Next") · satır ⋯ menüsü · iki boş durum · iskelet yükleme · "New" işareti · yan
+>     panel (440 px; Enter kaydeder; hata alanın yanında; yazı varken kapatma "Discard changes?" sorar) · bildirim. Davranış `list-ui.js`'te (işaretleme yazmaz):
+>     sütun önceliği 1 / 2 / 3 (sığmayınca önce 3'ler, en sağdaki önce; 1 çıkmaz; işaretli sütun sabit; "Columns · 1 hidden"; tablo ancak çıkacak sütun kalmayınca
+>     kayar) · sıralama / süzgeç / arama / sayfa / yeni satır ADRESTE (geri ve yenile korur; oturumlar arası hatırlanmaz) · ortak hücre (ikinci değer küçük alt satır).
+>   - **Etiket sözlüğü TEK** (`components.js` `C.label`): kod → ekrandaki sözcük; sözlükte olmayan kod ham basılmaz (alt çizgi → boşluk, ilk harf büyük).
+> - **Commit:** LEENA eliza-next `a0a4d17` (+ `6f4c017`: sıralanabilir başlık düğmesi 36 px — staging turunda 25 px ölçüldü · `5e04ea0`: klasik "New" yeri
+>   yapılandırma notunda ve testte — davranış değişmedi). Canlı `main` DEĞİŞMEDİ. Migration **081**
+>   (staging: dry-run → apply → ikinci apply "nothing"; kayıt 83).
+> - **Ölçülenler:** yeni suite `test_tur1a_list.js` **32** (kapanışta 33: + C8; sıra Q1–Q9 · seçim P1–P5 · işaretleme C1–C8 · tarayıcı kuralları B1–B7 · tek kaynak S1–S4) · zincir bu
+>   commit'te temiz çalışma ağacında 73 suite **1309 / 1309** · TABAN 342.00 · TABAN-2 EŞİT · staging tarayıcı akışı (cc-owner, gerçek tarayıcı): başlık tıkları
+>   adresi 1 → 2 → 3 değiştiriyor, geri tuşu önceki durumu getiriyor, arama yazarken kutu odağı ve yazıyı koruyor, Columns seçimi yenilemeden sonra duruyor,
+>   panel 440 px, Esc / dışarı tık yazı varken soruyor — 22 denetimin hepsi geçti · yetkisiz araç hesabında "New" ve satır menüsü sayfada YOK (sözcükler
+>   işaretlemede geçmiyor).
+> - **SAPMA (hükümle değişen test beklentisi):** `test_kabuk2_fonts` G3 — "ui2 dosyasında font adı geçmez" taraması alt dizgi arıyordu; 1.2'nin hükmettiği tür
+>   etiketi "Internal" içinde bir font ailesinin adı geçtiği için tarama font ADINI (sözcük sınırıyla) arar oldu. Kural aynı; satırda hüküm yorumu var.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** canlı veritabanının karşılaştırma ayarı okunmadı (sıralama anahtarı ondan bağımsız kuruldu) · ekran okuyucuyla deneme yapılmadı
+>   (başlık düğmeleri sıralama durumunu ve sonraki tıkın ne yapacağını taşıyor — testte; okuyucuda dinlenmedi) · telefon genişliğinde (375 px) liste sayfaları
+>   ölçülmedi (kapsam 1440 / 1280).
+> - **Bilinçle yapılmayanlar:** fuar süzgeci bileşeni (D-2.3 — TUR-1b) · Expos ve Exhibitors listelerinin kalıba alınması (D-2.6 / 2.7 — TUR-1b) · sıralamanın
+>   oturumlar arası hatırlanması (hüküm: hatırlanmaz) · bu iki sayfa dışındaki listelerin kalıba taşınması.
+>
+> ## ✅ 2026-11-24 — DİLİM TUR-1a D-1 1.2: AGENTS sayfası liste kalıbında — başlık "Agents" · Status süzgeci (varsayılan Active) · 10 sütun öncelikle · "New agent" paneli (9 alan) · türler sözcükle
+>
+> - **Kriter kaynağı:** [defter:2026-11-24 SENTEZ 24 Kas: "ARALIK-1 KABUL · 3 KARAR · TUR LİSTESİ HÜKÜMLERİ · DİLİM TUR-1 (+ ARALIK-2 §0 ÖLÇÜMLERİ)"] — D-1 1.2 + §0.7.
+> - **Ne yapıldı:** `GET /api/sales-agents?list=1` — sayfalı liste biçimi (Status active | inactive | all · Type · Office · arama ad / firma / e-posta · sıralama ·
+>   sayfa · yeni satır; kapsam duvarı BUGÜNKÜ mekanizma, satır satır; iç alan yok — kullanıcı kimliği ve Zoho kayıt kimliği yanıtta değil, "Origin" bir sözcük).
+>   Düz dizi biçimi (seçim listeleri ve klasik ekranın okuduğu) DEĞİŞMEDİ. Sayfa (`finance-agents.html`) yalnız yapılandırma: başlık "Agents" ("Sales agents"
+>   kalktı) · "Inactive: include" kutusu kalktı · sütun + öncelik Name 1 · Type 1 · Office 1 · Default % 1 · Status 1 · Company 2 · E-mail 2 · Director % 3 ·
+>   Country 3 · Origin 3 · türler ekranda Internal · External agency · External freelance · Team (veri değerleri aynı). "New agent" paneli: Name* · Type* ·
+>   Office* · Company (yardım metniyle) · Country · E-mail (biçim denetimi) · Commission currency (varsayılan EUR) · Default commission % · Default director %
+>   (0–100; ondalık virgül kabul). Kaydedince temsilci sayfası açılır; listeye dönüşte satır üstte ve "New" işaretli. Satır ⋯: Edit… (aynı panel) · Deactivate…
+>   (onaylı) · Activate (onaysız); pasif satır soluk + "Inactive".
+>   **§0.7 sonucu:** agent kaydındaki sales_group / sales_team'i okuyan hesap yok → panelde YOK. Güncelleme ucu tam yazım olduğu için düzenleme, saklı iki değeri
+>   değiştirmeden geri gönderir (testli) — panelde olmayan alan silinmez.
+> - **Commit:** LEENA eliza-next `c26cb05`. Canlı `main` DEĞİŞMEDİ. Migration yok.
+> - **Ölçülenler:** yeni suite `test_tur1a_agents.js` **21** (liste A1–A11 · yazım W1–W4 · sayfa U1–U6) · zincir bu commit'te 74 suite **1330 / 1330** · TABAN 342.00 ·
+>   TABAN-2 EŞİT · staging: 164 kayıt, varsayılan görünüm "40 of 164 agents"; sıralama Default % 9→0 ikinci sayfadaki satırı başa getiriyor (tüm sonuca) · yetki:
+>   yazma izni olmayan hesapta "New agent" çizilmiyor, Office Manager ve Sales için yazım 409 (bugünkü izin, değişmedi).
+> - **Staging'de oluşan kayıt:** akış denemesinde ekrandan iki SAMPLE temsilci eklendi ("SAMPLE TUR-1a New Agent …"), ikisi de PASİF bırakıldı (toplam 166).
+> - **MOCKUP ↔ SENTEZ:** mockup başlığı "Sales agents" → Sentez "Agents" uygulandı · oran sunucunun verdiği biçimde ("10.00%"; mockup "10.0%").
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Finance rolündeki gerçek bir kullanıcıyla tur yapılmadı (araç hesapları: Owner · proje · yetkisiz) · klasik temsilci ekranı
+>   yeniden gezilmedi (ucu ve düz biçimi değişmedi — testte).
+> - **Bilinçle yapılmayanlar:** temsilci EKLEME isteğine denetim kaydı (bugün de yok; ARALIK-1 🔶7 kuyruğunda — bu dilimde eklenmedi) · sales_group / sales_team alanları
+>   (§0.7) · klasik temsilci ekranının kaldırılması.
+>
+> ## ✅ 2026-11-24 — DİLİM TUR-1a D-1 1.3: SUPPLIERS sayfası liste kalıbında — alttaki form KALKTI → "New supplier" paneli · 50'lik sayfa · satır ⋯ (Edit… · Deactivate… / Activate)
+>
+> - **Kriter kaynağı:** [defter:2026-11-24 SENTEZ 24 Kas: "ARALIK-1 KABUL · 3 KARAR · TUR LİSTESİ HÜKÜMLERİ · DİLİM TUR-1 (+ ARALIK-2 §0 ÖLÇÜMLERİ)"] — D-1 1.3.
+> - **Ne yapıldı:** `GET /api/ledger/suppliers?list=1` — sayfalı liste biçimi; sıralama ve sayfa VERİTABANINDA (türetilmiş toplamlar dahil: Expenses · Paid · Last);
+>   süzgeç Type · Country · Office · Status; arama ad ve vergi numarasında; ülke seçenekleri yanıtla gelir. Düz dizi biçimi (gider / taslak seçim listeleri)
+>   DEĞİŞMEDİ. Sayfa (`finance-suppliers.html`) yalnız yapılandırma: öncelik Supplier 1 · Type 1 · Paid (EUR) 1 · Country 2 · Office 2 · Expenses 2 · Last 2 ·
+>   Tax no. 3. Sayfanın altındaki "Add supplier" formu ve alanları KALKTI; ekleme ve düzenleme yan panelde (Name* · Type · Country* · Office · Tax number · Notes).
+>   Satır ⋯: Edit… · Deactivate… (onaylı) / Activate. İkisi de yalnız `suppliers.write` ile çizilir. Türler sözcükle, tutar ve tarih tek biçimlendiriciden.
+> - **Commit:** LEENA eliza-next `8c1c206`. Canlı `main` DEĞİŞMEDİ. Migration yok.
+> - **Ölçülenler:** yeni suite `test_tur1a_suppliers.js` **11** (liste L1–L6 · yazım W1 · sayfa U1–U4) · `test_tur1a_list` S2 iki yönlü oldu (her liste anahtarı bir
+>   sayfada, her sayfa anahtarı kayıtta) · zincir bu commit'te 75 suite **1341 / 1341** · TABAN 342.00 · TABAN-2 EŞİT · staging: 296 kayıt → 6 sayfa; sunucu yanıtı
+>   ≈ 0,3 sn · tarayıcı akışı: panel açılıyor, kaydedince liste yerinde kalıyor ve yeni satır üstte işaretli, satır menüsünden pasifleştirme soruyor.
+> - **Staging'de oluşan kayıt:** ekrandan bir SAMPLE tedarikçi eklendi ("SAMPLE TUR-1a Supplier …"), PASİF bırakıldı (toplam 297).
+> - **MOCKUP ↔ SENTEZ:** mockup'ta tedarikçide pasifleştirme YOK; Sentez 1.3 "Deactivate… / Activate" diyor → Sentez uygulandı; pasif kayıt görülebilsin diye
+>   Status süzgeci eklendi (mockup'ta yok).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging'de 296 tedarikçinin HEPSİNDE Expenses 0 ve Paid €0.00 (göçle gelen giderler defter kaydı değil) → "Paid" sıralaması
+>   staging'de bütünüyle eşitlik; türetilmiş toplamlara göre sıralama yalnız yerel fikstürle ölçüldü (testte L3) · vergi numarası hiçbir staging kaydında dolu değil.
+> - **Bilinçle yapılmayanlar:** tedarikçi detay sayfası (değişmedi; satır oraya gider) · göç giderlerinin tedarikçi toplamına bağlanması (ayrı iş).
+>
+> ## ✅ 2026-11-24 — DİLİM TUR-1a D-1 1.4: AGENT sayfası — "Contracts sold" (fuar bazında satırlar + sayfalı kontrat listesi); sayılar hak ediş motorunun KENDİ dilimlerinden · TABAN değişmedi
+>
+> - **Kriter kaynağı:** [defter:2026-11-24 SENTEZ 24 Kas: "ARALIK-1 KABUL · 3 KARAR · TUR LİSTESİ HÜKÜMLERİ · DİLİM TUR-1 (+ ARALIK-2 §0 ÖLÇÜMLERİ)"] — D-1 1.4 + §0.1.
+> - **Ne yapıldı:** `GET /api/agents/:id/contracts-sold` (ekstrenin kapısıyla aynı kapı): `totals` · `by_expo` (Expo · Contracts · m² · Revenue net EUR · Rate ·
+>   Earned) · `contracts` (sayfalı, sunucuda sıralı: AF no · Company · Expo · Date · Revenue · Rate · Earned; satır = kontrat × temsilcinin rolü; kendi sıra en yeni
+>   kontrat üstte). **Yeni hesap YOK:** hak ediş `SLICE_CTES`'in dilimlerinden toplanır; oran motorun kullandığı orandır (kontratın kendi oranı, yoksa kaydın
+>   varsayılanı) — oran ifadesi motor dosyasından TEK yerden okunur, motor metni bayt bayt aynı (özeti testte sabit). Satılan sayılar (kontrat · m² · net gelir)
+>   raporların tanımıyla: Cancelled / Transferred dışarıda, ayrı sayaçta. Sayfa (`finance-agent.html`): yeni bölüm, kontrat listesi kalıbın gömülü hali (kendi
+>   adres parametreleriyle; 50 / sayfa).
+> - **Commit:** LEENA eliza-next `02cadac` + iki hız düzeltmesi: `6f4c017` (sayfa bu isteği kendi iki isteğiyle BİRLİKTE gönderir — ilk hâlinde sırayla gidiyordu) ·
+>   `e2efab6` (uç satır kümesini istek başına BİR kez kurar: işlemin geçici tablosu, üç ifade onu OLDUĞU GİBİ okur — KABUK-2'deki "bir kez kur" kalıbı).
+>   Canlı `main` DEĞİŞMEDİ. Migration yok.
+> - **Ölçülenler:** yeni suite `test_tur1a_money.js` **9** (M1–M6 · E1 motor metni değişmedi · E2 TABAN 342.00 hem motordan hem bu uçtan · U1; `e2efab6` ile + M7
+>   "bir kez kurulur") · zincir bu commit'te 76 suite **1350 / 1350** · TABAN 342.00 · TABAN-2 EŞİT · **staging mutabakatı:** üç temsilci kaydında (biri ekip kaydı) bölüm toplamı = ekstre toplamı =
+>   Commissions satırı, kuruşu kuruşuna; kontrat 4 satırı 342.00 · ekip kaydı: 540 satır, 11 sayfa · sunucu süresi ekip kaydında ≈ 0,8 sn (3 ifade).
+> - **Süre (staging, 1440 px, 3 koşu ortancası; verinin tamamlandığı an):** agent sayfası ÖNCE 0,79–0,87 sn → bölüm eklenince 1,8–2,1 sn (istek sırayla gidiyordu; uç
+>   her ifadede motoru yeniden kuruyordu) → birlikte istenince 2,05–2,10 sn (kazanç yok: uç 1,2–2,0 sn) → `e2efab6` ile **1,28–1,30 sn** (uç 0,7–0,85 sn). Hız
+>   değişikliğinde YANIT AYNI: staging'de 12 adresin (üç kayıt · sıralama · sayfa · boş kayıt · olmayan kayıt) yanıtı önce / sonra bayt bayt eşit.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** SD rolüyle satır staging'de yok (atanmış SD 0) — rol satırı yalnız yerel fikstürle ölçüldü · kesim (cut) dönemi olan kayıtta
+>   bölümün ekstreyle eşitliği yalnız üç kayıtta bakıldı, bütün kayıtlarda değil.
+> - **Bilinçle yapılmayanlar:** yazılı hak ediş satırı / oranın doğumda kopyalanması (H3 — karar ARALIK-2'de) · motorun yalnız o temsilcinin ödemeleri üstünde
+>   koşturulması (motor metni değişirdi — dokunulmadı; bugün uç, temsilci kim olursa olsun kuruluşun bütün ödemelerini dilimliyor) · kontrat satırından kontrat
+>   sayfasına köprü dışında eylem.
+>
+> ## ✅ 2026-11-24 — DİLİM TUR-1a D-1 1.5: COMMISSIONS — Status bakiyeden türetilir (Due · Settled · Agent owes); Blended % ve tablo düzeni DOKUNULMADI
+>
+> - **Kriter kaynağı:** [defter:2026-11-24 SENTEZ 24 Kas: "ARALIK-1 KABUL · 3 KARAR · TUR LİSTESİ HÜKÜMLERİ · DİLİM TUR-1 (+ ARALIK-2 §0 ÖLÇÜMLERİ)"] — D-1 1.5.
+> - **Ne yapıldı:** `GET /api/commissions/agents` her satırda `status` verir — bakiye > 0 → `due` · tam 0,00 → `settled` · < 0 → `owes` (kuruş hassasiyetinde,
+>   SUNUCUDA). Ekran (`finance-commissions.html`) sözcüğü etiket sözlüğünden yazar: Due · Settled · Agent owes. Hesap değişmedi; Blended % hâlâ "Not connected
+>   yet" işaretli.
+> - **Commit:** LEENA eliza-next `32851e8`. Canlı `main` DEĞİŞMEDİ. Migration yok.
+> - **Ölçülenler:** `test_tur1a_money.js` 9 → **12** (C1 üç durum · C2 durum sayıları = aynı yanıtın toplamları · U2 ekran) · zincir bu commit'te 76 suite
+>   **1353 / 1353** · TABAN 342.00 · TABAN-2 EŞİT · staging: due 18 · settled 14 · owes 15 — yanıtın kendi sayaçlarıyla (ödenecek 18 · borçlu 15) ve War Room
+>   kutusunun alt satırıyla aynı.
+> - **Bulgu (karar ister — raporda 🔶):** aynı motor, aynı sözcük, iki büyüklük: War Room "Commission accrued" = ÖDENECEK bakiyelerin toplamı (≈ €216K);
+>   Commissions "Accrued" = bugüne kadar HAK EDİLEN toplam (≈ €287K). İkisi de doğru hesap; sözcük aynı olduğu için iki sayı çelişki gibi okunuyor.
+> - **Bulgu (düzen):** Status rozeti sütunu genişletti — Commissions tablosu kart İÇİNDE yana kayıyor: 1440 px'te A düzeni 209 px · B2 149 px (DM Sans; IBM Plex Sans
+>   193 · 133); KABUK-2 kapanış ölçümünde 166 · 106 px idi. 1280 px'te A 33 px (Plex 17) · B2 0. Sayfa taşması 0, kesik sütun 0. Mockup'taki geniş tablo düzeni
+>   bu dilimde UYGULANMADI (Orchestrator: düzeni değiştirme, 🔶 yaz).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** bakiyesi tam 0,00 olan kayıtların "Settled" görünmesi ekranda 14 kayıtta sayıldı, tek tek açılmadı.
+> - **Bilinçle yapılmayanlar:** Blended % (dokunulmaz) · Commissions tablo düzeni (🔶) · War Room / Commissions sözcüğünün değiştirilmesi (🔶).
+>
+> ## ✅ 2026-11-24 — DİLİM TUR-1a D-4 + KAPANIŞ: tur listesinin küçük düzeltmeleri (denetim maskesi · e-postada tarih · makbuz bildirimi etiketi · ileri tarihli ödeme sayacı · etiketler ve metinler · taşma / 36 px / ortak hücreler) · kütük TAH-06 · UI-15 · UI-16 · GUV-08 · EXH-21 · ADR-023 maddeleri
+>
+> - **Kriter kaynağı:** [defter:2026-11-24 SENTEZ 24 Kas: "ARALIK-1 KABUL · 3 KARAR · TUR LİSTESİ HÜKÜMLERİ · DİLİM TUR-1 (+ ARALIK-2 §0 ÖLÇÜMLERİ)"] — C bölümü (Kural 2 · Kural 4 ·
+>   Tasarım 5–10 · Metin 12–16) + D-4 (4.1–4.6). Orchestrator UYGULAMA U3 + U4 + U5.
+> - **Ne yapıldı:**
+>   - **4.1 Denetim maskesi:** Admin › Reference data'da banka bilgisi değişince denetim kaydına hesap numarasının yalnız son 4 karakteri yazılır (eski ve yeni
+>     değer); saklanan değer TAM kalır (tekliflere basılıyor). Maske TEK fonksiyon (ARALIK-1'de yazılan; ikinci kopya yok) — "alanın tamamı numaradır" kipi eklendi.
+>   - **4.2 E-postada tarih:** exhibitor e-postalarının çerçevesinde ve metninde her tarih ekranların TEK biçimlendiricisinden ("2 Dec 2026" · "2–4 Dec 2026");
+>     sunucu tarayıcının dosyasını KOŞAR (ikinci kural yok). Ölçüm: tarihin dili = GÖNDERİLEN METNİN dili (alıcının dilinde metin yoksa İngilizce metin gider, tarih de
+>     İngilizce yazılır); FR / TR'de fuarın iki günü ayrı ayrı yazılır.
+>   - **4.4 Makbuz bildirimi (Kural 2 — EXH-21):** §0.5: bildirim ↔ ödeme kaydı bağı YOK; kurmak şema işi → Orchestrator eşiğine göre KÜÇÜK DEĞİL. Yalnız etiket:
+>     bildirim "received" ya da "rejected" (Finance'in baktığı ayrı işaret); "Confirmed" hiçbir yolda üretilmez. Exhibitor Page ve proje ekibi ekranı "Received —
+>     being checked" yazar (EN · FR · TR). Ödeme kaydı yazılmadı, değişmedi. Bağ (Matched) → 🔶.
+>   - **Kural 4 (TAH-06):** Admin › Migration "Open items"e satır — "Payments dated in the future" (partinin bugünden ileri tarihli ödemeleri; bugünün ödemesi
+>     sayılmaz). ADR-023'e kesim maddesi. Ödeme girişine doğrulama EKLENMEDİ (bugün yok → 🔶).
+>   - **4.5 Metinler:** Tasarım 7 — fuar etiketi TEK fonksiyon ("Ad · 2 Dec 2026"; ad hiç düşmez); seçici artık "Expo <kimlik>" göstermiyor, Exhibitor detay sayfası
+>     seçiciye listesini veriyor (seçicinin YERİNE yatırım yapılmadı — 1b). Tasarım 8 — Exhibitor Page sayacı gününü yazar ("8 days to the show (2 Dec)", üç dil);
+>     ölçüm: gün = FUARIN kendi saat dilimindeki bugünden ilk fuar gününe TAKVİM günü farkı (sunucuda); Operations başlığındaki "7 DAYS 11 HRS" başlangıç
+>     gününün 00:00 UTC'sine kalan süredir (değişmedi; tarih aynı çubukta yazılı). Tasarım 9 — "3 problems · 8 e-mails". Metin 12 — Exhibitors süzgeçleri, detay
+>     panelindeki durumlar, rozet ve bildirim durumları sözlükten sözcükle; ülke koduna karşılık ülke ADI (tek kaynak veritabanındaki ülke listesi). Metin 13 —
+>     exhibitor ekranlarının metinlerinden kural kodu çıktı (4 yer). Metin 14 — yalnız firma adı ön dolduysa "We pre-filled your company name; please complete
+>     the rest." (üç dil). Metin 15 — başlık sayıları tek biçimlendiriciden ("3,956 contracts"). Metin 16 — SAMPLE fuarın 6 serbest metnindeki eski günler ürünün
+>     KENDİ ucundan SAMPLE fuar günlerine çekildi (staging verisi; fuar TARİHLERİNE dokunulmadı).
+>   - **4.3 Düzen:** Exhibitor Page durum şeridi masaüstünde alt satıra iner (kesik kutu yok; telefonda yana kaydırmalı tek satır kaldı) · dil düğmeleri, Help, bölüm
+>     satırları ve şerit kutuları ≥ 36 px · Exhibitor detail › Badges: pozisyon ve e-posta adın altında (ortak hücre) · War Room › Top expos TAM satırda, m² /
+>     hedef · Revenue / hedef · "Last 30 days" ortak hücre ("Not connected yet" işaretli üç sütun duruyor).
+>   - **4.6:** SAMPLE sipariş 7901'e dokunulmadı.
+> - **Commit:** LEENA eliza-next `7d9cd5a` + `88c3661` (şerit kutuları 36 px — staging ölçümünde 34 px çıktı) + `346e590` (88c3661'deki test başlığında tırnak hatası:
+>   suite ayrışmıyordu; yalnız test dosyası) + belge `8234d03` (CLAUDE.md; dağıtım tetiklemez). Kapanışta D-1'e iki ek: `e2efab6` (1.4 hız) · `5e04ea0` (1.1 klasik "New"). Canlı `main` DEĞİŞMEDİ `2db0131`. Migration yok. ell-docs: bu kayıtlar + kütük
+>   **TAH-06 · UI-15 · UI-16 · GUV-08 · EXH-21** + ADR-023 "Kesim maddeleri (DİLİM TUR-1a)".
+> - **SAPMA (hükümle değişen test beklentileri; satırlarda hüküm yorumu):** `test_ui_tam2_orders` P2 · P3 · T9 — bildirimin durumu 'sent' / 'confirmed' yerine
+>   'received' (+ Finance baktı işareti) [Kural 2] · `test_ui_tam2_chain` V1 · V4 — e-posta metninde tarih ham damga yerine yazılı biçimde [D-4.2]. (1.1 kaydındaki
+>   `test_kabuk2_fonts` G3 ile birlikte bu dilimde 3 suite, 6 beklenti.)
+> - **Ölçülenler:**
+>   - Test: yeni suite `test_tur1a_fixes.js` **19** · KAPANIŞ zinciri son baş (`8234d03`) üstünde **77 suite 1374 / 1374** — PG 14 iki kez + PG 17 bir kez, üçü de
+>     yeşil (başlangıç 72 suite 1277; + 5 suite, + 97 test).
+>   - TABAN 342.00 · TABAN-2 EŞİT — her dağıtımdan sonra (son: `5e04ea0`).
+>   - Staging turu (gerçek tarayıcı): Owner araç hesabı 12 sayfa × A / B2 × 1440 / 1280 × IBM Plex Sans / DM Sans = 96 yükleme · proje hesabı 6 sayfa = 48 yükleme —
+>     sayfa taşması 0 · kesik sütun 0 · 36 px altı düğme 0 · konsol hatası 0 (`7d9cd5a` üstünde; Owner turu son kod `5e04ea0` üstünde YENİDEN koşuldu: 96 yükleme, aynı sonuç). Kurum font ayarı ve kimsenin menü düzeni DEĞİŞTİRİLMEDİ (düzen ve font yalnız o
+>     tarayıcıda, oturum yanıtı üzerinden verildi). Yetkisiz araç hesabında "New" düğmesi çizilmiyor.
+>   - Exhibitor Page (kendi SAMPLE kaydım, ekip önizlemesi — ziyaret sayılmaz): 1440 · 1280 · 375 px × EN / FR / TR — taşma 0 · şerit masaüstünde 2 satır, kesik 0 ·
+>     bütün düğmeler ≥ 36 px.
+>   - E-posta: kendi SAMPLE kaydımın üç önizlemesinde ham tarih damgası 0; kuyruğa giden BİR echo e-postasında (hiçbir şey dışarı çıkmadı) tarihler "2–4 Dec 2026" ·
+>     "28 Nov 2026".
+>   - Denetim kaydı: staging'de bugüne kadar banka bilgisi için yazılmış denetim satırı 2, TAM numara taşıyan **0** → geçmişe dönük soru düştü.
+>   - Süre (staging, 1440 px, 3 koşu ortancası, önce → sonra): Agents 0,65 → 0,69 sn · Suppliers 0,72 → 0,9–1,1 sn (altı koşuda 0,78–1,98) · agent sayfası 0,79–0,87 →
+>     1,28–1,30 · Commissions 0,78 → 0,77 · War Room 2,11 → 2,10 (2 sn'yi geçen tek sayfa; bu dilimden önce de öyleydi — KABUK-2'de kabul edilen değer).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Exhibitor Page'in Payment bölümünde "Received — being checked" yazısı TARAYICIDA görülmedi (bölüm kodla açılıyor; bildirimi olan
+>   tek SAMPLE kayıt Suer'in — ona kod istenmedi): etiket proje ekibi ekranında görüldü, sayfadaki karşılığı testte · canlı veritabanında ileri tarihli ödeme
+>   sayılmadı (canlıya bakılmadı) · FR / TR e-posta metniyle echo gönderimi yapılmadı (yalnız EN; FR / TR biçimi testte) · ilk süre ölçümünde ~2 dakika boyunca
+>   yanıtlar tarayıcıya 15–45 sn gecikmeyle ulaştı ya da ulaşmadı; sunucunun kendi kaydında aynı istekler ≤ 1,8 sn ve hatasız — neden GÖZLENEMEDİ (ağ / vekil
+>   katmanı), ölçüm tekrarlandı · telefon genişliğinde ui2 sayfaları (yalnız Exhibitor Page 375 px ölçüldü).
+> - **Bilinçle yapılmayanlar:** bildirim ↔ ödeme bağı (şema; 🔶) · ödeme girişine ileri tarih doğrulaması (🔶) · Commissions tablo düzeni (🔶) · çalışan ekranlarındaki
+>   28 metinde (17 dosya) duran kural kodları (Finance / Admin / Sales / Expos — liste raporda; müşteriye görünmüyor) · fuar seçicinin yeri ve bütün D-2 / D-3 (TUR-1b) · klasik rapor
+>   süzgecinin düzeltmesi (§0.3 — yalnız işaretlendi) · denetimsiz ayar yazımları (🔶7 → GUV kuyruğu) · KB yüklemesi (Sentez: TUR-1 sonunda).
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**

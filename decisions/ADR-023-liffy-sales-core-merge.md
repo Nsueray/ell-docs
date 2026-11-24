@@ -179,3 +179,16 @@ Faz A restore + rollback.js. Prova ≥ 2 kez, canlının taze kopyasında.
 >   bilgisi yok. Kesimden önce metin (EN / FR; FR'deki üç ek taslak) gözden geçirilir.
 > - **Çıkış listesi (078):** boş doğar; kesimde ek adım yok. Dağıtım ile migration arasındaki pencerede oturumlar eskisi gibi çalışır (liste yokken çıkış yalnız
 >   tarayıcıyı temizler).
+>
+> **Kesim maddeleri (Sentez 24 Kas — DİLİM TUR-1a; CC, eliza-next):**
+> - **İleri tarihli ödeme (tur listesi Kural 4 — TAH-06):** "kayıtlı ödemenin tarihi gelecekte olamaz". Staging ölçümü (24 Kas): **1** kayıt, Zoho göç partisinde
+>   (kaynak veride tarih ileri). Ödeme kaydı değiştirilemez → düzeltme KESİMDE, göç verisinde: kesimden ÖNCE canlı kaynakta ileri tarihli ödemeler SAYILIR, her
+>   biri kaynakta düzeltilir ya da gerekçesiyle listelenir; kesimden sonra Admin › Migration "Payments dated in the future" sayacı 0 olmalı. Ödeme girişine
+>   doğrulama eklenmesi ayrı karar (bugün yok).
+> - **Makbuz bildirimi ↔ ödeme bağı (EXH-21):** bağ yok; "Confirmed" üretilmiyor, bildirim "Received — being checked" okunuyor. Bağ (Matched) kararı kesimden önce
+>   verilirse şema adımı kesim zincirine girer; verilmezse kesimde ek adım YOK.
+> - **Liste Columns seçimi (081):** `user_list_prefs` boş doğar (satır yazmaz); kesimde ek adım yok. 081'den önce liste otomatik sütun düzeniyle çalışır.
+> - **Liste sıralaması:** sıralama anahtarı veritabanının karşılaştırma ayarından bağımsız (harf katlama kodda) → canlı veritabanının ayarı farklı olsa da sıra aynı;
+>   canlıda ayar ÖLÇÜLMEDİ, ölçülmesi gerekmiyor. Süre: Agents / Suppliers listeleri ve agent sayfasının "Contracts sold" bölümü canlı planda yeniden ölçülür.
+> - **Exhibitor e-postalarında tarih:** bütün tarihler tek biçimlendiriciden ("2 Dec 2026"), gönderilen metnin dilinde. Kiracının kendi şablon satırında elle
+>   yazılmış tarih varsa (Payment Reminder satırı dahil) kesimden önce gözden geçirilir.
