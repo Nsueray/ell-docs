@@ -12220,6 +12220,87 @@
 >   olmayan listede "Inactive" alt satırı · Top expos'ta marj ortak hücresi) UYGULANMADI · Commissions dışa aktarımı bugünkü gibi (bütün temsilciler) ·
 >   elle yazılmış küçük harfli sözcükler · S3 (bildirim ↔ ödeme bağı) → ARALIK-2.
 >
+> ## ✅ 2026-11-24 — DİLİM TUR-1b P3: FUAR SEÇİMİ KABUKTAN İNDİ — fuara özel ekranlarda BAŞLIK seçicisi · liste süzgeci bileşeni · kullanıcı başına iki ayrı hafıza (082) · S2 depo kuralı
+>
+> - **Kriter kaynağı:** [defter:2026-11-24 SENTEZ 24 Kas: "ARALIK-1 KABUL · 3 KARAR · TUR LİSTESİ HÜKÜMLERİ · DİLİM TUR-1 (+ ARALIK-2 §0 ÖLÇÜMLERİ)"] — D-2 2.1 · 2.3 (bileşen) · 2.4 +
+>   [defter:2026-11-24 SENTEZ 24 Kas (21:40): "TUR-1a KABUL · KARARLAR (S1 · S2 · S3 · CC 🔶1–3 · H3) · TUR-1b EK HÜKÜMLER"] — S2 · D (2.4 satırı).
+> - **Ne yapıldı:**
+>   - **2.1:** kabukta fuar seçici YOK (sayfa listesinde açılır kutu yok; menü ve "neredeyim" bağlantıları fuar taşımaz). `nav.json`'daki grup işareti kalktı.
+>   - **2.4:** bir fuarın içinde çalışan ekran fuarını KENDİ başlığında seçer: Dashboard · Communications · Chain status · Rules · Expo settings · Floor plan ·
+>     Reports · Visitor & Access · üç On-site ekranı (telefon çerçevesinde bir satır) — bu parçada Exhibitors ve Stand drawings de (P5'te bütün fuarların listesi
+>     olur). Seçicinin yanında tarih · yer · durum (Ongoing / Upcoming / Past) · ne zaman ("in 8 days" · "day 2 of 4" · "ended 24 Sep 2026"); yaklaşan fuarda geri
+>     sayım başlıkta KALDI. Varsayılan = en yakın fuar (süren → sıradaki → son biten). Adres hep fuarı taşır (bellekten ya da varsayılandan geldiyse yeniden
+>     yüklemeden yazılır). Exhibitor detay sayfası fuarı KONTRATTAN alır (adresteki `?expo=` okunmuyor — çelişki olamaz); etiketi `C.expoLabel`.
+>   - **Tek bileşen, iki kullanım** (`expo-ui.js` + `C.expoChooser`): 'pick' (başlık) · 'filter' (liste araç satırının ilk kontrolü: Upcoming + ongoing · All expos ·
+>     tek fuar; aranabilir; Ongoing · Upcoming en yakın üstte · Past en son üstte · No dates). Süzgeç kipi P5 / P6'da listelere bağlanır. Düğme metni tek
+>     fuarda ürünün TEK fuar etiketi ("Ad · 2 Dec 2026").
+>   - **Tek tanım** `utils/expoTime.js`: fuarın zamandaki yeri (durum · başlangıca kalan takvim günü · "gün n / m" · kendi sıra · bir süzgecin kapsadığı fuarlar);
+>     "bugün" = fuarın KENDİ takvim günü (ülkesinin saat dilimi — Exhibitor Page sayacıyla aynı tanım). `GET /api/operations/expos` ve `GET /api/expos?pick=1`
+>     satırları bu alanları taşır (sıra değişmedi; `pick=1`'siz yanıt AYNEN).
+>   - **Hafıza (2.3 "kullanıcı başına hatırlanır" · 2.4 "ayrı hatırlanır"):** migration **082** `users.ui_expo_id` (başlık seçimi) + `users.ui_expo_filter` (liste
+>     süzgeci: live | all | fuar kimliği) — iki ayrı kolon, kullanıcının kendi satırı; `PUT /api/user-auth/preferences` `{ expo }` ve / veya `{ expo_filter }` alır
+>     (kiracının olmayan fuar → 400 `UNKNOWN_EXPO` · geçersiz süzgeç → 400 `UNKNOWN_EXPO_FILTER`), `/me` ikisini döner. Tarayıcıda oturum kaydının içinde durur
+>     (oturumla birlikte gider; yeni depo anahtarı YOK).
+>   - **S2:** klasik ekranlarla ortak depo anahtarını (`selectedExpoId` / `selectedExpoName`) YALNIZ fuara özel ekranın başlık seçimi yazar (açılışta ve
+>     değişince). Liste süzgeci yazmaz (P5'te bağlanınca da yazmayacak).
+> - **Commit:** LEENA eliza-next `6a39132` (P2 eki: Commissions sütun seçimini satırlarla birlikte ister) · `901eaad` (P3). Staging'de CANLI. Canlı `main` DEĞİŞMEDİ.
+>   Migration **082** staging: dry-run → apply → ikinci apply "Nothing to apply" (kayıt 84). Canlıya migration yazılmadı.
+> - **Ölçülenler:** yeni suite `test_tur1b_expo.js` (**14**) · zincir 79 suite **1404 / 1404** · TABAN 342.00 · TABAN-2 EŞİT. Staging kabul denemesi (Owner araç hesabı):
+>   Visitor & Access başlığında fuar değiştirildi (SAMPLE fuar → bir göç fuarı) → adres `?expo=9` · ortak anahtar 9 · sunucu hafızası `expo: 9` · Communications ve
+>   Reports aynı fuarla açıldı (adres yazıldı) · klasik köprüler o fuarla açıldı: Visitor log · Check-ins · Registration report · E-mail history (dördünde de
+>   klasik ekranın gösterdiği fuar adı seçilen fuar; üçünün API istekleri fuar 9). Klasik ekranlarda yazım yapılmadı. Araç hesabının hafızası denemeden sonra eski
+>   fuara döndürüldü.
+> - **SAPMA (hükümle değişen test beklentileri — her satırda hüküm yorumu):** `test_kabuk2_shell` K5 (TERSİNE: kabukta seçici yok — 2.1) · `test_kabuk2` H4b
+>   (`pick=1` satırları zaman alanlarını da taşır — 2.3) · `test_ui_tam` M1 (sayfa kendi seçici dosyasını yükler — 2.1 / 2.4) · `test_tur1a_fixes` T1 (tek etiketi
+>   artık seçici yazar — 2.4).
+> - **Okuma kararı (S2 "başlık seçicisi yazar"):** depo yalnız kullanıcı seçiciyi DEĞİŞTİRDİĞİNDE değil, fuara özel ekran AÇILDIĞINDA da yazılır (ekranın o anki
+>   fuarı) — aksi halde adresle gelinen ekrandan (ör. Expos'tan "Open dashboard") açılan klasik köprü başka fuarı gösterirdi. Sunucu hafızası yalnız seçici
+>   değişince yazılır.
+> - **Bulgu:** eski bağlam çubuğundaki "Expo code — Not connected yet" işareti çubukla birlikte kalktı (bağlanacak öğe artık çizilmiyor) · başlıkta başlangıç tarihi
+>   iki kez okunuyor (etikette "· 2 Dec 2026", yanında "2–4 Dec 2026 · yer") — etiket Sentez'in tek etiketi, yanındaki satır 2.4'ün "tarih · ülke · durum"u.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** süren (ongoing) fuar staging'de bugün yok → "day n of m" ve "süren → sıradaki" varsayılanı yalnız testte · başka bilgisayarda /
+>   yeni oturumda hafızanın geri gelmesi tarayıcıda denenmedi (sunucu değeri ölçüldü) · telefon genişliğinde seçici ölçülmedi (telefon tasarımı TUR-2).
+> - **Bilinçle yapılmayanlar:** sayfa başlıkları bu parçada aynı ("Operation Command" · "Visitor & Access" · "Reports" — P4) · Exhibitors / Stand drawings'in bütün
+>   fuar listesi olması (P5) · Finance listelerinde süzgeç (P6) · klasik ekranlara dokunulmadı.
+>
+> ## ✅ 2026-11-24 — DİLİM TUR-1b P4: OPERATIONS MENÜ AĞACI + VISITORS HOME — Dashboard üstte · Exhibitors · Visitors · Expos; görünümler sekme, 8 iş kartı; S1 Lead scanner tek fuara bağlı · S2 "choose the expo there" 4 ekranda
+>
+> - **Kriter kaynağı:** [defter:2026-11-24 SENTEZ 24 Kas: "ARALIK-1 KABUL · 3 KARAR · TUR LİSTESİ HÜKÜMLERİ · DİLİM TUR-1 (+ ARALIK-2 §0 ÖLÇÜMLERİ)"] — D-2 2.2 · 2.5 +
+>   [defter:2026-11-24 SENTEZ 24 Kas (21:40): "TUR-1a KABUL · KARARLAR (S1 · S2 · S3 · CC 🔶1–3 · H3) · TUR-1b EK HÜKÜMLER"] — S1 · S2 · D.
+> - **Ne yapıldı:**
+>   - **2.2 menü (`nav.json` tek kaynak):** Dashboard (en üstte, grupların dışında — başlıksız grup) · EXHIBITORS: Exhibitors · Stand drawings · Communications ·
+>     VISITORS: Visitors home · On-site (phone) · EXPOS: Expos · Expo settings · Floor plan · Expo reports · Expo record [classic]. Menüde yalnız VAR OLAN sayfalar
+>     (yer tutucu satır yok). DOSYA ADLARI DEĞİŞMEDİ (`ops-visitors.html` · `ops-reports.html` — eski adresler çalışır), yalnız etiket: "Visitor & Access" →
+>     "Visitors home" · "Reports" → "Expo reports". Scan ve telefon Visitors listesi "On-site (phone)" satırının alt sayfası; Chain status ve Rules
+>     Communications'ın alt sayfası (bugünkü gibi).
+>   - **"Expo record" menü satırı:** kullanıcının çalıştığı fuarın KLASİK fuar formunu açar (ortak depo anahtarındaki fuar adrese eklenir); fuar yokken Expos
+>     listesine gider — boş "yeni fuar" formu menüden açılmaz. Menüdeki tek klasik satır, "classic" etiketiyle.
+>   - **2.5 Visitors home:** bugünkü ekranın üstüne — beş görünüm (Visitors · Conferences · Access control · Badges · Forms) görünüm kartının üstünde SEKME; altında
+>     ziyaretçi işinin ekranlarını toplayan 8 İŞ KARTI (Registration forms · Visitors list · Badges · E-mails & campaigns · Check-in & terminals · Conference
+>     sessions · On-site · Visitor reports → Expo reports — 20 ekran: 16 klasik + 4 ui2). Klasik satırın adresi `nav.json`'dan (sayfa klasik yol yazmaz);
+>     görünümlerin içindeki köprü düğmeleri kartlara taşındı. Ziyaretçi satırındaki "Badge" düğmesi (ziyaretçinin QR'ıyla açar) yerinde.
+>   - **S2:** "choose the expo there" notu yalnız 4 klasik ekranda — Import visitors · Re-activation · Badge templates · E-mail templates (`nav.json`
+>     `chooseExpoThere`). Öbür köprüler fuarı ortak depo anahtarından alır (P3: başlık seçicisi yazar).
+>   - **S1:** Lead scanner On-site kartında; klasik ekran tek fuara gömülü → o fuarın kimliği ui2'de YALNIZ `nav.json`'da (`expoOnly`); seçili fuar o değilse satır
+>     pasif ve "only for <fuarın adı>" yazar (ad fuar listesinden). Bir test klasik dosyadaki sabiti okuyup eşitliği doğrular (klasik dosya değişirse test kırılır).
+>   - **Başlıklar:** Dashboard ("Operation Command" idi) · Visitors · Expo reports.
+> - **Commit:** LEENA eliza-next `4773ea0` (staging'de CANLI). Canlı `main` DEĞİŞMEDİ. Migration yok.
+> - **Ölçülenler:** `test_tur1b_expo.js` 14 → **19** (M1–M5) · zincir 79 suite **1409 / 1409** · TABAN 342.00 · TABAN-2 EŞİT. Staging (Owner araç hesabı): sol sütun (sayfa
+>   listesi, 11 satır + 3 grup başlığı) A ve B2 düzeninde, 1440 ve 1280 genişlikte, 900 ve 800 px yükseklikte KAYMADAN sığıyor (liste içi kayma 0; 32 yükleme,
+>   bulgu 0). Tarayıcıda (çalışma ağacı + staging verisi): Visitors home 20 ekran; SAMPLE fuarda Lead scanner pasif "only for <fuar adı>", o fuarın kendisinde
+>   etkin; dört satırda "choose the expo there".
+> - **SAPMA (hükümle değişen menü testleri — her satırda hüküm 2.2 / 2.5 yorumu):** `test_ui2_ui0` G2 (Operations grupları) · `test_ui_tam` O1 (menü satırları ve
+>   grupları) · O2 (kart satırı da köprü kullanımıdır; ebeveyn kuralı düğme köprüsü için — Expo record menü satırı) · M1 (On-site ekranları Visitors grubunda,
+>   tek menü satırı) · `test_ui_tam2` S1 (Expo settings Expos grubunda) · `test_kabuk2_shell` K2 ("Operations › Exhibitors › Exhibitor") · `test_kabuk2_menu` D4
+>   (Stand drawings Exhibitors grubunda).
+> - **MOCKUP ↔ SENTEZ:** U1'deki kart başlığı "Registration" → Sentez'in adı "Registration forms" · U1'de "Conference scanner" ve "Badge" klasik bağ; ikisi de
+>   parametresiz açılınca boş ekran verir (terminal anahtarı / rozet QR'ı ister) → satır kartta DURUR ama bağ değil: "opens from Scan — it needs a terminal" /
+>   "opens from a visitor row — it needs the badge QR" · U1 klasik ekranı yeni sekmede açar; ürünün köprüleri bugünkü gibi aynı sekmede.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** proje ve yetkisiz araç hesabıyla menü (kapanış turunda) · telefon genişliği · klasik ekranlar köprüden tek tek açılmadı (P3'te dördü
+>   açıldı).
+> - **Bilinçle yapılmayanlar:** "Catalogue status · Orders · Payment warnings" menü satırı DEĞİL (Sentez 2.2) · "Expo partners" / "Build-up" sayfası yok ·
+>   Communications sayfasının içeriği (kampanyalar · şablonlar + zincir bağları) aynı kaldı · klasik ekranlara dokunulmadı (lead-scan dahil).
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
