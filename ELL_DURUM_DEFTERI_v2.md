@@ -12398,6 +12398,33 @@
 > - **Bilinçle yapılmayanlar:** gelen e-posta için uç / tablo · Mail sayfasında "herkesin gönderdikleri" görünümü · SAMPLE tekliflerin imzalanması (kontrat doğmasın) ·
 >   Suer'in SAMPLE kayıtlarına (7899 · 7900 · 7902 · sipariş 7901) ve SAMPLE fuar tarihlerine dokunulmadı.
 >
+> ## ✅ 2026-11-25 — DİLİM TUR-1b P8 + KAPANIŞ: BELGELER — CLAUDE.md 164.625 → 142.130 karakter (taşıma bayt bayt) · kütük (TAH-02 · UI-15 eki · UI-17 · UI-18 · UI-19 · EXH-22 · EXH-23) · ADR-023 kesim maddeleri · salt okuma ölçümleri · kapanış zincirleri ve turları
+>
+> - **Kriter kaynağı:** [defter:2026-11-24 SENTEZ 24 Kas (21:40): "TUR-1a KABUL · KARARLAR (S1 · S2 · S3 · CC 🔶1–3 · H3) · TUR-1b EK HÜKÜMLER"] — B (CLAUDE.md · Kuyruk) + Orchestrator U1 P8 · U3 · U4.
+> - **Ne yapıldı:**
+>   - **CLAUDE.md:** eski ziyaretçi tarafı notlarından "GOTCHAS & OPERATIONAL LEARNINGS" bloğu (G1–G48 + 3 Eyl ek notları) `docs/CLAUDE_GOTCHAS.md` dosyasına AYNEN taşındı
+>     (silinmedi; CLAUDE.md'de düz yol adıyla bağ + "o yollara dokunmadan önce oku" notu; "@dosya" sözdizimi kullanılmadı). Dosyanın başındaki sabit kurallar yerinde. Bu
+>     dilimin notları (DİLİM TUR-1b bölümü + test satırı) eklendikten SONRA sayım: **164.625 → 142.130 karakter** (< 150.000).
+>   - **Kütük:** TAH-02 DEĞİŞTİ (ödeme tarihi > sunucu günü + 1 → ret) · UI-15 eki (Name sütununda iki adımlı döngü — kalıp notu) · UI-17 (sayfa genişliği 1360) · UI-18 (fuar
+>     seçimi + S2 + 2.6 sıra tanımı) · UI-19 (Operations menü ağacı + Visitors home + S1) · EXH-22 (C2 ön dolum cümlesi) · EXH-23 (C6 iki tarih iki etiket). ID'leri CC tahsis etti.
+>   - **ADR-023:** TUR-1b kesim maddeleri — lead-scan canlı kullanım ölçümü · ileri tarihli ödemenin ters kaydı · göç kontratlarında m² · 082 · klasik rapor (hotfix yok) · Mail.
+> - **Salt okuma ölçümleri (25 Kas):** göç kontratlarında m² (staging, 3.947 kontrat): BOŞ 5 (3 fuar; 2021–2022; beşinin de satır kalemi var) · 0 olan 570 · dolu 3.372 ·
+>   ileri tarihli ödeme (staging): 1 (göçle geldi; ters kaydı yok) · lead scanner CANLI (salt okuma): `exhibitor_leads` toplam 1 kayıt — fuar 3, 1 firma, tek gün; başka fuarda yok ·
+>   1a'daki ~2 dakikalık gecikme bu dilimin ölçümlerinde YİNELENMEDİ (en uzun tek yükleme 2,66 sn).
+> - **Commit:** LEENA eliza-next `9450d25` (yalnız belge). Canlı `main` DEĞİŞMEDİ. Migration yok.
+> - **Ölçülenler (kapanış):** taşınan blok hedef dosyada BAYT BAYT aynı (30.405 bayt · 60 satır; karşılaştırıldı); bloğun dışında değişen tek satır test sayısı satırı.
+>   **Zincir:** `9450d25` üzerinde PG 14 ×2 + PG 17: üçünde de 80 suite **1433 / 1433** (kırmızı yok; 1374 → 1433, +59 test, +3 suite). **Staging turu (ayar değiştirilmeden):** Owner araç hesabı 32 sayfa × A / B2 × 1440 / 1280 × IBM Plex Sans / DM Sans = 256 yükleme, bulgu 0 ·
+>   proje araç hesabı 128 yükleme: Operations sayfalarında bulgu 0, yetkisi olmayan üç Finans sayfasında beklenen izin mesajı · Operations yetkisi OLMAYAN araç hesabı 128 yükleme: Operations sayfalarının hepsinde "You do not have access to Operations." (istek atılmıyor, ortak fuar anahtarı yazılmıyor); taşma / kart içi kayma 0. **Süre önce / sonra (ortanca ms, 1440):** Exhibitors (15) 1.365 → 1.169 · Exhibitors (9) 1.839 → 1.100 · Stand drawings 1.259 → 1.091 · Chain status 1.306 → 1.497 ·
+>   Expos 669 → 677 · Dashboard 1.361 → 1.479 · Visitors home 1.109 → 1.062 · Payments 1.872 → 1.147 · Contracts 974 → 978 · Commissions 1.119 → 1.048 · War Room 2.592 → 1.945.
+>   TABAN 342.00 · TABAN-2 EŞİT (son dağıtımdan sonra).
+> - **SAPMA:** KB adımı CLAUDE.md'de tanımlı DEĞİL; kural kütükte (YON-03: push → KB yeniden yükleme → deftere `KB @ <hash>`). Yüklemeyi CC yapamaz → **KB bekliyor** (rapor 5-11).
+>   Kapanış turunda gözlem: Sales › Mail tablosu 1280 A'da kart içinde 41–49 px kayıyor (sayfa kalıpta değil; SAMPLE e-postalarla görünür oldu; dokunulmadı).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Suer'in kendi hesabıyla hiçbir ekran · telefon genişliği · Safari / Firefox · canlı veritabanında hız · 1680+ genişlikte P2 / P5 sayfaları ·
+>   m² = 0 olan 570 kontratın gerçekten alan dışı olup olmadığı (yalnız sayıldı) · KB yüklemesi.
+> - **Bilinçle yapılmayanlar:** ARALIK-2'ye BAŞLANMADI (S3 · H2 · H3 · Ş1–Ş4 · Send e-mail önizleme gövdesi) · canlıya hiçbir şey (hotfix dalı yok) · CLAUDE.md'den başka blok
+>   taşınmadı (hedefin altında) · test satırındaki eski sayım geçmişi yerinde (dosyanın başı — sabit bölüm).
+> - **Rapor:** `~/ell-ui-tools/tur-1/RAPOR_TUR-1b.md` (repo dışı; 8 bölüm; 3 karar sorusu: Mail görünümü · "All expos" süresi · Budget / Expo Finance seçicisi).
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**

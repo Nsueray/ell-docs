@@ -120,7 +120,12 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 ### TAH — tahsilat / ödeme girişi
 
 - **TAH-01** (eski W-8) — Reversal ve transfer satırında ofis/method sunucuda orijinalden devralınır; istemciden gelen değer yok sayılır. [defter:2026-07-28 PS2 CANLIDA]
-- **TAH-02** (eski W-9) — Add-payment tarihi bugünle ön-doldurulur; sunucuda tarih zorlaması yoktur. [defter:2026-07-28 PS2 CANLIDA]
+- **TAH-02** (eski W-9) — Add-payment tarihi bugünle ön-doldurulur; ~~sunucuda tarih zorlaması yoktur~~. [defter:2026-07-28 PS2 CANLIDA]
+  **DEĞİŞTİ (Sentez 24 Kas 21:40 — CC 🔶3 / Kural 4 = a, AYNEN):** "sunucu ödeme tarihi > (sunucu günü + 1 gün) ise reddeder (saat dilimi payı; Çin ofisi); TAH-02 buna
+  göre değişir. Göçle gelen 1 ileri tarihli ödeme cutover listesinde kalır (ters kayıt)." Uygulama (DİLİM TUR-1b P2): `POST /api/contracts/:id/payments` — 400
+  `PAYMENT_DATE_IN_FUTURE` (yanıtta alan adı + kabul edilen son gün); ters kayıt · transfer · göç yolları kapsam DIŞI (ters kayıt orijinalin tarihini taşır). Ödeme formu
+  yalnız klasik kontrat ekranında → mesajı klasik ekranın bildirimi gösterir (TAH-06 ile birlikte okunur). Canlıda kesimle. [defter:2026-11-24 SENTEZ 24 Kas (21:40): "TUR-1a KABUL · KARARLAR (S1 · S2 · S3 · CC 🔶1–3 · H3) · TUR-1b EK HÜKÜMLER"] ·
+  [defter:2026-11-24 DİLİM TUR-1b P2]
 - **TAH-03** (eski W-10) — Tek ödeme formu vardır (`contract-detail.html`); satır içi hızlı form açılmaz. [defter:2026-07-28 PS2 CANLIDA]
 - **TAH-04** (eski S-6) — `payments.schedule_item_id` kolonu vardır ama ödeme↔kalem eşleştirme mantığı bilinçli olarak YOKTUR. [defter:2026-07-28 PAYMENT SCHEDULE PS1] Bu yüzden PLN-10'un ay dağılımı bir VARSAYIMDIR (satır eşleştirme yapılamıyor). [defter:2026-07-30 PS3-B CANLIDA]
 - **TAH-05** (Paket 3 hüküm 3 — Suer S2, Sentez 24 Eki) — Gelir BRÜTTÜR (vergi dahil), komisyon matrahı NETTİR (RF hariç — K7b; MOT-01 formülü değişmez). `contracts.revenue` = BRÜT (müşterinin borcu; paid/balance brüte karşı). net = Σ(q×p×(1−d)) · vergi = Σ(net_satır × tax%) · BRÜT = net + vergi; L4 = BRÜT(satırlar) ↔ revenue ±0.01. `revenue_net` saklanmaz (D2, türetilir); raporda ciro iki sütun brüt + net (RAP-02). [defter:2026-10-24 PAKET 3 KRİTER TURU] · **Uygulama (canlı 26 Eki):** alıcı LEENA (P3-1 `028582a`) + gönderici LIFFY aynı satır kuralı (`utils/quoteTotals.js`, `42ef56a`; iki repoda ortak fikstür). Staging kanıtı kontrat #5: brüt 5064.00 = net 4220.00 + vergi 844.00; matrah 3870.00 (RF 350 hariç). [defter:2026-10-26 PAKET 3 CANLIDA]
@@ -392,6 +397,30 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
   not_ready → "Not ready"; ülke kodu → ülke adı); durumlar Title case." Uygulama: sözlük TEK yerde (bileşen dosyası; kod → sözcük; sözlükte olmayan kod ham basılmaz); ülke adının tek kaynağı veritabanındaki ülke listesi; Exhibitor
   Page'in üç dilli durum adları kendi dil sözlüklerinde kalır (çakışma yok). **Ek (Tasarım 7, AYNEN):** fuar etiketi "tek biçim her yerde: "Ad · 2 Dec 2026" (fuar adı hiç düşmez)" — tek fonksiyon. **Ek (Metin 13, AYNEN):** "müşteriye
   görünen metinde kural kodu yok". [defter:2026-11-24 SENTEZ 24 Kas: "ARALIK-1 KABUL · 3 KARAR · TUR LİSTESİ HÜKÜMLERİ · DİLİM TUR-1 (+ ARALIK-2 §0 ÖLÇÜMLERİ)"] · D-1 1.2 + D-4
+- **UI-15 eki — sıralama döngüsü notu** (Sentez 24 Kas 21:40 A, AYNEN): "Name sütununda iki adımlı döngü (kendi sıra zaten A→Z) doğru; kalıp notu olarak kütüğe." Kalıp kuralı:
+  başlık tıklaması 1 → A→Z · 2 → Z→A · 3 → listenin kendi sırası; listenin KENDİ sıra sütununda üçüncü adım yoktur (kendi sıra ile A→Z aynı şeydir) → iki adım. [defter:2026-11-24 SENTEZ 24 Kas (21:40): "TUR-1a KABUL · KARARLAR (S1 · S2 · S3 · CC 🔶1–3 · H3) · TUR-1b EK HÜKÜMLER"]
+- **UI-17** (Sentez 24 Kas 21:40 B, AYNEN; ID'leri UI-17 · UI-18 · UI-19 CC tahsis etti) — SAYFA GENİŞLİĞİ: "bütün ui2 sayfalarında en geniş içerik 1360 px (UX mockup'larının
+  genişliği; bugün 1180). TUR-1b'de tek değişken; 1440'ta gizli sütun sayıları raporlanır." Uygulama: `tokens.css` `--page-max` (tek değişken). Ölçüm: 1440 px'te kazanç
+  yalnız B2 düzeninde (+24 px; A düzeninde sayfa listesi açıkken içerik zaten 1120 px); 1680 px ve üstünde 1180 → 1360. [defter:2026-11-24 SENTEZ 24 Kas (21:40): "TUR-1a KABUL · KARARLAR (S1 · S2 · S3 · CC 🔶1–3 · H3) · TUR-1b EK HÜKÜMLER"] · [defter:2026-11-24 DİLİM TUR-1b P1]
+- **UI-18** (Sentez 24 Kas D-2 2.1 · 2.3 · 2.4 + 21:40 S2 · D, AYNEN) — FUAR SEÇİMİ: "2.3 Liste sayfaları …: TÜM fuarlar + fuar süzgeci araç satırının ilk kontrolü; varsayılan
+  "Upcoming + ongoing"; seçenekler Upcoming + ongoing · All expos · tek fuar (gruplu Ongoing · Upcoming en yakın üstte · Past en son üstte; aranabilir; satırda "in 77 days" /
+  "day 2 of 4"); sayı seçimin içinden …; tek fuar seçilince Expo sütunu çıkar; seçim Operations listeleri arasında taşınır, adreste, kullanıcı başına hatırlanır. AYNI bileşen
+  Finance listelerinde … bugünkü düz listenin yerine." · "2.4 Fuara özel ekranlar …: fuar sayfa BAŞLIĞINDA seçilir (yanında tarih · ülke · durum); varsayılan en yakın fuar
+  (süren → sıradaki → son biten); seçim bu ekranlar arasında taşınır; adres hep fuarı taşır; liste süzgeci ile başlık seçimi ayrı hatırlanır." · **S2 (AYNEN):** "ui2 seçili
+  fuarı depoya yazmayı sürdürür. Kural: depoyu fuara özel ekranların BAŞLIK seçicisi (2.4) ve Visitors home seçicisi yazar; liste süzgeci (2.3) YAZMAZ (çoklu seçim olabilir).
+  "Fuarı orada seç" notu yalnız 4 ekranda (Import visitors · Re-activation · Badge templates · E-mail templates)." · **2.6 sıra tanımı (AYNEN):** "süren fuarlar (başlangıç ≤ bugün ≤
+  bitiş) başlangıca göre artan · sonra yaklaşanlar başlangıca göre artan · sonra geçmişler bitişe göre azalan." Uygulama: fuarın zamandaki yeri TEK tanım (`utils/expoTime` —
+  "bugün" fuarın kendi günü); seçim kabukta DEĞİL; hatırlama sunucuda, kullanıcı başına, iki ayrı alan (082); çok fuarlı uçlarda durum türetme TEK kaynak (tek fuar = bugünkü
+  uç, satır satır); sayaç kutuları ve toplu işlemler yalnız TEK fuarda (çok fuarda pasif + "Select one expo" — Orchestrator okuması); Finans listelerinde varsayılan
+  "All expos" KALIR (toplamlar değişmez — Orchestrator okuması). [defter:2026-11-24 SENTEZ 24 Kas: "ARALIK-1 KABUL · 3 KARAR · TUR LİSTESİ HÜKÜMLERİ · DİLİM TUR-1 (+ ARALIK-2 §0 ÖLÇÜMLERİ)"] · [defter:2026-11-24 SENTEZ 24 Kas (21:40): "TUR-1a KABUL · KARARLAR (S1 · S2 · S3 · CC 🔶1–3 · H3) · TUR-1b EK HÜKÜMLER"] · [defter:2026-11-24 DİLİM TUR-1b P3 · P5 · P6]
+- **UI-19** (Sentez 24 Kas D-2 2.2 · 2.5 + 21:40 S1, AYNEN) — OPERATIONS MENÜ AĞACI + VISITORS HOME: "Dashboard (en üstte, grupların dışında) · EXHIBITORS: Exhibitors · Stand drawings ·
+  Communications (chain + rules) · VISITORS: Visitors home · On-site (phone) · EXPOS: Expos · Expo settings · Floor plan · Expo reports · Expo record [classic]. Menüde YALNIZ var
+  olan sayfalar … Placeholder satır açılmaz." · "2.5 Visitors home = bugünkü Visitor & Access üstüne: başlıkta fuar seçici; sayaçlar; görünümler … sekme olarak; 8 iş kartı … klasik
+  köprüler kartların içinde … "Badge (classic)" tek yerde; Lead scanner On-site kartında. "Visitor & Access" ve "Reports" adları menüden kalkar (sayfalar kalır: Visitors home · Expo
+  reports)." · **S1 (AYNEN):** "On-site kartına girer; seçili fuar 3 değilse pasif + "yalnız <fuar 3 adı> için" notu. Düzeltme ziyaretçi tarafı kuyruğuna; ayrıca cutover listesine
+  "canlıda lead-scan kullanımı var mı, hangi fuar" ölçümü." Uygulama: `nav.json` tek kaynak (dosya adları değişmedi); o fuarın kimliği ui2'de yalnız `nav.json`'da ve bir test
+  klasik dosyadaki sabitle eşitliğini okur. [defter:2026-11-24 SENTEZ 24 Kas: "ARALIK-1 KABUL · 3 KARAR · TUR LİSTESİ HÜKÜMLERİ · DİLİM TUR-1 (+ ARALIK-2 §0 ÖLÇÜMLERİ)"] · [defter:2026-11-24 SENTEZ 24 Kas (21:40): "TUR-1a KABUL · KARARLAR (S1 · S2 · S3 · CC 🔶1–3 · H3) · TUR-1b EK HÜKÜMLER"] · [defter:2026-11-24 DİLİM TUR-1b P4]
+
 
 ### KAT — katalog / quote → kontrat köprüsü (yeni grup, 2026-10-24, Paket 3)
 
@@ -716,3 +745,10 @@ Kesim provası direktifi (KES-01..05) aynen; GUV-04 dilimi provadan önce. Hotfi
   Rejected (gerekçeli). Exhibitor Page'de "Confirmed" YALNIZ Matched'te; o zamana kadar "Received — being checked". Paid 0 iken "Confirmed" görünemez." Uygulama (DİLİM TUR-1a D-4.4): bildirim ↔ ödeme kaydı bağı bugün YOK (kolon yok;
   Finance'in "Mark as checked" eylemi ödeme yazmaz, ödeme seçtirmez) → bağı kurmak şema işidir, bu dilimde KURULMADI. Yalnız etiket: bildirimin durumu "received" ya da "rejected" (Finance'in baktığı ayrı işaret); "Confirmed" hiçbir
   yolda üretilmez — Exhibitor Page ve proje ekibi ekranı "Received — being checked" yazar (EN / FR / TR). Mevcut ödeme kaydı hiçbir durumda değişmez. **Matched (bağ) açık karar.** [defter:2026-11-24 SENTEZ 24 Kas: "ARALIK-1 KABUL · 3 KARAR · TUR LİSTESİ HÜKÜMLERİ · DİLİM TUR-1 (+ ARALIK-2 §0 ÖLÇÜMLERİ)"] · §0.5 + D-4
+- **EXH-22** (Sentez 24 Kas 21:40 C-2 — Metin 14 okuma kuralı, AYNEN; ID'leri EXH-22 · EXH-23 CC tahsis etti) — ÖN DOLUM CÜMLESİ: "ön dolu alan ≤ 3 ise ADIYLA yazılır ("We pre-filled
+  your company name and country; please complete the rest."); daha çoksa "We pre-filled N of 22 fields from our records; please check and complete the rest."" Uygulama: sunucu ön
+  dolu alanların ADLARINI ve formun alan sayısını verir; sayfa yalnız yazar (EN / FR / TR). SAPMA: form 23 alanlı (firma adı dahil) → cümle "N of 23" yazar — "22" Sentez'in
+  örnek sayısıydı; alan sayısı koddan gelir. [defter:2026-11-24 SENTEZ 24 Kas (21:40): "TUR-1a KABUL · KARARLAR (S1 · S2 · S3 · CC 🔶1–3 · H3) · TUR-1b EK HÜKÜMLER"] · [defter:2026-11-24 DİLİM TUR-1b P2]
+- **EXH-23** (Sentez 24 Kas 21:40 C-6, AYNEN) — ÖDEME: İKİ TARİH İKİ ETİKET: "Exhibitor Page › Payment: iki tarih iki etiketle — "Instalment due 18 Nov 2026 · Overdue" (plan satırı) ve
+  "Final payment deadline 27 Nov 2026" (fuarın son günü). Hatırlatma vadesi plandan (ARALIK-1 madde 10 ile aynı)." Uygulama: plan satırı yalnız kodlu oturumda görünür (EXH-10
+  aynen); proje ekibi ekranı aynı iki etiketi kullanır. [defter:2026-11-24 SENTEZ 24 Kas (21:40): "TUR-1a KABUL · KARARLAR (S1 · S2 · S3 · CC 🔶1–3 · H3) · TUR-1b EK HÜKÜMLER"] · [defter:2026-11-24 DİLİM TUR-1b P2]

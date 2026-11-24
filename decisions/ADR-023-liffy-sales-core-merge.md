@@ -192,3 +192,17 @@ Faz A restore + rollback.js. Prova ≥ 2 kez, canlının taze kopyasında.
 >   canlıda ayar ÖLÇÜLMEDİ, ölçülmesi gerekmiyor. Süre: Agents / Suppliers listeleri ve agent sayfasının "Contracts sold" bölümü canlı planda yeniden ölçülür.
 > - **Exhibitor e-postalarında tarih:** bütün tarihler tek biçimlendiriciden ("2 Dec 2026"), gönderilen metnin dilinde. Kiracının kendi şablon satırında elle
 >   yazılmış tarih varsa (Payment Reminder satırı dahil) kesimden önce gözden geçirilir.
+>
+> **DİLİM TUR-1b (24–25 Kas; Sentez 24 Kas 21:40 — S1 · CC 🔶3 · Kuyruk) — kesim maddeleri ve salt okuma ölçümleri:**
+> - **Lead scanner (S1) — canlıda kullanım ölçümü (25 Kas, canlı salt okuma):** `exhibitor_leads` tablosunda TOPLAM 1 kayıt — fuar 3 (klasik ekranın koduna gömülü fuar;
+>   Şubat 2026 edisyonu), 1 firma, tek gün. Başka fuarda kayıt YOK. Klasik ekran fuarı koddan okur → yeni bir fuarda kullanılacaksa önce ziyaretçi tarafında düzeltme
+>   (kuyruk); ui2 o fuar dışında bağı pasif gösterir. Kesim provasında ölçüm yinelenir.
+> - **İleri tarihli ödeme (TAH-02 / TAH-06) — ters kayıt:** staging ölçümü (25 Kas): sunucu günü + 1'den ileri tarihli 1 ödeme — göçle geldi, ters kaydı YOK. Kesimde: ödeme
+>   ters kayıtla kapatılıp doğru tarihle yeniden girilir (ya da Zoho'da düzeltilip fark partisiyle gelir) — karar kesim tasarımında; yeni giriş kuralı (TAH-02) göç yolunu
+>   ETKİLEMEZ, o yüzden sayaç (Admin › Migration "Payments dated in the future") kesim günü 0 olmalı.
+> - **Göç kontratlarında m²:** staging ölçümü (25 Kas, 3.947 göç kontratı): m² alanı BOŞ (NULL) **5** kontrat (3 fuar; 2021–2022; beşinin de satır kalemi var) · m² **0** olan
+>   **570** kontrat (alan dışı sayılır — m² toplamına 0 girer) · dolu 3.372. "Ekip kaydı 514 kontrat / 61 m²" gözlemi bu 0'lardan gelir. Kesim öncesi: 0 olanların gerçekten
+>   alan dışı mı yoksa Zoho'da m² girilmemiş mi olduğu örnekle bakılır (karar Sentez'in); 5 boş kayıt elle tamamlanır.
+> - **082 (`users.ui_expo_id` · `users.ui_expo_filter`):** yalnız kolon ekler, satır yazmaz; kesimde zincirle. Seçim kullanıcıya özeldir — kesim günü ek adım yok.
+> - **Klasik rapor ucu (CC 🔶1 = b):** tarih süzgeci + oran taşması düzeltmesi eliza-next'te; canlıda hotfix YOK — kesimle gider. O güne kadar canlıda tarihli istek 500 verir.
+> - **Sales › Mail:** liste yalnız oturum sahibinin gönderdiklerini gösterir; gelen e-posta / zincir cevabı yazan yol yok (🔶 TUR-1b raporu) — kesimde beklenti buna göre.
