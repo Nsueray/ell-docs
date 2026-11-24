@@ -11676,6 +11676,215 @@
 >   geçirme EN / FR / TR).
 > - **→ Sıradaki:** Suer turu (4 Ara'dan önce) → tek liste → Sentez · PAKET ARALIK-2 ön kriteri (Sentez'de).
 >
+> ## ✅ 2026-11-24 — SENTEZ 24 Kas: "ARALIK-1 KABUL · 3 KARAR · TUR LİSTESİ HÜKÜMLERİ · DİLİM TUR-1 (+ ARALIK-2 §0 ÖLÇÜMLERİ)" — AYNEN
+>
+> - **Kaynak ve sıra (Orchestrator 24 Kas 2026 — prompt dosyadan):** bu oturumun promptu diskteki tek dosyadır; bütünlüğü işe başlamadan ÖLÇÜLDÜ
+>   (sha256 `71d71e5f5188fb47e68dcd8dce76c106262dbe7b4b7d893be96808e477a5adfa` · 30.899 bayt · 310 satır · son satır "═══ BLOK SONU ═══" — dördü
+>   beklenenle AYNI). KRİTER = aşağıdaki Sentez bloğu, AYNEN (140 satır). Orchestrator UYGULAMA (K · U0–U5) yalnız kapsam / sıra / ölçüm / okuma kararıdır;
+>   kriterle çelişirse kriter kazanır, çelişki raporlanır. Öncelik: Sentez bloğu > UYGULAMA > mockup.
+> - **Bölünme (Sentez D, son satır):** TUR-1 iki prompt — **1a = §0 + D-1 + D-4** (bu oturum) · 1b = D-2 + D-3 (ayrı prompt, §0 sonuçlarıyla yazılır).
+>   Bu oturumda D-2 / D-3 / ARALIK-2 parçası / Kural 3 / 0.3'ün düzeltmesi YOK; Tasarım 11 (Payments fuar süzgeci) D-2.3 ile gelir.
+> - **SENTEZ 24 Kas — AYNEN:**
+>
+> ```
+> SENTEZ → ORCHESTRATOR — ARALIK-1 KABUL · 3 KARAR · TUR LİSTESİ HÜKÜMLERİ · DİLİM TUR-1 (+ ARALIK-2 §0 ÖLÇÜMLERİ) (24 Kas)
+>
+> A. ARALIK-1 — KABUL
+> - 10 maddenin 9'u TAMAM; madde 3 KISMEN KABUL (iki önlem; üçüncüsü ölçümle düştü, kabul; iki büyük fuarda > 3 sn hız işi
+>   kuyrukta, katalogdan önce açılmaz). Kendi doğruladıklarım (staging, 24 Kas): Sign out satırı · co-exhibitor seçim
+>   kutuları 7/7 · "SAMPLE ARALIK-1" satırı · "No company link (migration)" (7217) · defterde 5 parça + kapanış, commit'ler
+>   raporla aynı. Test 1277 ve sunucu tarafı çıkış: CC ölçümü, kabul.
+> - Hükümle değişen 4 test beklentisi TEYİT: test_kabuk2_menu M6 · test_ui_tam2_chain P1 · test_migrate R77 · test_ui_tam2 M2.
+> - Madde 10 okumaları TEYİT: "Dear Exhibitor" · firma adı yerine kontrat no · planı olmayan kontratta vade = fuarın ödeme son
+>   günü · FR üç ek taslak. Not: kontrat kaydında firma adı alanı VAR (ölçtüm) — eksik olan veri değil, benim beş yer tutucum.
+>   {company_name} ve {contact_name} ARALIK-2 Ş2 kataloğunda gelir; o zamana kadar böyle kalır.
+> - Gizlilik: deftere "pay oranları ayarda" yazılır; isim ve değer yazılmaz. Genel kural (GUV'a): kişiye özel ayar değerleri
+>   (pay, oran, maaş) public deftere ve prompt'a girmez.
+>
+> B. ÜÇ KARAR
+> S1 (madde 9 sapması) → a: ara çözüm olarak KABUL, bütün temsilci kayıtlarında. Kalıcı aday ARALIK-2'de §0'dan sonra seçilir:
+>    (i) her kontrat doğarken oranı kendi kaydına yazılır (varsayılan kopyalanır), okumada varsayılana bakılmaz; (ii) yazılı
+>    hak ediş satırı (H3). Bedel kabul: yanlış varsayılan geçmişi düzeltmez, kontrat tek tek düzeltilir.
+> S2 (%5 kapsamı) → a, SUER KARARI (24 Kas 15:32): ekip kaydının oranı varsayılan %5 KALIR, ayarlanabilir; kaydın bundan sonra
+>    doğan HER kontratına (ana + sipariş). 539'un dökümü §0'da ölçülür, karar değişmez. Ek karar (Suer): havuz PAYLARI kişi
+>    kaydında tutulur (bugün agent kaydı, ileride çalışan kartı); paylar toplamı 100, eksik kalan "dağıtılmamış" görünür;
+>    şimdilik Owner girer, Faz 4'te havuz sahibine devredilir; değişiklik ileriye dönük. ARALIK-2 H2 buna göre yeniden yazılır.
+> S3 (klasik rapor süzgeci 500) → a: CC origin/main kodunu OKUR, canlıya dokunmaz; aynı yol oradaysa raporda "YON-16 hotfix
+>    adayı" diye işaretler, Suer karar verir. §0'a tek satır.
+>
+> C. TUR LİSTESİ (16) — HÜKÜMLER
+> Kural 1 (Send e-mail önizlemesinde gövde yok) → ARALIK-2 Ş3: önizleme = ilk alıcının alacağı metin, gövde dahil.
+> Kural 2 (bildirim "Confirmed", Paid 0) → EXH kuralı: makbuz bildirimi üç durum — Received (Finance "receipts to check") →
+>    Matched (bir ödeme kaydına bağlandı; Paid o anda artar) ya da Rejected (gerekçeli). Exhibitor Page'de "Confirmed" YALNIZ
+>    Matched'te; o zamana kadar "Received — being checked". Paid 0 iken "Confirmed" görünemez. Önce ölçüm (§0.5), sonra D-4.4.
+> Kural 3 (pavyon sahibinin sayfasında co-exhibitor listesi yok) → gerekli: sahibin sayfasına "Co-exhibitors" bölümü (ad ·
+>    stand · katalog/badge durumu · kendi sayfasına link). TUR-2 kuyruğu; TUR-1'e girmez.
+> Kural 4 (gelecek tarihli ödeme, Zoho) → §0.4 ölçüm; Admin › Migration "Open items"e satır; cutover listesine (ADR-023).
+>    Kural: kayıtlı ödemenin tarihi gelecekte olamaz (taksit planı ayrı şey); göç verisinde düzeltme cutover'da.
+> Tasarım 5 (Exhibitor Page durum şeridi masaüstünde taşıyor) · 6 (Badges tablosu son sütun kesik; War Room son sütunlar) ·
+>    10 (375 px'te düğmeler 29–31 px) → TUR-1 küçük düzeltme: taşma yok, düğme ≥ 36 px (mevcut kural). War Room Top expos
+>    tablosu TAM SATIRA alınır; m²/target, Revenue/target ve "Last 30 days" ortak hücre (UX hükmü).
+> Tasarım 7 (fuar etiketi tutarsız) → tek biçim her yerde: "Ad · 2 Dec 2026" (fuar adı hiç düşmez). 8 (geri sayım iki değer)
+>    → ikisi de tarihi yazar: başlık "7 DAYS 11 HRS" kalır, Exhibitor Page "8 days to the show (2 Dec)"; gün = takvim günü
+>    farkı. 9 (Chain status birim) → "3 problems · 8 e-mails". 11 (Payments fuar süzgeci düz liste) → U1'in fuar süzgeci
+>    bileşeni Finance listelerinde de (gruplu Ongoing · Upcoming · Past; aranabilir). Expo settings 8 bölüm → UX kuyruğu.
+> Metin 12 → ekranda ham kod YOK: tek etiket sözlüğü (todo → "To do", in_review → "In review", changes_requested → "Changes
+>    requested", default_applied → "Default applied", not_ready → "Not ready"; ülke kodu → ülke adı); durumlar Title case.
+>    13 → müşteriye görünen metinde kural kodu yok ("(S1)" kalkar). 14 → "We pre-filled your company name; please complete
+>    the rest." (yalnız firma adı doluysa). 15 → "3,956 contracts": KABUK-2'nin tek biçimlendiricisi başlık sayılarında da.
+>    16 → SAMPLE serbest metinlerdeki tarihler SAMPLE fuar tarihlerine (2–4 Ara) çekilir.
+>
+> D. DİLİM TUR-1 — SUER'İN TURU + LİSTE KALIBI (U2) + OPERATIONS (U1) + KÜÇÜK DÜZELTMELER — ÖNCE §0 ÖLÇÜM
+> Kaynak (Suer'den, UX çıktısı): ELIZA-U2-Liste-Kalibi-mockup.html · ELIZA-U1-Operations-mockup.html — birebir. Mockup A düzeni
+> + DM Sans; Suer B2 + IBM Plex kullanıyor: her şey iki düzende de çalışır ve ölçülür.
+> Sınırlar: staging; canlıya dokunulmaz; TABAN 342.00 + TABAN-2 her parçada; SAMPLE kuralları; test ≥ 1277; gerçek e-posta yok;
+> SAMPLE fuar tarihlerine dokunulmaz; defter kaydı aynı turda; KB: ARALIK-1'de kütük değişti → TUR-1 sonunda yüklenir.
+> Orchestrator iki prompt'a bölebilir (1a: §0 + D-1 + D-4 · 1b: D-2 + D-3); rapor her prompt sonunda.
+>
+> §0 ÖLÇÜM (salt okuma, önce; rapor, değişiklik yok)
+> 0.1 Hak ediş bugün nasıl hesaplanıyor: girdiler, nerede okunuyor, ödeme (payout) neye referans veriyor; yazılı hak ediş
+>     satırı gerekse hangi alanlar; "kontrat doğarken oran kopyalanır" seçeneğinin maliyeti (ARALIK-2 H3 şema kararı için).
+> 0.2 Ekip kaydının 539 kontratının dökümü: sipariş (ana kontrata bağlı) / ana / göç; oran dağılımı.
+> 0.3 Klasik rapor fuar + tarih süzgeci 500: aynı kod yolu origin/main'de var mı (okuma). Hotfix adayıysa işaretle.
+> 0.4 Tarihi bugünden ileri ödemeler: sayı · kaynak (göç partisi) · fuar.
+> 0.5 Makbuz bildirimi: "Confirmed"i hangi eylem yazıyor; ödeme kaydına bağ var mı; Finance Collections'ta bugünkü akış.
+> 0.6 Klasik ekranlar: 21 köprünün her biri adresteki fuar parametresini okuyor mu (ekran ekran tablo).
+> 0.7 Agent kaydındaki sales_group / sales_team: kodda okuyan var mı (komisyon, rapor, süzgeç). Yoksa panele girmez.
+> 0.8 Operations sayfaları: hangileri fuara özel, hangileri liste (Stand drawings · Communications · Chain · Rules · Reports ·
+>     Expo settings · Floor plan · On-site sayfaları): bugünkü davranış tablosu. "New expo" bugün nerede yapılıyor.
+>
+> D-1 LİSTE KALIBI — ortak bileşenler + iki sayfa (U2 mockup)
+> 1.1 Ortak: başlık satırı (ad + sayı "40 of 164 agents" · Export CSV/Excel · sağ üstte "New …", yetki yoksa ÇİZİLMEZ; iş
+>     klasikteyse "classic" etiketiyle oraya gider) · araç satırı (arama · süzgeçler · Clear · Columns) · sütun sıralama
+>     (başlık düğme; 1. tık A→Z/0→9, 2. Z→A, 3. kendi sıra; tek sütun; SUNUCUDA, tüm sonuca; 1. sayfaya döner; boşlar iki yönde
+>     sonda; büyük/küçük harf ve aksan sırayı bozmaz — Ç, C'nin yanında) · sayfalama 50/sayfa, kartın altında "1–50 of 164 ·
+>     Page 1 / 4 · Previous · Next" · satır ⋯ menüsü (Edit… · Deactivate… onaylı · Activate onaysız; pasif satır soluk +
+>     "Inactive") · iki boş durum ("No agents yet." + New · "No agents match these filters." + Clear filters) · iskelet
+>     yükleme · yeni satır ziyaret boyunca üstte, "New" işareti (sıralama değişse de kalır; süzgeç/arama değişince bırakılır)
+>     · Columns seçimi kullanıcı × liste başına kalıcı (sunucuda) · sıralama/süzgeç/sayfa adreste; geri/yenile korur, oturumlar
+>     arası hatırlanmaz. Sütun önceliği 1/2/3: sığmayınca önce 3'ler, sonra 2'ler çıkar (en sağdaki önce); 1 çıkmaz; Columns'ta
+>     işaretli sütun sabit; "Columns · 1 hidden"; uzun metin "…" + tam metin üzerine gelince; tablo ancak çıkacak sütun
+>     kalmayınca kayar. Ortak hücre: ilişkili iki değer tek hücrede, ikincisi küçük alt satır; sıralama üstteki değere göre.
+>     Kendi sıra: referans listeleri Name A→Z (Expos: tarih, en yakın üstte); işlem listeleri en yeni üstte. Yan panel 440 px,
+>     sayfa altında form YOK; Enter kaydeder; hata alanın yanında; Esc/Cancel/X/dışarı tık → yazı varsa "Discard changes?"
+>     (Keep editing · Discard). Export = süzülmüş tüm satırlar, ekran sırasıyla; görebilen herkese.
+> 1.2 Agents: başlık "Agents" ("Sales agents" kalkar); varsayılan süzgeç Status = Active (Active · Inactive · All; "Inactive
+>     include" kutusu kalkar); sütun + öncelik: Name 1 · Type 1 · Office 1 · Default % 1 · Status 1 · Company 2 · E-mail 2 ·
+>     Director % 3 · Country 3 · Origin 3; türler ekranda Internal · External agency · External freelance · Team (veri
+>     değerleri değişmez). "New agent" paneli: Name* · Type* · Office* · Company (agency/freelance; yardım metni) · Country ·
+>     E-mail (biçim kontrolü) · Commission currency (varsayılan EUR) · Default commission % (0–100) · Default director %
+>     (0–100); sales_group/sales_team 0.7'ye göre. Yetki: bugünkü kapsam mekanizmasıyla; Owner + Finance görür. Kaydedince
+>     satır listede, agent sayfası açılır.
+> 1.3 Suppliers: alttaki form KALKAR → "New supplier" paneli (Name* · Type · Country* · Office · Tax number · Notes); 296 kayıt
+>     → 50'lik sayfalama; öncelik Supplier 1 · Type 1 · Paid (EUR) 1 · Country 2 · Office 2 · Expenses 2 · Last 2 · Tax no. 3;
+>     ⋯ menüsü Edit… (panel) · Deactivate… / Activate.
+> 1.4 Agent sayfası: yeni bölüm "Contracts sold" — fuar bazında satırlar (Expo · Contracts · m² · Revenue net EUR · Rate ·
+>     Earned), altında sayfalı kontrat listesi (AF no · Company · Expo · Date · Revenue · Rate). Veri bugün var (agent/sr/sd
+>     bağları); hesap bugünkü hak ediş kuralıyla; TABAN değişmez.
+> 1.5 Commissions: Status bakiyeden türetilir → Due (> 0) · Settled (0) · Agent owes (< 0). Blended % dokunulmaz.
+>
+> D-2 OPERATIONS (U1 mockup; nav.json tek kaynak)
+> 2.1 Fuar seçici KABUKTAN İNER (bütün modüllerde). Menüde fuar seçimi yok.
+> 2.2 Menü ağacı: Dashboard (en üstte, grupların dışında) · EXHIBITORS: Exhibitors · Stand drawings · Communications (chain +
+>     rules) · VISITORS: Visitors home · On-site (phone) · EXPOS: Expos · Expo settings · Floor plan · Expo reports · Expo
+>     record [classic]. Menüde YALNIZ var olan sayfalar: "Catalogue status · Orders · Payment warnings" menü satırı DEĞİL,
+>     Exhibitors listesinin görünümleri (varsa); "Expo partners" sayfa değil, Expo settings'in Contacts bölümü; "Build-up"
+>     sayfa yok, girmez. Placeholder satır açılmaz. 0.8'e göre sapma varsa raporla.
+> 2.3 Liste sayfaları (Exhibitors; 0.8'e göre liste olanlar): TÜM fuarlar + fuar süzgeci araç satırının ilk kontrolü;
+>     varsayılan "Upcoming + ongoing"; seçenekler Upcoming + ongoing · All expos · tek fuar (gruplu Ongoing · Upcoming en yakın
+>     üstte · Past en son üstte; aranabilir; satırda "in 77 days" / "day 2 of 4"); sayı seçimin içinden ("203 exhibitors ·
+>     Upcoming + ongoing · 5 expos"); tek fuar seçilince Expo sütunu çıkar; seçim Operations listeleri arasında taşınır,
+>     adreste, kullanıcı başına hatırlanır. AYNI bileşen Finance listelerinde (Payments, Contracts…) bugünkü düz listenin yerine.
+> 2.4 Fuara özel ekranlar (Dashboard · Communications/Chain/Rules · Expo settings · Floor plan · Expo reports · On-site): fuar
+>     sayfa BAŞLIĞINDA seçilir (yanında tarih · ülke · durum); varsayılan en yakın fuar (süren → sıradaki → son biten); seçim
+>     bu ekranlar arasında taşınır; adres hep fuarı taşır; liste süzgeci ile başlık seçimi ayrı hatırlanır. Fuarda kayıt yoksa
+>     tek cümle, seçici kalır. Köprüler: Dashboard kutuları → o fuara süzülmüş liste; Expos'ta fuar adı → Dashboard.
+> 2.5 Visitors home = bugünkü Visitor & Access üstüne: başlıkta fuar seçici; sayaçlar; görünümler Visitors · Conferences ·
+>     Access control · Badges · Forms sekme olarak; 8 iş kartı (Registration forms · Visitors list · Badges · E-mails &
+>     campaigns · Check-in & terminals · Conference sessions · On-site · Visitor reports → Expo reports); klasik köprüler
+>     kartların içinde, linkler fuarı taşır (0.6'ya göre okumayan ekranda "fuarı orada seç" notu). "Badge (classic)" tek
+>     yerde; Lead scanner On-site kartında. "Visitor & Access" ve "Reports" adları menüden kalkar (sayfalar kalır: Visitors
+>     home · Expo reports).
+> 2.6 Expos: U2 kalıbı; kendi sıra tarih, en yakın üstte; Status süzgeci varsayılan Upcoming + ongoing; satır ⋯: Open
+>     dashboard · Expo settings · Floor plan · Expo reports · Expo record [classic]; "New expo" 0.8'e göre (bugün nerede
+>     yapılıyorsa oraya "classic" etiketli düğme).
+> 2.7 Exhibitors listesi: U2 kalıbı + 2.3; "New" yok (kontrattan doğar); C2 içeriği (sayaçlar · görünümler · toplu işlem ·
+>     Send e-mail…) değişmez.
+>
+> D-3 MAIL (Suer): Sales › Mail boş kalmasın — SAMPLE gelen/giden e-postalar (15–25; .example adresler; uydurma firmalar;
+>     "SAMPLE" öneki; echo; uygulamanın kendi yoluyla): inbox · gönderilmiş · zincir cevabı örnekleri.
+>
+> D-4 KÜÇÜK DÜZELTMELER (C bölümündeki hükümler)
+> 4.1 🔶5 banka numarası maskesi Reference data denetim kaydında da (son 4). 4.2 🔶6 e-posta çerçevesinde tarih tek
+>     biçimlendiriciden ("2 Dec 2026"). 4.3 Tasarım 5 · 6 · 10 (taşma yok, kesik sütun yok, ≥ 36 px; War Room tablosu tam
+>     satır + ortak hücreler). 4.4 Kural 2: 0.5 sonrası — "Confirmed" yalnız ödeme bağı varsa; yoksa "Received — being
+>     checked"; onay eylemi ödeme bağı kurmuyorsa ve küçükse kur, değilse etiket + raporla. 4.5 Tasarım 7 · 8 · 9 · Metin 12–16.
+>     4.6 🔶2 SAMPLE sipariş 7901 dokunulmaz. 🔶7 denetimsiz ayar yazımları → GUV kuyruğu.
+>
+> D-5 RAPOR (tek, Suer'e de okunur ilk bölüm): §0 tabloları · her parça ölçümü · iki düzende (A/B2) ve 1440/1280 tur · test
+>     sayısı · commit'ler · SAPMA · 🔶 · ÖLÇÜLMEDİ. Sıra: §0 → D-1 → D-4 → D-2 → D-3; her parça ayrı commit + defter kaydı.
+>
+> E. SIRA: TUR-1 (+ §0) → ARALIK-2 (§0 sonuçlarıyla yazılır: H2 paylar kişi kaydında · H3 şema kararı · Ş1–Ş4 +
+>    {company_name} {contact_name}) → SATIŞ-1 → KATALOG+QUOTE → ÇALIŞAN KARTI. TUR-2 kuyruğu: co-exhibitor listesi · rapor
+>    ucu hızı · Expo settings düzeni · telefon tasarımı · B1. Suer'in ikinci turu TUR-1 raporundan sonra.
+> ```
+>
+> - **UX kaynakları (T8 — LEENA özel deposunda `docs/ux/`, bayt bayt; burada yalnız ad + sha256):** `ELIZA-U2-Liste-Kalibi-mockup.html`
+>   `1cb9c90d35ec0ba0b572b57b99d56c38e1c70c7fd7b98cc1966f3858c2a09ba9` (91.184 bayt · 862 satır) · `ELIZA-U1-Operations-mockup.html`
+>   `9183d9674352d2772b1e174150cba2e763eccdce10eaebbcefc2dd87d11e413a` (98.881 bayt · 936 satır) — ikisi de kopya öncesi ve sonrası ölçüldü, beklenenle AYNI.
+>   Bu dilimin referansı U2; U1 yalnız kayda girdi (1b'de Sentez 2.2 metni kazanır — mockup düzeltme öncesi sürüm).
+>
+> ## ✅ 2026-11-24 — DİLİM TUR-1a §0: ÖLÇÜM (salt okuma; kod ve veri DEĞİŞMEDİ) — hak edişin bugünkü yolu + iki kalıcı adayın maliyeti · ekip kaydının 540 kontratı · klasik rapor süzgeci (YON-16 hotfix adayı: EVET, 2 satır) · ileri tarihli ödeme 1 · makbuz bildirimi ↔ ödeme bağı YOK · 25 klasik köprüden fuarı adresten okuyan 1 · agent kaydındaki sales_group / sales_team'i okuyan hesap yok · Operations sayfa tablosu
+>
+> - **Kriter kaynağı:** [defter:2026-11-24 SENTEZ 24 Kas: "ARALIK-1 KABUL · 3 KARAR · TUR LİSTESİ HÜKÜMLERİ · DİLİM TUR-1 (+ ARALIK-2 §0 ÖLÇÜMLERİ)"] — §0 (0.1–0.8) + karar S3.
+>   Orchestrator UYGULAMA U0 + U1. Tabloların tamamı rapor dosyasında (repo dışı, `RAPOR_TUR-1a.md` bölüm 2); burada sonuçlar.
+> - **Başlamadan (U0, ölçüldü):** LEENA `eliza-next` = `origin/eliza-next` = `79eb2dc` · `origin/main` `2db0131` · ell-docs `7b92362` · test 72 suite **1277 / 1277**
+>   (PG 14, bu oturumda) · TABAN 342.00 · TABAN-2 EŞİT (değer LEENA CLAUDE.md — GOC-07) · iki mockup'ın sha256'sı tuttu, LEENA `docs/ux`'e bayt bayt kopyalandı.
+> - **Ne ölçüldü:**
+>   - **0.1 Hak ediş.** TEK yer `utils/commissionSlices.js:22-72`; hak ediş saklanmaz, her okumada türetilir. Girdi: ödemeler · kontratın geliri / kuru / üç
+>     temsilci bağı / üç oranı · satırlar (matrah) · temsilci kaydının varsayılan oranı. Oran = kontratın kendi oranı, yoksa temsilci kaydının varsayılanı
+>     (`:59-61`). Okuyan 5 yer + göç mutabakatı (kesim raporu · Commissions listesi · agent ekstresi · Ledger özeti · fuar marjı); kontrat sayfasının kutusu ayrı
+>     ifadeyle aynı sonucu verir. Kontrat DOĞARKEN oran yazılmaz (`utils/convertCore.js:173-211` — yalnız temsilci bağı). Payout yalnız TEMSİLCİYE bağlıdır;
+>     kontrata, ödemeye, kesim dönemine bağı yoktur (187 kayıt; 179'u göç). TABAN: kontrat 4 → SR rolü → kontratın KENDİ oranı (varsayılana bakmıyor).
+>     Staging bugün: 3.956 kontrat · SR rolünde kendi oranı dolu 1.013 / boş 2.646 · agent rolünde 144 / 147 · SD atanmış 0 · hiç oranı olmayan 0 · bugünkü
+>     türetilmiş dilim 1.972 satır (ödeme × rol), 1.474 kontrat, 27 temsilci.
+>     *İki kalıcı aday (ARALIK-2 H3 — seçim Sentez'in):* **(i) doğarken oran kopyalanır** → yeni tablo / kolon YOK; 4 yazım yolu (doğum çekirdeği · kontrat
+>     ataması · göç · temsilci kaydı — ARALIK-1'in "eski oranı yaz" kodu kalkar) + 2 okuma ifadesi; göç verisinde 2.792 rol-satırı bugünkü varsayılanla bir kez
+>     dolar (o günkü oran değil bugünkü varsayılan donar — Sentez'in kabul ettiği bedel); toplam değişmez. **(ii) yazılı hak ediş satırı** → 1 yeni tablo;
+>     4 ödeme yazımı + girdiyi sonradan değiştiren her yol düzeltme satırı ister; 5 okuyucu türetmeden toplam okumaya geçer; 1.972 satır geçmişe dönük
+>     üretilir ve türetimle mutabakat ister; geri dönüşü zor (ikinci gerçek kaynağı).
+>   - **0.2 Ekip kaydı.** Bugün **540** kontratın SR'si (ARALIK-1'de 539; fark = oran değişikliğinden SONRA doğan bir sipariş): ana · göç 538 (parti #2: 533,
+>     parti #4: 5) + sipariş 2. Oran: 5,00 × 318 · 2,00 × 221 · boş × 1 (sonradan doğan sipariş → varsayılan). ARALIK-1'de "%2" yazılan 93 (tek işlemin
+>     yazdığı satırlar): ana · göç · Active 67 (25'inin ödemesi var) · Cancelled 25 · sipariş 1 (ödemesiz).
+>   - **0.3 Klasik rapor (S3).** Staging'de yeniden üretildi: fuar + başlangıç / bitiş / ikisi → üçü de 500; log "missing FROM-clause entry for table v".
+>     Kök: `routes/reports.js:78, 83` süzgeci takma adla kuruyor; üç liste sorgusunda (`:150-154 · :173-176 · :195-197`) o ad yok. `origin/main` yalnız
+>     OKUNDU: aynı satırlar (`:59, :64` + `:122-125 · :144-147 · :165-168`). **YON-16 hotfix adayı: EVET** (kod yolu canlıda aynı) · düzeltme 2 satır ·
+>     YAPILMADI. Erişim: hiçbir ekran bu uca tarih göndermiyor (dört çağıranın dördü yalnız fuar kimliği) → hata yalnız elle yazılmış istekle doğuyor; karar
+>     Suer'in. Ek bulgu: fuarsız + tarihli istek de 500 ("numeric field overflow", `:455`) — o da canlıda aynı, çağıranı yok.
+>   - **0.4 İleri tarihli ödeme.** 1 kayıt: göç partisi #2 (Zoho), fuar Morocco Siema Expo 2024, tarih 25 Sep 2027. Ödeme girişinde ileri tarihi reddeden
+>     doğrulama YOK (`routes/contracts.js:867-869` yalnız biçim; veritabanında tarih denetimi yok). Ödeme kaydı değiştirilemez → düzeltme kesimde.
+>   - **0.5 Makbuz bildirimi.** "Confirmed" yazılmıyor, TÜRETİLİYOR (`utils/exhPayment.js:195-203`: işaretlenmiş + reddedilmemiş). İşaretleyen:
+>     `POST /api/exh-receipts/:id/check` — Finance › Collections "Mark as checked". Bildirim ↔ ödeme kaydı bağı YOK (kolon yok; işaretleme ödeme yazmaz,
+>     ödeme seçtirmez; ödeme kaydedilmeden de işaretlenebiliyor). Staging'de 1 bildirim: işaretli, kontratında ödeme 0 → "Confirmed" + Paid 0.
+>   - **0.6 Klasik köprüler.** `nav.json`'da **25** (Operations 21 · Finance 3 · kabuk 1; 24 ayrı dosya). Sentez'in 21'i Operations'ınkiler. Fuar isteyen 16
+>     Operations ekranından fuarı ADRESTEN okuyan **1** (kayıt formları listesi, `expo_id`); 13'ü yalnız tarayıcı deposundan okuyor (10'u fuarsız açılınca
+>     klasik fuar seçimine gidiyor); 2'si kendi kutusunda seçtiriyor. Lead scanner'da fuar KODA GÖMÜLÜ (tek fuar). ui2 fuarı klasik ekrana adresle değil
+>     depoyla veriyor.
+>   - **0.7 sales_group / sales_team (agent kaydı).** Okuyan: temsilci ucu (seç / yaz / denetim) · klasik temsilci ekranı · içe aktarım · bir kerelik ofis
+>     çıkarımı. Komisyon, rapor, süzgeç OKUMUYOR. Exhibitors listesindeki "Sales group" süzgeci KONTRATIN alanından geliyor (başka alan). → panele girmez.
+>   - **0.8 Operations sayfaları.** 14 sayfanın 13'ü tek fuarda çalışıyor (adres → tarayıcı deposu → en yakın gelecek fuar); liste olan tek sayfa Expos.
+>     Seçici etiketi üç biçimde çıkıyor (liste gelmeden önce ad ya da "Expo <kimlik>", gelince ad · tarih; Exhibitor detay sayfası listeyi hiç vermiyor).
+>     "New expo" yalnız klasikte (fuar seçim sayfasındaki pencere · fuar listesi → kimliksiz fuar formu); ui2'de yok.
+> - **Commit:** LEENA eliza-next `fa5bd49` — yalnız `docs/ux` (iki mockup + README tablosu); kod YOK → staging'e dağıtım tetiklenmez. Canlı `main` DEĞİŞMEDİ
+>   `2db0131`. Migration yok.
+> - **Ölçülenler:** staging veritabanı salt okuma (rol salt-okur; her sorgu salt-okur işlemde) · staging'e 5 GET (rapor ucu) · staging servis logu izin
+>   listeli sarmalayıcıdan (4 satır; yalnız hata türü + saat) · `origin/main` `git show` ile (checkout yok). Süre ÖNCE tablosu (staging, 1440 px, 3 koşu
+>   ortancası): Agents 645 ms · Suppliers 720 · Agent sayfası 865 (ekip kaydı) / 792 · Commissions 777 · War Room 2.110 ms (bu dilimden önce de 2 sn üstü).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** 0.6 kaynak taramasıdır — 24 klasik ekran tarayıcıda tek tek açılmadı · aday (i)'de beklentisi değişecek test sayısı
+>   sayılmadı (varsayılan oranı anan 37 suite var; hangilerinin oranı boş kurduğu okunmadı) · canlı veritabanına bakılmadı (0.3 yalnız kod okuması).
+> - **Bilinçle yapılmayanlar:** 0.3'ün düzeltmesi (ne eliza-next'te ne hotfix dalında) · ödeme girişine tarih doğrulaması (bugün yok → 🔶) · göçle gelen ileri
+>   tarihli ödemenin düzeltmesi (kesimde) · H3 şema kararı (seçim Sentez'in).
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
