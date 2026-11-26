@@ -12900,6 +12900,59 @@
 >   kodda kaldı) · klasik ziyaretçi e-posta şablonları (`email_templates` — başka evren) · Sales templates içeriği (SATIŞ-1) · gelen kutusu · zamanlama / tetik
 >   (EXH-17) · proje ekibine grup bazlı düzenleme (Faz 4) · eski iki tablonun kaldırılması.
 >
+> ## ✅ 2026-11-26 — DİLİM ARALIK-2 P8 (S3): MAKBUZ BİLDİRİMİ ↔ ÖDEME — bildirim bir ödeme kaydına EŞLEŞTİRİLİR ("Confirmed" yalnız o zaman); "Mark as checked" artık bildirimi kapatmaz (EXH-21 tamamlandı)
+>
+> - **Kriter kaynağı:** [defter:2026-11-26 SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ" + SENTEZ 26 Kas 09:20 "ARALIK-2 TEK PROMPT" (1. madde — §0.5: şema ön-onaylı)] — C · S3 + Orchestrator U2 P8 · U3 "S3".
+> - **Ne yapıldı:**
+>   - **Migration 087 (yalnız şema, yalnız runner):** `exh_receipts.payment_id` (boş olabilir; `payments`'a bağ) + kısmi tekil indeks — **bir ödeme en çok bir
+>     bildirime.** Dosya hiçbir satır yazmaz, hiçbir bildirimi eşleştirmez.
+>   - **Durumun TEK tanımı (`utils/exhPayment.receiptSql`):** `confirmed` = bir ödeme kaydına eşleşmiş VE o ödeme duruyor · `rejected` = History olayı (T9 — kolon
+>     yok, aynen) · `received` = geri kalan her şey ("Received — being checked"). Bildirim `received` iken AÇIKtır: Finance › Collections › "Receipts to check"te
+>     bekler, katılımcının Payment durumu "receipt being checked" kalır. **"Mark as checked" yalnız Finance'in iç notudur** (kim baktı · not): durumu DEĞİŞTİRMEZ,
+>     bildirimi kapatmaz; bakılmış bildirim de eşleştirilebilir / reddedilebilir.
+>   - **Uçlar (`/api/exh-receipts`):** `GET /:id/payments` — AYNI kontratın eşleştirilebilir ödemeleri (ters kayıt, ters çevrilmiş ödeme ve başka bildirime bağlı
+>     ödeme listede yok); sıra: tutar VE tarih uyan → tutar uyan → tarih uyan → kalanlar; hiç yoksa `record_first`. `POST /:id/match { payment_id }` —
+>     `payments.write` + kapsam; **ödeme YAZMAZ, mevcut ödeme kaydını DEĞİŞTİRMEZ, yalnız bağ kurar**; History olayı (`receipt_matched`) + denetim kaydı.
+>     Geri alma (unmatch) YOK (hüküm yok). 087 öncesi şemada eski davranış (bakılan bildirim kapanır) — dağıtım → migration arası kırılmaz.
+>   - **Ekran (Finance › Collections › Receipts to check):** her açık bildirimde "Match to a payment…" (sunucunun adayları, sunucunun sırasıyla; ödeme başına
+>     bir düğme; tutar para çiftiyle) · "Reject…" (not zorunlu) · durum + kimin baktığı. Aday yoksa **"Record payment first"** = kontratın MEVCUT ödeme ekranına
+>     köprü (yeni ödeme formu yazılmadı — TUR-1b SAPMA 2); ödeme tarihi kuralı (bugün + 1 günden sonrası ret) o adımda da aynı uçtan geçerli.
+>   - **Katılımcının gördüğü üç etiket (EN / FR / TR) Exhibitor Page sözlüklerinde zaten vardı** ("Confirmed" · "Not accepted — please contact us" · "Received —
+>     being checked" ve FR / TR karşılıkları); sayfa sunucunun durumunu basar. Kod değişmedi, testle sabitlendi.
+> - **Commit:** LEENA eliza-next `56a0d12`. Staging'de CANLI; migration 087 staging'de (dry-run → apply → ikinci apply "Nothing to apply"; kayıt 88 → 89). Canlı
+>   `main` DEĞİŞMEDİ; canlıya migration yazılmadı.
+> - **Ölçülenler (staging):**
+>   - **Mevcut tek bildirim (Suer'in SAMPLE kaydı 7899 / sipariş 7901 — "checked") — YALNIZ OKUNDU, hiçbir şey yazılmadı** (bildirim satırının bakılma zamanı ve
+>     kaydın olay sayısı önce = sonra: 32 = 32): durumu önce de sonra da `received` ("Received — being checked"). Değişen, HÜKMÜN sonucu olarak TÜRETİLEN iki şey:
+>     bildirim Finance listesinde yeniden AÇIK (açık bildirim 0 → 1) ve 7899'un Payment durumu `overdue` → `receipt_check` ("bakıldı" artık kapatmıyor).
+>   - **Deneme — yalnız CC'nin SAMPLE kaydı 7903:** Exhibitor Page üzerinden (anahtar + kod, katılımcının yaptığı gibi) iki SAMPLE makbuz yüklendi → iki bildirim
+>     `received`, durum `receipt_check` · "Match to a payment…": aday 0, `record_first` · mevcut ödeme ucuyla 3 gün ileri tarih → 400 `PAYMENT_DATE_IN_FUTURE` ·
+>     bugünün tarihiyle SAMPLE ödeme kaydedildi → aday 1, "amount and date" uyumlu · proje araç hesabı eşleştiremez (409 `PERMISSION_REQUIRED`) · Owner araç hesabı
+>     eşleştirdi → `confirmed` · aynı ödeme ikinci bildirime: 409 `PAYMENT_ALREADY_MATCHED` · notsuz ret 400 `NOTE_REQUIRED` · notla ret → `rejected`. Katılımcı
+>     tarafı: bildirimler "confirmed" + "rejected"; kontratın ödemesi 1 satır (eşleştirme ödeme yazmadı).
+>   - **Komisyon eşitlik tablosu (P7 sonrası ↔ P8 sonrası):** bütün satırlar EŞİT — toplam hak ediş · farkı olan temsilci 0 · ekstre 0 · fuar marjı 0 · kontrat
+>     kutusu 0 · TABAN 342.00 · TABAN-2 EŞİT. (7903'ün satıcısı yok → SAMPLE ödeme komisyon doğurmadı; tek fark migration sayısı.)
+>   - **Test:** yeni suite `test_aralik2_receipts.js` (14 — D şema · S durum · M eşleştirme [aynı kontrat · sıra · tek ödeme ↔ tek bildirim · unmatch yok ·
+>     sipariş kontratının bildirimi siparişin ödemesine · eşleşen ödeme sonradan ters çevrilirse] · P sayfa + üç dilde etiket · B TABAN), zincirin sonunda.
+>     Zincir (`56a0d12`, PG 14, ayrı checkout): 84 suite **1528 / 1528.**
+> - **Staging'de bırakılan:** 7903'te bir SAMPLE ödeme (150,00 EUR, bugünün tarihi — bildirimin "Confirmed" kalması için duruyor; satıcısız kontrat → hak edişe
+>   etkisi 0) · bir "confirmed" ve bir "rejected" SAMPLE bildirim · Suer'in bildirimi açık listede (yukarıda).
+> - **SAPMA (hükümle değişen test beklentisi — satırlarda S3 notuyla):** `test_ui_tam2_orders` P3 (bakıldıktan sonra durum `receipt_check` kalır; önce
+>   `balance_due`) · T9 (ilk — yalnız bakılmış — bildirim açık olduğu için ret sonrası durum `receipt_check`; o da reddedilince `balance_due`; ret denetim
+>   satırı 1 → 2; olay sorgusu ilk reddi alır) · `test_tur1a_fixes` R1 (durum kuralı artık eşleşmiş bildirim için `confirmed` verir; önce "hiç vermez").
+> - **Kendi hatam (ilk zincir koşusu):** zincirle AYNI ANDA ağır eşitlik aracını koşturdum; iki zamana duyarlı test kırmızı çıktı (servis imzasının ±301 sn
+>   penceresi · bir sayfa çiziminin zaman aşımı). Başka iş koşturmadan yeniden: 1528 / 1528. (Kural zaten vardı: zincirle birlikte ağır iş yok.)
+> - **Okuma kararları (raporda):** eşleşen ödeme SONRADAN ters çevrilirse bildirim yeniden `received` + açık olur ("its payment was reversed" işaretiyle) ve yerine
+>   gelen ödemeye eşleştirilebilir — bu bir "unmatch" değil, ters kaydın sonucu (hüküm yoktu; Kural 2'nin "ödeme kaydına bağlı" şartından türettim) · sipariş
+>   kontratı için gönderilen bildirim, siparişin KENDİ ödemelerine eşleşir (ana kontratınkilere değil) · "Mark as checked" düğmesi durur (iç not), bakılmış
+>   bildirimde gizlenir · proje ekranında reddedilen bildirimin sözcüğü "Rejected" kaldı (katılımcı etiketi sayfanın kendi sözlüğünde).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** tarayıcıda "Match to a payment…" tıklama akışı (uçlar + ilk çizim + ekran görüntüsü ölçüldü; tıklama testle değil) ·
+>   Exhibitor Page'de üç etiketin EKRANDA görünümü (yanıttaki durum ölçüldü; FR / TR metni sözlükten okundu) · eşleşen ödemenin staging'de ters çevrilmesi
+>   (yerel testte) · farklı para biriminde ödeme / bildirim eşleşmesi · canlıdaki bildirim sayısı ve "checked" olanların kaçı (canlıya temas yok) · telefon
+>   genişliği.
+> - **Bilinçle yapılmayanlar:** eşleşmeyi geri alma (hüküm yok) · bildirimden ödeme oluşturan düğme / yeni ödeme formu · tutar farkında uyarı ya da engel
+>   (aday sırası yeterli; karar Finance'in) · eşleşme için ayrı kolonlar (kim · ne zaman olayda) · e-posta ile bildirim.
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
