@@ -13651,6 +13651,304 @@
 >   - Mevcut 8 SAMPLE kişiye sahip ATANMADI (Unassigned; toplu atama yok). Sahipsiz kişi sayısı: staging 8.
 >   - Kişi birleştirme, kişi silme, firmayı değiştirme: yok.
 >
+> ## ✅ 2026-11-26 — SENTEZ 26 Kas 23:55: "SATIŞ-1 EK-1: Zoho Keşif turu 2 bulguları + Suer kararları S4–S6" — AYNEN
+>
+> - **Kaynak ve sıra (Orchestrator 26 Kas 2026 gece — ek dosyadan):** SATIŞ-1 koşarken ikinci bir dosya geldi (`PROMPT_SATIS-1_EK-1.md`); bütünlüğü uygulanmadan önce
+>   ÖLÇÜLDÜ (sha256 `28ba712ebb517cafd398f327bdec7b713f5e3d05bc974e888c5c2fc02a5f743c` · 16.176 bayt · 173 satır · son satır "═══ EK SONU ═══" — dördü beklenenle
+>   AYNI). Dosya iki bölüm: (I-EK) Sentez 26 Kas 23:55 bloğu, AYNEN (58 satır) · (II-EK) Orchestrator UYGULAMA EKİ (E0–E6). Öncelik: (I-EK) > 16:30 bloğu ((I)) >
+>   (II-EK) > (II) > mockup; çelişkide bu ek kazanır. (II-EK) deftere KOPYALANMADI (16:30 kaydındaki hükümle aynı gerekçe); özeti EK-1 düzeltme turu kaydında.
+> - **Ne zaman geldi:** LEENA `eliza-next` `a5b5604` commit'indeyken — P2 kapanmış, P3 (Templates) yarıdaydı. P3'ün yazılmış kısmı depo DIŞINA alındı (commit yok);
+>   bitmiş parçalara (§0 · P2) dokunan maddeler "EK-1 DÜZELTME TURU" olarak P3'ten ÖNCE yapıldı (aşağıdaki kayıt). P5 · P6 · P7'ye dokunan maddeler o parçalarda.
+> - **İstisna yok:** 58 satırın tamamı aşağıdadır; karşılaştırma ölçüldü (dosyanın 9–66. satırları ↔ bu kayıt: fark 0). Blokta sır, anahtar, gerçek kişi adı / e-posta
+>   yok; kayıt sayıları (608 592 vb.) Orchestrator hükmüyle deftere yazılabilir.
+>
+> ```
+> SENTEZ 26 Kas 23:55 — SATIŞ-1 EK-1: Zoho Keşif turu 2 bulguları + Suer kararları S4–S6
+> Kaynak: Zoho Keşif raporu 26 Kas 22:30 — Drive 05-ZOHO/ZOHO_KESIF_RAPORU_2026-11-26_2230.md
+> (proje: claude/ZOHO_KESIF_RAPORU_2026-11.md) §2.2 Quotes · §2.5 Leads · §2.6 · §2.7 web
+> formları · §5. Bu ek 16:30 SATIŞ-1 bloğunun üstüne gelir; çelişkide bu ek kazanır.
+>
+> 1. SUER KARARI S4 — ZOHO LEAD'LERİ: HEPSİ TAŞINIR (göç kapsamı; kesimde, SATIŞ-1'de değil).
+>    SATIŞ-1'in payı: veri modeli şunları karşılar ve §0.1'e hacim ölçümü girer
+>    (608 592 lead + 18 044 kişi + 7 384 Data kaydıyla liste · arama · segment süresi).
+>    - İki katman: LEAD (doğrulanmamış; firma adı + e-posta + ülke + sektörden ibaret
+>      olabilir, Zoho'da böyle) ve CONTACT (doğrulanmış: cevap verdi · elle doğrulandı ·
+>      firma kartına bağlandı). Lead cevap verince Replied = doğrulanmış. "Mark as
+>      qualified" firma şart. (24 Kas hükümleriyle aynı; göç sınıflandırması için açık yazıldı.)
+>    - E-postasız kayıt → ikincil kayıt (SAT-01): lead değil, kampanyaya girmez.
+>    - "Email Opt Out" işaretli 40 120 → "Do not contact · requested removal", kaynak notu
+>      "Zoho opt-out". Bu liste kesimde İLK taşınan şeydir (yeniden yazma riski).
+>    - Zoho Lead Status elle ve bayat → taşınmaz; aşama ELIZA'da olaydan türer. Göç
+>      başlangıcı: Zoho "Contacted" → Contacted (tarih = Zoho son değişiklik) · boş /
+>      "Not Contacted" / "Connection Attempted" / "Contact in Future" → Lead ·
+>      "Not Qualified" → Do not contact · not an expo audience · "Junk Data" → Do not
+>      contact · suspected bot · "Pre-Qualified" → Contacted. Suer kesim provasında onaylar.
+>    - Lead Source 25 değer (14'ü hiç kullanılmamış) → ELIZA kanal listesi en çok 7:
+>      Web form (tür ayrımıyla) · Web search / mined · Ad agency records · Social media ·
+>      Newsletter / PSR download · E-mail campaign · Referral / other. Eşleme tablosu
+>      CC yazar, kütüğe girer.
+>    - "Interested Exhibitions" (çok seçmeli; yıllı / yılsız karışık) → kişi × fuar ilişkisi;
+>      yılsız değer fuar ailesinin en yakın gelecek edisyonuna.
+>    - SUER KARARI S6 — "Data" modülü (7 384 kayıt; uzak ofis / freelancer veri girişi
+>      için kurulmuştu): kayıtları LEAD katmanına, kaynak "Data entry (remote)", girişi
+>      yapan ve "Call Result / Next Follow-up" notu iletişim günlüğüne (ILT-03/04).
+>      Modül kopyalanmaz. Freelancer veri giriş formu ayrı madde, sonraki dilimlerde.
+> 2. SUER KARARI S5 — PROFORMA: quote'tan TEK TUŞLA "Proforma Invoice" PDF + e-posta
+>    (resmi fatura DEĞİL; satışçılar bugün Zoho Inventory şablonlarından sürekli
+>    gönderiyor). KATALOG+QUOTE diliminin 1. maddesi; SATIŞ-1 kapsamı dışı; kütüğe karar
+>    olarak şimdi girer (ILT-06 "aynı alanı okur" satırına bağlanır).
+> 3. WEB FORMLARI — Keşif ölçümü (P5'e girdi): bugün Leads modülüne düşüyor; Zoho'nun
+>    kendi formu değil, CRM dışından bir araç yazıyor (araç henüz bilinmiyor — Keşif Zoho
+>    Forms'a bakacak; kesimde site formlarını değiştirmek için gerekir). Alanlar: ad ·
+>    firma · e-posta · ülke · sektör (15/15 dolu) · telefon · mesaj + Lead Source
+>    ("Online Stand Request" = Book a stand · "Contact Form / Exhibition Website" ·
+>    "Contact Form / ElanExpo Website"; "Get more info" ayrı kaynak değil) + Interested
+>    Exhibitions. CRM'de otomatik cevap YOK; ülke → ofis atama + "Contact New Lead" görevi;
+>    sonrası boş (15/15 durum girilmemiş, görev açık). P5 ekleri: Sector alanı formda
+>    isteğe bağlı kalır · üç tür ELIZA'da ayrı kalır · teşekkür e-postası ELIZA'dan gider ·
+>    hacim ölçüsü: ~15 talep / 9 gün (Kasım).
+> 4. ÜLKE → OFİS TABLOSU (SAT-03): Zoho kuralındaki sıra hatası (China satırı "diğer
+>    ülkeler" satırının arkasında, muhtemelen hiç çalışmıyor) taşınmaz. Tablo açık satır:
+>    Nigeria → Nigeria · Kenya → Kenya · Morocco → Morocco · China → China · diğer →
+>    Merkez (International). Türkiye satırını ve kişileri Suer ilk dolumda verir.
+> 5. LEAD HIZLI GİRİŞ (P2 eki): tek satır (firma · e-posta · ülke · sektör) + dosyadan
+>    içe alma; 44 alanlı form yok. Ekip bugün dakikada bir kayıt giriyor.
+> 6. "QUOTE SIGNED" İÇ BİLDİRİMİ: Zoho'da imzada 4 iç alıcıya e-posta gidiyor; ELIZA'da
+>    yok (11 Kas eksik 2.7-16). KATALOG+QUOTE dilimine (Owner + Project + Finance);
+>    SATIŞ-1 dışı.
+> 7. KESİM LİSTESİNE (ADR-023; Keşif'in açık maddelerinden): kontrattaki "Comission Paid"
+>    tutarları ↔ Expenses komisyon giderleri çift kayıt mı (ölçüm) · göçmüş extra
+>    equipment kontratlarının ana kontrat bağı · tipi boş / "Unknown" 3 200 firmanın
+>    bağlı kontrat / quote sayımı · Transferred Out / In çiftleri · Companies'in tipe göre
+>    dağıtımı (müşteri · acente · tedarikçi · çalışan · kurum).
+> ```
+>
+> ## ✅ 2026-11-27 — DÜZELTME: SATIŞ-1 §0 kaydının 0.3 ve 0.5 maddeleri — "Keşif bekleniyor" → Zoho Keşif raporu 26 Kas 22:30'dan dolduruldu
+>
+> - **Neyi düzeltir:** [defter:2026-11-26 DİLİM SATIŞ-1 §0] kaydında iki madde "**Keşif bekleniyor**" diye kapanmıştı (o gün okunan Keşif sürümlerinde Leads / Stand Leads /
+>   Campaigns sayısı ve web formlarının hedefi yoktu). Orchestrator EK-1 E1: girdi değişti — Keşif raporunun **26 Kas 22:30** sürümü (61.448 bayt; Drive 05-ZOHO) TAMAMI okundu;
+>   iki madde o sürümden yeniden yazıldı. Eski kayıt silinmedi (YON-01: o günkü durumdu); geçerli olan budur. **Zoho'ya çağrı YOK** — bütün sayılar rapordan.
+> - **0.3 — Zoho web formları NEREYE düşüyor (yeni hali):**
+>   - **Leads modülüne** düşüyor, Stand Leads'e DEĞİL. Form türü "Lead Source" alanına, fuar "Interested Exhibitions" alanına yazılıyor.
+>   - Zoho CRM'in kendi web formu değil (CRM'deki tek formun gönderimi 0): kayıtları **CRM dışından bir araç** yazıyor — araç henüz BİLİNMİYOR (Keşif Zoho Forms'a bakacak;
+>     kesimde site formlarını değiştirmek için gerekir → ADR-023 "Zoho embed" maddesine not).
+>   - Alanlar: ad · firma · e-posta · ülke · sektör (15 / 15 dolu) · telefon · mesaj + Lead Source ("Online Stand Request" = Book a stand · "Contact Form / Exhibition Website" ·
+>     "Contact Form / ElanExpo Website"; "Get more info" ayrı kaynak değeri değil) + Interested Exhibitions.
+>   - CRM'de **otomatik cevap YOK**; ülke → ofis atama kuralı + "Contact New Lead" görevi var; sonrası boş (15 / 15 kayıtta durum girilmemiş, görev açık). Atama kuralında
+>     China satırı "diğer ülkeler" satırının arkasında — büyük olasılıkla hiç çalışmıyor (Sentez: bu sıra hatası TAŞINMAZ).
+>   - Hacim: ~15 talep / 9 gün (Kasım). → P5'in hız sınırı varsayılanları buna göre dar tutulacak.
+>   - ELIZA tarafı (o günkü ölçüm, DEĞİŞMEDİ): klasik herkese açık ziyaretçi formu yolu embed için yeniden kullanılmaz; yeni yol yazılır (P5).
+> - **0.5 — Zoho hacmi ve kullanım etiketi (yeni hali):**
+>
+>   | Modül | Kayıt | En yeni kayıt | Etiket |
+>   |---|---|---|---|
+>   | Leads | 608 592 | 26.11.2026 | **KULLANILIYOR** — ana depo; 7 ayda +22 739; elle giriş hızı ölçüldü: 15 dakikada 20 kayıt (ekip dakikada bir kayıt giriyor) |
+>   | Contacts | 18 044 | — | KULLANILIYOR (doğrulanmış kişiler) |
+>   | Companies | 18 564 | — | KULLANILIYOR (≈ 3 200'ünün tipi boş / "Unknown" — kesim maddesi) |
+>   | Data | 7 384 | 22.10.2026 | KULLANILIYOR — uzak ofis / freelancer veri girişi (Suer kararı S6: kayıtları LEAD katmanına, modül kopyalanmaz) |
+>   | Stand Leads | 22 | 29.10.2026 | KULLANILIYOR ama İŞLENMİYOR — iki yılda 22 kayıt, hiçbirinde teklif / e-posta / görev yok; web formlarıyla ilgisi yok. BİLİNÇLİ DIŞARIDA |
+>   | New Leads | 1 | — | tek kayıt |
+>   | Campaigns | — | — | **Keşif'te modül olarak ÖLÇÜLMEDİ**; Contacts / Leads kayıtlarının "Campaigns" ilişkili listesi 0 (hazır özellik, kullanılmıyor görünüyor) |
+>
+>   - **Leads içi dağılımlar (rapordan):** "Email Opt Out" işaretli **40 120**. Lead Status: boş 356 502 · Contacted 154 549 · Not Contacted 90 568 · Not Qualified 3 812 ·
+>     Connection Attempted 2 652 · Contact in Future 332 · Pre-Qualified 156 · Junk Data 21 (toplam 608 592). Lead Source: Web Search 355 509 · boş 233 810 · Ad Agency Records
+>     11 801 · Social Media Ads 3 452 · Online Stand Request 2 492 · Post Show Report Downloaders 847 · Social Media Platforms 234 · Contact Form / Exhibition Website 191 ·
+>     Newsletter Subscription / Exhibition Website 142 · Contact Form / ElanExpo Website 77 · Email Marketing Campaign 34 · Exhibition Visit International 3 (toplam 608 592);
+>     25 değerin 14'ü hiç kullanılmamış (adları raporda yok).
+>   - **Sonuç değişti:** §0 kaydındaki "yoksa dalı işler" beklentisi GEÇERSİZ. Zoho lead'lerinin HEPSİ taşınacak (Suer kararı S4 — kesimde, bu dilimde değil); SATIŞ-1'in payı
+>     veri modelinin bunu taşıyabilmesi ve bu hacimde ölçüm (bkz. EK-1 düzeltme turu kaydı).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Campaigns modülünün kayıt sayısı (Keşif'te yok) · site formlarını Zoho'ya yazan aracın adı · kullanılmamış 14 Lead Source değerinin adları ·
+>   Stand Leads kayıtlarının bir formdan mı düştüğü (Keşif "ölçmedim" diyor).
+> - **Bilinçle yapılmayanlar:** Zoho'ya çağrı · herhangi bir Zoho kaydının içeri alınması · Stand Leads / New Leads için model (kapsam dışı).
+>
+> ## ✅ 2026-11-27 — DİLİM SATIŞ-1 · EK-1 DÜZELTME TURU (P2'nin üstüne): lead hacmi için kişi modeli — iki katman tek defter · sektör · kanal (7, ayar) · e-postasız kayıt · DNC kaynak notu · göç başlangıç olayı · hızlı giriş · qualified firma kartını açar; Data listesi iki adımda (634.020 kişiyle yerel ölçüm: hepsi 1 sn altında)
+>
+> - **Kriter kaynağı:** [defter:2026-11-26 SENTEZ 26 Kas 23:55: "SATIŞ-1 EK-1: Zoho Keşif turu 2 bulguları + Suer kararları S4–S6"] madde 1 · 5 + Orchestrator EK-1 E0 · E3 · E4
+>   (E5 → P5'te · E3'ün P6 / P7 ölçümleri o parçalarda · E2 / E6'nın kütük + ADR-023 kayıtları dilim kapanışında, öteki kütük maddeleriyle).
+> - **Ne zaman:** EK-1, `a5b5604` commit'indeyken (P2 kapalı, P3 yarıda) geldi. P3'ün yazılmış kısmı depo dışına alındı (commit'siz); bu tur P3'ten ÖNCE yapıldı. P3 bundan
+>   sonra kaldığı yerden sürer.
+> - **OKUMA KARARLARI (Sentez kapanışta geri alabilir):** ⚠️ SAPMA — bu turda okuma kararları kayda koddan SONRA, aynı turun içinde ve commit'ten önce girdi (EK koşan
+>   oturuma geldi; kararlar kodla birlikte olgunlaştı). Hiçbiri geri alınamaz iş değil.
+>   1. **Katmanın türetilmesi:** CONTACT = firma KARTINA bağlı YA DA "doğrulandı" işareti taşıyor; işaretin kaynağı `elle` · `göç` · `cevap`. "Cevap olayı var" ayrı bir kural
+>      olarak OKUNMAZ: ilk cevabı kaydeden TEK yer aynı işareti `cevap` kaynağıyla koyar (böylece katman tek satırdan okunur — hacimde her istekte olay tablosu taranmaz).
+>      LEAD = e-postası olan geri kalan herkes. E-postası olmayan kayıt iki katmanın da dışında ("No e-mail"). Katman saklanmaz.
+>   2. **Elle doğrulama = Edit… içinde TEK kutu** (Orchestrator okuması; yeni düğme / uç yok). Kutuyu kişinin yazarı (sahibi ya da yönetici) işaretler; kaldırmak yalnız ELLE
+>      konmuş işareti geri alır — cevabın ya da göçün koyduğu işaret elle kalkmaz (409). 🔶 listesi.
+>   3. **E-postasız kayıt (SAT-01) ayrı tabloya ALINMADI:** aynı kişi tablosunda, e-postası boş satır. Firma kartına bağlanamaz (veritabanı reddeder — böylece teklif / kontrat
+>      alıcısı olamaz) · fuar çifti ve aşaması yok (funnel'da yok) · doğrulanamaz, qualified olamaz · "dışarıda bırakma" kuralının İLK satırı. **Ekrandan oluşturma yolu YOK:**
+>      yalnız göç aracının kullanacağı yol yazar; ekranda eklenen kişi e-posta ister (değişmedi). İçe aktarma masasındaki "No e-mail" yığını P2'deki gibi masada kalır, kayda
+>      dönmez (kişisel veri gereğinden uzun tutulmaz — P2 okuması sürüyor). 🔶 listesi.
+>   4. **Do not contact kaynak notu:** serbest metin (≤ 300), işaretle birlikte yaşar, Reactivate'te işaretle birlikte silinir (geçmiş satırında kalır). Ekran notu YAZMAZ
+>      (ekranın koyduğu işaretin kaynağı kişidir — "kim" zaten kayıtlı); notu göç yolu yazar. **Liste yükleme:** veride olmayan adres → yalnız adres + işaret taşıyan kişi (ad =
+>      adresin @ öncesi · sahipsiz · doğuş yolu "migration"); veride olan adres → kaydı ve sahibi DEĞİŞMEZ, işaret + not konur; zaten işaretliyse DOKUNULMAZ (eski sebep kalır).
+>   5. **Göç başlangıç olayı KİŞİDE durur, fuar çiftinde değil:** Zoho'nun durumu lead başınadır, fuar başına değil. Olay (tarih + kaynak adı) kişinin HER fuar çiftini ve "All
+>      expos" görünümünü en az Contacted yapar; bir kez yazılır; e-postasız kayda yazılmaz. ELIZA'nın e-postası DEĞİLDİR: ilk gönderim tarihi boş kalır, kuyruğa satır girmez
+>      (günlük hak ve gönderim sayaçları P6'da bu iki yeri okuyacak). Hiçbir uç yazmaz.
+>   6. **Kanal = kişinin İLK geldiği kanal** (sonradan başka yoldan gelmesi kanalı değiştirmez; yazarı Edit…'te düzeltebilir). Yedi SABİT kod; ADI kiracının ayarıdır (Admin ›
+>      Reference data › "Channels (prospecting)", `reference.write`); kanal kapatılabilir, EKLENEMEZ (tablo sekizinci kodu ve bir kodun ikinci satırını kabul etmez). P2'nin
+>      "source" alanı (kaydın doğuş YOLU: elle · içe aktarma · web form · e-postadan · göç) iç alan olarak kaldı; ekran artık KANALI gösterir.
+>   7. **ELIZA'nın kendi yolları → kanal (kimse seçmediyse):** aşağıdaki tablo. Sekizinci kanal açılmadı.
+>   8. **Hızlı giriş:** Data'da araç satırının altında TEK satır (mockup'ta karşılığı yok → rapor "MOCKUP ↔ SENTEZ"). Lead'in ADI firma adıdır (Zoho'da da öyle); firma adı da
+>      yoksa adresin @ öncesi. Sahibi giren. Ülke ve sektör bir sonraki satır için yerinde kalır (aynı listeden art arda giriş). Kaynak ayrıntısı "Quick entry".
+>   9. **İçe aktarma:** kişi adı olmayan satır artık FİRMA ADIYLA adlanır (P2'de adresin @ öncesiydi — o hâlâ yedek) · dosyada "Sector" sütunu tanınır (sektör listesindeki
+>      adla eşleşirse; eşleşmezse boş) · yüklerken kanal seçilir (seçilmezse "Web search / mined").
+>   10. **"Mark as qualified" + firma kartı:** kartsız kişide aynı adımda firma ADI sorulur — o adda okunabilen TEK aktif kart varsa BAĞLANIR · hiç yoksa kart AÇILIR (ülke
+>      lead'den, yoksa sorulur; sektör lead'den; ofis = işlemi yapanın ofisi; Companies sayfasının KENDİ fonksiyonu, aynı denetim izi) · birden çok varsa seçtirilir. Yazılan
+>      firma adı karta yerini bırakır.
+>   11. **Hacim hedefi (Orchestrator okuması):** liste · arama · segment sayımı sunucuda ≤ 1 sn. Sentez sayı vermedi.
+>   12. **Göç ölçümünde üretilen dağılım:** kanal = Keşif'in Lead Source sayıları · "contacted before ELIZA" = Contacted + Pre-Qualified (154.705) · DNC = opt-out 40.120 +
+>      Not Qualified 3.812 + Junk 21 (43.953) · sektör 5 / 6 lead'de · sahipsiz çoğunluk. Gerçek veri DEĞİL (sentetik, `.example`).
+> - **E4 — P2 modeli EK-1 maddelerine karşı (ÖNCE ölçüldü, sonra düzeltildi):**
+>
+>   | # | Madde | P2'de durum (ölçüm) | Ne yapıldı |
+>   |---|---|---|---|
+>   | 1 | İki katman, tek defter; katman türetilir, listede görünür / süzülür | **KISMEN** — ayrı lead tablosu yoktu (karşılıyor); "doğrulandı" işareti YOKTU, katman yalnız "kart var / yok"tu | işaret sütunları (kim · ne zaman · kaynak) + türetme · Layer sütunu, süzgeci, sıralaması, dışa aktarımı · Edit…'te "Verified" kutusu |
+>   | 2 | Lead alanları: firma adı · e-posta · ülke · sektör; qualified firma KARTI ister, aynı adımda bağla / aç | **KISMEN** — firma adı (düz metin) · e-posta · ülke vardı; SEKTÖR yoktu; qualified kartsız kişiyi "önce Edit'ten bağla" diye reddediyordu | kişide sektör (form · süzgeç · import sütunu) · qualify aynı adımda bağlar / açar / seçtirir |
+>   | 3 | E-postasız kayıt = ikincil kayıt; lead değil; kampanya hedefi olamaz | **EKSİK** — e-posta zorunluydu, böyle bir kayıt tutulamıyordu | e-posta boş olabilir; karta bağlanamaz, çifti / aşaması yok; dışarıda bırakma kuralının ilk satırı (test) |
+>   | 4 | DNC kaynak notu; yalnız e-posta + DNC yüklenebilir; aynı adres dört yoldan gelince mevcut kayda düşer | **KISMEN** — DNC + sebep + kopya denetimi vardı; kaynak notu ve liste yükleme yolu yoktu | not alanı · liste yükleme yolu · test: önce DNC, sonra import · hızlı giriş · New contact · liste yükleme → TEK kişi, işaret / sebep / not aynı. Web form yolu P5'te aynı fonksiyonla (testi orada) |
+>   | 5 | Göç başlangıç olayı | **EKSİK** | kişide tarih + kaynak; aşama Contacted; uç yok; gönderim / kuyruk izi yok (test) |
+>   | 6 | Kanal ≠ kaynak ayrıntısı; liste ayarda; 8. kanal yok | **EKSİK** — tek "source" + serbest ayrıntı vardı, kanal yoktu | kanal alanı (7 kod) + ayar tablosu + varsayılan eşleme · listede Channel sütunu / süzgeci |
+>   | 7 | Kişi × fuar doğuşuna "ilgi"; "fuar ailesi" var mı | **EKSİK** (doğuş nedenlerinde yoktu) | "interest" + "migration" eklendi · **ÖLÇÜLDÜ: "fuar ailesi" kavramı YOK** (şemada öyle bir tablo / sütun 0) → kavram AÇILMADI; yılsız değerin eşlenmesi kesim işi (ADR-023) |
+>   | 8 | Hızlı giriş (tek satır) | **EKSİK** | uç + Data'da tek satır; kopya · DNC · "başkasının" denetimi import'un KENDİ fonksiyonu (tek tanım — test) |
+>   | 9 | Zoho "Data" modülü ≠ Data ekranı; "Data entry (remote)" ayrıntısı; girişi yapan / not iletişim günlüğüne | **KISMEN** — kaynak ayrıntısı serbest metin (karşılıyor); kartsız kişi için iletişim günlüğü hedefi YOK | bu turda YOK — iletişim günlüğünün "kişi" hedefi P4'ün işi; not yazma yolu onunla gelir |
+>
+> - **Kanal listesi ve eşleme tabloları (kütüğe kapanışta girer):**
+>
+>   | Zoho Lead Source (Keşif 22:30) | Kayıt | ELIZA kanalı | Not |
+>   |---|---|---|---|
+>   | Web Search | 355 509 | Web search / mined | |
+>   | (boş) | 233 810 | — (kanal boş) | 🔶 Suer provada: boş kalsın mı, "Web search / mined" mi |
+>   | Ad Agency Records | 11 801 | Ad agency records | |
+>   | Social Media Ads | 3 452 | Social media | |
+>   | Online Stand Request | 2 492 | Web form | tür: Book a stand |
+>   | Post Show Report Downloaders | 847 | Newsletter / PSR download | |
+>   | Social Media Platforms | 234 | Social media | |
+>   | Contact Form / Exhibition Website | 191 | Web form | tür: Contact |
+>   | Newsletter Subscription / Exhibition Website | 142 | Newsletter / PSR download | |
+>   | Contact Form / ElanExpo Website | 77 | Web form | kurumsal site, fuarsız — ELIZA'da o form YAPILMIYOR (P5, 🔶) |
+>   | Email Marketing Campaign | 34 | E-mail campaign | |
+>   | Exhibition Visit International | 3 | Referral / other | |
+>   | hiç kullanılmamış 14 değer (adları raporda yok) | 0 | Referral / other | kayıt yok; ad çıkarsa satır eklenir |
+>
+>   | ELIZA'da kişinin doğduğu yol | Kanal (kimse seçmediyse) |
+>   |---|---|
+>   | "New contact" (elle) | Referral / other |
+>   | Hızlı giriş satırı | Web search / mined |
+>   | Dosyadan içe aktarma | Web search / mined (yüklerken başka kanal seçilebilir) |
+>   | Web formu (P5) | Web form |
+>   | Gelen e-postadan (P4) | Referral / other |
+>   | Göç: Zoho Leads / Contacts | yukarıdaki tablo |
+>   | Göç: Zoho "Data" modülü ("Data entry (remote)") | Web search / mined (Suer provada onaylar) |
+>
+>   Ad agency records · Social media · Newsletter / PSR download · E-mail campaign: ELIZA'nın hiçbir yolu bunları KENDİLİĞİNDEN vermez — içe aktarırken ya da Edit…'te seçilir.
+> - **Ne yapıldı:**
+>   - **Migration `092_satis1_ek1_people.sql`** (yalnız koşucu; şema + kiracı başına yedi kanal satırı; hiçbir kişiye dokunmaz, hiçbir Zoho kaydı okunmaz): kişide e-posta boş
+>     olabilir (+ "e-postasız kayıt karta bağlanamaz" denetimi) · sektör · kanal · doğrulama (ne zaman · kim · kaynak) · DNC kaynak notu · "ELIZA'dan önce temas" (tarih +
+>     kaynak) · kişi × fuar doğuş nedenlerine `interest` · `migration` · içe aktarma satırında sektör, içe aktarmada kanal · `contact_channels` · dizinler: listenin kendi sırası
+>     (genel ve sahip içinde) · DNC · doğrulanmış · kanal · cevap almış çiftler · parça araması için dört trigram dizini (`pg_trgm` — veritabanı uzantıyı kurabiliyorsa; kuramıyorsa
+>     arama yine çalışır, satırları okur).
+>   - **Data listesi İKİ ADIMDA** (`routes/prospects.js`): 1) sayfanın kimlikleri + sayılar, isteğin gerektirdiği EN KÜÇÜK birleşimle (varsayılan görünümde yalnız kişi satırı,
+>     listenin kendi sırası dizinden okunur) → 2) o 50 kişinin ekranda görünen her şeyi ve YALNIZ onların aşaması. Herkesin aşaması yalnız istek soruyorsa hesaplanır (aşama
+>     süzgeci · fuar süzgeci · aşamaya göre sıra) ve ifade başına bir kez. Ülke / sahip sırası küçük listede bir kez katlanır. Arama terimi uygulamada katlanır, SAKLI katlama
+>     anahtarlarıyla karşılaştırılır. Aşama tanımı tek modülde kaldı (`utils/prospects.js`: `pairsCte` · kişi başına tek geçişli `rankCte` · `rankSql`); ikisinin eşitliği testte.
+>   - **Uçlar:** `POST /api/prospects/quick` (hızlı giriş) · `POST /:id/qualify` firma kartını aynı adımda bağlar / açar (`company_id` ya da `company { name, country_code }`;
+>     409 `COMPANY_REQUIRED` · `COMPANY_AMBIGUOUS` + kart listesi) · `PUT /:id` `verified` kutusu, sektör, kanal · liste: `layer` · `sector` · `channel` süzgeçleri, Layer /
+>     Channel sıralaması, dışa aktarımda katman + DNC kaynağı · `/options` kanal listesi + varsayılanlar · içe aktarma: `channel` alanı, "Sector" sütunu · Admin › Reference data
+>     `contact-channels` türü (ad + açık / kapalı; ekleme yok) · yeni kiracı davetinde yedi kanal satırı tohumlanır.
+>   - **Tek tanımlar:** içe aktarma masasının ve hızlı girişin satır ayırması TEK fonksiyon (`utils/prospectImport.js` `classify`) · firma kartı TEK yerde açılır
+>     (`routes/customers.js` `insertCompany` — Companies sayfası ve qualify adımı) · göç yolları (`loadDncList` · `markPreContacted` · e-postasız `createPeople`) `utils/prospects.js`'te,
+>     hiçbir uçtan erişilmez.
+>   - **Ekran:** Sales › Prospecting › Data — Layer sütunu (Lead · Contact · No e-mail) ve araç satırında Layer süzgeci (Stage "More filters"a geçti) · Channel sütunu (ad +
+>     kaynak ayrıntısı) · "More filters"ta Sector · Channel · "Company card" · araç satırının altında HIZLI GİRİŞ satırı (yalnız yazma izni olana çizilir) · "New contact" / Edit…'te
+>     Sector · Channel · (Edit'te) "Verified" kutusu · "Mark as qualified…" kartsız kişide firma + ülke sorar · ayrıntı panelinde Layer, kanal, "Contacted before ELIZA", DNC
+>     kaynağı. Imports — yükleme formunda Channel. Ortak bileşen: yan panelde tik kutusu alan türü (`components.js` · `list-ui.js`).
+> - **Commit:** LEENA `eliza-next` `72c2522` (tur) · `dea0a54` (migration 092: iki denetime yeni ad — staging dry-run yakaladı) · `8942ede` (hızlı giriş satırı tek satır — tarayıcı akışı yakaladı`.
+> - **Ölçülenler:**
+>   - **Hacim (E3) — YEREL test veritabanında, sentetik veriyle (staging'e hacim YÜKLENMEDİ):** 634.020 kişi = 608.592 lead + 18.044 doğrulanmış kişi (15.015'i firma kartlı,
+>     3.029'u kartsız "doğrulandı") + 7.384 "Data entry (remote)"; 13.000 firma kartı; 123.847 kişi × fuar çifti (14 fuar); DNC 43.953 (40.120'si "Zoho opt-out" notlu);
+>     "ELIZA'dan önce temas" 154.831; sahipsiz 544.620; en yüklü satışçı 21.677 kişi; kanalı boş 238.081; 26 ülke; adresler `.example`. Üreten betik depo dışında.
+>     3 koşu ortancası, sunucu süresi (ms); satışçı = en yüklü satışçı, yönetici = Sales Manager karşılığı:
+>
+>     | Durum | Satışçı ÖNCE | Satışçı SONRA | Yönetici ÖNCE | Yönetici SONRA |
+>     |---|---|---|---|---|
+>     | liste · ilk sayfa (kendi sırası: ad) | 676 | 106 | 1.189 | 39 |
+>     | liste · sıra: Added (yeni → eski) | 667 | 116 | 1.279 | 119 |
+>     | liste · sıra: Company | 724 | 122 | 1.291 | 150 |
+>     | liste · sıra: Stage (en ileri önce) | 321 | 163 | 1.113 | 389 |
+>     | liste · sıra: Country | 771 | 82 | 7.713 | 365 |
+>     | liste · sıra: Owner | 916 | 76 | 2.533 | 269 |
+>     | liste · derin sayfa (200.) | 408 | 96 | 71.461 | 45 |
+>     | liste · son sayfa (5000. istenir) | 429 | 81 | 3.315 | 224 |
+>     | arama · firma adından bir sözcük | 595 | 58 | 839 | 142 |
+>     | arama · iki sözcük | 123 | 53 | 819 | 96 |
+>     | arama · kişi adı | 186 | 46 | 607 | 97 |
+>     | arama · e-posta parçası (@ öncesi) | 119 | 50 | 252 | 99 |
+>     | arama · e-posta parçası (alan adı) | 116 | 82 | 834 | 100 |
+>     | arama · eşleşme yok | 122 | 49 | 298 | 130 |
+>     | bileşik süzgeç ("More filters": 5 koşul) | 9.641 | 193 | 697 | 264 |
+>     | süzgeç · katman Lead | — | 47 | — | 50 |
+>     | süzgeç · katman Contact | — | 48 | — | 47 |
+>     | süzgeç · sektör + kanal boş | — | 121 | — | 71 |
+>     | süzgeç · aşama Contacted (bütün fuarlar) | — | 330 | — | 600 |
+>     | liste · sıra: Layer | — | 78 | — | 152 |
+>     | liste · sıra: Channel | — | 81 | — | 146 |
+>     | süzgeç · tek fuar + aşama Contacted | 200 | 325 | 349 | 264 |
+>     | süzgeç · do not contact | 638 | 46 | 802 | 40 |
+>     | süzgeç · sahipsiz | 102 | 387 | 1.136 | 37 |
+>     | segment sayımı (ülke · lead · kartsız) | 11.844 | 190 | 715 | 255 |
+>     | sayfanın seçenek listeleri | 7 | 5 | 5 | 6 |
+>     | import · 1.000 satırlık dosya (kopya denetimi) | 20 | 20 | 32 | 18 |
+>     | import · masa (bir yığın) | 4 | 4 | 4 | 4 |
+>     | elle ekleme · var olan adres (kopya denetimi) | 2 | 1 | 1 | 1 |
+>     | elle ekleme · yeni adres | 3 | 3 | 2 | 3 |
+>     | hızlı giriş · var olan adres (kopya denetimi) | — | 1 | — | 1 |
+>     | hızlı giriş · yeni lead | — | 2 | — | 3 |
+>     | tek kişi (ayrıntı + geçmiş) | 2 | 2 | 2 | 2 |
+>
+>     ÖNCE = P2 kodu (11 / 50 durum 1 sn üstü; en kötü 71,5 sn). SONRA = bu commit (**0 / 66 durum 1 sn üstü; en kötü 600 ms**). "—" = o süzgeç / uç P2'de yoktu. 1 sn altında
+>     kalıp YAVAŞLAYAN iki durum: satışçı "tek fuar + Contacted" 200 → 325 ms · satışçı "unassigned" 102 → 387 ms (0 satır döner; sahipsiz 544.620 satır taranıyor — hız kuyruğu).
+>     Migration 092, 634.020 satırlık tabloda 12,5 sn'de uygulandı (ilk ölçüm; dizinler dahil).
+>   - **Testler:** yeni suite `test_satis1_ek1.js` **27 / 27** (K4 katman · F4 lead alanları + qualify · S2 e-postasız · D3 DNC · M2 göç başlangıcı · C3 kanal · I1 ilgi · Q3
+>     hızlı giriş · V4 hacim eşitlikleri · B1 TABAN). **Hükümle değişen beklentiler (SAPMA — test satırında yorum):** `test_satis1_p2_data` S6 · L4 (aşama ifadesinin ve
+>     katlama seçiminin yeri: aynı modül, yeni fonksiyon adları) · `test_satis1_p2_import` C2 (adsız satır artık firma adıyla adlanır) · `test_ref` R1 (referans türü 14 → 15,
+>     yazılabilir 12 → 13: kanal listesi). Zincir: **89 suite, 1650 / 1650** (`72c2522` üzerinde; önceki 88 suite 1623 → +1 suite, +27). İki düzeltme commit'inden sonra son commit (`8942ede`) üzerinde yeniden tam zincir: 89 suite, 1650 / 1650..
+>   - **Staging:** migration 092 — dry-run → apply (871 ms) → ikinci apply "Nothing to apply" (kayıt defteri 94). **İlk dry-run DURDU:** 092, 090'ın kurduğu iki denetimle AYNI adda denetim
+>     kuruyordu; koşucu bunu "yarım uygulanmış" saydı, hiçbir şey uygulanmadı → denetimlere yeni ad (`dea0a54`). `pg_trgm` staging'de ZATEN kurulu (dört trigram dizini kuruldu).
+>     Kişi 191 — hiçbiri değişmedi; kiracı 2 → 14 kanal satırı. Sıra: migration ÖNCE, kod sonra (eski kod yeni şemayla 200 verdi — ölçüldü; arada 503 penceresi olmadı).
+>     **Kanıt — yalnız uygulama uçlarıyla, yalnız SAMPLE kayıtlarla:** hızlı giriş → 201, lead (ad = firma adı · kanal "Web search / mined" · ayrıntı "Quick entry" · seçili fuarda
+>     Lead) · aynı adres → 409 "Already yours." · başka satışçının adresi → 409 "Belongs to …" · DNC'li adres → 409 "… · do not contact" · bozuk adres 400 · Sales erişimi
+>     olmayan 409 · "Verified" kutusu: Lead → Contact (kaynak: elle), başka satışçı 409 · qualify: firma adı verilmeden 409 `COMPANY_REQUIRED` → adla: kart AÇILDI, kişi
+>     bağlandı, aşama Qualified, katman Contact · var olan kartın adıyla: BAĞLANDI (o addaki kart sayısı 1 → 1) · içe aktarma: kanal "Ad agency records" + Sector sütunu (2 kişi
+>     eklendi; DNC'li adres "Duplicates · do not contact" yığınında kaldı) · kanal listesi: Owner adı değiştirdi → satışçı yeni adı gördü → ad geri alındı; sekizinci kanal 409
+>     `READ_ONLY`; satışçı 409 · dışa aktarım başlığında `layer` + `do_not_contact_source`.
+>     **Tarayıcı:** 14 sayfa × 1440 / 1280 × A / B2 = 56 yükleme, bulgu 0 (konsol hatası 0 · taşma 0 · 36 px altı düğme 0). Hızlı giriş klavyeyle: Enter → eklendi, imleç firma
+>     alanına döndü, sayfa yeniden yüklenmedi, ülke yerinde kaldı; aynı adres yeniden → satırda "Already yours.", yazılan silinmedi; Sales erişimi olmayan oturumda satır
+>     çizilmiyor. **İlk halde hızlı giriş satırı 1280'de ÜÇ satıra kırılıyordu** → ortak formun "tek satır" düzeni (`8942ede`): 1280 ve 1440 × iki düzen → tek satır (81 px),
+>     araç satırı tek satır (61 px).
+>     **Staging'de BIRAKILANLAR (SAMPLE, `.example`):** hızlı giriş lead'leri `sample.quick1` (qualified; yeni kart "SAMPLE Quick Co") · `sample.quick2` (firma 7'ye bağlı, qualified) ·
+>     `sample.quick1280` · içe aktarma 4 "SAMPLE agency list (EK-1)" (2 kişi) · "SAMPLE Mine 5" elle doğrulanmış. Kişi 191 → 196. Suer'in SAMPLE kayıtlarına dokunulmadı.
+>   - **U4 — eşitlik + süre:** **eşitlik** (staging, P2 sonu ↔ şimdi): toplam hak ediş 286.580,52 = 286.580,52 EUR · hak edişi farklı acente 0 / 27 · farklı kontrat × rol satırı 0 / 1.475 · farklı ekstre
+>     0 / 47 · TABAN 342.00 · TABAN-2 EŞİT; fark YALNIZ migration satırı (93 → 94). **Süre** (staging, sunucu süresi ortancası, ms; P2 sonu → şimdi): Commissions 452 → 417 ·
+>     follow-ups 8 → 5 · quotes 8 → 7 · Mail (sent) 26 → 37 (en düşük 18) · customers 5 → 5 · genel arama 8 → 8 (ilk ölçüm 15; 15'li iki yeniden ölçüm 8 ve 8) · expo settings
+>     76 → 88 (en düşük 14) · Data listesi 12 → 10 · Data araması 13 → 11 · tek fuar 18 → 19 · "Upcoming + ongoing" 57 → 19 · options 13 → 15–17 (kanal listesi için bir sorgu
+>     daha) · imports 4 → 4 · yeni uçlar: katman süzgeci 12 · aşamaya göre sıra 19 · kanalı boş 10 · kanal ayarı 6. İki katına çıkan uç YOK.
+>   - **Yolda yakalananlar:** (1) kanal tablosunun kiracı bağı silmeyi engelliyordu — eski bir suite'in temizliği kırıldı, artığı bir başka suite'i düşürdü (zincirde 3 kırmızı) →
+>     bağ `ON DELETE CASCADE` (P2'deki dersin aynısı); (2) yeni tablo adında "lead" geçiyordu (klasik uçlarla ad çakışması yasağı — P2 testi yakaladı) → `contact_channels`;
+>     (3) aşama süzgeci e-postasız kaydı "Lead" diye listeliyordu → süzgeç e-posta ister.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:**
+>   - **Hacim ölçümü YERELDE** (PG 14, yerel disk); **staging / canlı planında ÖLÇÜLMEDİ** — staging'in veritabanı ve web süreci kotalı, aynı sayılar orada geçerli sayılmaz.
+>   - E-postasız kayıt hacmi: Keşif e-postasız lead sayısını vermiyor; sentetik veride e-postasız kayıt YOK (model testte ölçüldü, hacimde değil).
+>   - Göç yollarının (DNC listesi · göç başlangıcı · e-postasız kayıt) staging kanıtı YOK: uçları yok; kanıt test suite'idir.
+>   - Kampanya hedefi dondurma + dışarıda bırakma sayımı ve Home / Stats toplamları bu hacimde: P6 ve P7'de (o parçalar henüz yok).
+>   - Kullanılmamış 14 Lead Source değerinin adları (Keşif'te yok).
+> - **Bilinçle yapılmayanlar:**
+>   - **Göçün KENDİSİ:** hiçbir Zoho kaydı içeri alınmadı; Zoho'ya çağrı yok. Göç aracı yazılmadı — yalnız kullanacağı yollar.
+>   - **İletişim günlüğüne not (S6 "Call Result / Next Follow-up"):** kartsız kişi için günlük hedefi P4'te.
+>   - **Web formu yolu** (aynı adres formdan gelince mevcut DNC kaydına düşer): P5'te, aynı fonksiyonla.
+>   - **"Fuar ailesi" kavramı** açılmadı · **freelancer veri giriş formu** yapılmadı · **8. kanal** açılmadı · e-postasız kayıt için ekran yolu yok.
+>   - Satışçının "unassigned" süzgecindeki 387 ms için dizin eklenmedi (hedefin altında; hız kuyruğuna yazıldı).
+>   - Kütük maddeleri (S4 göç kuralları · kanal listesi + eşleme · S5 PROFORMA · S6) ve ADR-023 kesim maddeleri: dilim kapanışında, öteki maddelerle birlikte.
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
