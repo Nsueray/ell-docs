@@ -12608,6 +12608,35 @@
 > - **Bilinçle yapılmayanlar:** hiçbir kayıt açılmadı / değişmedi · backend `.env` dosyasındaki salt okunur CANLI bağlantı KULLANILMADI · `.git/refs` altındaki iki
 >   başıboş dosyaya dokunulmadı.
 >
+> ## ✅ 2026-11-26 — DİLİM ARALIK-2 P1 (H3-a): ORAN DOĞUMDA KONTRATA KOPYALANIR — dönüşüm · atama · transfer · göç uygulaması TEK ifadeyle; okuma DEĞİŞMEDİ, hiçbir toplam değişmedi
+>
+> - **Kriter kaynağı:** [defter:2026-11-26 SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ" + SENTEZ 26 Kas 09:20 "ARALIK-2 TEK PROMPT" (1. madde)] — C · H3 (aday (i)) + Orchestrator U2 P1 · U3.
+> - **Ne yapıldı:** kontrat bir satıcı kaydı ALDIĞI anda, o rolün oranı kontratın KENDİ kaydına yazılır. Kural tek yerde, tek ifade (`utils/commissionRates.js`
+>   `copyRates`): satıcısı olan ve kendi oranı boş rol → o kaydın O ANKİ varsayılanı (SR / agent: varsayılan komisyon · SD: varsayılan direktör oranı); kendi oranı
+>   olan role dokunulmaz; varsayılanı boş kayıt rolü boş bırakır (uydurma yok). Dört yol aynı ifadeyi çağırır: (1) doğum çekirdeği (`utils/convertCore.js` — teklif
+>   dönüşümü ve sipariş kontratı) · (2) atama (`PUT /api/contracts/:id/assignment` — satıcı oransız atanınca; ekran tam set gönderir, boş oran alanı "kaydın oranı"
+>   demektir) · (3) transfer (kopya bir doğumdur: kaynağın KENDİ oranı taşınır — K8; kaynakta oranı boş rol kaydın o günkü varsayılanını alır; kaynak satır
+>   yeniden yazılmaz) · (4) göç uygulaması (`scripts/zoho/lib/apply.js` — yalnız bu çağrı eklendi; Zoho'dan gelen oran kalır, bekleyen SD oranı bekler).
+>   **Okuma bu adımda DEĞİŞMEDİ** (motor hâlâ "kendi oranı, yoksa varsayılan" okur) — tek değişken.
+> - **Commit:** LEENA eliza-next `3966b32` (staging'de CANLI). Canlı `main` DEĞİŞMEDİ. Migration yok.
+> - **Ölçülenler:**
+>   - **Eşitlik tablosu (staging · salt okuma · commit'in kodu staging verisine karşı, okuyucular KENDİ uçlarından; §0 referansı → P1):** toplam hak ediş 286.580,52 →
+>     286.580,52 · farkı olan temsilci **0** · farkı olan kontrat × rol satırı **0** (1.474 kontrat) · TABAN 342.00 · TABAN-2 EŞİT · kesim raporu · Commissions listesi
+>     (toplamlar + Due 18 / Settled 14 / Agent owes 15) · 47 ekstre · Ledger özeti · fuar marjı (10 fuar gerçek fonksiyon + 65 fuar aynı ifade) · göç mutabakatı TABAN
+>     satırı · kontrat sayfası kutusu (72 kontrat): hepsi EŞİT. Oranı boş rol-satırı: SR 2.646 · agent 147 (değişmedi — doldurma P2'de).
+>   - **Staging'de yol denemesi (CC'nin SAMPLE kaydı 7903; uygulamanın kendi ucu, Owner araç hesabı):** satıcısı olmayan kontrata SAMPLE temsilci oransız atandı → HTTP 200, kontratın KENDİ oranı = kaydın varsayılanı (yanıtta da) · sonra
+>     atama boşaltıldı → satıcı yok, oran yok (kayıt eski haline döndü; ödemesi olmadığı için hak edişe etkisi yok). Dağıtımdan sonra TABAN 342.00 · TABAN-2 EŞİT.
+>   - **Test:** yeni suite `test_aralik2_rates.js` (9: A1–A8 doğum · atama · transfer · göç uygulaması gerçek `applyPlan` ile geri alınan işlemde · tek ifade ·
+>     kaynak taraması; B1 TABAN) — zincir 81 suite **1442 / 1442** (PG 14; önceki 80 suite 1433).
+> - **SAPMA (hükümle değişen test beklentisi — satırında hüküm numarası yorumu):** `test_p3_3a` C3 (doğan kontratın oranı NULL → kaydın oranı kopyalanmış) ·
+>   `test_ui_tam2_orders` O4 (sipariş kontratı ekip kaydının oranıyla doğar). Başka beklenti değişmedi.
+> - **Okuma kararları (raporda):** atamada oran alanı boş gönderilirse O GÜNKÜ varsayılan kontrata yazılır (eski davranış: boş kalır, her okumada varsayılan) ·
+>   satıcı değişirse yeni kaydın varsayılanı gelir, eski oran taşınmaz (atama tam settir) · toplu SD ataması (`utils/migration.js` `assignSd`) kendi oranını zaten
+>   yazar (bekleyen oran → oran) — dokunulmadı.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging'de yeni bir teklif dönüşümü / sipariş doğumu (kalıcı kontrat doğurur — yapılmadı; yol yerel zincirde gerçek uçla
+>   test edildi) · staging'de transfer (SAMPLE kontratı Transferred'a çevirir — yapılmadı) · göç uygulamasının staging'de gerçek koşusu (ham Zoho verisi bu makinede yok).
+> - **Bilinçle yapılmayanlar:** okuma kuralı (P3) · eski boş oranların doldurulması (P2) · ARALIK-1'in "varsayılan değişince eski oranı yaz" kodu (P3'te kalkar).
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
