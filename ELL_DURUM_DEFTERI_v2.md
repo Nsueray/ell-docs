@@ -13034,6 +13034,413 @@
 > - **Bilinçle yapılmayanlar:** SATIŞ-1 (başlanmadı) · `.claude/skills` (klasik EMS; ui2 / finans modülleri orada yok) · LEENA reposundaki iki başıboş `.git/refs` dosyası
 >   (dokunulmadı — `git fetch` çalışmıyor, push ve `ls-remote` çalışıyor; raporda) · eski iki şablon tablosunun kaldırılması · hız kuyruğu işleri.
 >
+> ## ✅ 2026-11-26 — SENTEZ 26 Kas 16:30: "ARALIK-2 KABUL · HÜKÜMLER · DİLİM SATIŞ-1 KRİTERLERİ" — AYNEN
+>
+> - **Kaynak ve sıra (Orchestrator 26 Kas 2026 — prompt dosyadan):** bu oturumun promptu diskteki tek dosyadır (`PROMPT_SATIS-1.md`); bütünlüğü işe başlamadan
+>   ÖLÇÜLDÜ (sha256 `60f2b0bf759d6b1cbd9d42c6cdd2d145746bdb1f06130f890c4c1c8274d8b5f4` · 57.824 bayt · 649 satır · son satır "═══ BLOK SONU ═══" — dördü
+>   beklenenle AYNI). Dosya iki bölüm: (I) Sentez 26 Kas 16:30 bloğu, AYNEN (277 satır) · (II) Orchestrator UYGULAMA (K · U0–U5). Öncelik: (I) > UYGULAMA >
+>   mockup. (II) deftere KOPYALANMADI (Orchestrator hükmü — içinde kapatılmamış bulguların tarifi var; uygulama notlarının özeti parça kayıtlarında).
+> - **TEK İSTİSNA (Orchestrator kararı — SAPMA):** (I) A "DRIVE — KURAL" içindeki altı Drive klasör kimliği (bloğun 56–59. satırları) bu deftere YAZILMADI;
+>   yerlerinde "[klasör kimliği — deftere yazılmadı]" durur (ell-docs herkese açık). Karşılaştırma ölçüldü: fark YALNIZ o dört satır.
+> - **Bu dilim = SATIŞ-1, TEK prompt (YON-16):** §0 (0.0–0.7) → P1 küçükler + arşiv + GOC-ALICI → P2 Data → P3 Templates → P4 Mail → P5 Web form →
+>   P6 kampanya + günlük hak → P7 Home + Stats → kapanış. Her parça ayrı commit + aynı turda defter kaydı; tek rapor sonunda. Ara soru yok: (I)'deki
+>   "Sentez'e dönülür" = raporda 🔶 madde; hükümsüz kararda en kilitli hükme en yakın, dar ve geri alınabilir okuma — kod yazılmadan önce kayda "okuma
+>   kararı" diye girer. DUR KURALI: her parçadan sonra TABAN 342.00 + TABAN-2 + toplam hak ediş (dilim başı 286.580,52 EUR); fark çıkarsa o parçada durulur.
+>   KAPSAM DIŞI: (I)'deki liste + CANLI (okuma dahil — YON-23) · Zoho'ya çağrı · sağlayıcı hesabında yazma · gerçek e-posta · klasik EMS davranışı ·
+>   yapay zeka · havuz payı · staging'deki gerçek kayıtların elle değiştirilmesi.
+> - **(I) A ve B'nin kayıtları:** S1 (pay toplamı > 100 → ret kalır) · S2 (eski "bakılmış" bildirimler açık kalır; sayı provada ölçülür, 50'yi geçerse
+>   Sentez'e) · S3 (şablon "Archive" — SATIŞ-1 P1) · SÜRE kuralı · GIT (yedek + silme — §0.0) · havuz payları (staging'e girilmez; kesimden sonra canlıda)
+>   · B TRANSFER (kod yok; iki kontratta iz şartı + Out ↔ In çiftleri kesimde) → kütük ve ADR-023'e dilim kapanışında işlenir (bu dilimin belge parçası).
+> - **SENTEZ 26 Kas 16:30 — AYNEN (277 satır; 56–59. satırlardaki altı klasör kimliği yerine "[klasör kimliği — deftere yazılmadı]"):**
+>
+> ```
+> SENTEZ 26 Kas 16:30 — ARALIK-2 KABUL · HÜKÜMLER · DİLİM SATIŞ-1 KRİTERLERİ
+> (Önceki taslak geçersiz; bu blok geçerli.)
+>
+> ═══════════════════════════════════════════
+> A. ARALIK-2 — KABUL
+> ═══════════════════════════════════════════
+> Okunan: Orchestrator notu 26 Kas (tamamı, EK'teki CC raporu dahil) · ell-docs
+> main defter kayıtları (§0 · P1–P10 · kapanış) · kütük (MOT-06 · 07 · 08 ·
+> YON-23 · ILT-08 · 09 · UI-20 · EXH-21 eki). Staging'de Sentez (Owner oturumu,
+> 26 Kas 14:50): Dashboard tek gün sayısı · Commissions ekip satırı "pool …
+> Unallocated" · Templates 5 grup / 12 varsayılan + 2 SAMPLE · Collections
+> "Match to a payment…" + "Reject…" · Mail "All sent" · Expo Finance başlık
+> seçicisi. DİLİM BAŞI = SONU 286.580,52 · TABAN 342.00 · TABAN-2 EŞİT ·
+> 1539 / 1539. KABUL.
+>
+> 3 KARAR (CC + Orchestrator soruları):
+> S1 Pay toplamı > 100 → a: ret kalır (409). Hiçbir günde 100 aşılmaz; altı
+>    "Unallocated".
+> S2 Eski "bakılmış" bildirimler → a: açık kalır, otomatik kapanmaz. Kesim
+>    provasında sayı ölçülür ve ADR-023'e yazılır; 50'yi geçerse Sentez'e dönülür.
+> S3 Şablon → b: "Archive". Silme yok; arşivlenen seçicilerden kalkar, geçmişi ve
+>    sürümleri durur, geri alınabilir; tür varsayılanı arşivlenemez (önce başka
+>    varsayılan). Staging'deki 2 SAMPLE şablon arşiv gelince arşivlenir. SATIŞ-1 P1.
+>
+> TEYİTLER: CC'nin 10 okuma kararı AYNEN kabul — özellikle (1) pay bugün ve
+> sonrası, ilk sürümden önceki ödeme dağıtılmaz, storno asıl ödemenin sürümüyle;
+> (2) eşleşen ödeme ters çevrilirse bildirim yeniden açılır (unmatch değil,
+> sonuç). Hükümle değişen test beklentileri (27 TABAN fikstürü dahil) kabul.
+> Quote e-mail "System e-mails" grubunda kalır. Staging'de bırakılanlar kabul.
+>
+> YENİ KURAL — SÜRE: her parçanın kabul ölçümüne süre girer (3 koşu ortancası,
+> sunucu süresi). Bir ucun sunucu süresi önceki parçaya göre 2 katına çıkarsa o
+> parçada düzeltilir, sonraya bırakılmaz. Hız kuyruğu: Expo Finance · War Room ·
+> ekip kaydı sayfası — SATIŞ-1 kapanışında yeniden ölçülür; dilim konusu değil.
+>
+> GIT — Suer kararı: LEENA'daki iki başıboş referans dosyası ("eliza-next 2",
+> heads ve remotes/origin) silinmeden ÖNCE Mac'te repo dışına, açıklamalı adla
+> yedeklenir (klasör adı tarihli; yanında kısa README: ne oldukları, nereden
+> geldikleri, "gereksiz kopya — git fetch'i bozuyordu — geri almak için şuraya
+> koy"). Sonra silinir, fetch denenir, rapora yazılır. SATIŞ-1 §0'ın ilk adımı.
+>
+> HAVUZ PAYLARI: Suer staging'e pay GİRMEZ. ADR-023: paylar kesimden sonra
+> canlıda girilir. Rapor ve notlarda "Suer'in işi" olarak yazılmaz.
+>
+> KÜTÜK (Orchestrator projesi): araçla yüklenemiyor; kütük değiştiğinde Suer
+> Drive 00-KB'den indirip Orchestrator projesine elle yükler. O güne kadar
+> ell-docs'tan okumaya devam.
+>
+> DRIVE — KURAL (bugünden): CC raporu ve Orchestrator notu Mac'teki bir klasöre
+> yazılmış ama buluta çıkmamış (Drive bağlayıcısı 03-CC'yi boş, 02-ORCHESTRATOR'da
+> yalnız prompt dosyasını görüyor; Drive uygulamasının senkron listesinde de
+> yoklar). Kural:
+> - Orchestrator ve UX: Drive BAĞLAYICISIYLA buluta yazar. Yöntem: create_file ·
+>   title · parentId · contentMimeType text/markdown ·
+>   disableConversionToGoogleType true · textContent = dosyanın tamamı.
+>   Klasörler: 01-SENTEZ [klasör kimliği — deftere yazılmadı] ·
+>   02-ORCHESTRATOR [klasör kimliği — deftere yazılmadı] ·
+>   03-CC [klasör kimliği — deftere yazılmadı] · 04-UX [klasör kimliği — deftere yazılmadı] ·
+>   05-ZOHO [klasör kimliği — deftere yazılmadı] · 00-KB [klasör kimliği — deftere yazılmadı].
+> - CC (bağlayıcısı yok): Mac'teki Drive klasörünün CloudStorage yoluna yazar
+>   (Library › CloudStorage › GoogleDrive-<hesap> › My Drive › ELL-Handoff › 03-CC);
+>   başka bir "ELL-Handoff" klasörü kabul değil; prompt'a yol açıkça yazılır.
+> - Yazan, dosyanın drive.google.com'da göründüğünü doğrular ve bağlantısını
+>   notun/raporun BAŞINA koyar. Doğrulanamıyorsa metni Suer'e verir.
+> - ŞİMDİ: Orchestrator, bu notu ve CC'nin ARALIK-2 raporunu bağlayıcıyla
+>   02-ORCHESTRATOR ve 03-CC'ye yazar (ad: 2026-11-26_ORCH_NOTU_ARALIK-2.md ·
+>   2026-11-26_CC_RAPOR_ARALIK-2.md).
+>
+> ═══════════════════════════════════════════
+> B. SUER KARARI — TRANSFER (26 Kas)
+> ═══════════════════════════════════════════
+> Zoho'da bugün: eski kontrat "Transferred Out" + yeni kontrat "Transferred In"
+> (Zoho mecbur bıraktığı için). ELIZA: tek Transfer eylemi (SEM-06) yeterli;
+> ŞART: iki kontratta da iz — "X fuarından transfer edildi" / "Y fuarına
+> transfer edildi", kaynak fuar ve kontrat numarası tıklanır. Göç: Zoho'daki
+> Out↔In çiftleri kesimde eşlenip bağlanır; 41 çıkış / 18 giriş farkı provada
+> ölçülür → ADR-023 kesim maddesi. Bu dilimde kod yok; kayıt.
+>
+> ═══════════════════════════════════════════
+> C. DİLİM SATIŞ-1 — PROSPECTING (satışçının günü)
+> ═══════════════════════════════════════════
+> Kaynak: Sentez SATIŞ-1 UX hükümleri 24 Kas (U3a · U3b+U4 · U3c cevapları) ·
+> 26 Kas kararları (web form kanalı · "From our records" paneli veri-only ·
+> ILT-09) · kütük SAT-01..04 · ILT-01..09 · YZ-01..03 · GUV · UI-15..20. UX
+> dosyası ELIZA-U3c-Stats-mockup.html (Suer'in Downloads'unda; Drive 04-UX'e
+> kopyası UX'ten istenir).
+> Amaç: satış ekibi günlük işini ELIZA'da yapar — veri, kampanya, cevap, web
+> talebi, şablon, istatistik. LIFFY satış yolundan emekli (madencilik dışarıda,
+> sonucu içe aktarılır). Yapay zeka YOK (YZ-01).
+> TEK PROMPT (YON-16): §0 → P1…P7 → kapanış. Dallar önceden onaylı; Sentez'e
+> yalnız hükümsüz karar için dönülür.
+>
+> ──────── §0 ÖLÇÜM (salt okuma; kod yazılmadan; rapora) ────────
+> 0.0 Git yedeği + silme (A'daki kural) · Orchestrator turundaki tek "401"
+>     yanıtı için staging erişim kaydında 26 Kas 14:25–14:50 arası aranır,
+>     kaynağı yazılır (bulunamazsa "bulunamadı").
+> 0.1 KİŞİ MODELİ: kişi firmasız olabilir mi (lead için şart) · e-posta tekilliği
+>     · teklif → kişi bağı · do-not-contact / unsubscribe alanı · kişide dil
+>     alanı · ülke → dil tablosu (ILT-02) ve ülke → ofis tablosu (SAT-03) var mı.
+> 0.2 E-POSTA ALTYAPISI (bugün SendGrid): elan-expo.com domain doğrulaması
+>     (SPF/DKIM) var mı · kişi başına doğrulanmış gönderici · GELEN yol (Inbound
+>     Parse) hesapta açık mı, hangi planda · günlük gönderim sınırı · LEENA'nın
+>     eski kampanya makinesi (kuyruk · adımlar · unsubscribe · worker) yeniden
+>     kullanılabilir mi · LIFFY'deki gelen-posta kodu taşınabilir mi. ÖLÇ; satın
+>     alma ve ayar değişikliği YOK.
+> 0.3 WEB FORM ALTYAPISI: LEENA'nın herkese açık form yolu (ziyaretçi kaydı):
+>     anahtar · köken kısıtı · hız sınırı · bot koruması; embed için yeniden
+>     kullanılabilir mi. Bugünkü Zoho formlarının nereye düştüğü: Zoho Keşif
+>     raporu Leads bölümünden (Drive 05-ZOHO); yoksa "Keşif bekleniyor".
+> 0.4 BUGÜNKÜ SALES EKRANLARI: Companies (6 SAMPLE) · Pipeline ön aşamalar "not
+>     connected" · Mail iskeleti · Sales home — ne var, ne stub.
+> 0.5 ZOHO HACMİ (Keşif raporundan; CC Zoho'ya BAKMAZ): Leads · Stand Leads ·
+>     Campaigns kayıt sayısı ve kullanım etiketi; rapor orada değilse bloke olmaz.
+> 0.6 GÜNLÜK HAK ÖLÇÜSÜ: son 30 günde ELIZA'dan giden günlük e-posta, kullanıcı
+>     başına en yüksek — 500 varsayılanı gerçekçi mi.
+> 0.7 GOC-ALICI: Zoho'dan yeni kontratlar ELIZA'ya bugün nasıl geliyor (sıklık,
+>     alanlar) · dışa aktarımda Contact Name ve kişinin e-postası var mı.
+>     Bulgu (Sentez 26 Kas, staging + Zoho'da doğrulandı): yaklaşan 5 fuarın 32
+>     aktif kontratının 32'sinde ELIZA alıcısı boş; Zoho'da aynı kontratların
+>     Contact Name'i ve e-postası dolu. HÜKÜM: kontrat aktarım yolu kontak adı +
+>     e-postasını taşır ve kontratın alıcı listesine (to) yazar; firma bağı
+>     yoksa bile alıcı dolar. Şimdi elle doldurma YOK. Uygulama P1; dışa
+>     aktarımda alan yoksa kesim listesine yazılır, Sentez'e dönülür.
+>
+> ──────── P1 KÜÇÜKLER + ARŞİV + GOC-ALICI ────────
+> (a) Commissions "Add agent CLASSIC" → yerli New agent paneli. (b) Visitors home
+> Source süzgeci/sütunu ham kod ("exhibitor_page" · "manual") → UI-16 etiket
+> ("Exhibitor Page" · "Manual"). (c) SAMPLE/test fuarlar "en yakın fuar"
+> varsayılanını kazanıyor → fuar kaydında "sample" işareti; işaretli fuar
+> varsayılan seçimde ve "Upcoming + ongoing" süzgecinde atlanır, "All expos"ta
+> görünür; staging'de "test" ve "[TEST] Reactivation Smoke" işaretlenir.
+> (d) New agent formunda Type "Team" seçilemez (tek ekip kaydı; havuz tekil
+> varsayımı); mevcut ekip kaydı durur. (e) S3 Archive. (f) §0.7 GOC-ALICI.
+> Hak ediş ve TABAN değişmez.
+>
+> ──────── P2 DATA (tek kayıt defteri) ────────
+> Yer: Sales › Prospecting › Data = Sales › Companies + kişiler + lead'ler;
+> aynı kayıtlar, ikinci defter yok.
+> - Lead = e-postası olan, firması bilinmeyen kişi (Company "—"). E-postasız
+>   bulgu lead DEĞİL (SAT-01; ikincil kayıt, kampanyaya girmez).
+> - Aşama (kişi × fuar): Lead → Contacted (ilk e-posta gidince, otomatik) →
+>   Replied (herhangi cevap, otomatik; web lead Replied doğar) → Qualified (tek
+>   tık, firma şart; teklif açılınca otomatik) → Quote sent → Signed (teklif ve
+>   kontrattan türetilir, elle yazılmaz).
+> - Sahiplik: satışçı kendi kişileri; Sales Manager hepsi. Başkasının kişisi:
+>   uyarı + "Request transfer" → Sales Manager onaylar; geçmiş kalır; sessiz
+>   devralma yok. Faz 4 açılmaz: bugünkü rol şablonları.
+> - Satır işlemleri: Edit… · Do not contact… (sebep zorunlu: not an expo
+>   audience · wrong region · requested removal · suspected bot · repeated hard
+>   bounce; Reactivate geri alır) · Mark as handled · Mark as qualified. Silme
+>   yok. Pazarlama e-postasından çıkış → requested removal, otomatik.
+> - Import: CSV/XLSX (PDF'ten yalnız e-posta + yanındaki sözcükler) → kontrol
+>   masası (Ready · Need fixing · Duplicates · Skipped · No e-mail) → tek tık.
+>   Kopya = e-posta; "zaten senin" / "başkasının" ayrı sayılır, içeri alınmaz.
+> - Kişide Language alanı (ülkeden önerilir; ülke → dil tablosu ayar).
+> - Segment = kaydedilmiş süzgeç; kampanya hedefi olur.
+> - Fuar ↔ sektör: Expo settings › Identity › Sectors (çoklu; liste = firma
+>   sektör listesi).
+> - Liste kalıbı UI-15; "More filters" bu listede uygulanır (1280'de tek satır).
+>
+> ──────── P3 TEMPLATES — Sales grubu ────────
+> Admin › Templates büyür (ILT-08; yeni depo yok): "Sales templates" grubu —
+> Campaign e-mail (pazarlama, unsubscribe zorunlu) · Reply (işlem, unsubscribe
+> yok); "System e-mails" grubuna Web form thank-you (dil başına; yoksa EN).
+> Prospecting › Templates = aynı sayfa, yalnız Sales grubu; satışçı diğer
+> grupları GÖRMEZ. Yetki: Owner hepsi; satışçıya Sales grubu yazma bugünkü
+> izinle yapılamıyorsa Owner yazar, Faz 4 notu (ARALIK-2 P7 ile aynı). Palet:
+> kişi · firma · fuar · gönderen alanları + {{unsubscribe_link}} (yalnız
+> Campaign). Önizleme SAMPLE kişiyle; test gönder (echo).
+>
+> ──────── P4 MAIL (ELIZA'nın kendi postası) ────────
+> - Posta kutusu bağlanmaz (Gmail/IMAP yok). Gönderim satışçının KENDİ
+>   adresinden (doğrulanmış gönderici) sağlayıcı üzerinden; cevap ELIZA'ya döner
+>   ve doğru kişiye · yazışmaya · satışçıya bağlanır (konuyla değil, izleyici
+>   anahtarıyla). Mekanizma Orchestrator'ın; gereksinim bu.
+>   DAL: §0.2 "gelen yol bu planda yok" derse → gelen kısım "bağlı değil" kalır,
+>   giden + görünümler yapılır, raporda açık madde; plan/satın alma Suer'in.
+>   DAL: domain doğrulaması yoksa → sistem adresinden gönder, reply-to satışçı
+>   (ILT-01 deseni); Suer'e "DNS kaydı" maddesi raporda.
+> - Görünümler: Inbox (cevaplar + web talepleri, en yeni üstte) · Awaiting reply
+>   (benden cevap bekleyen; web talebi 7. günde kırmızı) · Waiting for their
+>   reply (ben yazdım, cevap yok: Write again · Stop following) · Starred · Sent
+>   (yalnız ELIZA'dan; Owner "All sent") · Drafts · Compose. "My follow-ups"
+>   bugünkü anlamıyla Sales home'a link.
+> - Tek tık: Mark as handled · Not interested (fuara özel; "+ hiçbir fuar" = do
+>   not contact · not an expo audience; Undo) · Add as lead (kaynak "From a
+>   mail", Replied, sahibi cevaplayan) · Mark as qualified.
+> - Reply: Reply türü şablondan başlayabilir; web talebine cevap SLA'yı kapatır.
+> - Compose: "Do not contact" kişiye yalnız kendi mesajına cevap olarak;
+>   başkasının kişisine yazılmaz (Request transfer).
+> - Sağ panel "From our records" (veri-only): bu kişi/firmayla geçmiş teklifler ·
+>   kontratlar · gönderilen e-postalar · fuar katılımları; "Reference
+>   suggestions" = aynı sektör + ülkeden KATALOGDA YAYINLANMIŞ firmalar. Yapay
+>   zeka cümlesi ve "önerilen metin" yok.
+>
+> ──────── P5 WEB FORM KANALI ────────
+> - Her fuar için 3 tür (Contact us · Book a stand · Get more info) × fuarın
+>   dilleri kendiliğinden; yaklaşan/süren fuarda açık, fuar bitince kapanır;
+>   Owner türü kapatabilir. Alanlar: ad · firma · e-posta · telefon · ülke ·
+>   mesaj · gizli fuar. Embed code (Expo settings'ten kopyalanır).
+> - Güvenlik (GUV): hız sınırı · bot tuzağı · köken listesi (fuar siteleri) ·
+>   kişisel veri gövdede · anahtar günlükte yok.
+> - Talep → lead (kaynak "Web form · fuar · tür", Replied) → sahibi ülke → ofis
+>   → ofisin varsayılan kişisi (SAT-03 ayar tablosu; Owner düzenler); yoksa
+>   Unassigned kuyruğu (Sales Manager). SLA 7 takvim günü; Home'da kırmızı.
+> - Teşekkür e-postası Templates'ten (System › Web form thank-you).
+> - Kesim maddesi: sitelerdeki Zoho embed'leri ELIZA formuna çevrilir (Suer /
+>   web ajansı) → ADR-023.
+>
+> ──────── P6 KAMPANYA + GÜNLÜK HAK ────────
+> - Hedef: kayıtlı segment ya da Home taslağı. Alıcı listesi GÖNDERİMDE
+>   sabitlenir; her adımda dışarıda bırakma yeniden kontrol (do not contact ·
+>   replied · unsubscribed · hard bounce).
+> - Adımlar gün 0 / 4 / 10 (en çok 4); cevap gelince o kişinin takibi durur.
+>   Pause/Resume (günler kayar) · Stop (yoldaki takipler dahil hiçbir e-posta
+>   çıkmaz, geri alınmaz).
+> - Review and send: 5 kontrol (hedef sayısı · dışarıda bırakılanlar · şablon
+>   dili · gönderici · hak) + ilk e-postanın görünüşü.
+> - Pazarlama e-postası = unsubscribe zorunlu; tıklayan requested removal.
+> - GÜNLÜK HAK: kullanıcı başına AYAR (YON-22), varsayılan 500; ofisin yerel
+>   gece yarısında sıfırlanır; taslak yemez; tek kişiye Compose yemez; hafta
+>   sonu varsayılan atlanır ("Send on weekends too"); hak dolunca sıra: takip
+>   adımları → planlı ilk e-postalar → yeni; takılan adım ertesi güne kayar,
+>   atlanmaz. Sağlayıcı sınırı düşükse (§0.2) ayar onu aşamaz.
+> - Gönderim yalnız kuyruk + worker yolundan (ILT-05; staging echo; gerçek
+>   e-posta YOK).
+>
+> ──────── P7 HOME + STATS ────────
+> - Home ("My work" büyür): fuar seçici yalnız "open for sale" fuarlar
+>   (varsayılan son seçilen, yoksa en yakın) · Follow-ups · Replies waiting ·
+>   Web requests (SLA rengi) · Quotes to chase · Signed — contract pending ·
+>   günlük hak göstergesi · kampanya durumu.
+> - Stats: Campaigns · Templates · Audience · Funnel · Web forms & channels.
+>   Üstte Expo · (Sales Manager'da) Salesperson · dönem. Oranlar 20 gönderimden
+>   itibaren, altında "—". Funnel iki bant: kişiler (Lead → Contacted → Replied
+>   → Qualified) · firmalar (Quote sent → Signed); kişi fuar başına sayılır;
+>   "All expos" kişiyi en ileri aşamasında bir kez sayar. Kanal = ilk kaynak
+>   ("also via …"). Audience → Save as segment / Draft campaign. Web forms:
+>   Requests · Answered in time · Late · Open · Average first answer · "N of M
+>   signed contracts came through a web form".
+>
+> ──────── KAPSAM DIŞI ────────
+> LIFFY entegrasyonu · yapay zeka · posta kutusu senkronu · rol/yetki (Faz 4) ·
+> telefon genişliği · katalog/quote akışı (sonraki dilim) · Operations
+> ekranları (TUR-2) · çeviri otomasyonu · satın alma / plan yükseltme (Suer).
+>
+> ──────── KABUL ÖLÇÜTLERİ ────────
+> - Zincir 1539'un altına düşmez; her P'de yeni suite; TABAN 342.00 · TABAN-2
+>   her P'de EŞİT; hak ediş dilim başı = dilim sonu.
+> - Her P'de süre ölçümü (A'daki kural).
+> - Gerçek e-posta YOK (EMAIL_ECHO); SAMPLE kişiler .example; SAMPLE verisi
+>   yalnız uygulama uçlarından; canlıya temas YOK (YON-23).
+> - Kanıt listesi (staging, SAMPLE): import masası · web form → lead + sahip +
+>   SLA · 3 adımlı kampanya, cevapta duran takip (echo) · hak dolunca kuyruk
+>   sırası · gelen cevabın doğru kişiye bağlanması (echo/sahte gelen) ·
+>   unsubscribe → requested removal · "From our records" yalnız kayıtlı veri ·
+>   Stats funnel SAMPLE sayılarıyla.
+> - K4 / GUV-06 / GUV-08: anahtar · token · kişisel veri raporda ve defterde yok;
+>   web form ucu hız sınırı ve bot tuzağı ölçülmüş.
+> - UI: iskelet; UI-15; 1280 ve 1440, A ve B2; konsol hatası 0 · taşma 0 ·
+>   36 px altı düğme 0.
+> - Belgeler: defter kaydı aynı commit'te; kütük SAT-05+ · ILT-10+ (ID CC'nin,
+>   hükümler AYNEN); CLAUDE.md sınır içinde; ADR-023'e kesim maddeleri (DNS ·
+>   Zoho embed · GOC-ALICI · transfer çiftleri · bakılmış bildirim sayısı).
+> - Rapor: tek rapor; 🔶 yalnız hükümsüz kararlar; Drive 03-CC (CloudStorage
+>   yolu) + Orchestrator bulut doğrulaması.
+>
+> ──────── SUER'DEN (raporda açık madde olarak izlenir) ────────
+> 1) Ülke → ofis → varsayılan kişi tablosu (SAT-03) — ilk dolum.
+> 2) DNS kaydı (§0.2 sonucuna göre; CC istemez, Suer/IT yapar).
+> 3) Web form teşekkür metni EN/FR/TR — yoksa SAMPLE metinle başlanır, Suer
+>    sonra Templates'ten değiştirir.
+>
+> ──────── SIRA ────────
+> §0 → P1 → P2 → P3 → P4 → P5 → P6 → P7 → kapanış. Her P sonunda defter kaydı
+> aynı commit'te (YON-18). Sentez'e dönüş yalnız §0.2/§0.7 dalları dışında bir
+> bulgu ya da hükümsüz karar için.
+> ```
+>
+> - **Başlangıç ölçümü (U0-a):** LEENA `eliza-next` = `origin/eliza-next` = `c3ada0f` · `origin/main` `2db0131` · ell-docs `main` `bcd2033` · son migration 087 ·
+>   CLAUDE.md 138.096 karakter — beşi de prompt'taki değerle AYNI. Test zinciri bu noktada yeniden KOŞULMADI (önceki dilimin kapanışı: 85 suite 1539 / 1539;
+>   ilk koşu P1'in zinciri).
+>
+> ## ✅ 2026-11-26 — DİLİM SATIŞ-1 §0: ÖLÇÜM (salt okuma) — git yedeği + fetch düzeldi · "401" sunucuda yok · kişi firmasız OLAMIYOR · satış gönderimi için domain doğrulaması YOK, gelen yol VAR · aktarım yolunda kontak ADI var, E-POSTASI yok · alıcısı boş 32 / 32
+>
+> - **Kriter kaynağı:** [defter:2026-11-26 SENTEZ 26 Kas 16:30: "ARALIK-2 KABUL · HÜKÜMLER · DİLİM SATIŞ-1 KRİTERLERİ"] — C §0 (0.0–0.7) + Orchestrator U1.
+> - **Ne yapıldı:** yalnız ölçüm — kod (`eliza-next` `c3ada0f`) okundu; staging veritabanı salt okunur bağlantıyla soruldu (26 Kas 19:00–20:30 UTC); staging servis
+>   istek günlüğü izin listeli sarmalayıcıyla okundu; e-posta sağlayıcısının HESABI yalnız GET ile okundu (Sentez §0.2'nin açık emri — "dış hesap okuması", aşağıda);
+>   herkese açık DNS `dig` ile; mockup tarayıcıda gezildi. Kod ve veri DEĞİŞMEDİ. Canlıya temas YOK (okuma dahil — YON-23). Zoho'ya çağrı YOK.
+> - **Commit:** LEENA'da YOK (değişiklik yok; bu kayıt ell-docs'ta). Tek dosya işlemi repo DIŞINDA + `.git` içinde: 0.0.
+> - **0.0 (1) GIT YEDEĞİ + SİLME (Suer kararı):** iki başıboş referans dosyası (`refs/heads/"eliza-next 2"` · `refs/remotes/origin/"eliza-next 2"`; 41'er bayt; 24 Kas
+>   17:54 ve 18:08) repo dışına, tarihli ve açıklamalı klasöre yedeklendi (`cp -p`; yanında README: ne oldukları · tam yolları · içlerindeki hash · geri koyma komutu).
+>   ÖN KOŞUL ölçüldü: iki hash da `eliza-next` geçmişinde (`346e590` · `e2efab6` — dalın 24 Kas'taki eski konumları). Kopyanın sha256'sı = aslınınki → SİLİNDİ →
+>   `git fetch origin` **temiz** (öncesi: "fatal: bad object refs/heads/eliza-next 2") → `eliza-next` = `origin/eliza-next` = `c3ada0f` (değişmedi). Nereden geldikleri:
+>   **bilinmiyor** (ölçülebilen: izinleri 600, gerçek ref dosyaları 644; deponun klasörü işletim sisteminin bulut masaüstü eşitlemesinde).
+> - **0.0 (2) "401":** staging `/api` erişim kaydı — 26 Kas 11:20–11:55 UTC (= 14:20–14:55 İstanbul) penceresinde 200 × 21 · 304 × 72 · 404 × 1; **401 YOK**. Servis
+>   istek günlüğü (BÜTÜN yollar): aynı pencerede 401 = 0 · 10:30–13:00 UTC'de 0 · günün tamamında 2 (05:45 ve 06:56 UTC — ikisi de oturumsuz isteğe beklenen ret).
+>   Penceredeki 404'ler: 26 × site simgesi isteği (dosya yok — her sayfa yüklemesinde bir 404) + 1 × sağlık yolu denemesi. O sağlık yolunu repoda hiçbir kod çağırmıyor;
+>   bütün kayıtta (16 gün) TEK çağrı, turun tarayıcısından → elle yoklama; sayfa ya da dış izleyici değil. **Sonuç: "401" BULUNAMADI (sunucuda yok).** Düzeltilecek satır yok.
+> - **0.1 KİŞİ MODELİ (kod + staging):**
+>   | Soru | Bugün | Yer |
+>   |---|---|---|
+>   | Kişi firmasız olabilir mi | **HAYIR** — firma bağı zorunlu; ayrıca "kişinin firması değiştirilemez" koruması var | `contacts.company_id NOT NULL` · 057 tetikleyicisi |
+>   | E-posta tekilliği | yalnız AYNI FİRMA içinde (ayıklanmış + küçük harf); kiracı genelinde tekillik YOK | `uq_contacts_company_email` |
+>   | Teklif → kişi bağı | var (isteğe bağlı; kişi teklifin firmasının kişisi olmalı) | `quotes.contact_id` + bileşik FK |
+>   | Do-not-contact / unsubscribe alanı | **YOK** (satış tarafında). Klasik ziyaretçi tarafında adres listesi var (1.688 satır) | `email_unsubscribes` (klasik) |
+>   | Kişide dil alanı | var; dolu 0 / 8 | `contacts.language` |
+>   | Ülke → dil tablosu (ILT-02) | var; dolu **0 / 230** | `core_countries.default_language` |
+>   | Ülke → ofis → varsayılan kişi tablosu (SAT-03) | **YOK**. (Var olan `sellable_territories` ters yöndedir: ofis → satabileceği ülkeler; 2 satır) | — |
+>   | Sahip alanı (kişide / firmada) | **YOK**; yalnız "açan" (`created_by`): 8 kişi / 6 firmanın hepsi tek araç hesabından | — |
+>   | İletişim kaydının hedefi | firma \| teklif \| kontrat, TAM bir tane (ILT-03) → firmasız kişiye e-posta bugün KAYDEDİLEMEZ | `communications_target_check` |
+>   | Ofis · saat dilimi · hafta sonu | ofis kaydı var (6; biri pasif test); saat dilimi ve hafta sonu alanı **YOK**; kullanıcı → ofis bağı var (6 kullanıcının 2'sinde dolu) | `offices` · `users.office_id` |
+>   | "Open for sale" | fuar kaydındaki yayın bayrağı (teklif kapısıyla aynı); staging'de 2 fuar (ikisi de test fuarı) | `expos.published_to_liffy` |
+>   | Fuarın dilleri | liste olarak **YOK**; fuarın varsayılan dili + üç dilli metin blokları var | `expo_exh_settings.default_language` |
+>   | Fuar ↔ sektör | bağ tablosu VAR, boş (0 satır); sektör listesi 26 (firma sektör listesiyle aynı tablo) | `expo_sectors` · `core_sectors` |
+>   | Katalogda "yayınlandı" | "onaylanmış katalog girişi" tek tanımı (EXH-08 eki); staging'de 1 | `utils/exhCatalogue.js` |
+>   - **Staging sayıları:** kişi 8 (hepsi SAMPLE, `.example`) · ayıklanınca aynı e-postayı taşıyan kişi **0** · firma 6 (hepsi SAMPLE) · teklif 23 (2 sahip) · iletişim kaydı 28 ·
+>     açık takip 11. Kesimde kopya sayısı ayrıca ölçülür (ADR-023).
+>   - **Kişiyi firmayla BİRLEŞTİREREK okuyan yerler (firmasız kişi sessizce DÜŞER):** genel arama (`routes/search.js:47`) · rapor modülü "Contacts" (`utils/reportFields.js:213`) ·
+>     kontratın ilk alıcısı (teklifin kişisi — `utils/exhMail.js:102`; teklif firmasız kişi taşıyamaz, etkilenmez). Kişiyi kimlikle okuyanlar (firma kartı, teklif, dil seçimi,
+>     satış performansı sayacı) firmasız kişiyle hata vermez. P2 bunların her birini firmasız kişiyle test eder.
+>   - **Roller:** satışçı = "Sales" şablonu (satış okuma / yazma `own`). **"Sales Manager" karşılığı ŞABLONLARDA YOK:** satış YAZMA yetkisini `own`'dan geniş veren şablon yok
+>     (Sales Operations ve Office Manager yalnız OKUR, ofis kapsamıyla; Project hepsini okur). Kişi başı ezme mekanizması var (staging'de 1 satır: bir araç hesabına satış
+>     okuma `all`). Bugünkü sahiplik süzgeci: firma = firmanın ofisi + açan · teklif = sahibi + ofisi · iletişim kaydı = hedefinin kapsamı · takip = sahibi.
+> - **0.2 E-POSTA ALTYAPISI — SONUÇ SATIRI:**
+>   | Domain doğrulaması (satışçının kendi adresinden gönderim) | Gelen yol (plan + hesap) | Günlük sınır |
+>   |---|---|---|
+>   | **YOK** — LEENA'nın sağlayıcı hesabında doğrulanmış domainler `leena.app` ve `elanexpo.net`; satışçı adreslerinin domaini (`elan-expo.com`) o hesapta doğrulanmış DEĞİL | **VAR** — Inbound Parse hesapta açık, 1 kayıt (klasik EMS'in gelen ucuna gidiyor) | günlük sınır YOK; plan AYLIK 3.000.000 (ücretli plan; bu ay kullanılan 267) |
+>   - **DAL sonucu (Sentez P4):** domain YOK → **sistem adresinden gönderim, reply-to satışçı (ILT-01 deseni)**; "DNS kaydı" maddesi SUER'DEN listesinde. Gelen yol VAR ama
+>     domain YOK iken Sentez'in dalı "reply-to satışçı" der → canlıda cevap satışçının kendi kutusuna döner, Mail'de "Replies: not connected" (🔶 — raporda soru).
+>   - **(a) Kod:** tek gönderim altyapısı kuyruk + worker (iki öncelik sırası; satır sahiplenme atomik). Satış / exhibitor / rapor / güvenlik e-postaları kuyruktan çıkar ve
+>     `EMAIL_ECHO` ile `echo` satırı olur. Klasik EMS'te kuyruğu ATLAYAN doğrudan gönderim yolları sürüyor (CLAUDE.md "Queue Bypass" listesi — bu dilimde dokunulmaz); onlar
+>     `EMAIL_ECHO`'ya bakmaz. Staging'de `EMAIL_ECHO` AÇIK (davranıştan ölçüldü: son tazelemeden beri yazılan 92 kuyruk satırının 92'si `echo`; ortam değişkeni okuması bu
+>     oturumda yapılamadı — izin katmanı reddetti). `EMAIL_ECHO` YOKKEN staging düzeninde: worker yok, süreç içi tik yalnız zamanlayıcıları koşturur → `pending` satır
+>     gönderilmez, bekler. Gönderen adresi tek: worker'ın ortam değişkeni (kişi başı gönderen YOK); görünen ad ve reply-to satırdan. **Geri dönüş (bounce) ve şikâyet olayları
+>     sisteme GİRMİYOR:** alan bir uç yok; olay tablosundaki türler sent · opened · clicked · registered · unsubscribed. Klasik unsubscribe: imzalı bağ (GET sayfa + POST tek tık).
+>   - **(b) Hesap (yalnız GET; yerel `.env` anahtarıyla — canlı servisin ortamı AÇILMADI):** hesap, canlı LEENA'nın kullandığı hesapla AYNI görünüyor (Inbound Parse kaydı
+>     canlının adresine gidiyor; doğrulanmış domaini canlının gönderen domaini). Doğrulanmış domain 2 (ikisi de geçerli) · tek tek doğrulanmış gönderici 5 kayıt, doğrulanmış 2
+>     · olay bildirimi KAPALI · bağ markalama yok. İtibar puanı, bastırma listesi boyları ve çağrı listesi raporda.
+>   - **(c) Herkese açık DNS:** `elan-expo.com` — SPF var (sağlayıcıyı içermiyor), **DMARC `p=reject`, SIKI hizalama** → o hesapta doğrulanmadan bu domainden gönderilen e-posta
+>     alıcıda REDDEDİLİR; DKIM seçici kayıtları var ama BAŞKA bir sağlayıcı kullanıcısına işaret ediyor. `leena.app` — DMARC `p=reject` (gevşek hizalama), gelen için alt alan MX'i
+>     sağlayıcıda. Gereken kayıtlar ADLARIYLA raporun SUER'DEN bölümünde.
+>   - **(d) Klasik gelen-posta ucu:** okundu; canlı `main` sürümüyle bayt bayt AYNI. Bu dilimde DEĞİŞTİRİLMEDİ ve staging'de ÇAĞRILMADI (staging verisi canlı kopyasıdır).
+>   - **(e) Al / alma:** klasik kampanya makinesinden ALINAN — kuyruk + worker (tek gönderim yolu) · atomik satır sahiplenme deseni · `List-Unsubscribe` başlık deseni ·
+>     klasik unsubscribe listesinin OKUNMASI. ALINMAYAN — kampanya / adım / alıcı tabloları (ziyaretçi evreni; ad çakışması, klasik ekranlar okuyor) · açılma pikseli ve bağ
+>     sarmalama (Sentez'de yok) · imzalı unsubscribe belirteci (yeni yol kişi başına rastgele anahtar). LIFFY (güncel yerel kopya: 5 Kas) — ALINAN: olay adı eşlemesi
+>     (bounce · dropped · spam). ALINMAYAN: cevabı satışçının posta kutusundaki süzgeçle yakalama (posta kutusu bağlanmaz) · 8 haneli kısa kimlikli artı-adres (tahmin
+>     edilebilir) · yalnız gönderen adresiyle eşleme · imza metninden kişi zenginleştirme.
+> - **0.3 WEB FORM ALTYAPISI:** klasik herkese açık ziyaretçi formu yolu — anahtar YOK · köken kısıtı YOK · hız sınırı YOK · bot koruması YOK → embed için yeniden KULLANILMAZ
+>   (yeni yol yazılır; hız sınırı tablosu ve deseni Exhibitor Page'den alınır). Zoho formlarının nereye düştüğü: **Keşif bekleniyor** (Keşif raporunun iki sürümü de okundu —
+>   11:20 ve 21:43; modül bölümleri Sales Contracts ve Quotes; web formları "yapılmadı" listesinde). İki ek ölçüm (istemci IP'sinin kaynağı · sayfaların başka sitede
+>   çerçevelenmesi) yapıldı; sonuçları güvenlik bulgusudur — ayrıntı raporda.
+> - **0.4 BUGÜNKÜ SALES EKRANLARI (12 sayfa):**
+>   | Sayfa | Durum |
+>   |---|---|
+>   | My work (Sales home) | VAR: takipler · cevap bekleyen teklifler · imzalı–kontratı bekleyen. İŞARETLİ: Incoming replies · satır eylemleri · takvim · hedefler · süzgeç |
+>   | Mail | İSKELET: yalnız Sent (teklif e-postaları; Owner'da All sent). İŞARETLİ: Inbox · Awaiting · Starred · Drafts · Compose · Reply · Add as lead · sağ panel |
+>   | Pipeline | VAR: teklif aşamaları (Draft · Sent · Signed · Declined). İŞARETLİ: ön aşamalar · olasılık · kazanma / kaybetme |
+>   | Companies · Company | VAR (6 SAMPLE firma): liste (eski kalıp, 500 satır sınırı) · kart · kişiler · katalog sekmesi. İŞARETLİ: rozetler · ilişkiler · birkaç alan |
+>   | Quotes · Quote | VAR (teklif akışı; bu dilimin konusu değil) |
+>   | Contracts · Contract · Convert queue · Performance · My commissions | VAR |
+> - **0.5 ZOHO HACMİ:** **Keşif bekleniyor.** Raporda Leads / Stand Leads / Campaigns için kayıt sayısı ve kullanım etiketi YOK; yalnız kural sayımı var (Leads 3 kural, 3'ü
+>   açık · Stand Leads 8 kural, 1'i açık). Bloke etmedi.
+> - **0.6 GÜNLÜK HAK ÖLÇÜSÜ (staging — gerçek kullanımı GÖSTERMEZ):** son 30 günde ELIZA'dan kullanıcı başına en yüksek günlük e-posta **16** (SAMPLE tohumlama). Hesap
+>   genelinde son 30 günde en yoğun gün 26 istek. Varsayılan **500 KALIR**; canlı ölçüm ADR-023 prova maddesi; üst sınır planın aylık sınırı (günlük sağlayıcı sınırı yok).
+> - **0.7 GOC-ALICI:** aktarım yolu `scripts/zoho/` — çekim (`pull.js`) → ham dizin (repo dışı) → `migrate.js` (tek işlem, tek parti; `--dry-run` / `--apply`) → mutabakat.
+>   **ELLE koşar, zamanlanmış DEĞİL**; staging'de son koşu 10 Kas 2026 (parti 4). İSTENEN alan listesinde (`lib/fields.js`) kontak YOK; ham kayıttan da okunmuyor; alıcı
+>   listesine yazan adım yok. Kontrat kaydı tekil istekle BÜTÜN alanlarıyla çekildiği için **kontak ADI + kimliği ham kayıtta geliyor** (test fikstürü ölçülmüş alan
+>   metadatasından kurulu: alan etiketi "Contact Name", ad + kimlik taşıyan bağ); **kişinin E-POSTASI kontrat kaydında DEĞİL, kişi kaydında** — bugünkü çekim kişi modülünü
+>   çekmiyor. Ham dizin bu makinede YOK → kaç kayıtta dolu olduğu BULUNAMADI. Staging: yaklaşan 5 gerçek fuarın aktif ana kontratı **32**, alıcısı boş **32** (hepsi göç;
+>   hiçbirinde firma bağı yok) — Sentez'in 32 / 32'si DOĞRULANDI. `EMAIL_ECHO` staging'de açık; otomatik zincir yalnız SAMPLE fuarda açık (1 fuar).
+>   **DAL:** ad yolda VAR, e-posta için çekime bir adım gerekir (kişi kaydı, kimlikle) → uygulama P1 (f): eşleme + alıcı yazımı + fikstürle test; Zoho'ya karşı koşu yok.
+> - **Mockup (U0-b):** üç dosyanın sha256'sı prompt'takilerle AYNI. U3c dosyası birleşiktir (başlığı: Home · Data · Campaigns · Templates · Mail · Stats — U3a + U3b + U4 + U3c);
+>   tarayıcıda 25 ekran durumu gezildi (metin + görüntü, repo dışı). Mockup "opened" (açılma) oranı ve açılmaya dayalı segmentler gösteriyor; Sentez'de açılma ölçümü yok →
+>   yazılmayacak, raporda "MOCKUP ↔ SENTEZ" tablosu.
+> - **Güvenlik bulgusu 4 adet — ayrıntı raporda** (kapatılana kadar bu deftere yazılmaz; Orchestrator hükmü).
+> - **Dış hesap okuması (SAPMA başlığı — Sentez §0.2'nin açık emri):** e-posta sağlayıcısı hesabına 78 çağrı, hepsi GET, 17 ayrı yol (kapsamlar · hesap · plan · doğrulanmış
+>   domainler · doğrulanmış göndericiler · bağ markalama · gelen ayarı · olay bildirimi ayarı ×2 · güvenlik politikaları · beş bastırma listesi [yalnız SAYILDI] · 30 günlük
+>   istatistik). Hiçbir şey yazılmadı; anahtar, adres ve belirteç ekrana / dosyaya düşmedi (maske önce sahte girdide sınandı — K4).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging servisinin ortam değişkenleri (izin katmanı okumayı reddetti; `EMAIL_ECHO` davranıştan ölçüldü, sağlayıcı anahtarının orada olup
+>   olmadığı ÖLÇÜLMEDİ) · sağlayıcı hesabının canlı servisin anahtarıyla aynı hesap olduğu (canlı ortamı açılmadı; yapılandırmadan çıkarıldı) · ham Zoho çekimi (bu makinede
+>   yok) · Zoho'da Leads / Stand Leads / Campaigns hacmi ve web formlarının hedefi (Keşif'te yok) · canlıda günlük gönderim, kopya e-posta sayısı ve vekil zinciri (bilerek —
+>   YON-23) · klasik gelen ucun staging'deki davranışı (çağrılmadı) · mockup'un 25 durum dışındaki ara durumları (her parçanın başında ilgili ekrana yeniden bakılır).
+> - **Bilinçle yapılmayanlar:** hiçbir kayıt açılmadı / değişmedi · backend `.env` dosyasındaki salt okunur CANLI bağlantı KULLANILMADI · Zoho anahtarlarıyla çağrı YOK ·
+>   sağlayıcı hesabında ayar / gönderici / domain / gelen kaydı / anahtar değişikliği YOK · LIFFY kopyasında yalnız dosya okundu (git işlemi yok) · klasik gelen uç ve
+>   var olan hız sınırı kodu DEĞİŞTİRİLMEDİ.
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
