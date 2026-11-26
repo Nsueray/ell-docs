@@ -12953,6 +12953,44 @@
 > - **Bilinçle yapılmayanlar:** eşleşmeyi geri alma (hüküm yok) · bildirimden ödeme oluşturan düğme / yeni ödeme formu · tutar farkında uyarı ya da engel
 >   (aday sırası yeterli; karar Finance'in) · eşleşme için ayrı kolonlar (kim · ne zaman olayda) · e-posta ile bildirim.
 >
+> ## ✅ 2026-11-26 — DİLİM ARALIK-2 P9 (D-4): KÜÇÜKLER — Mail'de Owner "All sent" · Expo Finance / Expo budget başlık seçicisi · başlıkta tek gün sayısı, tek tarih aralığı, tek ad
+>
+> - **Kriter kaynağı:** [defter:2026-11-26 SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ"] — B (S1 · CC Soru 3 · tur bulguları 1–3) · C · D-4 4.1–4.3 + Orchestrator U2 P9 · U3 "D-4".
+> - **Ne yapıldı:**
+>   - **4.1 Mail "All sent" (karar S1):** `GET /api/communications/sent?view=all` — ELIZA'dan HERKESİN gönderdiği e-postalar, YALNIZ Owner'a (salt okuma; yeni izin YOK,
+>     şema YOK). Owner olmayan isterse 409 `OWNER_REQUIRED`; onun kendi "Sent" yanıtı ve sayfası DEĞİŞMEDİ. Yanıt, görünümün o oturum için var olup olmadığını söyler;
+>     sayfa "All sent" girişini yalnız o zaman çizer ("Sent by" sütunuyla). E-postanın içeriği mevcut okuma ucundan (kendi kapsam kuralıyla) açılır.
+>   - **4.2 Expo Finance + Expo budget (CC Soru 3):** fuar sayfa BAŞLIĞINDA seçilir — fuara özel Operations ekranlarının seçicisi ve kuralı (UI-18): adres fuarı taşır ·
+>     seçim yokken EN YAKIN fuar açılır ("choose an expo" çıkmazı yok) · seçim hatırlanır · klasik ekranlarla ortak anahtarı yalnız başlık seçimi yazar (tek yardımcı).
+>     Fuar listesi her iç kullanıcının okuyabildiği seçim listesi (Finance oturumunun Operations izni olması gerekmez). Düz "Expo" kutusu + "Open" düğmesi kalktı.
+>   - **4.3 Etiket · gün sayısı · adlar (tur bulguları 1–3):** fuarın TAM etiketi TEK fonksiyondan — ad · TEK tarih aralığı · yer · durum · gün sayısı ("test · 2–4 Dec
+>     2026 · SAMPLE City, Turkey · Upcoming · in 6 days"); başlık seçicisinin düğmesi fuarın ADINI gösterir, gerisi yanında (tarih bir kez); ekran okuyucuya tam etiket
+>     okunur. KISA etiket (liste Expo sütunu · süzgeç · kapsam satırı · teklif formu) da tarih ARALIĞINA geçti ("Ad · 2–4 Dec 2026"). Başlıkta TEK gün sayısı: gün : saat
+>     : dakika geri sayımı ui2 başlıklarından KALKTI (Exhibitor Page kendi sayacını korur). "Visitors home" ve "Expo reports" adları menü · kırıntı yolu · sayfa başlığı ·
+>     tarayıcı sekmesinde aynı (panodaki "Reports →" bağı da "Expo reports →").
+> - **Commit:** LEENA eliza-next `6657d26` + düzeltme `6f76814` (aşağıda). Staging'de CANLI. Canlı `main` DEĞİŞMEDİ. Migration yok.
+> - **Ölçülenler:**
+>   - **Staging — 4.1 (salt okuma, araç hesapları):** Owner araç hesabı — "Sent" 17 satır (kendi gönderdikleri) · "All sent" **22 satır** (17 kendi + 5 başka araç
+>     hesabının; hepsi `echo`) · proje ve satış araç hesapları "All sent" isterse 409 `OWNER_REQUIRED`, kendi "Sent"leri 0 / 5 satır (önceki gibi). Suer'in hesabına
+>     GİRİLMEDİ (kural: Owner oturumunda görünüm var — testte ve Owner araç hesabında gösterildi; TUR-1b'nin 17 SAMPLE e-postası bu 22'nin içinde).
+>   - **Komisyon eşitlik tablosu (P8 sonrası ↔ P9 sonrası):** bütün toplamlar EŞİT — farkı olan temsilci 0 · ekstre 0 · fuar marjı 0 · kontrat kutusu 0 · TABAN 342.00 · TABAN-2 EŞİT. (P9 ölçümü dilim sonu
+>     temizliğinden SONRA alındı — P5'in SAMPLE ödemesi ters kayıtla kapatılmıştı; DİLİM BAŞI ↔ DİLİM SONU karşılaştırması kapanış kaydında.)
+>   - **Test:** yeni suite `test_aralik2_d4.js` (11 — A görünüm kuralı · F başlık seçicisi · L etiket / gün sayısı / adlar · B TABAN), zincirin sonunda.
+>     Zincir (`6f76814`, PG 14, ayrı checkout): 85 suite **1539 / 1539.**
+> - **Kendi hatam (rapora da girer):** `6657d26`'da Quotes sayfasına (teklif formunun fuar seçeneği — tek kısa etikete geçirirken) satır SONU yorumu ekledim; yorum
+>   satırın devamını yuttu → sayfanın betiği sözdizimi hatası verdi. Son sözdizimi taramasını bu düzenlemeden ÖNCE koşmuştum. Tam zincir yakaladı (`test_b1b_quotes` U1:
+>   85 suite, 1538 / 1539). Staging'de Quotes sayfası ~5 dakika (09:38–09:43 UTC) bozuk kaldı; `6f76814` ile düzeldi (staging'den sayfa çekilip derlendi: hata 0).
+> - **SAPMA (hükümle değişen test beklentisi — satırlarda D-4 notuyla):** `test_tur1b_expo` C3 (başlık seçicisinin düğmesi ad; tam etiket okunur) · X1 (kısa etiket tarih
+>   aralığı) · M5 (sayfa başlığı "Visitors home") · `test_tur1b_lists` F4 (kısa etiket) · `test_tur1a_fixes` (etiketin kaynak satırı) · `test_ui_tam_finance` U1 (fuarsız
+>   açılışta çıkmaz yok — en yakın fuar) · `test_ui_tam_sales` M4 (gönderen süzgeci yalnız Owner görünümünde kapalı).
+> - **Okuma kararları (raporda):** Owner olmayan `?view=all` isterse sessizce kendi listesi değil AÇIK ret (409) · "All sent" de en yeni 200 satırla sınırlı (mevcut sınır) ·
+>   pano başlığındaki "Doors open <gün>" rozeti geri sayım bileşeniyle birlikte kalktı (tarihi yineliyordu) · teklif formundaki fuar seçeneği de tek kısa etikete geçti
+>   (seçenek ucu bitiş gününü de verir) · tasarım önizlemesindeki prototip dosya adları ("Ops - Visitor & Access.html") prototipin kendi adlarıdır, dokunulmadı.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** Suer'in kendi Mail sayfası (hesabına girilmez) · Owner olmayan GERÇEK kullanıcıların sayfası (araç hesaplarıyla ölçüldü) · telefon
+>   genişliğinde başlık · Expo Finance / Expo budget'ta fuar değiştirince klasik ekranlara geçiş (ortak anahtar yazımı testte; tıklama akışı ölçülmedi) · canlı.
+> - **Bilinçle yapılmayanlar:** "All sent"i başka role açmak (Faz 4) · gelen kutusu (SATIŞ-1) · pano ucundaki `countdown` alanını kaldırmak (uç aynı; yalnız ekranda
+>   çizilmiyor) · klasik ekranların sekme adları.
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
