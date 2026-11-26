@@ -12709,6 +12709,46 @@
 >   ayrışması (bilinen, eski davranış — bu dilimde dokunulmadı) · klasik kontrat ekranında (`contract-detail.html`) oran kaynağı sözcüğü ("contract") tarayıcıda.
 > - **Bilinçle yapılmayanlar:** "rate missing" rolü toplu düzeltme ekranı (oran kontratın kendi atama ekranında yazılır) · War Room'a ayrı sayaç · SD bekleyenler.
 >
+> ## ✅ 2026-11-26 — DİLİM ARALIK-2 P4 + P6 (H2 · H5): HAVUZ PAYLARI — sürümlü ayar (migration 084), agent sayfasından girilir, denetimde; toplam < 100 "Unallocated N%" · > 100 reddedilir (🔶)
+>
+> - **Kriter kaynağı:** [defter:2026-11-26 SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ" + SENTEZ 26 Kas 09:20 "ARALIK-2 TEK PROMPT" (1. madde)] — C · H2 · H5 + Orchestrator U2 P4 · P6 · U3.
+> - **Ne yapıldı:**
+>   - **Şema — `084_aralik2_pool_shares.sql` (yalnız şema; SATIR YAZMAZ):** `pool_shares` — "şu günden itibaren bu üyenin bu havuzdaki payı şu" (havuz = `team` türündeki
+>     temsilci kaydı · üye = internal temsilci kaydı · pay 0–100, iki ondalık · geçerlilik başlangıcı). YALNIZ EKLENİR (UPDATE / DELETE / TRUNCATE veritabanında reddedilir;
+>     düzeltme = yeni sürüm). Bir günde geçerli pay = o güne kadar başlamış EN SON sürüm (aynı gün iki sürüm → sonra girilen) — tek tanım `utils/pool.js`.
+>   - **Giriş — `POST /api/pool/:id/shares`** (`agents.write` — bugün Owner + Finance şablonu; yeni izin açılmadı): üye internal kayıt olmalı (dış temsilci / ekip kaydının
+>     kendisi 422) · başlangıç BUGÜN ya da sonrası (geçmiş gün 400 — havuz geçmişe yürümez, YON-22) · toplam 100'ün ALTINDA ise kaydedilir, kalan "Unallocated N%" olarak
+>     görünür (uyarı, hata değil) · toplam, yeni sürümün ilk gününde YA DA sonraki bir planlı sürümün gününde 100'ü AŞARSA 409 ve HİÇBİR ŞEY kaydedilmez · pay 0 = o
+>     günden itibaren üyelik biter · her değişiklik AYNI işlemde tek denetim satırı (kim · ne zaman · hangi üye · eski → yeni · hangi günden).
+>   - **Okuma — `GET /api/pool`** (`commissions.read`, kapsam all — Commissions ile aynı duvar): ekip kaydı + oranı (kayıttaki ayar) · bugünkü üyeler ve payları · tahsis
+>     edilen / "Unallocated" · ileri tarihli planlı sürümler · sürüm geçmişi. **`GET /api/agents/:id/pool`** (ekstrenin kapısı): kaydın havuzla ilişkisi — havuzun kendisi ·
+>     üye · aday (payı olmayan internal kayıt) · hiçbiri; üye KENDİ kaydını okur, başkasınınkini okuyamaz.
+>   - **Ekran (H5 ayar özeti P4 ile birleşti):** Finance › Agent — ekip kaydında "Team pool" (kaydın oranı · bugünkü üyeler · "Unallocated N%" · planlananlar · pay giriş
+>     formu · sürüm geçmişi) · internal kayıtta "Pool share" (bugünkü pay · hangi havuz · giriş formu · kendi sürüm geçmişi). Sayfa hiçbir şey hesaplamaz.
+>   - **Bu adımda para YOK:** motor payları henüz okumuyor (P5) — hiçbir tutar değişmedi.
+>   - **Yan düzeltme (kendi bulgum, TUR-1a'dan kalma hata):** Agent sayfası "Contracts sold" satırı kontrat sayfasına `?id=` ile gidiyordu; sayfa `?contract=` okuyor
+>     ve bulamayınca varsayılan kontratı açıyordu → her satır aynı kontratı açıyordu. Bağ düzeltildi.
+> - **Commit:** LEENA eliza-next `769c538` (staging'de CANLI). Canlı `main` DEĞİŞMEDİ.
+> - **Migration (staging; commit'in checkout'undan):** dry-run (uygulandı + ROLLBACK) → apply (kayıt 85 → **86**) → ikinci apply **"Nothing to apply"**. Canlıya yazılmadı.
+> - **Ölçülenler:**
+>   - **Staging (uygulamanın kendi uçları; GERÇEK KİŞİYE PAY GİRİLMEDİ):** iki SAMPLE internal temsilci kaydı açıldı ("SAMPLE ARALIK-2 Member A / B (fictional)") →
+>     havuz önce üye 0 · "Unallocated 100.00%" · SAMPLE paylar girildi (iki sürüm, bugünden) → tahsis 50.00 · "Unallocated 50.00%" · retler: 100'ü aşan → 409
+>     `POOL_OVER_100` · geçmiş gün → 400 `SHARE_IN_THE_PAST` · dış temsilci → 422 `MEMBER_NOT_INTERNAL` · Project araç hesabı → 409 `PERMISSION_REQUIRED` · satır 0 → 2
+>     (retler satır yazmadı) · denetim satırı 2 (ikisinde de aktör). Tarayıcı: ekip kaydının ve SAMPLE üyenin sayfası — bölüm çizildi, giriş formu var, 36 px altı
+>     düğme 0, sayfa taşması 0, konsol hatası 0. SAMPLE paylar P5 para ölçümü için yerinde; dilim sonunda yeni sürümle 0'a çekilecek.
+>   - **Test:** yeni suite `test_aralik2_pool.js` (12: S1–S12) — zincir 82 suite **1466 / 1466** (tam koşuda 1465 yeşil + aşağıdaki A1, beklentisi güncellendikten sonra
+>     kendi suite'i yeniden koşuldu: 35 / 35). Motor bu adımda değişmediği için eşitlik tablosu P3'ünkü (toplam 286.580,52 · TABAN 342.00 · TABAN-2 EŞİT).
+> - **Okuma kararları (raporda):** (1) geçerlilik başlangıcı bugün ve sonrası — Orchestrator okuması aynen · (2) **toplam > 100 → KAYDEDİLMEZ (🔶 — Sentez hükmü yok;
+>   Orchestrator "KAYDETME, 🔶")**; denetim yalnız yeni sürümün ilk gününde değil, sonraki planlı sürümlerin günlerinde de yapılır · (3) şemaya "havuz" kolonu konuldu
+>   (`pool_agent_id`): bugün tek ekip kaydı var; birden çok olursa pay hangi havuza ait sorusu şemada cevaplı · (4) üye = internal temsilci KAYDI (kullanıcı hesabı
+>   şart değil) · (5) pay girişi `agents.write` olan herkese açık — bugün Owner ve Finance şablonu (Sentez "Owner girer (bugünkü agents.write)").
+> - **SAPMA (hükümle değişen test beklentisi):** `test_aralik1` A1 — satıcı listesini ortak yardımcıdan isteyen sayfa listesine `finance-agent.html` eklendi (üye seçim
+>   kutusu; kural aynı: liste YALNIZ ortak yardımcıdan istenir).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** gerçek üyelerle pay girişi (kişiler adlandırılmadı; payları Suer girecek) · Finance şablonlu bir hesapla staging'de pay girişi
+>   (o şablonda araç hesabı yok — yerel testte ölçüldü) · B2 düzeni ve 1280 px'te havuz bölümü (kapanış turunda) · iki kişinin aynı anda pay kaydetmesi (kilit kodda;
+>   yarış koşusu yapılmadı).
+> - **Bilinçle yapılmayanlar:** payların para karşılığı (P5) · havuz sahibine devir (Faz 4) · üyelik için ayrı izin kodu · pay sürümünü silme / düzeltme.
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
