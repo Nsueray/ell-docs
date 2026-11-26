@@ -12807,6 +12807,99 @@
 > - **Bilinçle yapılmayanlar:** yazılı pay satırı / hak ediş tablosu (türetme korunur) · üyeye ödeme planı · motorun her istekte bütün ödemeleri dilimlemesi (hız
 >   kuyruğu) · kontrat sayfası kutusunda bölüşüm (kutu rolün tam tutarını gösterir).
 >
+> ## ✅ 2026-11-26 — DİLİM ARALIK-2 P7 (Ş1–Ş4): TEK ŞABLON DEPOSU — Admin › Templates; zincir · hatırlatma · quote e-postası metni oradan okunur; önce taşıma eşitliği (bayt bayt), sonra hükümlü selam değişikliği
+>
+> - **Kriter kaynağı:** [defter:2026-11-26 SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ" + SENTEZ 26 Kas 09:20 "ARALIK-2 TEK PROMPT" (1. madde)] — C · Ş1–Ş4 + §0.3 / §0.4 dalları + Orchestrator U2 P7 · U3 "Ş".
+> - **Ne yapıldı (iki commit — önce eşitlik, sonra değişiklik):**
+>   - **(1) Taşıma / tohumlama — migration 085 (şema + veri, yalnız runner):** iki tablo — `mail_templates` (şablon: tür + ad; tür başına TEK varsayılan — kısmi tekil
+>     indeks) · `mail_template_versions` (dil başına metin, sürümlü, yalnız eklenir — tetik). Gönderim kayıtlarına şablon sürümü kolonu (`exh_mail_log` ·
+>     `communications`). §0.3'ün ölçtüğü yerlere göre: **KODDA duran metinler TOHUMLANDI** (yedi zincir metni — `exhibitor-mail/*.json`: EN 7 · FR 6 — ve
+>     hatırlatmanın koddaki tek metni; dört hatırlatma türü aynı metinle başlar) — dosyadan üretilip migration'a bayt bayt yazıldı; **DB'de duran satırlar TAŞINDI**
+>     (organizatörün Payment Reminder satırları — 080 — ve quote e-postası satırları — 061). Eski iki tablo yerinde, artık okunmuyor. Fuarın 7 metin bloğu TAŞINMADI
+>     (Expo settings'te; şablon onları yalnız satır işaretiyle anar).
+>   - **Yer tutucu yazımı ÇİFT süslü (Ş2) — eşleme (§0.3 tablosundan):** `{balance}` → `{{balance}}` · `{due_date}` → `{{due_date}}` · `{contract_no}` →
+>     `{{contract_no}}` · `{payment_link}` → `{{payment_link}}` · `{expo}` → `{{expo_name}}` (motorun zaten var olan alanı). Zincir metinlerinin çift süslü alanları
+>     ve quote setinin 9 adı aynen. Tür başına PALET: zincir / hatırlatma / quote / serbest; tutar-vade-ödeme bağı yer tutucuları yalnız ödeme türlerinde.
+>   - **Asgari katalog** (13 ad) + **bugünkü metinler aynı kalsın diye kataloğa EKLENENLER** (bugünkü metinlerin kullandığı, asgaride olmayan 19 ad):
+>     `contract_no` · `quote_number` · `total_gross` · `valid_until` · `what` (hatırlatmanın konu özeti) · `stand_no` · `stand_m2` · `stand_type` ·
+>     `catalogue_deadline` · `stand_deadline` · `payment_deadline` · `onsite_price_from` · `buildup_days` · `max_height` · `expo_start` · `contractor_company` ·
+>     `contractor_contact` · `contractor_email` · `contractor_phone`. (Motorun doldurabildiği öbür alanlar da palette; kullanılmıyorlar.)
+>   - **Gönderim depodan okur:** zincir (`utils/exhChain.js`) · hatırlatma (`utils/exhMail.js` — açtığı bölümün türündeki şablonu alır) · quote e-postası
+>     (`utils/salesMail.js`). Tek model dosyası `utils/mailTemplates.js`. 085 uygulanmamış veritabanı eski yerlerden okur (aynı metin) — dağıtım → migration arası
+>     kırılmaz. Davetle açılan yeni organizatör yerleşik metinlerle başlar.
+>   - **Kurallar (Ş2):** bilinmeyen yer tutucu · tek süslü yer tutucu · bilinmeyen satır işareti KAYDI DURDURUR (yanıt adlarını verir) ve önizlemede işaretlenir.
+>     Aynı kural GÖNDERİM anında da geçerli (depoya başka yoldan girmiş metin gönderilmez — satır "Blocked", ad yazılı). Alıcı için değeri çözülemeyen yer tutucu
+>     e-postayı durdurur (`balance` · `currency` · `due_date` · `contract_no` · `payment_link` · `page_link`). Boş dil varsayılan olamaz kuralı: İngilizce metni
+>     olmayan şablon varsayılan yapılamaz; gönderimde eksik dil İngilizceye düşer (bugünkü kural). Gövde düz metin, HTML'e kaçışla.
+>   - **Uçlar `/api/mail-templates`:** liste (gruplar: Chain e-mails · Reminders · System e-mails · Sales templates — boş · Free) · tek şablon · yeni / kopya ·
+>     kaydet (= yeni sürüm) · Revert (= eski metin yeni sürüm olarak) · varsayılan · seçilen kayıtla önizleme (editördeki metin, kaydedilmemiş olsa da) ·
+>     "Send test to myself" (kayıtlı metin; staging'de echo; katılımcıya hiçbir şey gitmez, sayfa bağı üretilmez). Eski `/api/sales-templates` adresi depodan
+>     yanıt verir. **Yetki: bugünkü `templates.write` (Owner).** Yeni izin açılmadı; grup bazlı ayrım (Proje → Chain / Reminders / System) bugünkü izin
+>     mekanizmasıyla yapılamıyor → **Faz 4 notu** (yanıtta ve sayfada yazılı).
+>   - **Elle gönderim (Ş3 — Operations › Exhibitors):** "Send e-mail…" ve "Remind…" türün varsayılan şablonunu kullanır, aynı türün başka şablonu seçilebilir;
+>     önizleme = ilk alıcının alacağı e-posta, **GÖVDE DAHİL** (önce: "Send e-mail…" yalnız konuyu basıyordu, "Remind…" önizlemesinde metin hiç yoktu). Gönderim
+>     kaydı şablon sürümünü taşır. TUR-1b kuralı sürer (yalnız tek fuar seçiliyken).
+>   - **(2) Hükümlü metin değişikliği — migration 086 (veri, yalnız runner):** Payment Reminder'ın sabit selam satırı ("Dear Exhibitor," · FR karşılığı) →
+>     `Dear {{contact_name|"Exhibitor"}},` (kişi yoksa aynı sabit sözcük). YENİ SÜRÜM olarak yazıldı (taşınan metin bir önceki sürüm olarak durur, geri alınabilir);
+>     başka hiçbir satır değişmedi. Öbür zincir metinleri zaten adla selamlıyordu. Ş2'nin başka metin hükmü yok (çift süslü yazım taşımada).
+> - **Commit:** LEENA eliza-next `0953d12` (1 — taşıma) · `0d35abf` (2 — selam). Staging'de CANLI; migration 085 + 086 staging'de (dry-run → apply → ikinci apply
+>   "Nothing to apply"; kayıt 86 → 88). Canlı `main` DEĞİŞMEDİ; canlıya migration yazılmadı.
+> - **Ölçülenler:**
+>   - **Ş4 METİN EŞİTLİĞİ — yerel, sabit fikstür (69 e-posta; taşımadan ÖNCEKİ kodla üretilen altın dosya ↔ bu kod; konu + HTML + düz metin, bayt bayt):**
+>
+>     | tür × dil | karşılaştırılan | commit 1'de aynı | commit 2'de aynı / yalnız selam satırı farklı |
+>     |---|---|---|---|
+>     | Welcome × EN / FR | 6 / 4 | 6 / 4 | 6 / 4 — 0 |
+>     | Stand — Equipped × EN / FR | 4 / 2 | 4 / 2 | 4 / 2 — 0 |
+>     | Stand — Space-only × EN / FR | 2 / 2 | 2 / 2 | 2 / 2 — 0 |
+>     | Catalogue × EN / FR | 6 / 4 | 6 / 4 | 6 / 4 — 0 |
+>     | Build-up & Breakdown × EN (FR metni yok) | 10 | 10 | 10 — 0 |
+>     | Payment Reminder × EN / FR | 6 / 4 | 6 / 4 | 2 / 0 — 4 / 4 |
+>     | Badge × EN / FR | 6 / 4 | 6 / 4 | 6 / 4 — 0 |
+>     | Reminder — Catalogue · Stand · Badges · Payment × EN | 2 · 2 · 1 · 1 | hepsi | hepsi — 0 |
+>     | Quote e-mail × EN / FR / TR | 1 / 1 / 1 | 1 / 1 / 1 | 1 / 1 / 1 — 0 |
+>
+>     Commit 1: **69 / 69 EŞİT.** Commit 2: 61 EŞİT + 8 e-posta YALNIZ selam satırında farklı (kişi adı olan katılımcıların Payment Reminder'ı); kişi adı olmayan
+>     katılımcının e-postası eskisiyle bayt bayt aynı. Türkçe alıcı İngilizce metni alır (dil eksik işaretiyle) — eskisi gibi. Fikstürde kaçış gerektiren değer var
+>     (firma adı işaretleme içerir): HTML'de metin olarak çıkıyor.
+>   - **085 uygulanmadan (yeni kod, eski yerlerden okuma):** aynı 69 e-posta EŞİT (yerel, araçla) · staging'de 7903 önizlemeleri EŞİT.
+>   - **Staging — SAMPLE kayıt 7903, ürünün kendi önizleme ucu (salt okuma), üç an: dağıtımdan önce → yeni kod / migration öncesi → migration 085 sonrası:**
+>     Welcome · Stand · Catalogue · Build-up · Payment Reminder · Badge (EN) — altısı da üç anda **EŞİT (bayt bayt)**; quote e-postası metni EN / FR / TR EŞİT.
+>     086'dan sonra: beşi EŞİT, Payment Reminder yalnız selam satırında farklı (sabit sözcük → kaydın SAMPLE kişi adı).
+>   - **Kuyruk (otomatik zincir staging'de AÇIK):** geçiş boyunca kuyruk 571.097 → 571.097, gönderim kaydı 50 → 50; aradaki tek iki satır CC'nin denemesi
+>     (ikisi de `echo`). Aynı katılımcı · aynı e-posta · aynı gün çift gönderim: **0.**
+>   - **Staging denemeleri (yalnız 7903, echo):** Owner araç hesabı listeyi görür (12 varsayılan şablon; "Sales templates" boş, "Free" boş) · proje ve satış araç
+>     hesapları 409 `PERMISSION_REQUIRED`, dış hesap 409 `EXTERNAL_NOT_ALLOWED` · tek süslü + bilinmeyen yer tutuculu metin 400 `PLACEHOLDER` · "Send e-mail…"
+>     dört türde önizleme gövdeli (1.175–1.595 karakter) · "Remind…" beş seçenekte gövdeli; bölüme göre tür (Stand / Catalogue / Badges / Payment) · SAMPLE şablon
+>     seçilince önizleme o metin · başka türün şablonu 400 `UNKNOWN_TEMPLATE` · seçili şablonla gönderim: kuyruk `echo`, gönderim kaydında şablon sürümü yazılı ·
+>     "Send test to myself": `echo`, araç hesabının kendi adresine, konu "[TEST] …", sayfa bağı YOK.
+>   - **Komisyon eşitlik tablosu (P5 sonrası ↔ P7 sonrası, staging verisi, gerçek fonksiyonlar):** bütün satırlar EŞİT — toplam hak ediş · farkı olan temsilci 0 ·
+>     kontrat × rol 0 · 49 ekstre 0 · fuar marjı 0 · kontrat kutusu 0 · TABAN 342.00 · TABAN-2 EŞİT (tek fark migration sayısı 86 → 88).
+>   - **Test:** yeni suite `test_aralik2_templates.js` (35 — S taşıma / tohum · T hükümlü değişiklik · E eşitlik · R deponun kuralları · M elle gönderim ·
+>     P sayfalar · B TABAN), zincirin sonunda; altın dosya `tests/fixtures/aralik2_mail_golden.json` (taşımadan önceki kod `d155879` ile üretildi). Zincir
+>     (`0d35abf`, PG 14, ayrı checkout): 83 suite **1514 / 1514.**
+> - **Staging'de bırakılan:** iki SAMPLE şablon (varsayılan DEĞİL; adları "SAMPLE — …(CC)": Catalogue türünde bir, Reminder — Catalogue türünde bir) — şablon silme
+>   yolu yok (hüküm yok); Suer'in turunda "aynı türün başka şablonu" seçimini gösterir. Varsayılanlar ve metinleri taşındığı gibi (Payment Reminder sürüm 2 = selam).
+> - **SAPMA (hükümle değişen test beklentisi / fikstür — satırlarda hüküm numarasıyla):** `test_aralik1_settings` M8 (değer yer tutucularının listesi artık
+>   `utils/mailTemplates.js`'te) · M12 (`{balance}` → `{{balance}}`) · M13 fikstürü (bozuk metin depoya da ekilir — zincir oradan okur) · `test_b3_comm` E1
+>   (denetim satırı deponun şablonunu adlandırır) + temizlik · `test_ui_tam2_chain` T2 fikstürü (organizatörün kendi metni = depoda yeni sürüm) ·
+>   `test_kabuk2_menu` M6 (sayfa seçilen şablonu da gönderir) · `test_guv` temizliği (davetle açılan organizatörün tohumlanan şablonları).
+> - **Kendi hatam (commit 1'in ilk zincirinde):** davetle açılan organizatöre şablon tohumu ekleyince `test_guv` temizliği yabancı anahtara takıldı; aynı koşuda
+>   artık kalan organizatörler bir sonraki suite'in sayımını da bozdu (2 kırmızı, ikisi de bu kökten). Temizlik düzeltildi; iki suite tek tek + tam zincir yeşil.
+> - **Okuma kararları (raporda):** hatırlatma tek e-postadır, dört türün metni aynı tohumla başlar; e-posta, düğmesinin açtığı bölümün türündeki şablonu alır ·
+>   Stand e-postasının iki türü var — seçilen şablon yalnız kendi stand türündeki katılımcıya uygulanır · seçilen şablonun alıcının dilinde metni yoksa AYNI
+>   şablonun İngilizcesine düşülür (varsayılanın o dildeki metnine değil) · "Send test to myself" kayıtlı metni gönderir ve önizleme gibi sayfa bağı taşımaz ·
+>   gönderen yer tutucuları: `sender_email` = e-postanın yanıt kutusu (proje / finans), `sender_name` = kontratın tüzel kişisi, `sender_office` = kontratın
+>   doğduğu teklifin ofisi (göçle gelen kontratta boş) · şablon SİLME yok (hüküm yok).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** staging'de hatırlatmanın "eski yol = yeni yol" karşılaştırması (eski kodda hatırlatma önizleme ucu yoktu — eşitlik yerel altın
+>   dosyadaki 6 hatırlatmada) · staging'de quote e-postasının ÜRETİLMİŞ hali (metin satırları karşılaştırıldı; üretim yerel altın dosyada) · 7903 dışındaki
+>   kayıtlar ve Fransızca / Türkçe alıcı staging'de (yalnız 7903 — İngilizce) · otomatik zincirin bir sonraki tikinde gönderdiği e-posta (geçişten sonra tik
+>   gönderimi gözlenmedi; kuyruk sayısı değişmedi) · canlıdaki eski tablolarda düzenlenmiş satır olup olmadığı (canlıya temas yok — 085 orada bulduğunu taşır) ·
+>   tarayıcıda şablon sayfasının tıklama akışı (uçlar + ilk çizim + ekran görüntüsü ölçüldü) · telefon genişliği.
+> - **Bilinçle yapılmayanlar:** sistem e-postalarının sabit metinleri (Changes requested · Approved · New link · kod · sipariş onayı — hüküm listesinde yok,
+>   kodda kaldı) · klasik ziyaretçi e-posta şablonları (`email_templates` — başka evren) · Sales templates içeriği (SATIŞ-1) · gelen kutusu · zamanlama / tetik
+>   (EXH-17) · proje ekibine grup bazlı düzenleme (Faz 4) · eski iki tablonun kaldırılması.
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
