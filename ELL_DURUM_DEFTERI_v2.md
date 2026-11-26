@@ -12749,6 +12749,64 @@
 >   yarış koşusu yapılmadı).
 > - **Bilinçle yapılmayanlar:** payların para karşılığı (P5) · havuz sahibine devir (Faz 4) · üyelik için ayrı izin kodu · pay sürümünü silme / düzeltme.
 >
+> ## ✅ 2026-11-26 — DİLİM ARALIK-2 P5 (H4): HAVUZ DAĞITIMI TEK MOTORDA — yeni dilim türü "pool", okumada türetilir; pay tanımlansa da hiçbir toplam bir kuruş değişmez; ekip kaydına payout yazılmaz
+>
+> - **Kriter kaynağı:** [defter:2026-11-26 SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ" + SENTEZ 26 Kas 09:20 "ARALIK-2 TEK PROMPT" (1. madde)] — C · H4 + Orchestrator U2 P5 · U3.
+> - **Ne yapıldı:**
+>   - **Motor (`utils/commissionSlices.js` — MOT-01, tek yer):** ekip (`team`) kaydının her dilimi (ödeme × kontrat × rol), ÖDEME GÜNÜNDE geçerli pay sürümleriyle
+>     üyelere bölünür: üyeye "pool" türünde satır (dilim × pay %), ekip kaydının kendi satırında KALAN. Ters kayıt (storno) kendi günüyle değil, tersine çevirdiği
+>     ödemenin günündeki sürümle bölünür (verileni aynen geri alır). Üyenin ilk sürümünden ÖNCEKİ günün ödemesi dağıtılmaz (havuz geçmişe yürümez — ekipte kalır).
+>     Hiçbir şey saklanmaz; hiçbir okuyucu kendi başına pay hesaplamaz.
+>   - **Yuvarlama kuralı (tek kural, test + staging):** üyenin bir dilimden aldığı pay KURUŞA yuvarlanır; o dilimin yuvarlama farkı EKİP KAYDINDA kalır. Sonuç: her
+>     kırılımda (dönem · fuar · tüm zaman) "ekip satırı + üyelerin payları = ekibin dilimi" kuruşu kuruşuna, ve HİÇBİR okuyucunun toplamı pay girilince değişmez.
+>   - **Okuyucular aynı motor metnini ister (`sliceCtes`):** kesim raporu (üye dilimi "pool" türünde, uygulanan pay %'siyle) · Commissions listesi (üyede `pool_eur` —
+>     "incl. pool"; ekip satırı KALIR: hak ediş = dağıtılmayan, yanında havuzun toplamı ve dağıtılan; durumu "Unallocated" / "Distributed to members") · agent ekstresi
+>     (üye bakiyesi = kendi hak edişi + havuz payı − payout; ekip kaydında havuz özeti) · "Contracts sold" (ekip kaydında havuzun TAM hak edişi) · Ledger özeti ·
+>     fuar marjı (RAP-18) · göç mutabakatı. `GET /api/agents/:id/pool` parayı da taşır (üye: dönem · ekip hak edişi · pay % · tutar; havuz: hak ediş = dağıtılan +
+>     dağıtılmayan, üye üye).
+>   - **Ekip kaydına payout YAZILMAZ:** uç reddeder (409 `POOL_NO_PAYOUT` — ters kayıt dahil), klasik ekstre ekranı formu çizmez. Eski payout'a dokunulmaz.
+>   - **084 öncesi şema:** motor metni pay tablosunu anmayan boş-havuzlu biçimiyle döner (aynı sütunlar, aynı sayılar) — dağıtım → migration arası kırılmaz.
+>   - Ekranlar: Finance › Agent ("Pool earned · Distributed to members · Unallocated" kutuları; üyede "Pool share received" tablosu, "incl. pool") · Finance ›
+>     Commissions (Earned'ın altında "incl. pool …" / ekip satırında "pool … · distributed …") · My commissions ("incl. pool").
+> - **Commit:** LEENA eliza-next `b3b2616` (motor + okuyucular + ekranlar) · `d155879` + `9127717` (hız — aşağıda). Staging'de CANLI. Canlı `main` DEĞİŞMEDİ. Migration yok.
+> - **Ölçülenler (staging):**
+>   - **Pay tanımlıyken, havuza ödeme yokken (P3 → P5 kodu):** motor satırları ve bütün okuyucu toplamları EŞİT (toplam 286.580,52 · farkı olan temsilci 0 · TABAN
+>     342.00 · TABAN-2 EŞİT). Tek fark P4'te açılan iki aktif SAMPLE üyenin (sıfır tutarlı) Commissions listesinde görünmesi (47 → 49 satır; Settled 14 → 16).
+>   - **SAMPLE ödeme (CC'nin SAMPLE siparişi 7904, satıcısı ekip kaydı; uygulamanın ödeme ucuyla, bugünün tarihiyle — SAMPLE payların ilk günü):** ekip dilimi 20,00 →
+>     SAMPLE üye A 6,00 (%30) · B 4,00 (%20) · ekip kaydında kalan 10,00. Her okuyucunun toplamı TAM +20,00 oynadı (motor 286.580,52 → 286.600,52 · kesim raporu ·
+>     Commissions hak ediş / ödenecek · 49 ekstre · Ledger özeti · fuar marjı) — farkı olan temsilci 3 (ekip kaydı + iki SAMPLE üye), başka kimse değil. Kesim
+>     raporunda 7904'ün dilimleri: ekip "sr" 10,00 · üye "pool" %30 6,00 · üye "pool" %20 4,00. TABAN 342.00 · TABAN-2 EŞİT.
+>   - **Değişmez (aynı veride motorun havuzlu ve havuzsuz metni):** toplam 286.600,52 = 286.600,52 · temsilci başına yuvarlanmış toplamların toplamı EŞİT · dönem ×
+>     temsilci toplamı EŞİT · fuar başına toplam EŞİT; değişen yalnız bölüşüm (pool satırı 2 · temsilci 27 → 29). "ekipte kalan + dağıtılan = ekibin tam hak edişi".
+>   - **Ekip kaydına payout:** 409 `POOL_NO_PAYOUT`; kayıtta payout satırı 0 (eski payout yok).
+>   - **Ekranlar (Owner araç hesabı, 1440):** Commissions (SAMPLE üyelerde "incl. pool", ekip satırında "Unallocated") · ekip kaydının sayfası · SAMPLE üyenin sayfası
+>     ("Team earning" tablosu) · klasik ekstre (ekip kaydında payout formu YOK) — konsol hatası 0, sayfa taşması 0.
+>   - **Test:** `test_aralik2_pool.js` 12 → **25** (M1–M12: paysız hiçbir satır değişmez · ödeme günündeki sürüm · ilk sürümden önceki ödeme dağıtılmaz · storno asıl
+>     ödemenin sürümüyle · yuvarlama kuralı · kuruluşun toplamı pay girilince aynı · Commissions / ekstre / kesim raporu / sayfa uçları / "Contracts sold" / fuar marjı ·
+>     payout reddi · tek motor · ekranlar; B1 TABAN) — zincir 82 suite **1479 / 1479** (`d155879`; PG 14, ayrı checkout'ta); `9127717`'den sonra
+>     dokunduğu iki suite yeniden koşuldu (`test_aralik2_pool` 25 / 25 · `test_aralik1` 35 / 35 — A1 beklentisi ilk haline DÖNDÜ: agent sayfası satıcı listesini artık istemiyor).
+> - **HIZ — kendi hatam + düzeltmesi (rapora da girer):** P5 sonrası süre turunda `GET /api/commissions/agents` sunucuda **166 ms → 7,2 sn** çıktı (Commissions sayfası
+>   1,0 → 7,9 sn). Neden P5 değil, **P3'te eklediğim "rate missing" koşuluydu** (temsilci başına bütün kontratları tarayan ilişkili alt sorgu; P3'ten sonra süre
+>   ölçmemiştim). Tek geçişli birleştirmeye çevrildi → **~0,3 sn**. Aynı turda motorun havuz kısmı da yeniden yazıldı: ara satırlar iki kez okunduğu için saklanıyor
+>   ve tek kontrat süzgeci ödemelere inemiyordu (geçiş başına ~100–280 ms) → tek geçiş: ekip satırı başına bir pay araması (havuzun ilk pay gününden önceki
+>   ödemelerde hiç başlamaz), dilim ifadesi satır başına bir kez. Sonuç aynı veride satır satır EŞİT (ilk havuz motoru ↔ tek geçişli motor). Ekip kaydının sayfası
+>   iki ek isteği art arda atıyordu → havuz isteği sayfanın ilk istekleriyle aynı anda, üye seçim listesi aynı yanıtta.
+> - **Süre — önce / sonra (staging · Owner araç hesabı · 1440 · 3 koşu ortancası; sunucu süresi = erişim kaydı):** Commissions ucu 166 → 286 ms · ekstre 592 → 604 ms ·
+>   "Contracts sold" 700 → 727 ms · Ledger özeti 264 → 295 ms · fuar ucu 236 → 279 ms · kesim raporu 64 → 75 ms · War Room ucu 1.277 → 1.317 ms. Sayfa
+>   toplamları (verinin tamamlandığı an): War Room 1,90 → 2,46 sn · ekip kaydının sayfası 1,33 → 2,32 sn · agent sayfası 1,47 → 1,92 sn · Expo Finance 1,48 → 1,60 sn ·
+>   Ledger özeti 0,89 → 1,46 sn · Commissions 1,04 → 1,36 sn · kesim raporu 0,69 → 1,33 sn. **2 sn'yi geçen:** War Room (sunucu süresi değişmedi) ve ekip kaydının
+>   sayfası (havuz bölümünün isteği eklendi). Not: sunucu süresi değişmeyen sayfalarda da toplam 0,4–0,6 sn arttı (ör. kesim raporu: sunucu 64 → 75 ms, sayfa 0,69 →
+>   1,33 sn) — iki ölçüm arasında ağ yolu yavaşladı; karşılaştırılabilir olan sunucu süreleridir. Kapanışta aynı anda kontrol sayfasıyla yeniden ölçülecek.
+> - **Okuma kararları (raporda):** havuz geçmişe yürümez (Orchestrator okuması aynen) · storno asıl ödemenin sürümüyle (aynen) · yuvarlama farkı ekip kaydında ·
+>   ekip satırının `status` alanı bakiyeden türemeye devam eder (sayaçlar değişmesin), ekranda sözcük "Unallocated" / "Distributed to members" (`pool_state`) ·
+>   ekip kaydına ters kayıt dahil hiçbir payout satırı yazılmaz.
+> - **SAPMA (hükümle değişen test beklentisi):** `test_tur1a_money` E1 — motor metninin özeti (H4: "pool" dilimi; pin `SLICE_CTES` = pay tablosunu anmayan metin).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** gerçek üyelerle dağıtım (paylar girilmedi) · staging'de storno ve sürüm değişimi sonrası dağıtım (yerel testte) · transfer edilen bir
+>   ekip kontratında kopyalanan ödemenin hangi sürümle dağıtıldığı (kopya yeni bir ödeme satırıdır, kendi günündeki sürümle dağıtılır — test yazılmadı) · canlıdaki
+>   ekip kaydında eski payout olup olmadığı (canlıya temas yok) · telefon genişliği.
+> - **Bilinçle yapılmayanlar:** yazılı pay satırı / hak ediş tablosu (türetme korunur) · üyeye ödeme planı · motorun her istekte bütün ödemeleri dilimlemesi (hız
+>   kuyruğu) · kontrat sayfası kutusunda bölüşüm (kutu rolün tam tutarını gösterir).
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
