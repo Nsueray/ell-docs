@@ -12425,6 +12425,189 @@
 >   taşınmadı (hedefin altında) · test satırındaki eski sayım geçmişi yerinde (dosyanın başı — sabit bölüm).
 > - **Rapor:** `~/ell-ui-tools/tur-1/RAPOR_TUR-1b.md` (repo dışı; 8 bölüm; 3 karar sorusu: Mail görünümü · "All expos" süresi · Budget / Expo Finance seçicisi).
 >
+> ## ✅ 2026-11-26 — SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ" + SENTEZ 26 Kas 09:20 "ARALIK-2 TEK PROMPT" (1. madde) — AYNEN
+>
+> - **KB @ 4a32aad** — Sentez projesine defter + kütük (ell-docs `main` = `4a32aad` içeriği) Sentez tarafından YÜKLENDİ (26 Kas; Sentez bloğu A). Orchestrator
+>   projesine defter yüklendi (Suer); kütük Suer'de bekliyor — kopyası Drive ELL-Handoff/00-KB'de (Sentez'in bildirdiği; CC ölçmedi).
+> - **Kaynak ve sıra (Orchestrator 26 Kas 2026 — prompt dosyadan):** bu oturumun promptu diskteki tek dosyadır (`PROMPT_ARALIK-2.md`); bütünlüğü işe
+>   başlamadan ÖLÇÜLDÜ (sha256 `6d3591d1c3f12810cad8f3a9eafa9cc3d3a57ce34211c61775f112e5f02581f9` · 27.256 bayt · 285 satır · son satır
+>   "═══ BLOK SONU ═══" — dördü beklenenle AYNI). `PROMPT_ARALIK-2a.md` İPTAL (okunmadı, uygulanmadı). Dosya üç bölüm: (I) Sentez 26 Kas bloğu, AYNEN
+>   (95 satır) · (II) Sentez 26 Kas 09:20 bloğunun 1. maddesi, AYNEN (17 satır; 2. madde Orchestrator'a Drive tarifidir — klasör kimlikleri deftere
+>   girmesin diye alınmadı) · (III) Orchestrator UYGULAMA (K · U0–U5). Öncelik: (II) > (I) > UYGULAMA > mockup.
+> - **Bu dilim = ARALIK-2, TEK prompt (bölünmez — (II)):** §0 (0.1–0.5) → H (H2 · H3 · H4 · H5) → Ş (Ş1–Ş4) → S3 → D-4 (4.1–4.3) → belge. Her parça ayrı commit +
+>   defter kaydı; tek rapor sonunda. Ara soru yok: karar gerekirse en kilitli hükümle devam, SAPMA raporlanır (YON-16 · YON-18). DUR KURALI: her parçadan sonra
+>   TABAN 342.00 + TABAN-2 + hak ediş toplamı; fark çıkarsa o parçada durulur. KAPSAM DIŞI: gelen kutusu · Sales templates içeriği (→ SATIŞ-1) · U2 farkları ·
+>   gizli sütun öncelikleri · co-exhibitors · Expo settings düzeni (→ TUR-2) · hız işleri (→ hız kuyruğu) · zamanlama / tetik (EXH-17) · CANLI (okuma dahil — S2).
+> - **SENTEZ 26 Kas — AYNEN (95 satır):**
+>
+> ```
+> SENTEZ → ORCHESTRATOR — TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ (26 Kas)
+>
+> A. TUR-1b — KABUL
+> - P1–P6 · P8 TAMAM; P7 KISMEN KABUL (gelen kutusu yolu yok → şema açılmadı; prompt'taki doğru dal). Kendi doğruladıklarım
+>   (staging 26 Kas): kabukta fuar kutusu yok · Exhibitors "40 exhibitors · Upcoming + ongoing · 9 expos", Expo sütunu,
+>   sıralanabilir başlıklar, çok fuarda toplu işlemler pasif · defter 4a32aad'de P4–P8 + kapanış · kütükte UI-17 · UI-18 ·
+>   UI-19 · EXH-22 · EXH-23 · TAH-02 değişikliği. Test 1433 · süre tablosu · eşitlik testi: CC ölçümü, kabul.
+> - SAPMA 1–11 KABUL. SAPMA 8'deki test beklentisi değişiklikleri (4 grup) TEYİT. CC'nin bildirdiği 3 hata düzeltilmiş, kabul.
+> - Genişlik kararı uygulandı; 1440 A'da kazanç yok — bilerek kabul (kazanç 1680+; Agents'ta 3 gizli = öncelik 3, doğru).
+> - KB: Sentez projesine defter + kütük (ell-docs main = 4a32aad içeriği) YÜKLENDİ (Sentez, 26 Kas). Orchestrator projesine
+>   defter yüklendi (Suer); kütük Suer'de bekliyor — kopyası Drive ELL-Handoff/00-KB'de. Deftere "KB @ 4a32aad" satırı
+>   ARALIK-2'nin ilk kaydına.
+>
+> B. KARARLAR
+> S1 (Mail'de kim neyi görür) → a — SUER KARARI (26 Kas): Owner "herkesin gönderdikleri" görünümünü görür (salt okuma, şema
+>    yok); başka role açma Faz 4. Gelen kutusu SATIŞ-1'in konusu (U3b tasarımı), bu dilimde yok. SAMPLE e-postalar böylece
+>    Suer'in sayfasında görünür.
+> S2 (canlıdan salt okuma) → a + ek: canlıdan okuma YALNIZ Sentez bloğu açıkça "canlıda ölç" diyorsa; sorgu metni ve sayısı
+>    raporda; her canlı temas (okuma dahil) SAPMA listesine MUTLAKA yazılır (TUR-1b raporunda yazılmamıştı — bu da kuraldır).
+>    YON'a girer. Lead scanner sayımı (1 kayıt, fuar 3, Şub 2026) kabul edildi, tekrar ölçülmez.
+> S3 (U2'nin hükümsüz 5 farkı) → a: TUR-2'de UX ile hükme bağlanır. Not: "More filters" ve "Inactive adın altında" Sentez
+>    24 Kas 22:40'ta KABUL edilmişti (UX bloğu) — onlar hüküm, TUR-2'de uygulanır; kalan üçü (ad bağı · New çipi · Top expos
+>    marj hücresi) TUR-2'de karar.
+> CC Soru 2 ("All expos" 2,4–3,4 sn) → a: kabul; hız kuyruğu (katalogdan önce değil).
+> CC Soru 3 (Budget · Expo Finance düz seçim kutusu) → a: başlık seçicisi, ARALIK-2 D-4'te.
+> Tur bulguları: (1) başlıkta iki gün sayısı → TEK sayı: "in 6 days" kalır, D:H:M geri sayımı ui2 başlıklarından KALKAR
+>    (Exhibitor Page "6 days to the show" kalır). (2) tarih iki kez → etiket "test · 2–4 Dec 2026 · SAMPLE City, Turkey ·
+>    Upcoming · in 6 days" (tek tarih aralığı; tek fonksiyon). (3) üç ad → her yerde "Visitors home"; sekme adı "Expo reports".
+>    (4) varsayılan gizli sütunlar → TUR-2 (UX). (5) doğru. (1)–(3) ARALIK-2 D-4'te.
+>
+> C. DİLİM ARALIK-2 — KOMİSYON HAVUZU · ŞABLONLAR · MAKBUZ ↔ ÖDEME · KÜÇÜKLER
+> Sınırlar: staging; canlıya dokunulmaz (okuma dahil — S2); TABAN 342.00 + TABAN-2 her parçada; SAMPLE kuralları; test ≥ 1433;
+> gerçek e-posta yok (echo); defter kaydı aynı turda; kişiye özel pay/oran DEĞERİ deftere ve prompt'a yazılmaz (GUV-08) —
+> paylar ayardan girilir, testler SAMPLE değerlerle. Orchestrator bölebilir (2a: §0 + H + D-4 · 2b: Ş + S3).
+>
+> §0 ÖLÇÜM (salt okuma, önce)
+> 0.1 Havuz üyeleri: ekip kaydının (team) bugünkü bağları (kullanıcı/kişi); havuz üyesi olacak kişilerin agent kaydı var mı
+>     (ad yazılmaz: var/yok + tür); ekip kaydına yazılmış payout var mı (sayı).
+> 0.2 Oranı boş kontrat sayısı rol başına (TUR-1a: SR 2.646 · agent 147) + doldurma ÖNCESİ hak ediş toplamı (H3 eşitlik referansı).
+> 0.3 Şablon envanteri: Admin › Templates (quote e-mail, 3 dil) · Payment Reminder satırları (080) · zincirin 6 yerleşik
+>     e-postası ile 4 hatırlatmanın metinleri NEREDE (kod / DB / Expo settings blokları) · kullanılan yer tutucular.
+> 0.4 Exhibitors › "Send e-mail…" bugünkü önizleme: ne gösteriyor, gövdeyi neden göstermiyor; şablon seçimi var mı.
+> 0.5 Makbuz bildirimi: kolonlar (TUR-1a §0.5) + Collections "Receipts to check" bugünkü eylemleri → "Match" için gereken kolon
+>     ve ekran yeri.
+>
+> H — KOMİSYON HAVUZU (karar 12–13; H1 bitti: ekip kaydı %5 ayar)
+> H2 Paylar kişi kaydında: agent kaydına "Pool share %" (ekip havuzundan pay) — SÜRÜMLÜ (geçerlilik başlangıcı; eski sürüm
+>    kalır); üye = internal agent kaydı (yoksa Owner "New agent" ile açar); toplam ≠ 100 ise kaydedilir ama "Unallocated N%"
+>    görünür (uyarı, hata değil); Owner girer (bugünkü agents.write), Faz 4'te havuz sahibine devir; her değişiklik denetimde
+>    (kim · ne zaman · eski → yeni).
+> H3 Oran kalıcı çözümü = aday (i): kontrat doğarken (dönüşüm · atama · transfer · göç) oran kendi kaydına kopyalanır; okumada
+>    varsayılana DÜŞÜLMEZ; oranı boş kontrat = "rate missing" (Commissions ve kontrat sayfasında görünür durum; hak ediş
+>    hesaplanmaz; sayaçta). Bir kerelik doldurma: oranı boş rol-satırları bugünkü varsayılanla; ÖNCE/SONRA hak ediş toplamı ve
+>    TABAN/TABAN-2 EŞİT (ölçülür, raporda). ARALIK-1'in "varsayılan değişince eski oranı yaz" ara kodu KALKAR.
+> H4 Havuz dağıtımı okumada türetilir, TEK motorda (MOT-01; yeni dilim türü "pool"): ekip kaydının hak ediş dilimi (ödeme ×
+>    kontrat) → ödeme tarihinde geçerli pay sürümü → üyeye pay satırı. Üyenin agent sayfasında "Pool share" bölümü (dönem ·
+>    ekip hak edişi · pay % · tutar); üyenin bakiyesi = kendi hak edişi + havuz payı − payout. Ekip kaydına payout YAZILMAZ
+>    (bakiyesi "distributed to members"); varsa eski payout dokunulmaz, raporda. Commissions listesinde ekip satırı kalır;
+>    üyede havuz payı hak edişin içinde ("incl. pool €…" alt satır). Kesim raporu aynı motordan.
+> H5 Ayar: ekip kaydının oranı (var) + üyelerin payı (agent kaydında) + sürüm geçmişi; ileriye dönük (YON-22).
+>
+> Ş — ŞABLONLAR (Admin › Templates büyür; UX U4 + 24 Kas hükümleri)
+> Ş1 Tek sayfa Admin › Templates: gruplar Chain e-mails (6 yerleşik) · Reminders (Catalogue · Stand · Badges · Payment) ·
+>    System e-mails (Quote e-mail; ileride Web form thank-you) · Sales templates (SATIŞ-1'de dolar; şimdi boş) · Free. Tür + dil
+>    başına TEK varsayılan; aynı türde birden çok şablon olabilir; gönderirken seçilir (Ş3).
+> Ş2 Şablon = konu + gövde (düz metin; HTML'e kaçışla); dil sekmeleri EN/FR/TR; boş dil varsayılan olamaz, gönderimde EN'e düşer
+>    (bugünkü kural); yer tutucular ÇİFT süslü, türe göre palet; asgari katalog: {{contact_name}} {{company_name}} {{expo_name}}
+>    {{expo_dates}} {{stand_number}} {{balance}} {{currency}} {{due_date}} {{payment_link}} {{page_link}} {{sender_name}}
+>    {{sender_email}} {{sender_office}} + bugünkü quote seti aynen; bilinmeyen / tek süslü yer tutucu KAYDI DURDURUR ve
+>    önizlemede işaretlenir; "Dear Exhibitor" yerine {{contact_name}} (kişi yoksa "Exhibitor").
+> Ş3 Önizleme SAMPLE kayıtla (kayıt seçilir) · "Send test to myself" (echo) · sürüm geçmişi (kim · ne zaman · eski metin ·
+>    Revert = yeni sürüm) · kopyala · varsayılan işareti. Elle gönderim (Exhibitors › Send e-mail… · Remind…): tür seçilince
+>    varsayılan gelir, aynı türün başka şablonu seçilebilir; ÖNİZLEME = ilk alıcının alacağı metin, GÖVDE DAHİL (Kural 1).
+> Ş4 Geçiş: bugünkü 6 zincir metni + 4 hatırlatma metni + Payment Reminder satırları + quote e-mail bu sayfaya taşınır (metin
+>    bayt bayt aynı; test); zincir ve hatırlatma gönderimi şablonu buradan okur; Expo settings'teki 7 fuar metin bloğu
+>    TAŞINMAZ (fuara özel içerik). Yetki: Owner hepsi; Proje → Chain/Reminders/System (bugünkü izin mekanizması elverdiğince;
+>    elvermiyorsa Owner + Faz 4 notu).
+>
+> S3 — MAKBUZ BİLDİRİMİ ↔ ÖDEME (EXH-21 tamamlanır)
+> - Bildirime ödeme kimliği (nullable). Collections › "Receipts to check": "Match to a payment…" (aynı kontratın ödemeleri
+>   listelenir; yoksa "Record payment first" → mevcut ödeme akışı, sonra eşleştirme) · "Reject…" (not zorunlu). "Mark as
+>   checked" tek başına durumu DEĞİŞTİRMEZ (iç not olarak kalabilir). Eşleşince exhibitor "Confirmed"; reddedilince "Not
+>   accepted — please contact us"; o güne kadar "Received — being checked". Bir ödeme en çok bir bildirime bağlanır. Listede
+>   tutarı ve tarihi uyan ödeme önce.
+>
+> D-4 KÜÇÜKLER
+> 4.1 Owner için Mail "All sent" görünümü (S1). 4.2 Budget + Expo Finance başlık seçicisi (CC Q3). 4.3 Başlıkta tek gün sayısı
+> ("in 6 days"; D:H:M kalkar) · fuar etiketi tek tarih aralığı · "Visitors home" / "Expo reports" adları her yerde (tur 1–3).
+>
+> D-5 RAPOR: tek; §0 tabloları · H3 önce/sonra eşitliği · Ş4 metin eşitliği · staging turu (A/B2 · 1440/1280) · test · commit ·
+> SAPMA · 🔶 · ÖLÇÜLMEDİ. Rapor dosyası Drive'a da: ELL-Handoff/03-CC/ (README oradadır). Suer turu ARALIK-2'den sonra
+> (SAMPLE fuar 2–4 Ara — tarihlere dokunulmaz; tur 1 Ara'ya kadar yapılmazsa SAMPLE tarihleri ayrı kararla kaydırılır).
+>
+> E. SIRA: ARALIK-2 → SATIŞ-1 (kriterleri ARALIK-2 koşarken yazarım — YON-18) → KATALOG+QUOTE → TUR-2 (co-exhibitors · Expo
+> settings düzeni · U2 farkları · gizli sütun öncelikleri; Suer turundan sonra gerekirse öne alınır) → ÇALIŞAN KARTI.
+> ```
+>
+> - **SENTEZ 26 Kas 09:20 — 1. madde — AYNEN (17 satır):**
+>
+> ```
+> SENTEZ → ORCHESTRATOR — ARALIK-2 TEK PROMPT · DRIVE YAZMA TARİFİ (26 Kas 09:20)
+>
+> 1. ARALIK-2 BÖLÜNMEZ — tek prompt (YON-16: ölçüm + inşa + test + ekran aynı CC oturumunda; ara soru yok; karar gerekirse
+>    en kilitli hükümle devam, SAPMA raporlanır — YON-18). Suer kararı: staging'deyiz, tek seferde. PROMPT_ARALIK-2a'yı
+>    tam ARALIK-2'ye GENİŞLET (yeni dosya PROMPT_ARALIK-2.md; 2a iptal, CC başlatılmadı). §0 promptun ilk parçası olarak
+>    kalır; Ş ve S3 §0 sonucuna göre dallanır — dallar önceden hükümlü:
+>    - §0.3 zincir/hatırlatma metinleri KODDA ise → Templates sayfasına metinle TOHUMLANIR (bayt bayt aynı, test) ve gönderim
+>      şablondan okumaya geçer; DB'de ise → satırlar taşınır; Expo settings'teki 7 fuar bloğu her durumda KALIR (Ş4).
+>    - §0.4 Send e-mail önizlemesi hangi yolla kuruluysa kurulsun, sonuç kuralı aynı: ilk alıcının alacağı metin, gövde dahil (Ş3).
+>    - §0.5 bildirime ödeme kimliği kolonu + "Match to a payment…" / "Reject…" — şema değişikliği ÖN-ONAYLI (S3 = a); migration
+>      yazılır, staging'de koşulur (runner), canlıya yazılmaz.
+>    - §0.1 havuz üyesi için agent kaydı yoksa → ekran SAMPLE üyelerle test edilir, gerçek kişi kaydı CC AÇMAZ (Owner açar);
+>      paylar CC tarafından GİRİLMEZ (SAMPLE ile dene, sıfırla) — 2a'daki bu iki kural aynen kalır.
+>    - Her parçadan sonra TABAN 342.00 + TABAN-2 + hak ediş toplamı (H3 öncesi/sonrası) ölçülür; fark çıkarsa o parçada DURUR,
+>      raporlar (kalan parçalara geçmez).
+>    Parça sırası: §0 → H (H3 doldurma dahil) → Ş → S3 → D-4 → belge; her parça ayrı commit + defter kaydı; TEK rapor sonunda.
+>    Rapor Drive'a: ELL-Handoff/03-CC/2026-11-xx_CC_RAPOR_ARALIK-2.md (Mac'te Google Drive artık kurulu: My Drive/ELL-Handoff).
+> ```
+>
+> - **Başlangıç ölçümü (U0-a):** LEENA `eliza-next` = `origin/eliza-next` = `9450d25` · `origin/main` `2db0131` · ell-docs `main` `4a32aad` · test zinciri
+>   80 suite **1433 / 1433** (bu oturumda koşuldu, PG 14) — dördü de prompt'taki değerle AYNI. Uzak başlar `git ls-remote` ile okundu: LEENA deposunda
+>   `.git/refs` altında iki başıboş kopya dosya ("eliza-next 2", 24 Kas) `git fetch`'i reddettiriyor — dokunulmadı, raporda.
+>
+> ## ✅ 2026-11-26 — DİLİM ARALIK-2 §0: ÖLÇÜM (salt okuma) — havuz üyesi adayı yok (SAMPLE ile denenecek) · oranı boş SR 2.646 · agent 147 · şablonların YERİ · önizlemede gövde neden yok · makbuz bildiriminde ödeme bağı yok
+>
+> - **Kriter kaynağı:** [defter:2026-11-26 SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ" + SENTEZ 26 Kas 09:20 "ARALIK-2 TEK PROMPT" (1. madde)] — C §0 (0.1–0.5) + Orchestrator U1.
+> - **Ne yapıldı:** yalnız ölçüm — kod (`eliza-next` `9450d25`) okundu, staging veritabanı salt okunur bağlantıyla soruldu (26 Kas 06:30–06:50 UTC), çalışma ağacının
+>   kodu staging verisine karşı kendi uçlarından koşuldu (yazma yok). Kod ve veri DEĞİŞMEDİ. Canlıya temas YOK (okuma dahil — S2).
+> - **Commit:** YOK (LEENA'da değişiklik yok; bu kayıt ell-docs'ta).
+> - **0.1 Havuz üyeleri (ad yazılmadı — GUV-08):** `team` türünde temsilci kaydı **1** (aktif · kullanıcıya bağlı DEĞİL · oranı var · ofisi var · bağlı tedarikçi 0 ·
+>   SR rolünde 540 kontrat · agent / SD rolünde 0 · **payout 0**) → "ekip havuzu" tekil varsayımı TUTUYOR. Aday okuması (Orchestrator: proje ekibi rolündeki
+>   kullanıcılar): Project rolünde **1** kullanıcı — o da CC'nin araç hesabı; agent kaydı YOK. Internal türünde temsilci kaydı 127 (aktif 21 · kullanıcıya bağlı 1).
+>   Bir temsilci kaydına bağ taşıyan tablolar: `contracts` (3 rol kolonu) · `commission_payouts` · `suppliers` — "üye" bağı taşıyan yapı yok.
+>   → Sentez (II) dalı: ekran SAMPLE üyelerle denenir; gerçek kişi kaydını CC açmaz, pay girmez.
+> - **0.2 Oranı boş rol-satırları (rol ATANMIŞ, kontratın kendi oranı boş):** SR **2.646** (2.645'i göç · ödemesi olan 496 · 96 temsilci) · agent **147** (hepsi göç ·
+>   ödemesi olan 2 · 10 temsilci) · SD atanmış 0. Varsayılanı da boş olan: **0**. "SD oranı bekleyen" 806 (ayrı durum — dokunulmayacak). TUR-1a sayılarıyla AYNI.
+>   **Doldurma öncesi referans:** toplam hak ediş **286.580,52 EUR** · 1.972 dilim · 1.474 kontrat · 27 temsilci · boş dilim 0 · TABAN 342.00 · TABAN-2 EŞİT (değer LEENA
+>   CLAUDE.md — GOC-07). Okuyucular (her biri KENDİ ucundan): kesim raporu 286.580,53 (116 dönem · 604 dönem × temsilci satırı — dönem başına yuvarlandığı için
+>   motor toplamından 1 kuruş farklı; bugünkü hal) · Commissions listesi 47 satır, hak ediş 286.580,52 · ödenen 78.286,20 · ödenecek 215.774,77 (18) · temsilci borçlu
+>   7.480,45 (15) · Due 18 / Settled 14 / Agent owes 15 · 47 ekstre toplamı 286.580,52 / bakiye 208.294,32 · Ledger özeti 215.774,77 / 7.480,45 · fuar marjı (gerçek
+>   fonksiyon, 10 fuar örneklemi) komisyon 175.982,43; bütün fuarlar aynı ifadeyle 283.362,91 (65 fuar; Cancelled / Transferred dışarıda) · göç mutabakatı TABAN satırı
+>   342.00 · kontrat sayfası kutusu (72 kontrat örneklemi, 68 rol-satırı): oranı varsayılandan 55 · kendi kaydından 13 · "rate missing" 0. Temsilci başına tablo
+>   yalnız karşılaştırma için saklandı (repo dışı; rapora girmez).
+> - **0.3 Şablon envanteri — metinlerin YERİ ve bugünkü yer tutucu yazımı:**
+>   | Metin | Yer | Dil | Yer tutucu yazımı |
+>   |---|---|---|---|
+>   | Quote e-mail (Admin › Templates) | VERİTABANI `sales_email_templates` (061; `quote_email`) | EN · FR · TR (sürüm 1, hiç düzenlenmemiş) | ÇİFT süslü `{{ad}}` — 9 ad (`utils/salesMail.js:19`); bilinmeyen ad kaydı durdurur |
+>   | Zincirin 6 yerleşik e-postası (7 metin adı — Stand iki metin: Equipped / Space-only) | DOSYA `exhibitor-mail/<ad>.<dil>.json` (13 dosya) | EN 7 · FR 6 (`buildup` FR yok) · TR 0 | ÇİFT süslü `{{ad}}` ve `{{ad\|"yedek"}}` (17 ad) + gövde işaretleri (`@deadlines` · `@contacts` · `@included` · `@documents` · `@schedule` · `@block:<fuar bloğu>`) + satır başı `# ` / `- ` |
+>   | Payment Reminder satırları (080) | VERİTABANI `exh_mail_templates` (organizatör başına EN + FR; dosyayı ezer) | EN · FR | TEK süslü `{ad}` — tam 5 ad (`utils/exhChain.js:100`); çözülemeyen ad gönderimi durdurur. Düzenleme ekranı YOK |
+>   | Hatırlatma | KOD `utils/exhMail.js:205` — **TEK kalıp** (konu · giriş cümlesi · 5 kısa ifade · düğme); dört ayrı metin YOK: tek e-posta açık olan bütün bölümleri listeler (EXH-03 · H7) | EN | ÇİFT süslü `{{expo_name}}` · `{{what}}` · `{{date}}` · `{{section}}` |
+>   | Sistem e-postaları (Changes requested · Approved · New link · Payment code · Order confirmation) | KOD `utils/exhMail.js:23` (sabit — C15) | EN | ÇİFT süslü |
+>   | 7 fuar metin bloğu | VERİTABANI `expo_text_blocks` (Expo settings) — TAŞINMAZ | EN / FR / TR | yer tutucu yok (düz metin) |
+>   → Sentez (II) dalı: zincir + hatırlatma KODDA / DOSYADA → Templates'a metinle TOHUMLANIR; quote e-postası ve Payment Reminder satırları VERİTABANINDA → satırlar taşınır.
+> - **0.4 Exhibitors › "Send e-mail…" önizlemesi:** sunucu yanıtı ilk alıcının metnini GÖVDESİYLE taşıyor (`routes/exhTeam.js:1012-1016` → `text.subject` + `text.body`);
+>   SAYFA yalnız konuyu yazıyor (`public/ui2/ops-exhibitors.html:237-238`) — gövde çizilmiyor. Şablon seçimi YOK (metin: e-posta anahtarı + stand türü + dil).
+>   "Remind…" önizlemesi: kim alır · kim atlanır ve neden — metin HİÇ yok (sunucu da göndermiyor).
+> - **0.5 Makbuz bildirimi:** `exh_receipts` 14 kolon — ödeme kimliği YOK; "açık" = `checked_at IS NULL`. Collections › "Receipts to check" eylemleri: "Mark as checked"
+>   (bildirimi KAPATIR; ödeme yazmaz, ödeme seçtirmez) · "Reject…" (not zorunlu; kapatır + olay). "Match" için gereken: bildirime ödeme kimliği kolonu (nullable) +
+>   "bir ödeme en çok bir bildirime" tekil kısıtı; ekran yeri aynı satırın eylemleri. Staging'de 1 bildirim (Suer'in SAMPLE kaydında; "checked"; kontratında ödeme 0).
+> - **Ek ölçüm:** otomatik zincir yalnız SAMPLE fuarda açık (1 fuar); o fuarın kuyruğu 63 satır, hepsi `echo`. TABAN kontratı (4) SAMPLE fuarın kontratıdır.
+>   CC'nin SAMPLE kaydı 7903'ün satıcısı YOK; siparişi 7904 ekip kaydında, oranı boş; ikisinde de ödeme yok.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** havuz üyesi olacak GERÇEK kişiler (Sentez adlandırmadı; staging'de proje rolünde gerçek kullanıcı yok) · kontrat sayfası kutusu
+>   bütün kontratlarda (72'lik sabit örneklem) · fuar marjı bütün fuarlarda gerçek fonksiyonla (10 fuar; kalanı aynı ifadeyle toplu) · göç mutabakatının TABAN dışındaki
+>   satırları (ham Zoho verisi bu makinede yok) · canlı (bilerek).
+> - **Bilinçle yapılmayanlar:** hiçbir kayıt açılmadı / değişmedi · backend `.env` dosyasındaki salt okunur CANLI bağlantı KULLANILMADI · `.git/refs` altındaki iki
+>   başıboş dosyaya dokunulmadı.
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
