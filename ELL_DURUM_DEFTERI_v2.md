@@ -13441,6 +13441,72 @@
 >   sağlayıcı hesabında ayar / gönderici / domain / gelen kaydı / anahtar değişikliği YOK · LIFFY kopyasında yalnız dosya okundu (git işlemi yok) · klasik gelen uç ve
 >   var olan hız sınırı kodu DEĞİŞTİRİLMEDİ.
 >
+> ## ✅ 2026-11-26 — DİLİM SATIŞ-1 P1: KÜÇÜKLER + ARŞİV — şablon arşivi (S3) · Commissions'ta yerli "New agent" · kaynak kodları sözcükle · "sample" fuar işareti · tek ekip kaydı · GOC-ALICI: e-posta aktarım yolunda YOK → kod yazılmadı
+>
+> - **Kriter kaynağı:** [defter:2026-11-26 SENTEZ 26 Kas 16:30: "ARALIK-2 KABUL · HÜKÜMLER · DİLİM SATIŞ-1 KRİTERLERİ"] — A · S3 + C · P1 (a)–(f) + Orchestrator U2 / U3 P1.
+> - **OKUMA KARARLARI (koddan ÖNCE yazıldı — Sentez kapanışta geri alabilir):**
+>   - (e) Arşivlenen şablon salt okunurdur: kaydetme, eski sürüme dönme ve "Make default" reddedilir (önce Unarchive). Bir gönderici arşivli şablonu adıyla isterse türün
+>     varsayılanına düşer. Kuyruğa GİRMİŞ e-posta hazır metnini taşıdığı için gider (Orchestrator okuması). Arşivli şablondan kopya alınabilir.
+>   - (b) "Kod" = yalnız küçük harf / rakam / alt çizgiden oluşan kaynak değeri; öbürleri bir insanın yazdığı form ADIdır ve saklandığı gibi yazılır (staging'de 142 ayrık
+>     değerin 10'u kod). Sözlükte olmayan kod ham basılmaz: alt çizgi boşluk olur, ilk harf büyür (UI-16'nın bugünkü yedek kuralı).
+>   - (c) İşaret Expos LİSTESİNİN varsayılan görünümünü de (adı aynı: "Upcoming + ongoing") etkiler; "Upcoming" · "Ongoing" · "Past" · "All" görünümlerini etkilemez.
+>     Yalnızca işaretli fuarı olan kiracıda varsayılan, işaretliler arasında bugünkü sırayla seçilir (bir sayfa yine bir fuar açar). İşareti yalnız Owner koyar / kaldırır.
+>   - (d) Hiç ekip kaydı olmayan kiracı İLK ekip kaydını uçtan açabilir (form sunmaz); var olan ekip kaydının türü başka türe çevrilemez; başka bir kayıt ekip kaydına
+>     çevrilemez.
+>   - (f) **Kod yazılmadı** — aşağıda.
+> - **Ne yapıldı:**
+>   - **(e) ARŞİV (S3 — kütük ILT-08 eki):** şablon silinmez, ARŞİVLENİR (`mail_templates.archived_at` / `archived_by`, migration 088; varsayılan şablon arşivlenemez —
+>     uç 409 `DEFAULT_TEMPLATE`, ayrıca veritabanı kısıtı). Arşivli şablon HİÇBİR seçicide yoktur (Exhibitors › Send e-mail… · Remind… tek fonksiyondan okur:
+>     `utils/mailTemplates.pickable`) ve hiçbir gönderici onu okumaz (göndericilerin tek sorgusu arşivlileri atlar). Sürümleri ve geçmişi durur; "Unarchive" geri getirir.
+>     Admin › Templates: "In use · Archived" görünümleri; şablon sayfasında "Archive" (varsayılan olmayan şablonda) / "Unarchive". Her işlem denetim kaydı
+>     (`template.archive` · `template.unarchive`). Yetki bugünkü `templates.write` (Owner).
+>   - **(a) Commissions "Add agent CLASSIC" → yerli "New agent":** klasik temsilci ekranına köprü kalktı. Panel TEK tanımdır (`L.agentPanel`, `public/ui2/ledger-ui.js`:
+>     alanlar · gönderilen gövde · yanıtın okunması · seçenek listeleri); Finance › Agents ve Finance › Commissions aynı tanımı bağlar — ikinci form yok. Düğme yalnız
+>     `agents.write` ile ÇİZİLİR; uçlar ve izin aynı (`POST` / `PUT /api/sales-agents`).
+>   - **(b) Visitors home — Source:** süzgeç ve sütun kaynak KODUNU sözcükle yazar (UI-16: `C.sourceLabel`; sözlük grubu `visitor_source` — "Exhibitor Page" · "Manual" ·
+>     "Public form" · "Re-activation" · "Zoho form" · "Import" · "E-mail"). Saklanan değer ve süzgecin gönderdiği değer DEĞİŞMEDİ.
+>   - **(c) "Sample" fuar işareti (kütük UI-18 eki):** `expos.is_sample` (migration 089). Anlamı TEK yerde (`utils/expoTime.js`): (1) bir sayfanın fuar seçilmeden açtığı
+>     varsayılan fuar işaretsizler arasından seçilir (`default_rank`); (2) "Upcoming + ongoing" süzgeci işaretli fuarı kapsamaz (Operations ve Finance listeleri, Expos
+>     listesinin varsayılan görünümü). "All expos"ta görünür, elle seçilebilir, "Sample expo" diye işaretlidir. Başka hiçbir süzgeç, sayı, otomatik zincir, teklif kapısı
+>     ya da Exhibitor Page işareti OKUMAZ. İşareti Owner koyar: `PUT /api/operations/expos/:id/sample` (denetimli); ekranı Operations › Expos satır menüsü.
+>   - **(d) Tek ekip kaydı (kütük MOT-07 eki):** New agent / Edit agent panelinde Type "Team" SUNULMAZ; uç ikinci ekip kaydını reddeder (409 `TEAM_EXISTS`), ekip kaydının
+>     türü değişmez (409 `TEAM_TYPE_FIXED`). Mevcut ekip kaydının paneli "Team"i tek seçenek olarak gösterir.
+>   - **(f) GOC-ALICI — KOD YAZILMADI (Orchestrator dalı: "alan yolda YOKSA: kod yazma, ADR-023 + 🔶"):** §0.7 ölçümü — kontak ADI + kimliği kontrat kaydıyla geliyor,
+>     kişinin E-POSTASI aktarım yolunda YOK (kişi kaydında; bugünkü çekim o modülü çekmiyor). Alıcı listesi e-posta olmadan dolmaz. **DÜZELTME:** §0 kaydının 0.7 "DAL"
+>     cümlesi ("uygulama P1 (f): eşleme + alıcı yazımı") bu kayıtla DEĞİŞTİ — e-posta yolda olmadığı için uygulama yapılmadı. Kod için gerekenler (ölçüldü, yazılmadı):
+>     çekime kişi kaydı adımı (kimlikle; alan adları metadatadan etiketle çözülür — kişi modülünün alan adları bu makinede ÖLÇÜLEMEDİ) · alıcı satırına parti kimliği
+>     (yoksa parti geri alma, alıcı satırlarını "parti dışı bağlı satır" sayıp DURUR) · liste hiç satır taşımadıysa yazma kuralı · daha önce göçmüş kontratlar için
+>     yalnız alıcı satırı taşıyan parti. Kalan boş: yaklaşan 5 fuarda **32 / 32** → ADR-023 kesim maddesi; raporda 🔶.
+> - **Commit:** LEENA eliza-next `cbf4ad2` (P1) + `b41ee47` (P1 hız düzeltmesi) — ikisi de staging'de CANLI. Canlı `main` DEĞİŞMEDİ. Migration 088 (şablon arşivi) · 089 (fuar
+>   işareti): staging'de dry-run → apply → ikinci apply "Nothing to apply" (kayıt 89 → 91); ikisi de yalnız şema — satır yazmaz. Canlıya yazılmadı.
+> - **Ölçülenler:**
+>   - **Eşitlik (staging · salt okuma · P1'in kodu staging verisine karşı, okuyucular KENDİ uçlarından; ARALIK-2 kapanışı → P1):** toplam hak ediş 286.580,52 = 286.580,52 ·
+>     farkı olan temsilci 0 (27'de) · farkı olan kontrat × rol satırı 0 (1.475'te) · kesim raporu · Commissions listesi · 47 ekstre · Ledger özeti · fuar marjı · kontrat kutusu
+>     örneklemi: her satır EŞİT · TABAN **342.00** · TABAN-2 **EŞİT** (değer LEENA CLAUDE.md — GOC-07). Dağıtımdan sonra TABAN aracı: 342.00 · EŞİT.
+>   - **Staging işlemleri (uygulama uçlarından, Owner araç hesabı):** iki SAMPLE şablon arşivlendi (Catalogue · Reminder — Catalogue; arşivli sayısı 0 → 2); varsayılanı arşivleme
+>     denemesi 409; "Send e-mail…" önizlemesi artık yalnız varsayılan şablonu sunuyor, arşivli şablonu adıyla isteyen çağrı 400. "test" ve "[TEST] Reactivation Smoke Test Expo"
+>     işaretlendi: fuar seçilmeden açılan varsayılan fuar SAMPLE fuardan gerçek bir fuara geçti; "Upcoming + ongoing" 9 → 7 fuar; işaretliler "All" altında "Sample expo" diye
+>     duruyor; SAMPLE fuar elle seçilince listesi açılıyor. Proje araç hesabının işareti kaldırma denemesi 409; ikinci ekip kaydı denemesi 409.
+>   - **Tarayıcı akışı (staging, kaydetmeden):** Commissions'ta "New agent" paneli AYNI sayfada açılıyor — dokuz alan, Type seçenekleri Internal · External agency · External
+>     freelance (Team yok), klasik temsilci bağı 0; ekip kaydının Edit panelinde tek seçenek Team; Expos satır menüsünde "Remove the sample mark"; Visitors home (SAMPLE fuar)
+>     Source süzgeci ve sütunu "Exhibitor Page" · "Manual" (saklanan değerler aynı).
+>   - **Staging turu (A ve B2 · 1440 ve 1280):** 11 sayfa × 4 = 44 yükleme — sayfa taşması 0 · kart içi yana kayma 0 · kesik sütun 0 · 36 px altı düğme 0 · konsol hatası 0.
+>   - **Süre (SÜRE kuralı — staging, sunucu süresi, 3 koşu ortancası; ms): önce → P1 → düzeltme sonrası.** Commissions listesi 414 → 482 → 485 · Sales home'un üç ucu
+>     6 / 8 / 7 → 11 / 14 / 17 → 7 / 11 / — · Mail 27 → 23 → 24 · Templates 4 → 8 → 5 · **fuar seçici listesi 13 → 54 → 14** · Agents listesi 73 → 7 → 10.
+>     **2 KAT KURALI BU PARÇADA İŞLEDİ:** fuar seçici listesi 13 → 54 ms. Neden (staging'de ölçüldü): işaret, geniş fuar satırının tamamı her satırda JSON'a çevrilerek
+>     okunuyordu (22 ms'lik sorgunun 17 ms'si). Düzeltme `b41ee47`: işaret düz sütundan okunur (yanıt aynı). Tek başına 15 çağrı ortancası: 14 ms (liste biçimi 13 · Finance
+>     seçici listesi 14). Diğer uçlardaki oynama staging gürültüsü içinde (aynı kod iki ölçümde ±%30).
+>   - **Test:** yeni suite `test_satis1_p1.js` **25** (arşiv 8 · panel 2 · tek ekip kaydı 3 · kaynak sözcükleri 3 · sample işareti 8 · TABAN 1). Zincir **86 suite, 1564 / 1564**
+>     (üç koşu: ilki 5 kırmızı — hepsi aşağıdaki hükümle değişen beklentiler; düzeltmeden sonra iki tam koşu temiz).
+> - **SAPMA (hükümle değişen test beklentisi — satırında hüküm yorumu):** `test_ui_tam` (Commissions köprüsü → yerli düğme) · `test_ui_tam_finance` U2 (aynı) ·
+>   `test_ui_tam_access` O4 (dosyanın ikinci yazan ucu: fuar işareti) · `test_kabuk2` H4b (seçici listesine iki alan: `is_sample` · `default_rank`) · `test_tur1a_agents`
+>   U3–U5 (panelin kaynağı ortak tanımda).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** canlı (bilerek — YON-23) · arşivli şablonu adıyla isteyen ZİNCİR tikinin varsayılana düşmesi staging'de (yerel testte; tik gönderimi
+>   gözlenmedi) · "New agent" panelinden gerçek KAYIT staging'de (panel açıldı, kaydedilmedi — uç ve form TUR-1a'dakiyle aynı) · işaretin Suer'in hesabındaki varsayılan fuara
+>   etkisi (hesaba girilmez; hatırlanan seçim varsa o açılır) · kişi modülünün alan adları ve ham Zoho çekimi (GOC-ALICI için) · telefon genişliği.
+> - **Bilinçle yapılmayanlar:** GOC-ALICI kodu (yukarıda) · klasik "Agents (classic)" menü satırı (kaldırılmadı — yalnız Commissions düğmesi değişti) · işaretin başka süzgeçlere
+>   yayılması · arşivli şablonu silme · var olan başka `to_jsonb` okumalarının hızlandırılması (bu parçanın getirdiği yavaşlama giderildi; öncesinden kalanlar hız kuyruğunda).
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
