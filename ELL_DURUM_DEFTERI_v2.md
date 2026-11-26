@@ -12666,6 +12666,49 @@
 > - **Bilinçle yapılmayanlar:** okuma kuralı hâlâ "kendi oranı, yoksa varsayılan" (P3'te kalkar) · ARALIK-1'in ara kodu yerinde (P3) · "SD oranı bekleyen" 806 kontrata
 >   dokunulmadı.
 >
+> ## ✅ 2026-11-26 — DİLİM ARALIK-2 P3 (H3-c): OKUMADA VARSAYILANA DÜŞÜŞ KALKTI — motor yalnız kontratın KENDİ oranını okur · "Rate missing" görünür ve sayılan durum · ARALIK-1'in ara kodu KALKTI; toplamlar yine EŞİT
+>
+> - **Kriter kaynağı:** [defter:2026-11-26 SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ" + SENTEZ 26 Kas 09:20 "ARALIK-2 TEK PROMPT" (1. madde)] — C · H3 ("okumada varsayılana DÜŞÜLMEZ; oranı boş kontrat = 'rate missing' … ARALIK-1'in ara kodu KALKAR") + Orchestrator U2 P3 · U3.
+> - **Ne yapıldı:**
+>   - **Okuma kuralı tek yerde** (`utils/commissionRates.js` `RATE_SQL` = kontratın kendi oranı): hak ediş motorunun (`utils/commissionSlices.js`), kontrat sayfası
+>     komisyon kutusunun (`routes/contracts.js` — kendi ifadesi, aynı oran ifadesi) ve agent sayfası "Contracts sold" bölümünün ifadesi. Satıcı kaydının varsayılanı
+>     artık hak ediş hesaplanırken OKUNMAZ; yalnız kontrat doğarken kopyalanır (P1), eskiler bir kez dolduruldu (P2).
+>   - **"Rate missing"** = rol ATANMIŞ ve o rolün oranı boş (tek tanım: `MISSING_ROLES_SQL`). Böyle bir rol HİÇBİR ŞEY hak etmez; sessiz sıfır değil, görünür durum:
+>     Finance › Commissions (sayaç şeridi — yalnız sayı > 0 iken; temsilci satırında "Rate missing · N" işareti; `?missing=1` süzgeci; uç `rate_missing` · toplamlarda
+>     rol / kontrat / temsilci sayısı) · kontrat sayfası komisyon kutusu ("Rate missing" · "not computed — set the rate (Assignment)") · agent sayfası "Contracts sold"
+>     (satırda işaret + kaç rol olduğu). Etiket sözlüğüne girdi (`commission_status.rate_missing`). Oran kontratın atama ekranında yazılır.
+>     **"SD oranı bekleyen" (kişisiz, 806) AYRI durumdur** — rol atanmadığı için "rate missing" sayılmaz; dokunulmadı.
+>   - **ARALIK-1'in ara kodu kalktı:** `PUT /api/sales-agents/:id` artık kontratlara eski oranı YAZMAZ (yanıtta ve denetim kaydında `contracts_kept_old_rate` yok).
+>     Oran değişikliği yapısı gereği ileriye dönük: yalnız SONRA o kaydı alan kontratı etkiler (YON-22). Oransız bir kayda sonradan oran vermek, o kaydı zaten
+>     taşıyan "rate missing" kontratı DOLDURMAZ — oran kontratta yazılır.
+>   - Göç mutabakatının SR komisyonu karşılaştırması da kontratın kendi oranını okur (varsayılana düşüş kalktı; oranı boş rol karşılaştırma dışı).
+> - **Commit:** LEENA eliza-next `f5eecda` + `b1d1ed3` (sayaç kutu yerine şerit — beşinci kutu tek başına ikinci satıra düşüyordu; staging turunda görüldü). İkisi de
+>   staging'de CANLI. Canlı `main` DEĞİŞMEDİ. Migration yok.
+> - **Ölçülenler:**
+>   - **Eşitlik tablosu (staging · salt okuma · commit'in kodu, okuyucular KENDİ uçlarından; P2 → P3):** toplam hak ediş 286.580,52 → 286.580,52 · farkı olan temsilci
+>     **0** · farkı olan kontrat × rol satırı **0** · TABAN 342.00 · TABAN-2 EŞİT · kesim raporu · Commissions listesi (toplamlar + Due 18 / Settled 14 / Agent owes 15) ·
+>     47 ekstre · Ledger özeti · fuar marjı · göç mutabakatı TABAN satırı · kontrat sayfası kutusu (72 kontrat — iki ifade aynı tutar): hepsi EŞİT.
+>   - **Staging'de "rate missing" sayısı: 0** (rol 0 · kontrat 0 · temsilci 0) — P2 hepsini doldurmuştu; varsayılanı boş olup dolmayan yoktu.
+>   - **Staging'de durum ekranda (CC'nin SAMPLE kayıtları; uygulamanın kendi uçları):** oransız SAMPLE temsilci kaydı açıldı, satıcısı olmayan SAMPLE kontrata oransız
+>     atandı → kontratın oranı boş kaldı (kayıtta varsayılan yok) → Commissions toplamı rol 1 / kontrat 1 / temsilci 1, satırda işaret, `?missing=1` 1 satır · kontrat
+>     kutusu oran yok / "rate missing" / tutar yok · "Contracts sold" 1 · dört ekranda konsol hatası 0, sayfa taşması 0. Sonra atama boşaltıldı, SAMPLE temsilci
+>     pasifleştirildi → sayaç yeniden 0 (kontrat ödemesiz; hak edişe etkisi yok).
+>   - **Test:** `test_aralik2_rates.js` 13 → **21** (D1–D8: boş oran hak etmez — SR ve SD · varsayılan değişikliği ileriye dönük, hiçbir kontrat yeniden yazılmaz ·
+>     "rate missing" kontratta giderilir · Commissions sayaçları tek tanımdan · kutu = motor, rol rol aynı tutar · "Contracts sold" · tek okuma kuralı kaynak taraması ·
+>     ekranlar) — zincir 81 suite **1454 / 1454** (PG 14; commit'in ayrı checkout'unda koşuldu).
+> - **SAPMA (hükümle değişen test beklentileri — her satırda hüküm numarası yorumu):** oransız fikstür kontratları artık oranını doğum kuralıyla alıyor (tek satır;
+>   iddia değişmedi): TABAN fikstürü olan 27 suite (`test_cash_forecast` · `test_ledger` · `test_ledger_p1b` · `test_users_admin` · `test_p3_convert` · `test_p3_yk2_le` ·
+>   `test_p4_closing` · `test_b1_catalog_customers` · `test_b1b_quotes` · `test_b2_scope` · `test_b3_comm` · `test_p3b_reports` · `test_p3c` · `test_p3d` · `test_p3e` ·
+>   `test_p4` · `test_ui_tam_access` · `test_ui_tam_sales` · `test_ui_tam_finance` · `test_ui_tam2` · `test_kabuk2` · `test_kabuk2_shell` · `test_kabuk2_fonts` ·
+>   `test_kabuk2_menu` · `test_aralik1` · `test_aralik1_settings` · `test_zoho_migration`) + ortak tohum `tests/helpers/ui0Seed.js` + `test_payouts` · `test_commissions` ·
+>   `test_tur1a_money` · `test_tur1b_small` · `test_ui_tam2_orders` R1. İddiası değişenler: `test_aralik1_settings` P1 / P3 / P5 / P6 / P8 (ara kod yok; kontrat oranını
+>   doğumdan taşır) ve **P7 TERSİNE döndü** (oransız kayda ilk oran vermek "rate missing" kontratı doldurmaz) · `test_tur1a_money` E1 (motor metninin özeti — oran
+>   ifadesi hükümle değişti) ve U2 (sözlük satırına bir sözcük eklendi) · kendi suite'imde C2 / B1 (doldurma artık okumada etkisiz DEĞİL: P2 staging'de okuma
+>   kuralından ÖNCE koştu).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** kontrat kutusu ↔ motor eşitliği bütün kontratlarda (72'lik sabit örneklem + yerel test) · fazla ödenmiş kontratta kutu ile motorun
+>   ayrışması (bilinen, eski davranış — bu dilimde dokunulmadı) · klasik kontrat ekranında (`contract-detail.html`) oran kaynağı sözcüğü ("contract") tarayıcıda.
+> - **Bilinçle yapılmayanlar:** "rate missing" rolü toplu düzeltme ekranı (oran kontratın kendi atama ekranında yazılır) · War Room'a ayrı sayaç · SD bekleyenler.
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
