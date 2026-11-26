@@ -14040,6 +14040,109 @@
 >   - Eski yardımcıların (erişim kaydı · Exhibitor Page hız sınırı) okuduğu istemci adresi DEĞİŞTİRİLMEDİ (klasik davranış; bulgu raporda duruyor).
 >   - Sales grubu için yeni izin kodu açılmadı.
 >
+> ## ✅ 2026-11-27 — DİLİM SATIŞ-1 P4: MAIL — ELIZA'nın kendi postası: yazışma · izleyici anahtarı · sağlayıcının imzalı gelen ucu · türetilen görünümler · tek tık işlemler · kalıcı geri dönüş; iletişim günlüğüne KİŞİ hedefi
+>
+> - **Kriter kaynağı:** [defter:2026-11-26 SENTEZ 26 Kas 16:30: "ARALIK-2 KABUL · HÜKÜMLER · DİLİM SATIŞ-1 KRİTERLERİ"] — C · P4 + Orchestrator U3 "P4 MAIL — MEKANİZMA". EK-1'den bu parçaya
+>   düşen: E4.9 (kişiye not).
+> - **OKUMA KARARLARI (koddan ÖNCE yazıldı, 27 Kas 2026 ~02:20 — Sentez kapanışta geri alabilir):**
+>   1. **Yazışma (thread) = BİR kişi × BİR satışçı.** İleti ve yazışma kendi tablolarında; her gönderilen e-posta ve her gelen cevap ayrıca İLETİŞİM GÜNLÜĞÜNE düşer. Günlüğün
+>      hedef kümesi firmasız kişiye yetmediği için **"kişi" hedefi eklendi** (ILT-03'ün "tam bir tane" kuralı korunur) — hükmün gerektirdiği genişleme (kütük ILT-10).
+>   2. **Gönderen satırı ORTAM AYARINDAN** (sır değil; yalnız servis ortamı): gelen alan adı + doğrulanmış gönderen alan adları. Dört satır Orchestrator tablosundaki gibi;
+>      "domain YOK · gelen VAR" üçüncü satır gibi işler (🔶). Adresi doğrulanmış alanda olmayan kullanıcı için "domain YOK" satırı. "Reply-To yok" satırında cevap adresi satışçının
+>      kendi adresidir (From ile aynı — işçinin sabit cevap adresi devreye girmesin diye).
+>   3. **İzleyici anahtarı:** giden ileti başına 160 rastgele bit (a–z, 2–7); veritabanında yalnız özeti; izleyici adresi `<anahtar>@<gelen alan adı>`; ekrana ve günlüğe yazılmaz
+>      (kuyruk satırının cevap adresinde durur — sayfa bağlarıyla aynı bilinen sınır).
+>   4. **Gelen uç YENİ ve AYRI** (klasik uca dokunulmaz): doğrulama = sağlayıcının belgelediği EN GÜÇLÜ yöntem — **imza** (ECDSA; zaman damgası + HAM gövde; açık anahtar servis
+>      ortamında). Belge ölçüldü (27 Kas): üç yöntem — imza · OAuth · ikisi; eğriyi ve zaman toleransını yazmıyor. Anahtar tanımlı değilse uç KAPALI (503); imzasız / yanlış imzalı
+>      istek 401 + iz. Zaman damgası: belgelenen yeniden deneme penceresi (3 gün) + 1 saatten eski istek reddedilir (yeniden denemenin damgayı yenileyip yenilemediği belgelenmemiş —
+>      daha dar pencere gerçek iletiyi düşürebilir; tekrar oynatmayı "aynı ileti tek kayıt" kuralı zaten etkisiz kılar). Yalnız POST; gövde akarak okunur (alan başına 1 MB,
+>      toplam 30 MB — sağlayıcının sınırı); ekler SAKLANMAZ (ad + boyut + tür yazılır; 🔶). Gerçek istek her durumda 2xx alır (eşleşmese de) — sağlayıcı yeniden denemesin;
+>      5xx yalnız bizim hatamızda. Hız sınırı: güvenilir ağ adresi başına saatte 600.
+>   5. **Eşleme:** (1) alıcı adresindeki anahtar → ileti → yazışma. (2) In-Reply-To / References eşlemesi **KURULMADI**: sağlayıcının belgesi giden iletinin kimliğini koruyup
+>      korumadığını yazmıyor; gerçek e-posta göndermeden ölçülemez → "ölçülemedi = yok". (3) eşleşmeyen → "Unmatched" kuyruğu (Sales Manager; yoksa Owner). Konuyla ya da yalnız
+>      gönderen adresiyle eşleme YOK.
+>   6. **Gönderen o kişi değilse** yazışmaya bağlanır, "unknown sender" görünür, tek tık "Add as lead" (kaynak "From a mail", Replied, sahibi tıklayan).
+>   7. **Otomatik cevap** (Auto-Submitted · X-Autoreply / X-Autorespond · Precedence bulk / junk / auto_reply · mailer-daemon / postmaster · boş zarf göndereni): yazışmaya
+>      "Automatic reply" etiketiyle girer; aşamayı Replied YAPMAZ, takibi DURDURMAZ, yazışmayı "Awaiting reply"a almaz (Orchestrator okuması).
+>   8. **Aynı ileti iki kez = TEK kayıt:** Message-ID başlığının özeti; başlık yoksa gönderen + tarih + konu + gövdenin başı.
+>   9. **HTML gövde düz metne indirgenir**, 100.000 karakterde kesilir (kesildiği yazılır). Ham ileti saklanmaz.
+>   10. **Cevap TEK yerden kaydedilir** (P2 / EK-1'in yolu): yazışmanın fuarı için aşama Replied + kişi "cevapla doğrulandı". Fuarsız yazışmada yalnız doğrulama işareti.
+>   11. **İlk gönderim** kişi × fuar çiftinin "ilk e-posta" tarihini yazar (aşama Contacted). Fuar Compose'da seçilir (isteğe bağlı; fuarsız yazışmada çift doğmaz).
+>   12. **Compose kuralları SUNUCUDA:** başkasının kişisi → ret + "Request transfer" · sahipsiz kişi → ret (yönetici atar — P2 kuralı) · do-not-contact kişi → yalnız o kişinin
+>      KENDİ yazdığı (otomatik olmayan) iletisi bulunan yazışmada cevap olarak · e-postasız kayıt → ret.
+>   13. **Görünümler TÜRETİLİR:** Inbox = gelen iletisi olan yazışmalar, en yeni üstte · Awaiting reply = son (otomatik olmayan) ileti gelen VE o tarihten sonra "handled"
+>      denmemiş · Waiting for their reply = son ileti giden, cevap yok, takip durdurulmamış · Starred · Sent = oturum sahibinin ELIZA'dan gönderdikleri (bugünkü günlük kaynağı —
+>      teklif e-postaları dahil; Owner "All sent") · Drafts (yazarına özel) · Unmatched (yönetici).
+>   14. **Tek tık:** Mark as handled (yeni gelen ileti yeniden açar) · Not interested = o kişi × o fuar ("+ no expo at all" = do not contact · not an expo audience); Undo aynı
+>      kullanıcıya, aynı işaret için · Add as lead · Mark as qualified (P2'nin ucu).
+>   15. **"From our records" YENİ GÖRÜNÜRLÜK AÇMAZ:** panel bugünkü okuma uçlarını çağırır (firma kartı · teklifler · kontratlar — oturum neyi okuyabiliyorsa); kişiye gönderilen
+>      e-postalar ve fuar çiftleri yazışmanın kendi cevabından. "Reference suggestions" = aynı sektör + ülkeden, KATALOĞU ONAYLANMIŞ firmalar (yalnız herkese açık alanlar).
+>      Yapay zeka cümlesi / "önerilen metin" yok.
+>   16. **Kalıcı geri dönüş (hard bounce):** ayrı, imzalı olay ucu; bizim iletimize ait olay kişinin geçmişine yazılır; eşik **2** (ayar; 🔶) → "do not contact · repeated hard bounce".
+>   17. **Taslak** yazarına özeldir; silinebilir (gönderilmiş kayıt değildir). **Ek** bu parçada yok (giden e-postada da). Metin düz metindir.
+>   18. **Menüdeki yer:** Mail bugünkü yerinde kalır (Sales › Overview › Mail).
+>   19. **Kişiye NOT** (EK-1 E4.9): iletişim günlüğü kişi hedefiyle not kabul eder (ekrandan ve göç aracının yolundan).
+> - **Ne yapıldı:**
+>   - **Migration `094_satis1_mailbox.sql`** (yalnız koşucu; yalnız şema): iletişim günlüğüne `contact_id` (KİŞİ hedefi; "tam bir hedef" denetimi yeni adla sürer) · e-posta kuyruğuna üç
+>     boş bırakılabilir sütun (satırın kendi gönderen adresi · ek başlıkları · bizim referansımız — üçü de boşken işçi BUGÜNKÜ gibi davranır) · `mail_threads` · `mail_messages` ·
+>     `mail_hook_log` (yalnız sonuç sözcüğü) · `mail_provider_events` · `org_settings.sales_hard_bounce_limit` (varsayılan 2).
+>   - **`utils/mailbox.js`:** dört gönderen satırı · izleyici anahtarı · gönderim (compose kuralları sunucuda) · gelen iletinin eşlenmesi · kalıcı geri dönüşler · sağlayıcı imzasının
+>     doğrulanması. **`routes/mailHooks.js`** → `/hooks/mailbox/inbound` · `/hooks/mailbox/events` (`/api` dışında; oturum / çerez okumaz). **`routes/mailbox.js`** → `/api/mailbox`:
+>     durum + görünüm sayıları · türetilen görünümler (inbox · awaiting · waiting · starred) · yazışma · gönder · Reply şablonundan başla · taslaklar · handled / star / follow /
+>     not-interested (+ undo) · Unmatched kuyruğu · "Add as lead" · reference suggestions.
+>   - **Tek tanımlar:** ilk gönderim ve "not interested" kişi modülünde (`markSent` · `setNotInterested`); işaretin GERİ ALINMASI da tek yerde (`clearDnc` — Data'daki Reactivate ve
+>     Mail'deki Undo onu çağırır); cevap P2 / EK-1'in tek yolundan; "kataloğu onaylanmış firma" tanımı katalog modülünde (`publishedCompanies` — aynı birleşimler).
+>   - **İletişim günlüğü** (`routes/communications.js`): kişi hedefi — liste, not (EK-1 E4.9: "Call Result / Next Follow-up" notu kişiye yazılabilir; göç aracı aynı tabloyu
+>     kullanır), "Sent"; firma görünümü firmanın kişilerinin postasını da gösterir (satır satır bugünkü kapsam denetimiyle). Mail e-postasının cevap adresi (anahtar taşır) hiçbir
+>     cevapta dönmez. Migration'dan önce uç bugünkü gibi cevap verir.
+>   - **İşçi:** satırın kendi gönderen adresi / başlıkları / referansı (`utils/salesMail.workerExtras` · `utils/email.js`); sütunlar boşsa anahtar hiç kurulmaz (klasik satırlar aynen).
+>   - **Ekran:** Sales › Mail büyüdü (`sales-mail.html`): yan menüde görünümler ve sayıları · yazışma (iletiler düz metin · etiketler "Automatic reply" / "Unknown sender" · cevap formu ·
+>     "Start from a template" · tek tık düğmeleri · "From our records" + "Reference suggestions") · Compose (kendi kişilerimden seç) · Drafts · Unmatched (yönetici) · Sent / All sent
+>     (bugünkü liste). İşaretli tek öğe: dosya ekleme ("Not connected yet"). Data satır menüsüne "Write an e-mail…".
+>   - `busboy` 1.6.0 (zaten kurulu, multer'in bağımlılığı) doğrudan bağımlılık olarak yazıldı.
+> - **Commit:** LEENA `eliza-next` `6e77ee4`.
+> - **Ölçülenler:**
+>   - **Sağlayıcı belgesi (27 Kas, herkese açık sayfalar — hesaba dokunulmadı):** gelen bildirimde doğrulama = imza (ECDSA; başlıklar `X-Twilio-Email-Event-Webhook-Signature` /
+>     `-Timestamp`; zaman damgası + HAM gövde) · OAuth · ikisi; politika API ile kurulur ve gelen ayarına bağlanır; eğri ve zaman toleransı YAZILI DEĞİL. Gövde
+>     `multipart/form-data`; toplam 30 MB; 2xx yeniden denemeyi durdurur, 5xx üç gün yeniden denenir, 4xx davranışı yazılı değil. Olaylar: `bounce` + `type: bounce` = kalıcı; özel
+>     argümanlar olayda geri döner. Giden iletide kendi Message-ID'mizin korunup korunmadığı YAZILI DEĞİL → In-Reply-To eşlemesi kurulmadı.
+>   - **Testler:** yeni suite `test_satis1_p4.js` **22 / 22** (S3 gönderen satırları + anahtar + işçi · C2 compose · I6 gelen uç · V2 görünümler + tek tık · A2 Add as lead / Unmatched ·
+>     D1 taslak · T1 şablondan başla · H1 geri dönüş · L1 günlük · G2 duvarlar + ekran · B1 TABAN). Gelen uç testleri sağlayıcı biçiminde, test anahtarıyla İMZALI sahte iletiyle:
+>     imzasız · başka anahtarla · başka baytların imzası · bayat damga → 401; anahtar yok → 503; doğru anahtar → yazışma; iki kez → tek kayıt; otomatik cevap; başkası cevaplamış;
+>     zararlı HTML → düz metin; ek saklanmaz; anahtarsız / yanlış anahtar / aynı konu → Unmatched; kimsenin tanımadığı gönderen → hiçbir şey saklanmaz.
+>     **Hükümle değişen beklentiler (SAPMA — test satırında yorum):** `test_ui_tam_sales` U1 · `test_aralik2_d4` A4 (Mail artık Inbox'ta açılır; "Sent" bir görünümdür —
+>     aynı liste `?view=sent` ile istenir). Zincir: **91 suite, 1693 / 1693** (önceki 90 suite 1671 → +1 suite, +22).
+>   - **Staging:** migration 094 — dry-run → apply (2,1 sn; 571.111 satırlık kuyruk tablosuna üç boş sütun) → ikinci apply "Nothing to apply" (kayıt defteri 96).
+>     **Kanıt — yalnız uygulama uçlarıyla, SAMPLE kişilerle (gelen yol KAPALIYKEN gösterilebilenler):** durum: `connected: false`, gönderen satırı 3 ("Replies: not connected") ·
+>     sağlayıcı uçları: gelen POST → 503 `NOT_CONNECTED`, GET → 405, olay POST → 503 (iz: `closed` × 4) · kendi SAMPLE kişisine gönderim → 201, kuyrukta `echo`, satırda gönderen
+>     adresi YOK (sistem adresi), cevap adresi = satışçı, anahtar YOK; yazışma "Waiting for their reply"de, o fuarda aşama Contacted, geçmişte "first sent" · kurallar:
+>     başkasının kişisi `NOT_OWNER` (Owner da) · do-not-contact `DO_NOT_CONTACT` · öteki satışçı ve Owner yazışmayı 404 görür · Sales erişimi olmayan 409 · Project gönderemez 409 ·
+>     görünümler: star → Starred 1 · Stop following → Waiting 0 · yeniden yazınca Waiting 1 · Not interested (bu fuar) + Undo · Reply şablonundan başlama ("Dear SAMPLE Mine 3,") ·
+>     taslak: yazarına özel (öteki satışçı 0 görür), silinir · günlük: kişiye not 201, "Sent"te kişi hedefli satırlar fuarıyla, cevap adresi gösterilmiyor · reference
+>     suggestions: 200, liste boş (kişinin sektörü / ülkesi yok).
+>     **Tarayıcı turu:** satışçı 8 sayfa + Owner 3 sayfa × 1440 / 1280 × A / B2 = 44 yükleme, bulgu 0 (konsol 0 · taşma 0 · 36 px altı düğme 0).
+>     **Staging'de BIRAKILANLAR (SAMPLE):** yazışma 1 (SAMPLE Mine 3 · iki giden ileti `echo` · yıldızlı) · taslak 3 "SAMPLE draft — left for the tour" · kişide bir not.
+>   - **U4 — eşitlik + süre:** **eşitlik** (staging, P3 sonu ↔ şimdi): toplam hak ediş 286.580,52 = 286.580,52 EUR · farklı acente 0 / 27 · farklı kontrat × rol 0 / 1.475 · TABAN 342.00 · TABAN-2
+>     EŞİT; fark YALNIZ migration satırı (95 → 96). **Süre** (staging, sunucu süresi ortancası, ms; P3 sonu → şimdi): Commissions 381 → 298 · follow-ups 6 → 5 · Mail (sent) 21 → 26
+>     (satışçı oturumunda 12) · Data listesi 11 → 36 (en düşük 9 — kotalı süreçte tek duraksama; yeniden ölçümlerde 10–11) · Data araması 15 → 10 · yeni: posta durumu 6 · görünüm
+>     listesi 5–25 · tek yazışma 17 · Sales şablonları 22. İki katına çıkan uç YOK.
+>   - **Yolda yakalananlar:** (1) denetim izi eylem adı üç parçalıydı (denetim reddetti — yeni suite); (2) eski iki suite Mail sayfasını "Sent" görünümü sayıyordu; (3) sayfa
+>     kuralları: bağlı / işaretli dökümü ve "sayfada hesap yok" (ek boyutu sunucudan gelir oldu); (4) "Reference suggestions" başlığı eşzamansız çiziliyordu → sabit bölüm.
+>   - Güvenlik bulgusu **5 adet** (değişmedi) — ayrıntı raporda.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:**
+>   - **Staging'de GELEN yol:** staging servisinin ortam ayarını değiştirme çağrısı araç izin katmanınca REDDEDİLDİ (dolanılmadı). Bu yüzden staging'de gelen uç KAPALI (503),
+>     gönderen satırı "domain yok · gelen yok"; "gelen cevabın doğru kişiye bağlanması" kanıtı staging'de ÜRETİLEMEDİ — test suite'inde (imzalı sahte gelen) ölçüldü. Rapor:
+>     SUER'DEN (staging servisine dört ayar) + kanıt maddesi açık.
+>   - Gerçek sağlayıcı bağlantısı (alan adının MX kaydı · sağlayıcıda gelen ayarı + imza politikası · olay bildirimi): bu dilimde KURULMAZ (Suer / IT) — ADR-023.
+>   - Sağlayıcının yeniden denemede zaman damgasını yenileyip yenilemediği · 4xx'te ne yaptığı · imza eğrisi (belgede yok; anahtarın taşıdığı eğriyle doğrulanır).
+>   - Canlıda hangi gönderen satırının işleyeceği: §0.2 sonucu "domain YOK · gelen VAR" → dördüncü satır (sistem adresi, cevap satışçıya, "Replies: not connected") + 🔶.
+> - **Bilinçle yapılmayanlar:**
+>   - In-Reply-To / References ile eşleme · ek saklama · giden e-postada ek · posta kutusu senkronu · açılma izleme.
+>   - Web taleplerinin yazışmaları ve 7 gün kuralının kaynağı: P5 (yazışma türü ve kırmızı işaret hazır).
+>   - Kampanya e-postasının List-Unsubscribe başlıkları ve günlük hak: P6 (kuyruk satırı başlık sütununu taşıyor).
+>   - Geri dönüş eşiğini düzenleyen ekran: P6'daki satış ayarlarıyla birlikte (bugün varsayılan 2).
+>   - Klasik gelen uç (`/api/email/inbound`) DEĞİŞTİRİLMEDİ (bulgu raporda duruyor).
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
