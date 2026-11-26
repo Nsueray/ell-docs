@@ -206,3 +206,24 @@ Faz A restore + rollback.js. Prova ≥ 2 kez, canlının taze kopyasında.
 > - **082 (`users.ui_expo_id` · `users.ui_expo_filter`):** yalnız kolon ekler, satır yazmaz; kesimde zincirle. Seçim kullanıcıya özeldir — kesim günü ek adım yok.
 > - **Klasik rapor ucu (CC 🔶1 = b):** tarih süzgeci + oran taşması düzeltmesi eliza-next'te; canlıda hotfix YOK — kesimle gider. O güne kadar canlıda tarihli istek 500 verir.
 > - **Sales › Mail:** liste yalnız oturum sahibinin gönderdiklerini gösterir; gelen e-posta / zincir cevabı yazan yol yok (🔶 TUR-1b raporu) — kesimde beklenti buna göre.
+>
+> **DİLİM ARALIK-2 (26 Kas; Sentez 26 Kas "… DİLİM ARALIK-2 KRİTERLERİ" + 09:20) — kesim maddeleri (canlıda ÖLÇÜLMEDİ — YON-23: hüküm yokken canlıdan okunmaz):**
+> - **083 (oran doldurma — veri):** kesim zincirinde koşar; oranı boş rol-satırlarını temsilci kaydının O GÜNKÜ varsayılanıyla doldurur. Staging'de doldurma öncesi / sonrası
+>   toplam hak ediş, temsilci ve kontrat × rol kırılımı EŞİT çıktı (2.793 rol-satırı). Kesimde: doldurmadan ÖNCE ve SONRA toplam hak ediş + TABAN / TABAN-2 ölçülür, eşitlik
+>   kesim raporuna yazılır; varsayılanı da boş kayıt varsa doldurulmaz, "rate missing" sayacında görünür (staging: 0). 083'ten SONRA varsayılan değiştirmek eski kontratı
+>   etkilemez (MOT-06) — kesimden önce canlıda varsayılanı değiştirilecek kayıt varsa sırası buna göre.
+> - **084 (havuz payları — yalnız şema):** satır yazmaz. Kesim günü havuz "Unallocated 100%" doğar; payları kesimden SONRA Owner girer (değerler kişiye özel — GUV-08;
+>   geçerlilik bugün ve sonrası: geçmiş ödemeler dağıtılmaz). Üye olacak kişilerin internal agent kaydı yoksa Owner açar. Ekip kaydına yazılmış ESKİ payout canlıda var mı
+>   ölçülmedi (staging: 0) — provada sayılır; varsa dokunulmaz, raporlanır; yeni payout ekip kaydına yazılamaz (MOT-08).
+> - **085 (tek şablon deposu — şema + veri):** kodun yerleşik metinlerini tohumlar ve canlıda BULDUĞU satırları taşır (organizatörün exhibitor şablon satırları · quote
+>   e-postası satırları). Canlıdaki satırlar ölçülmedi: biri elle düzenlenmiş ve bilinmeyen / tek süslü yer tutucu taşıyorsa taşımadan sonra o e-posta GÖNDERİLMEZ (satır
+>   "Blocked", ad yazılı) — kesimden hemen sonra Admin › Templates gözden geçirilir. Provada: migration bildirimindeki sayılar (organizatör · şablon · metin · taşınan · tek
+>   süslü kalan = 0) ve bir SAMPLE kayıtla önce / sonra önizleme eşitliği yinelenir. Otomatik zincir açık bir fuar varsa geçişte kuyruk sayısı önce / sonra ölçülür
+>   (staging: değişmedi, çift gönderim 0). Eski iki tablo kaldırılmaz. `email_worker.js` (canlıda zincir tiki) aynı depodan okur — worker aynı dağıtımla güncellenir.
+> - **086 (selam — veri):** Payment Reminder'ın sabit selam satırını kişi adına çevirir (yeni sürüm); yalnız satır aynen duruyorsa. Canlıda metin düzenlenmişse dokunmaz.
+> - **087 (bildirim ↔ ödeme — yalnız şema):** satır yazmaz, eşleştirme yapmaz. ⚠️ Davranış değişir: "Mark as checked" ile kapatılmış bildirimler kesimden sonra yeniden AÇIK
+>   sayılır (Finance › Collections › "Receipts to check"te görünür; katılımcının Payment durumu "receipt being checked" olur → o katılımcıya Payment hatırlatması gitmez).
+>   Kesimden sonra Finance bu bildirimleri ödemesine eşleştirir ya da reddeder. Kaç bildirim olduğu provada sayılır (staging: 1).
+> - **Mail "All sent" (Owner) · Expo Finance / Expo budget başlık seçicisi · fuar etiketi:** şema / veri yok; kesimde ek adım yok.
+> - **Dağıtım → migration arası:** 083–087'nin her biri için kod eski şemayla çalışır (oran: eski satırlar "rate missing" görünür — 083 hemen koşulur · havuz: paysız motor ·
+>   şablon: eski yerlerden okur · bildirim: eski kural). Sıra yine: dağıt → migrate (dry-run → apply → "nothing").

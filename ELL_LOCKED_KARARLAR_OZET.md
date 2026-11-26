@@ -116,6 +116,26 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 - **MOT-03** (eski U1a) — Tavan kümülatif-marjinal uygulanır ve dilimlere "(cap)" notuyla yansır. [defter:2026-07-25 FAZ 3b-3 TAMAM]
 - **MOT-04** (eski U2a) — Kesim takvim günüdür (`payment_date` DATE, TZ yok). [defter:2026-07-25 FAZ 3b-3 TAMAM]
 - **MOT-05** (eski U3a) — Rapor yalnız hak edilmişi gösterir; potansiyel detayda kalır. [defter:2026-07-25 FAZ 3b-3 TAMAM]
+- **MOT-06** (Sentez 26 Kas — DİLİM ARALIK-2 H3, AYNEN; ID'leri MOT-06 · MOT-07 · MOT-08 CC tahsis etti) — ORAN KONTRATIN KENDİ KAYDINDA: "Oran kalıcı çözümü = aday (i):
+  kontrat doğarken (dönüşüm · atama · transfer · göç) oran kendi kaydına kopyalanır; okumada varsayılana DÜŞÜLMEZ; oranı boş kontrat = "rate missing" (Commissions ve
+  kontrat sayfasında görünür durum; hak ediş hesaplanmaz; sayaçta). Bir kerelik doldurma: oranı boş rol-satırları bugünkü varsayılanla; ÖNCE/SONRA hak ediş toplamı ve
+  TABAN/TABAN-2 EŞİT (ölçülür, raporda). ARALIK-1'in "varsayılan değişince eski oranı yaz" ara kodu KALKAR." Uygulama: tek kopyalama yeri (`utils/commissionRates.js`), dört
+  doğum yolu ondan geçer; motorun oran ifadesi yalnız kontratın kendi oranı (MOT-01 — tek motor); "rate missing" = rol ATANMIŞ ve oranı boş ("SD oranı bekleyen" ayrı
+  durumdur, karışmaz); varsayılanı sonradan değiştirmek yalnız SONRA doğan kontratı etkiler (YON-22); doldurma migration 083. Staging: önce / sonra bütün toplamlar EŞİT.
+  [defter:2026-11-26 SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ"]
+- **MOT-07** (Sentez 26 Kas — DİLİM ARALIK-2 H2 · H5, AYNEN) — EKİP HAVUZUNUN PAYLARI SÜRÜMLÜ AYARDIR: "Paylar kişi kaydında: agent kaydına "Pool share %" (ekip havuzundan
+  pay) — SÜRÜMLÜ (geçerlilik başlangıcı; eski sürüm kalır); üye = internal agent kaydı (yoksa Owner "New agent" ile açar); toplam ≠ 100 ise kaydedilir ama "Unallocated N%"
+  görünür (uyarı, hata değil); Owner girer (bugünkü agents.write), Faz 4'te havuz sahibine devir; her değişiklik denetimde (kim · ne zaman · eski → yeni)." · "Ayar: ekip
+  kaydının oranı (var) + üyelerin payı (agent kaydında) + sürüm geçmişi; ileriye dönük (YON-22)." Uygulama: yalnız eklenen sürüm tablosu (084); geçerlilik başlangıcı bugün
+  ve sonrası (geçmişe dönük sürüm reddedilir — Orchestrator okuması); toplam > 100 KAYDEDİLMEZ (Sentez hükmü yok — 🔶 rapor); pay DEĞERİ kişiye özeldir (GUV-08): deftere,
+  commit mesajına, rapora ve test fikstürüne ad + değer yazılmaz; payları Owner girer, CC girmez. [defter:2026-11-26 SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ"]
+- **MOT-08** (Sentez 26 Kas — DİLİM ARALIK-2 H4, AYNEN) — HAVUZ DAĞITIMI TEK MOTORDA, "pool" DİLİMİ: "Havuz dağıtımı okumada türetilir, TEK motorda (MOT-01; yeni dilim türü
+  "pool"): ekip kaydının hak ediş dilimi (ödeme × kontrat) → ödeme tarihinde geçerli pay sürümü → üyeye pay satırı. Üyenin agent sayfasında "Pool share" bölümü (dönem · ekip
+  hak edişi · pay % · tutar); üyenin bakiyesi = kendi hak edişi + havuz payı − payout. Ekip kaydına payout YAZILMAZ (bakiyesi "distributed to members"); varsa eski payout
+  dokunulmaz, raporda. Commissions listesinde ekip satırı kalır; üyede havuz payı hak edişin içinde ("incl. pool €…" alt satır). Kesim raporu aynı motordan." Uygulama ve
+  okuma kararları: DEĞİŞMEZ — ekip dilimi = üyelere dağıtılan + ekipte kalan, kuruluşun toplam hak edişi pay girilince bir kuruş değişmez (RAP-18 aynı) · YUVARLAMA: üyenin
+  bir dilimden payı kuruşa yuvarlanır, fark EKİP KAYDINDA kalır · üyenin ilk pay sürümünden önceki ödeme dağıtılmaz (havuz geçmişe yürümez — Orchestrator okuması) · ters
+  kayıt, tersine çevirdiği ödemenin sürümüyle geri alınır · ekip kaydına payout ucu 409 `POOL_NO_PAYOUT`. [defter:2026-11-26 SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ"]
 
 ### TAH — tahsilat / ödeme girişi
 
@@ -276,6 +296,9 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
   - **Ek (Suer 11 Kas — Sentez 11 Kas "UI-ÖNCE FAZI", AYNEN):** "Y1 Tamamı birden: 22 ekranın hepsi bu pakette ui2'ye girer. Sıra CC içinde (bekleme yok): Login + kabuk → Operations → Sales → Finance → Mobile → Settings. Suer istediği an bakar. Y2 Gerçek veri kuralı: taslaklardaki uydurma sayı / ad / tarih ÜRÜNDE KALMAZ. Her öğe ya gerçek uçtan okur ya da üstünde görünür "henüz bağlı değil" işareti taşır (öğe bazında; sayfa bazında değil). Ölü düğme yok: düğme ya iş yapar ya işaretlidir. Defterde ekran başına "bağlı / işaretli" listesi. Y3 Prototip katmanı (1. gün): tasarım seti olduğu gibi staging'de "Design preview" altında tıklanabilir sunulur, her sayfada "PROTOTİP — veri sahte" şeridi, kabuktan bağlantı; ürün sayfalarından AYRI; faz sonunda kaldırılır. Suer tüm resmi 1. günden görür. Y4 Akış önce, cila ikinci: alan · düğme · akış bu pakette; renk/tipografi set'ten aynen (UI-04 tokens; sabit renk yasağı aynen). Settings › Appearance: setteki 15 tema seçilebilir (varsayılan Vermillion; kişi bazlı; hangilerinin kalacağı Suer sonra seçer). Y6 Staging tazeleme DONUK (YON-14 eki) — faz bitene kadar. Y10 Kesim ve göç en son (YON-21 aynen); bu fazda prova yok." Kaynak set: Suer'in bilgisayarı, Downloads › "Eliza PlatformDesign" (11 Kas 11:30). Sentez EK (11:44): bu chat UI-ÖNCE fazının chat'idir; kesim provası hattı (KES) kapalı. Ekran kuralı → UI-07. [defter:2026-11-11 SENTEZ 11 Kas: UI-ÖNCE FAZI — KURALLAR (Y1–Y10) + PAKET UI-TAM]
 - **YON-22** (Suer 24 Kas — Sentez 24 Kas "ARALIK-1 EK", AYNEN; ID'yi CC tahsis etti) — "İş parametreleri — oranlar · paylaşımlar · metinler · süreler · listeler — koddan değil ayardan gelir; Owner (gerekirse yetkili rol) düzenler; değişiklik ileriye dönük; geçmiş kayıtlar değişmez (ödeme / hak ediş olayları değişmez)." "Bundan sonra "sabit mi olsun" sorusu yok: sabit = SAPMA, raporda." İlk iki uygulama (DİLİM ARALIK-1 EK madde 9 · 10): komisyon ORANI temsilci kaydının ayarıdır, ürünün kendi ucundan girilir; oran değişince — aynı işlemde — o kaydın kendi oranı olmayan mevcut kontratlarına YÜRÜRLÜKTEKİ (eski) oran yazılır (hak ediş motoru oranı okuma anında çözdüğü için "ileriye dönük" böyle sağlanır; değişiklik denetim kaydında) · Payment Reminder varsayılan METNİ şablon tablosunda bir satırdır (tohum yalnız satır yoksa ekler). [defter:2026-11-24 SENTEZ 24 Kas: "KABUK-2 KABUL + 3 KARAR + TEYİTLER + DİLİM ARALIK-1" + "ARALIK-1 EK"] · 4. PARÇA
   - **YON teyidi (Sentez 24 Kas, AYNEN):** "SAPMA (2.–4. parça kayıtları koddan sonra, birlikte push): kabul; bir daha olmaz — YON: defter kaydı işle aynı turda, aynı commit'te." [defter:2026-11-24 SENTEZ 24 Kas: "KABUK-2 KABUL + 3 KARAR + TEYİTLER + DİLİM ARALIK-1" + "ARALIK-1 EK"]
+- **YON-23** (Sentez 26 Kas karar S2, AYNEN; ID'yi CC tahsis etti) — CANLIDAN OKUMA YALNIZ AÇIK HÜKÜMLE: "canlıdan okuma YALNIZ Sentez bloğu açıkça "canlıda ölç" diyorsa; sorgu
+  metni ve sayısı raporda; her canlı temas (okuma dahil) SAPMA listesine MUTLAKA yazılır (TUR-1b raporunda yazılmamıştı — bu da kuraldır)." Uygulama: CC, hüküm yokken canlının
+  salt okuma bağlantısını da kullanmaz; ölçüm staging'de yapılır, canlı için "ÖLÇÜLMEDİ" yazılır. [defter:2026-11-26 SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ"]
 
 ### AD — adlandırma / marka
 
@@ -360,6 +383,22 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 - **ILT-07** (Sentez 11 Kas PAKET UI-TAM-2 D — gönderen kimlikleri) — Exhibitor e-postalarının gönderen kutusu İKİ: **Project kutusu** (zincir + hatırlatma +
   sistem e-postaları) · **Finance kutusu** (Payment Reminder); görünen ad tüzel kişi AYNEN (ILT-06). Cevap adresi gönderen kutu (UX 3. tur C6). Adresler
   referans veride (sır değil); canlıda gönderen doğrulaması + worker = ADR-023 kesim maddesi. [defter:2026-11-11 SENTEZ 11 Kas: PAKET UI-TAM-2]
+- **ILT-08** (Sentez 26 Kas — DİLİM ARALIK-2 Ş1–Ş4, AYNEN; ID'leri ILT-08 · ILT-09 CC tahsis etti) — TEK ŞABLON DEPOSU (Admin › Templates): "Tek sayfa Admin › Templates: gruplar
+  Chain e-mails (6 yerleşik) · Reminders (Catalogue · Stand · Badges · Payment) · System e-mails (Quote e-mail; ileride Web form thank-you) · Sales templates (SATIŞ-1'de
+  dolar; şimdi boş) · Free. Tür + dil başına TEK varsayılan; aynı türde birden çok şablon olabilir; gönderirken seçilir." · "Şablon = konu + gövde (düz metin; HTML'e
+  kaçışla); dil sekmeleri EN/FR/TR; boş dil varsayılan olamaz, gönderimde EN'e düşer (bugünkü kural); yer tutucular ÇİFT süslü, türe göre palet; … bilinmeyen / tek süslü yer
+  tutucu KAYDI DURDURUR ve önizlemede işaretlenir; "Dear Exhibitor" yerine {{contact_name}} (kişi yoksa "Exhibitor")." · "Önizleme SAMPLE kayıtla (kayıt seçilir) · "Send
+  test to myself" (echo) · sürüm geçmişi (kim · ne zaman · eski metin · Revert = yeni sürüm) · kopyala · varsayılan işareti. Elle gönderim (Exhibitors › Send e-mail… ·
+  Remind…): tür seçilince varsayılan gelir, aynı türün başka şablonu seçilebilir; ÖNİZLEME = ilk alıcının alacağı metin, GÖVDE DAHİL (Kural 1)." · "Geçiş: bugünkü 6 zincir
+  metni + 4 hatırlatma metni + Payment Reminder satırları + quote e-mail bu sayfaya taşınır (metin bayt bayt aynı; test); zincir ve hatırlatma gönderimi şablonu buradan okur;
+  Expo settings'teki 7 fuar metin bloğu TAŞINMAZ (fuara özel içerik). Yetki: Owner hepsi; Proje → Chain/Reminders/System (bugünkü izin mekanizması elverdiğince; elvermiyorsa
+  Owner + Faz 4 notu)." Uygulama: iki tablo (085 — şablon + yalnız eklenen sürümler), tür başına tek varsayılan veritabanı kısıtı; koddaki metinler tohumlandı, veritabanındaki
+  satırlar taşındı; kural (bilinmeyen / tek süslü) GÖNDERİM anında da geçerli; gönderim kaydı şablon sürümünü taşır; yetki bugünkü `templates.write` (Owner) + Faz 4 notu;
+  hatırlatma tek e-postadır — dört tür aynı metinle başlar, e-posta düğmesinin açtığı bölümün türünü alır; şablon SİLME yok. ILT-02 (tek `quote_email` düzenleyicisi) ve
+  EXH-16'nın "metin dosyada / organizatör satırı" kısmı bu depoyla DEĞİŞTİ; EXH-17 (zamanlama / tetik) aynen. [defter:2026-11-26 SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ"]
+- **ILT-09** (Suer kararı 26 Kas — Sentez 26 Kas karar S1, AYNEN) — MAIL'DE KİM NEYİ GÖRÜR: "Owner "herkesin gönderdikleri" görünümünü görür (salt okuma, şema yok); başka role
+  açma Faz 4. Gelen kutusu SATIŞ-1'in konusu (U3b tasarımı), bu dilimde yok. SAMPLE e-postalar böylece Suer'in sayfasında görünür." Uygulama: Sales › Mail "All sent" —
+  yalnız Owner oturumunda vardır (başkası isterse 409); Owner olmayan hesabın görünümü ve yanıtı DEĞİŞMEDİ; yeni izin / şema yok. [defter:2026-11-26 SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ"]
 - **ILT — KAPSAM DIŞI (sonraki paketler):** gelen e-postaların sisteme düşmesi ("B4 inbound") · 8 e-postalık operasyonel zincir (REQ §2.7, Paket 5 sonrası ayrı paket) · WhatsApp · pazarlama kampanyası. [defter:2026-11-05 SENTEZ: PROMPT 1b KABUL + 7 KARAR + PROMPT 2 DİREKTİFİ]
 
 ### UI — arayüz (yeni grup, 2026-10-22, Sentez — UI-0)
@@ -421,6 +460,13 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
   "canlıda lead-scan kullanımı var mı, hangi fuar" ölçümü." Uygulama: `nav.json` tek kaynak (dosya adları değişmedi); o fuarın kimliği ui2'de yalnız `nav.json`'da ve bir test
   klasik dosyadaki sabitle eşitliğini okur. [defter:2026-11-24 SENTEZ 24 Kas: "ARALIK-1 KABUL · 3 KARAR · TUR LİSTESİ HÜKÜMLERİ · DİLİM TUR-1 (+ ARALIK-2 §0 ÖLÇÜMLERİ)"] · [defter:2026-11-24 SENTEZ 24 Kas (21:40): "TUR-1a KABUL · KARARLAR (S1 · S2 · S3 · CC 🔶1–3 · H3) · TUR-1b EK HÜKÜMLER"] · [defter:2026-11-24 DİLİM TUR-1b P4]
 
+
+- **UI-20** (Sentez 26 Kas — tur bulguları 1–3 + CC Soru 3 = a, AYNEN; ID'yi CC tahsis etti) — FUAR ETİKETİ · TEK GÜN SAYISI · ADLAR: "(1) başlıkta iki gün sayısı → TEK sayı:
+  "in 6 days" kalır, D:H:M geri sayımı ui2 başlıklarından KALKAR (Exhibitor Page "6 days to the show" kalır). (2) tarih iki kez → etiket "test · 2–4 Dec 2026 · SAMPLE City,
+  Turkey · Upcoming · in 6 days" (tek tarih aralığı; tek fonksiyon). (3) üç ad → her yerde "Visitors home"; sekme adı "Expo reports"." · **CC Soru 3 (AYNEN):** "(Budget · Expo
+  Finance düz seçim kutusu) → a: başlık seçicisi, ARALIK-2 D-4'te." Uygulama: tam etiket tek fonksiyondan (ad · tek tarih aralığı · yer · durum · gün sayısı); başlık
+  seçicisinin düğmesi fuarın ADINI gösterir, gerisi yanında; KISA etiket de tarih aralığına geçti ("Ad · 2–4 Dec 2026" — Orchestrator okuması); Expo Finance ve Expo budget
+  fuarı sayfa başlığında seçer (UI-18 kuralı — adres fuarı taşır · seçim yokken en yakın fuar · ortak anahtarı yalnız başlık seçimi yazar). [defter:2026-11-26 SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ"]
 
 ### KAT — katalog / quote → kontrat köprüsü (yeni grup, 2026-10-24, Paket 3)
 
@@ -745,6 +791,12 @@ Kesim provası direktifi (KES-01..05) aynen; GUV-04 dilimi provadan önce. Hotfi
   Rejected (gerekçeli). Exhibitor Page'de "Confirmed" YALNIZ Matched'te; o zamana kadar "Received — being checked". Paid 0 iken "Confirmed" görünemez." Uygulama (DİLİM TUR-1a D-4.4): bildirim ↔ ödeme kaydı bağı bugün YOK (kolon yok;
   Finance'in "Mark as checked" eylemi ödeme yazmaz, ödeme seçtirmez) → bağı kurmak şema işidir, bu dilimde KURULMADI. Yalnız etiket: bildirimin durumu "received" ya da "rejected" (Finance'in baktığı ayrı işaret); "Confirmed" hiçbir
   yolda üretilmez — Exhibitor Page ve proje ekibi ekranı "Received — being checked" yazar (EN / FR / TR). Mevcut ödeme kaydı hiçbir durumda değişmez. **Matched (bağ) açık karar.** [defter:2026-11-24 SENTEZ 24 Kas: "ARALIK-1 KABUL · 3 KARAR · TUR LİSTESİ HÜKÜMLERİ · DİLİM TUR-1 (+ ARALIK-2 §0 ÖLÇÜMLERİ)"] · §0.5 + D-4
+  - **EXH-21 eki — S3 (Sentez 26 Kas — DİLİM ARALIK-2 S3, AYNEN): BAĞ KURULDU** — "Bildirime ödeme kimliği (nullable). Collections › "Receipts to check": "Match to a payment…"
+    (aynı kontratın ödemeleri listelenir; yoksa "Record payment first" → mevcut ödeme akışı, sonra eşleştirme) · "Reject…" (not zorunlu). "Mark as checked" tek başına durumu
+    DEĞİŞTİRMEZ (iç not olarak kalabilir). Eşleşince exhibitor "Confirmed"; reddedilince "Not accepted — please contact us"; o güne kadar "Received — being checked". Bir ödeme
+    en çok bir bildirime bağlanır. Listede tutarı ve tarihi uyan ödeme önce." Uygulama: kolon + tekil kısıt (087); durumun TEK tanımı (eşleşmiş ve ödemesi duran → confirmed ·
+    ret olayı → rejected · gerisi → received; bildirim received iken AÇIK); eşleştirme ödeme YAZMAZ, mevcut ödemeyi DEĞİŞTİRMEZ; geri alma (unmatch) YOK (hüküm yok); eşleşen
+    ödeme sonradan ters çevrilirse bildirim yeniden received + açık (CC okuması — rapor); "Matched (bağ) açık karar" satırı bununla KAPANDI. [defter:2026-11-26 SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ"]
 - **EXH-22** (Sentez 24 Kas 21:40 C-2 — Metin 14 okuma kuralı, AYNEN; ID'leri EXH-22 · EXH-23 CC tahsis etti) — ÖN DOLUM CÜMLESİ: "ön dolu alan ≤ 3 ise ADIYLA yazılır ("We pre-filled
   your company name and country; please complete the rest."); daha çoksa "We pre-filled N of 22 fields from our records; please check and complete the rest."" Uygulama: sunucu ön
   dolu alanların ADLARINI ve formun alan sayısını verir; sayfa yalnız yazar (EN / FR / TR). SAPMA: form 23 alanlı (firma adı dahil) → cümle "N of 23" yazar — "22" Sentez'in

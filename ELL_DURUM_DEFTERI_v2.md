@@ -12991,6 +12991,49 @@
 > - **Bilinçle yapılmayanlar:** "All sent"i başka role açmak (Faz 4) · gelen kutusu (SATIŞ-1) · pano ucundaki `countdown` alanını kaldırmak (uç aynı; yalnız ekranda
 >   çizilmiyor) · klasik ekranların sekme adları.
 >
+> ## ✅ 2026-11-26 — DİLİM ARALIK-2 P10 + KAPANIŞ: BELGELER (CLAUDE.md 142.130 → 138.096 karakter · kütük MOT-06 · 07 · 08 · YON-23 · ILT-08 · 09 · UI-20 · EXH-21 eki · ADR-023 kesim maddeleri) · DİLİM BAŞI = DİLİM SONU hak ediş · kapanış zincirleri ve turları · staging'de bırakılan durum
+>
+> - **Kriter kaynağı:** [defter:2026-11-26 SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ" + SENTEZ 26 Kas 09:20 "ARALIK-2 TEK PROMPT" (1. madde)] — D-5 + Orchestrator U2 P10 · U4 · U5.
+> - **Ne yapıldı:**
+>   - **LEENA `CLAUDE.md`:** "DİLİM ARALIK-2" bölümü (komisyon tarafı için yalnız "bozma" kuralları — kayıt defterdedir; şablon deposu · bildirim ↔ ödeme · küçükler ayrıntılı) ·
+>     dilimin eskittiği paragraflar güncellendi (ARALIK-1 madde 9 · 10, zincir metinlerinin yeri, makbuz bildirimi, fuar etiketi) · test satırı 1.539 / 85 suite; eski sayı
+>     geçmişi (12.512 karakter) `docs/CLAUDE_ARCHIVE.md` → "Test sayısı geçmişi"ne **bayt bayt** taşındı (taşınan metin arşivde aynen; arşivin eski içeriği değişmedi).
+>     142.130 → **138.096 karakter** (sınır 150.000).
+>   - **Kütük:** MOT-06 (oran kontratın kendi kaydında — H3) · MOT-07 (havuz payları sürümlü ayar — H2 · H5) · MOT-08 (havuz dağıtımı tek motorda, "pool" dilimi — H4) ·
+>     YON-23 (canlıdan okuma yalnız açık hükümle — S2) · ILT-08 (tek şablon deposu — Ş1–Ş4) · ILT-09 (Mail'de kim neyi görür — S1) · UI-20 (fuar etiketi · tek gün sayısı ·
+>     adlar · Budget / Expo Finance başlık seçicisi) · EXH-21 eki (S3 — bağ kuruldu; "Matched açık karar" kapandı). Hükümler AYNEN; ID'leri CC tahsis etti; kişiye özel değer YOK.
+>   - **ADR-023:** "DİLİM ARALIK-2 — kesim maddeleri" (083 doldurmanın kesimde önce / sonra ölçümü · 084 payları kesimden SONRA Owner girer · 085 canlıda bulduğunu taşır —
+>     kesimden hemen sonra Templates gözden geçirilir · 086 · 087: "bakılmış" bildirimler yeniden AÇIK sayılır · dağıtım → migration arası). Canlıda ÖLÇÜLMEDİ (YON-23).
+>   - **Dilim sonu temizliği (staging, ürünün kendi uçlarıyla):** P5'in SAMPLE ödemesi ters kayıtla kapatıldı · iki SAMPLE üyenin payı YENİ sürümle 0'a çekildi · SAMPLE üye
+>     kayıtları pasifleştirildi. Hiçbir şey silinmedi.
+> - **Commit:** LEENA eliza-next `c3ada0f` (yalnız CLAUDE.md + arşiv; kod değişmedi). Canlı `main` DEĞİŞMEDİ. Bu kayıt + kütük + ADR-023 ell-docs'ta aynı commit'te.
+> - **Ölçülenler:**
+>   - **DİLİM BAŞI (§0) ↔ DİLİM SONU (staging verisi, gerçek fonksiyonlar, temizlikten sonra):** toplam hak ediş **286.580,52 = 286.580,52** · farkı olan temsilci **0** ·
+>     kesim raporu 286.580,53 = · Commissions listesi (hak ediş · ödenen · ödenecek · borçlu) EŞİT · 47 ekstre EŞİT · Ledger özeti EŞİT · fuar marjı (65 fuar) EŞİT · kontrat
+>     kutusu örneklemi EŞİT · göç mutabakatı TABAN satırı 342.00 · **TABAN 342.00 · TABAN-2 EŞİT** · "SD oranı bekleyen" 806 = 806. Değişen (planlı): oranı boş rol-satırı
+>     2.793 → 0 · kutuda oran kaynağı "varsayılandan" 55 → 0 / "kendi kaydından" 13 → 68 · migration kaydı 84 → 89 · SAMPLE siparişte +20,00 ve −20,00 iki dilim satırı (net 0).
+>   - **DÜZELTME (P9 kaydı):** o kayıtta "P8 sonrası ↔ P9 sonrası bütün toplamlar EŞİT, farkı olan temsilci 0" yazdım — YANLIŞ. İki ölçüm arasında dilim sonu temizliği
+>     (SAMPLE ödemenin ters kaydı) vardı: toplam 286.600,52 → 286.580,52 (**−20,00, beklenen**), farkı olan temsilci 3 (ekip kaydı + iki SAMPLE üye). Doğru adım tablosu:
+>     §0 → P1 → P2 → P3 her toplam EŞİT · P3 → P5 +20,00 (SAMPLE ödeme) · P5 → P7 → P8 EŞİT · P8 → P9 −20,00 (ters kayıt) · dilim başı = dilim sonu.
+>   - **Staging'de havuz:** bugün payı olan üye 0 · **Unallocated 100,00** · pay geçmişi 4 SAMPLE sürüm · ekip kaydına payout 0 · "rate missing" 0.
+>   - **Kapanış zincirleri (son kod; baş `c3ada0f` yalnız belge):** PG 14 koşu 1 (`6f76814` — son kod) 85 suite **1539 / 1539** · PG 14 koşu 2 (`c3ada0f`) 85 suite **1539 / 1539** · PG 17.10 (`c3ada0f`) 85 suite **1539 / 1539**. Kırmızı yok.
+>   - **Staging turu (A ve B2 · 1440 ve 1280; düzen ve font yalnız tarayıcıda değiştirildi — hesap ve kurum ayarına dokunulmadı):** Owner araç hesabı 17 sayfa × 2 düzen ×
+>     2 genişlik × 2 font = 136 yükleme, bulgu **0** (taşma · kesik sütun · 36 px altı düğme · konsol hatası) · proje araç hesabı 5 sayfa × 4 = 20 yükleme, bulgu 0 ·
+>     yetkisiz araç hesabı (satış rolü) 7 sayfa × 4 = 28 yükleme: taşma 0; Templates · Commissions · ekip kaydı · "All sent" beklenen 409 duvarını gösterdi.
+>   - **Süre — dilim başı → dilim sonu (staging · Owner araç hesabı · 1440 · 3 koşu ortancası; sayfanın verisi tamamlanana kadar):** Commissions 1,04 → 1,44 sn · ekip
+>     kaydının agent sayfası 1,33 → 2,08 · örnek temsilci sayfası 1,47 → 1,77 · Ledger özeti 0,89 → 1,18 · Expo Finance 1,48 → 2,14 · kesim raporu 0,69 → 1,17 · War Room
+>     1,90 → 2,09. **2 sn'yi geçen: Expo Finance · War Room · ekip kaydının sayfası.** Aynı kod iki kez ölçüldüğünde sunucu süreleri ±%30 oynadı (staging 0,1 CPU);
+>     kesin artış: ekip kaydının sayfasında yeni havuz isteği, Expo Finance'te başlık seçicisi için önce fuar listesi.
+> - **Staging'de bırakılan (özet):** havuz Unallocated %100 · 3 pasif SAMPLE temsilci kaydı · SAMPLE sipariş 7904'te ödeme + ters kaydı · SAMPLE kayıt 7903'te bir SAMPLE
+>   ödeme (satıcısız → komisyon 0) + "confirmed" ve "rejected" birer SAMPLE bildirim + bir SAMPLE Catalogue e-postası (echo) · 2 SAMPLE şablon (varsayılan değil). Suer'in
+>   SAMPLE kayıtları (7899 · 7900 · 7902 · sipariş 7901), SAMPLE fuar tarihleri, kurum fontu, Suer'in hesabı ve tercihleri YAZILMADI.
+> - **Rapor:** tek rapor (repo dışı dosya + terminal + Drive ELL-Handoff/03-CC kopyası). 🔶 karar soruları (3): pay toplamı > 100 · kesimde "bakılmış" eski bildirimler ·
+>   şablon silme / arşiv.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** canlıda hiçbir şey (YON-23) · gerçek üyelerle dağıtım · tarayıcıda tıklama akışları (uçlar + ilk çizim + tur + ekran görüntüsü ölçüldü) ·
+>   telefon genişliği · Suer'in kendi hesabıyla hiçbir ekran · canlı planda süre.
+> - **Bilinçle yapılmayanlar:** SATIŞ-1 (başlanmadı) · `.claude/skills` (klasik EMS; ui2 / finans modülleri orada yok) · LEENA reposundaki iki başıboş `.git/refs` dosyası
+>   (dokunulmadı — `git fetch` çalışmıyor, push ve `ls-remote` çalışıyor; raporda) · eski iki şablon tablosunun kaldırılması · hız kuyruğu işleri.
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
