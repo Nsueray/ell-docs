@@ -13507,6 +13507,150 @@
 > - **Bilinçle yapılmayanlar:** GOC-ALICI kodu (yukarıda) · klasik "Agents (classic)" menü satırı (kaldırılmadı — yalnız Commissions düğmesi değişti) · işaretin başka süzgeçlere
 >   yayılması · arşivli şablonu silme · var olan başka `to_jsonb` okumalarının hızlandırılması (bu parçanın getirdiği yavaşlama giderildi; öncesinden kalanlar hız kuyruğunda).
 >
+> ## ✅ 2026-11-27 — DİLİM SATIŞ-1 P2: DATA — tek kayıt defteri: kişi firmasız olabilir (lead) · sahip · do-not-contact · kişi × fuar (aşama türetilir) · transfer isteği · segment · içe aktarma masası · fuar ↔ sektör
+>
+> - **Kriter kaynağı:** [defter:2026-11-26 SENTEZ 26 Kas 16:30: "ARALIK-2 KABUL · HÜKÜMLER · DİLİM SATIŞ-1 KRİTERLERİ"] — C · P2 + Orchestrator U2 / U3 "ORTAK" + "P2 DATA".
+> - **OKUMA KARARLARI (koddan ÖNCE yazıldı — Sentez kapanışta geri alabilir):**
+>   1. **Aşamanın türetilmesi (Sentez "türetilir" der, nasılını yazmaz):** kişi × fuar için en ileri ulaşılan — Signed = kişiyi ADIYLA taşıyan o fuarın teklifi imzalı · Quote
+>      sent = öyle bir teklif gönderilmiş (gönderilip reddedilen de sayılır: aşama geri düşmez) · Qualified = işaret ya da kişiyi adıyla taşıyan herhangi bir teklif · Replied = ilk
+>      cevap kayıtlı · Contacted = ilk e-posta gitmiş · Lead = çift var. Firmanın BAŞKA kişisine giden teklif bu kişiyi ilerletmez (gönderilen teklif her zaman bir kişi taşır —
+>      ILT-01). "All expos" altında hiç fuar çifti olmayan kişi de listelenir (Lead).
+>   2. **Kişi × fuar çifti (Orchestrator okuması, aynen):** fuar seçiliyken ekleme / içe aktarma · o fuarın kampanyasına hedef olma · o fuarın web formu · o fuar için teklif.
+>      Teklif yolu DEĞİŞTİRİLMEDİ (kapsam dışı): tekliften doğan çift saklanmaz, okurken teklif tablosundan gelir.
+>   3. **Okuma duvarı:** bugünkü `sales.read` kapsamı — `all` hepsi · `office` firmasının ofisi ya da sahibinin ofisi o ofis olan kişiler · `own` SAHİBİ olduğu kişiler + sahipsiz
+>      olup kendisinin açtığı kişiler (bugün "açan" neyse o; mevcut kayıtlar görünürlüğünü kaybetmez).
+>   4. **"Sales Manager" karşılığı:** Owner ya da `sales.write` kapsamı `all` olan kullanıcı (bugün hiçbir ŞABLON vermiyor; Admin › Users'ta kişi başı ezmeyle verilir — yeni
+>      izin kodu yok). Şablon karşılığı olmadığı için fiilen Owner → **Faz 4 notu**.
+>   5. **Sahipsiz (Unassigned) kişi** yalnız yöneticinin atamasıyla sahip bulur; satışçı sahipsiz kişiyi yazamaz, kendine alamaz. Mevcut SAMPLE kişiler sahipsiz kalır (toplu
+>      atama yok — Orchestrator hükmü).
+>   6. **E-posta kimliktir:** kiracı başına tek kişi. Adres, kişinin sahibi tarafından DÜZELTİLEBİLİR (yazım hatası — Company sayfası bugün de düzeltiyordu); başka bir kişinin
+>      adresine çevrilemez. Kişinin firması değiştirilmez; firmasız kişiye BİR KEZ firma bağlanır.
+>   7. **İçe aktarma:** firma kaydı AÇMAZ — dosyadaki firma adı kişide düz metin kalır; yalnız o adda TEK aktif firma varsa ve içe aktaran onu okuyabiliyorsa bağlanır. Yalnız
+>      e-postası olan satır lead olarak gelir; adı yerine PDF'te adresin yanındaki sözcükler, yoksa adresin @ öncesi durur. "No e-mail" satırları için ikincil kayıt tablosu
+>      AÇILMADI: masada sayılır ve gösterilir, masa kapanınca silinir (Orchestrator okuması — kişisel veri gereğinden uzun tutulmaz). Sınırlar: dosya 5 MB · 5.000 satır ·
+>      hücre 300 karakter · PDF 100 sayfa / 20 sn.
+>   8. **Yalnız iç kullanıcı:** Prospecting uçları dış kullanıcıya (acente hesabı) kapalı — daha az kişi görür.
+>   9. **Fuar süzgeci:** "All expos" (varsayılan) herkesi listeler ve kişiyi en ileri aşamasıyla bir kez gösterir; tek fuar / "Upcoming + ongoing" o fuar(lar)da ÇİFTİ olanları.
+>   10. **Segment** kişiseldir (kaydeden kullanıcının); yönetici herkesinkini kullanabilir. Silinmez, arşivlenir.
+>   11. **"Request transfer"** kişiyi GÖREMEYEN satışçıya da açıktır (kişiyle kopya e-posta olarak karşılaşır); cevap yalnız sahibin adını söyler.
+>   12. **"Mark as handled"** bu parçada YOK: kapanacak şey (cevap bekleyen ileti · web talebi) P4 ve P5'te doğar — eylem onlarla gelir (aşağıda "bilinçle yapılmayanlar").
+>   13. **Do not contact** yalnız SATIŞ gönderim yollarına uygulanır (Orchestrator okuması): Operations zinciri ve quote e-postası bu dilimde değişmez → raporda açık madde.
+>   14. **Menüdeki yer:** Sentez "Sales › Prospecting › Data" der, grubun sırasını yazmaz. Grup Overview'dan SONRA durur (Sales'in girişi "My work" kalır — Sentez'e göre Home
+>      odur; UX dosyası Home'u Prospecting'in içinde gösterdiği için grubu başa koyuyor → rapor "MOCKUP ↔ SENTEZ").
+>   15. **Masada kapatılmayan satırlar** 30 gün sonra güvenlik tikiyle silinir, açık kalmış masa kapanır (sayılar durur) — "masa kapanınca silinir" hükmünün, kimse düğmeye
+>      basmadığında da işlemesi için.
+>   16. **Dil önerisi:** elle eklemede ve içe aktarmada dil boşsa ülkenin dilinden (Admin › Reference data › Countries — ayar) doldurulur; alan olağan alandır, Edit değiştirir.
+>   17. **Satıra tıklama** kişinin ayrıntı panelini açar (salt okunur: fuar başına aşama · geçmiş); sayfa yüklenmez. Ayrı "kişi sayfası" açılmadı.
+> - **Ne yapıldı:**
+>   - **MODEL (migration 090 — yalnız şema; satır yazmaz, sahip atamaz, birleştirmez):** kişi tablosunda firma bağı serbest (**lead = firması boş kişi; ayrı lead tablosu YOK**);
+>     yeni alanlar: sahip · kişinin kendi ülkesi · elle yazılmış firma adı (düz metin) · ilk kaynak + kaynak etiketi · do-not-contact (ne zaman · sebep · kim). Kiracı başına
+>     e-posta tekilliği (boşluk ayıklanmış + küçük harf) — dizin YALNIZ kopya 0 ise kurulur (staging: 0 kopya → kuruldu); değilse uygulama denetimi kalır. Yeni tablolar:
+>     kişi × fuar (yalnız OLAYLAR: ilk gönderim · ilk cevap · qualified işareti kim / ne zaman · "not interested" · kaynak — aşama sütunu YOK) · kişi geçmişi (yalnız eklenir) ·
+>     transfer istekleri · segmentler · içe aktarmalar + masa satırları. Kişi silinmez; firması bir kez bağlanır, sonra değişmez (veritabanı da reddeder).
+>   - **TEK YER (`utils/prospects.js`):** aşama türetmesi (tek SQL parçası — liste, kişi ayrıntısı ve sonraki parçalar aynı parçayı okur) · okuma duvarı · "yönetici kim" ·
+>     sahip değişimi (yalnız iki yol: onaylanan transfer · yönetici ataması; ikisi de geçmişe yazar) · dışarıda bırakma kuralı (SATIŞ gönderim yolları buradan okuyacak) ·
+>     yeni kişinin doğumu (tekil ekleme ve toplu içe aktarma AYNI fonksiyon). Ekrandaki sözcükler (aşama · sebep · kaynak · yığın · geçmiş satırı) UI-16 sözlüğünde; sunucu aynı
+>     sözlüğü okur (ikinci liste yok).
+>   - **UÇLAR (`/api/prospects` — yalnız iç kullanıcı; `sales.read` / `sales.write`; yeni izin kodu YOK):** liste (süzme · sıralama · arama · sayfalama SUNUCUDA; süzgeçler:
+>     fuar · aşama · ülke · sahip · kaynak · durum · firmalı / firmasız · dil · kaynak etiketi; dışa aktarım) · kişi (ayrıntı + fuar başına aşama + geçmiş) · ekle · düzelt ·
+>     do-not-contact (beş sebepten biri ZORUNLU; kim / ne zaman) · Reactivate (geçmiş silinmez) · Mark as qualified (tek tık, fuar seçilir, firma ŞART; "Quote sent" / "Signed"
+>     yazılamaz — uç 409) · Request transfer · yönetici: karar (approve / refuse) ve atama (Unassigned kuyruğu dahil) · segmentler (kaydet · yeniden adlandır · arşivle) ·
+>     içe aktarma masası (aşağıda). Sahiplik HER uçta sunucuda: satışçı başkasının kişisini okuyamaz, düzeltemez, işaretleyemez, kendine alamaz.
+>   - **EKRAN — Sales › Prospecting › Data (`sales-data.html`; UI-15):** sekmeler Contacts · Companies (mevcut sayfa) · Imports; sütunlar Contact (ad + e-posta) · Company
+>     (firma + sektör; firmasız = "Lead") · Country · Stage (+ en ileri aşamanın fuarı) · Owner · Language · Source (+ etiket) · Added; araç satırında Expo · arama · Stage ·
+>     Country · Owner, gerisi **"More filters"** arkasında (Status · Company · Source · Language — UI-15'e eklendi: düğme kaç süzgecin açık olduğunu söyler). Satır menüsü:
+>     Details · Open company · Link to a company… · Mark as qualified… · Do not contact… / Reactivate · Assign… (yönetici) / Request transfer… (başkasının kişisi) · Edit….
+>     İzin verilmeyen satır işlemi ÇİZİLMEZ (uç yine reddeder). Üstte: bekleyen transfer istekleri (yöneticide Approve / Refuse) · segment şeridi ("Save these filters as a
+>     segment…"). Liste kalıbına üç ek: "More filters" · satır bazında düzenleme izni · sayfanın kendi formunu / salt okunur bloğunu aynı yan panelde açma.
+>   - **İÇE AKTARMA (`sales-imports.html` + `utils/prospectImport.js`):** dosya → MASA → tek tık. Dosyanın ne olduğu ADINDAN değil İÇERİĞİNDEN okunur (CSV · Excel · PDF; başka
+>     her şey reddedilir). Excel: yalnız ilk sayfa; **formül ÇALIŞTIRILMAZ ve okunmaz** — hücrenin dosyada duran değeri alınır. PDF: yalnız e-posta adresleri + yanındaki
+>     sözcükler. Başlıklar EN / FR / TR tanınır. Masa yığınları: Ready · Need fixing · Duplicates · No e-mail · Skipped; **kopya = e-posta** (dosyanın kendi içindeki tekrar
+>     dahil); "already yours" · "someone else's" AYRI sayılır, içeri ALINMAZ (başkasınınki için "Request transfer"). Satır düzeltilir (sunucu yeniden sıralar), kenara
+>     alınır, geri konur. **"Add N contacts" tek tık:** o anda yeniden sıralanır; her Ready satır kişi olur — sahibi içe aktaran, ilk kaynağı "Import" + dosyanın etiketi, fuar
+>     seçildiyse o fuarla çifti. Masa yalnız açanındır (yönetici bakar, çalışmaz). Kapatınca içeri alınmayan satırlar SİLİNİR, sayılar kalır.
+>   - **Mevcut kapılar aynı kurala bağlandı:** Company sayfasından eklenen kişi sahibini ve ilk kaynağını alır; kiracıda zaten var olan adres orada da reddedilir; sahipli kişiyi
+>     orada da yalnız sahibi / yönetici düzeltir. Genel arama ve Contacts rapor modülü firmasız kişiyi ARTIK düşürmüyor (ikisi de kişiyi firmayla İÇ birleştiriyordu); kapsam
+>     duvarları sahipliği de okuyor.
+>   - **Fuar ↔ sektör:** Expo settings › Identity › **Sectors** (çoklu; liste = firma sektör listesi; fuarın kendi satırlarına yazar — ikinci yer yok; denetim kaydı).
+>   - **Menü:** Sales › Prospecting grubu (Overview'dan sonra) → Data; Imports onun alt sayfası.
+> - **Commit:** LEENA eliza-next `493d8dc` (P2) + `576bcf8` (hız: saklı katlama anahtarı) + `a5b5604` (hız: varsayılan görünümde fuar listesi yüklenmez · araç satırı tek
+>   satır · masa düzeni) — üçü de staging'de CANLI. Canlı `main` DEĞİŞMEDİ. Migration 090 (kişi modeli — yalnız şema) · 091 (saklı katlama anahtarları — yalnız şema):
+>   staging'de dry-run → apply → ikinci apply "Nothing to apply" (kayıt 91 → 93). Canlıya yazılmadı.
+> - **Ölçülenler:**
+>   - **Eşitlik (staging · salt okuma · P1 sonu → P2 sonu, son commit'te):** toplam hak ediş 286.580,52 = 286.580,52 · farkı olan temsilci 0 (27'de) · farkı olan kontrat × rol
+>     satırı 0 (1.475'te) · kesim raporu · 47 ekstre · fuar marjı · kontrat kutusu örneklemi: her satır EŞİT · TABAN **342.00** · TABAN-2 **EŞİT** (değer LEENA CLAUDE.md —
+>     GOC-07). Tek farklı satır migration kaydı (beklenen).
+>   - **Migration öncesi davranış (staging'de, kod itildikten sonra / 090'dan önce):** kişi uçları 503 `NOT_MIGRATED` · genel arama 200 · Contacts raporu 200 — iki okuyucu
+>     090'dan önce eski ifadesiyle çalışır (tek hazır-mı denetimi).
+>   - **Araç hesapları (staging; uygulamanın davet akışıyla; adresler `.example`; parolalar deftere / rapora yazılmaz):** SAMPLE iki satışçı · SAMPLE yönetici (kişi başı
+>     ezmeyle `sales.read` + `sales.write` = all) · SAMPLE yetkisiz (Finance şablonu). Dört davet e-postası kuyrukta `echo` — gerçek e-posta çıkmadı. Dilim sonunda PASİF.
+>   - **Migration 090 NOTICE (staging):** kişi 8 (firmasız 0 · sahipli 0 — mevcut satırlar Unassigned kaldı) · kopya e-posta 0 → kiracı × e-posta tekillik dizini KURULDU.
+>   - **KANIT — içe aktarma masası (staging · SAMPLE · uygulama uçlarından · iki SAMPLE satışçı + SAMPLE yönetici hesabı):** 200 satırlık dosya → masa: Ready 170 · Need fixing
+>     8 · No e-mail 6 · Duplicates 16 (already yours 5 · someone else's 5 · dosya içi 6); bir satır düzeltildi (→ Ready), biri kenara alındı; öbür satışçı masayı okuyamadı /
+>     ekleyemedi (409), yönetici masada çalışamadı (409); **tek tık → 171 kişi** (8'i adı TEK olan firma kaydına bağlandı, 163'ü lead; sahibi içe aktaran; aşama Lead; kaynak
+>     etiketi dosyanınki); ikinci tık 409. Listede "kaynak etiketi" süzgeci tam 171 kişiyi verdi. İşaretli metin (`"><img …>`) düz metin olarak saklandı ve ekranda karakter
+>     olarak çizildi (tarayıcıda oluşan `<img>` 0). Excel: formüllü hücreden dosyada DURAN değer geldi, formül metni hiçbir satırda yok. PDF: staging'de okundu (2 adres →
+>     2 kişi). Liste olmayan dosya (adı .csv) reddedildi. Masada 29 satır DURUYOR (kapatılmadı — Orchestrator turu için); ayrıca bir Excel masası AÇIK bırakıldı.
+>   - **Sahiplik (iki satışçı; adresteki kimlik değiştirilerek):** öbür satışçı başkasının kişisinde okuma · düzeltme · do-not-contact → 409 kapsam dışı; kendine alma → 409;
+>     listesinde o kişilerden hiçbiri yok (kendi 7 kişisi). Transfer isteği: sahip DEĞİŞMEDİ → satışçı (mevcut sahip dahil) onaylayamadı (409) → yönetici onayladı → kişi
+>     istek sahibine geçti, eski sahip artık okuyamıyor, geçmişte üç satır (eklendi · istek · sahip değişti). Bir istek BEKLER durumda bırakıldı. Yetkisiz: Finance şablonu 409 ·
+>     dış kullanıcı 409 · oturumsuz 401 · Project okur (200), yazamaz (409). Tarayıcıda: öbür satışçı kişiyi adresle açınca panel açılmıyor, "kapsam dışı" iletisi; yetkisiz
+>     hesapta sayfa hiçbir uç çağırmıyor.
+>   - **Do not contact · aşama · segment (staging):** sebepsiz 400 · sebeple işaretlenen kişi etkin listeden çıktı, "Do not contact" durumunda; Reactivate → geçmişte iki adım
+>     da duruyor. Firmasız kişi qualified yapılamadı (409) → firmaya bağlandı → qualified; elle "Signed" 409. Aşama dağılımı (yönetici, All expos): Lead 182 · Qualified 1 ·
+>     Quote sent 4 · Signed 4 — son sekizi dilimden ÖNCEKİ SAMPLE kişiler: aşamaları yalnız mevcut tekliflerinden türedi (o kişilere hiçbir şey yazılmadı; sahipsizler: 8).
+>     Segment kaydeden satışçıda 27 kişi listeliyor; öbür satışçı segmenti görmüyor.
+>   - **Fuar ↔ sektör (staging):** SAMPLE fuarın (15) sektörleri 0 → 2 (liste 26 seçenek = firma sektör listesi); satışçının yazma denemesi 409.
+>   - **Tarayıcı akışı (staging, 1280, kaydetmeden):** araç satırı TEK satır (61 px: Expo · arama · Stage · More filters · Columns); "More filters" altı süzgeç; bir süzgeç
+>     seçilince düğme "More filters · 1"; satır menüsü (kendi lead'i): Details · Link to a company… · Do not contact… · Edit…; sebepsiz kaydetme "Reason is required."; satıra
+>     tıklama ayrıntı panelini SAYFA YÜKLEMEDEN açıyor; segment bağlantısı sayfa yüklemeden süzüyor; masa: beş yığın kutusu tek satırda, "Fix…" formu dört alan. Konsol hatası 0.
+>   - **Staging turu (A ve B2 · 1440 ve 1280):** 11 sayfa × 4, iki hesapla (SAMPLE satışçı · SAMPLE yönetici) = 88 yükleme — sayfa taşması 0 · kart içi yana kayma 0 · kesik
+>     sütun 0 · 36 px altı düğme 0 · konsol hatası 0.
+>   - **Süre (SÜRE kuralı — staging, sunucu süresi, ortanca ms; önce → P2 sonu):** Commissions listesi 444 → 452 · Sales home'un üç ucu 6 / 8 / 7 → 8 / 8 (tek ölçümde 30,
+>     en düşük 8 — dokunulmadı) / 7 · Mail 24 → 26 · Companies 4 → 5 · genel arama 16 → 8 · Expo settings 71 → 76. **Data listesi (yeni uç):** ilk hali 95 (arama 301) →
+>     **12 (arama 13)**; tek fuar + aşama süzgeci 18; "Upcoming + ongoing" 57; seçenekler 13; içe aktarmalar 4; masa 4. Hiçbir mevcut uç 2 katına çıkmadı.
+>     **Yeni ucun kendi ölçümü iki düzeltme getirdi (bu parçada):** (1) ad katlama anahtarı her istekte her satır için yeniden hesaplanıyordu — 190 kişide veritabanı içi
+>     96,8 ms'nin ~90'ı; anahtar artık satır yazılırken BİR KEZ saklanıyor (migration 091; liste kalıbı saklı anahtarı okuyabiliyor) → veritabanı içi 16,0 ms (arama 171,6 →
+>     15,0); (2) varsayılan görünüm her istekte kiracının bütün fuarlarını yükleyip tarihliyordu — staging web sürecinin CPU kotasında istek ~70 ms bekliyordu (aynı anda basit
+>     uç 4 ms sabit); "All expos" artık fuar okumuyor → ortanca 83 → 12.
+>   - **Yerel, satır sınırındaki dosya (5.000 satır):** okuma + sıralama 135 ms · tek tık ekleme 468 ms (kişi başına sorgu değil: bütün dosya 3 sorgu) · eklenenlerin listesi
+>     146 ms.
+>   - **Test:** iki yeni suite — `test_satis1_p2_data.js` **35** (model 7 · aşama 6 · sahiplik 7 · do-not-contact 2 · dış metin 2 · liste 4 · segment 1 · firmayla okuyan
+>     yerler 4 · sektör 1 · TABAN 1) · `test_satis1_p2_import.js` **24** (dosya 5 · masa 3 · masada çalışma 3 · tek tık 4 · dış metin 2 · kapatma 2 · satır sınırı 1 ·
+>     duvarlar 3 · TABAN 1). Zincir **88 suite, 1623 / 1623** (beş koşu: ilki 20 kırmızı — aşağıda "kendi hatalarım"; sonraki dördü temiz). Gerçek PDF okuması Node 24 ile
+>     ayrıca koşuldu (24 / 24); zincirin koştuğu Node 20'de aynı test 503 dalını sınar.
+> - **SAPMA:**
+>   - **Hükümle değişen test beklentisi (satırında hüküm yorumu):** `test_b1b_quotes` N1 · `test_ui2_ui0` G2 · `test_ui2_ledger_pages` U3 — Sales menüsüne Prospecting grubu
+>     (Sentez "Yer: Sales › Prospecting › Data").
+>   - **Liste kalıbına (UI-15) ek:** "More filters" (Sentez hükmü) + satır bazında düzenleme izni + sayfanın kendi formu / salt okunur bloğu aynı yan panelde + saklı katlama
+>     anahtarı (sıra ve eşleşme AYNI; test her eşlenen karakter için saklı anahtar = SQL katlaması = JS katlaması diyor).
+>   - **Güvenlik tikine ek satır:** 30 günü geçen masa satırlarının silinmesi (tikin dönüş değerine bir alan eklendi; mevcut alanlar aynı).
+>   - **Yeni npm paketi:** `unpdf` 2.2.1 (PDF okuma; MIT · bağımlılığı yok · kurulum betiği yok · `npm audit` 0 uyarı). Aynı gün yayımlanan 2.2.3 ALINMADI. Node ≥ 24 ister
+>     (staging 24); çalışamadığı yerde uç 503 döner, CSV / Excel etkilenmez.
+>   - **Kendi hatalarım (bu parçada bulundu, bu parçada düzeltildi):** (1) yeni tabloların kişiye bağı "kişiyle birlikte gider" değildi → eski suite'lerin temizlik adımı
+>     kırıldı, artakalan veri sonraki suite'leri düşürdü (ilk zincir 20 kırmızı) → bağ düzeltildi; (2) migration 090, var olan tetikleyiciyle AYNI adda tetikleyici
+>     kuruyordu — migration koşucusu bunu "yarım uygulanmış" sayıp DURUYORDU (test yakaladı; staging'e gitmeden düzeltildi); (3) iki yeni sayfa bileşen sınıfı taşıyordu
+>     (bileşen-kopya testi) → ortak bileşene alındı; (4) yeni suite'in kendi temizliği olmayan bir tabloya dokununca işlemi bozuyordu; (5) genel arama ve Contacts raporu
+>     yeni sütunları koşulsuz adlandırıyordu — kod migration'dan ÖNCE itilirse iki uç 500 verecekti (itmeden önce fark edildi, iki biçim + tek denetim); (6) Data listesinin
+>     ilk hali yavaştı (yukarıda); (7) araç satırı 1280'de iki satırdı (tarayıcı akışı yakaladı).
+>   - Güvenlik bulgusu **5 adet** (§0'daki 4 + bu parçada 1) — ayrıntı raporda.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:**
+>   - Canlının Node sürümü (PDF okuyucu Node ≥ 24 ister) — canlıya temas yok; kesim maddesi.
+>   - Canlıda kopya e-posta sayısı (tekillik dizini yalnız 0 ise kurulur; değilse uygulama denetimi kalır, birleştirme kesim işi) — ADR-023'e yazılacak.
+>   - On binlerce kişiyle liste süresi staging'de ölçülmedi (staging 191 kişi; yerelde 5.000 kişilik sayfa 146 ms). Aşama türetmesi her istekte kiracının bütün kişi × fuar
+>     çiftleri üzerinden hesaplanıyor — büyük hacimde yeniden ölçülmeli (rapor: hız kuyruğu).
+>   - "Upcoming + ongoing" süzgeci hâlâ bütün fuarları yüklüyor (57 ms; varsayılan değil).
+>   - Staging'in web süreci CPU kotalı: ortancalar oynuyor (aynı kod iki ölçümde ±%30; en düşük değerler ayrıca yazıldı).
+> - **Bilinçle yapılmayanlar:**
+>   - **"Mark as handled"** satır işlemi: kapanacak şey P4 (cevap) ve P5'te (web talebi) doğar — eylem onlarla gelir.
+>   - **"Contacted" / "Replied" yazan kod yok:** ilk gönderim ve ilk cevap olaylarını P4 (Mail) ve P6 (kampanya) yazacak; bu parçada aşama Lead → Qualified → (teklif) arası
+>     ölçüldü, iki olay testte veritabanından verildi.
+>   - Pazarlama e-postasından çıkış → "requested removal": sebep ve kural hazır; bağlantının kendisi P3 / P6.
+>   - Do not contact, Operations zincirine ve quote e-postasına UYGULANMADI (Orchestrator okuması; raporda açık madde).
+>   - "No e-mail" satırları için ikincil kayıt tablosu açılmadı; içe aktarma firma kaydı açmaz; içe aktarma panelinde "bu satırların sektörü" alanı yok (UX dosyasında var).
+>   - Mevcut 8 SAMPLE kişiye sahip ATANMADI (Unassigned; toplu atama yok). Sahipsiz kişi sayısı: staging 8.
+>   - Kişi birleştirme, kişi silme, firmayı değiştirme: yok.
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
