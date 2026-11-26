@@ -12637,6 +12637,35 @@
 >   test edildi) · staging'de transfer (SAMPLE kontratı Transferred'a çevirir — yapılmadı) · göç uygulamasının staging'de gerçek koşusu (ham Zoho verisi bu makinede yok).
 > - **Bilinçle yapılmayanlar:** okuma kuralı (P3) · eski boş oranların doldurulması (P2) · ARALIK-1'in "varsayılan değişince eski oranı yaz" kodu (P3'te kalkar).
 >
+> ## ✅ 2026-11-26 — DİLİM ARALIK-2 P2 (H3-b): BİR KERELİK DOLDURMA — migration 083: oranı boş 2.793 rol-satırı bugünkü varsayılanla doldu; önce / sonra hak ediş EŞİT, farkı olan temsilci 0
+>
+> - **Kriter kaynağı:** [defter:2026-11-26 SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ" + SENTEZ 26 Kas 09:20 "ARALIK-2 TEK PROMPT" (1. madde)] — C · H3 ("bir kerelik doldurma … ÖNCE/SONRA hak ediş toplamı ve TABAN/TABAN-2 EŞİT") + Orchestrator U2 P2 · U3.
+> - **Ne yapıldı:** veri migration'ı `083_aralik2_rate_backfill.sql` — H3-a'dan ÖNCE yazılmış kontratlarda satıcısı olan ama kendi oranı boş rollere, satıcı kaydının
+>   BUGÜNKÜ varsayılanı yazılır (SR / agent: varsayılan komisyon · SD: varsayılan direktör oranı). İfade, doğum kuralının ifadesiyle AYNI (`utils/commissionRates.js`
+>   — kontrat süzgeci olmadan; test karşılaştırır). Yazılan değer, motorun o satırlar için bugün zaten okuduğu değerdir → hiçbir hak ediş değişmez. Kendi oranı
+>   olan role dokunulmaz · varsayılanı da boş kayıt rolü BOŞ bırakır ("rate missing" kalır) · "SD oranı bekleyen" (kişisiz) durum ayrı şeydir, dokunulmaz ·
+>   satır eklenmez / silinmez · dosya hiçbir oran DEĞERİ taşımaz · ikinci koşu doldurulacak bir şey bulmaz · yalnız runner'la koşar.
+>   **Kabul edilen bedel (Sentez 24 Kas 21:40):** donan, kontratın kendi günündeki oran değil BUGÜNKÜ varsayılandır — yanlış varsayılan geçmişi düzeltmez.
+> - **Commit:** LEENA eliza-next `8c99089` (staging'de CANLI — davranış değişikliği yok, yalnız migration dosyası + test). Canlı `main` DEĞİŞMEDİ.
+> - **Migration (staging; commit'in checkout'undan, YON-19):** dry-run → `083: … SR 2646 → 0 · agent 147 → 0 · SD 0 → 0 … 2793 contract row(s)` (uygulandı + ROLLBACK,
+>   iz kalmadı) → apply (kayıt 84 → **85**) → ikinci apply **"Nothing to apply"**. CANLIDA KOŞULMADI (kesimde, kesimin migration'larıyla; önce / sonra orada yeniden ölçülür).
+> - **Ölçülenler (staging · salt okuma · okuyucular KENDİ uçlarından; P1 → P2):**
+>   - **Rol başına doldurulan:** SR **2.646** → 0 boş · agent **147** → 0 boş · SD 0 → 0 (atanmış SD yok). Varsayılanı boş olduğu için dolmayan: **0**. "SD oranı bekleyen" 806 → 806.
+>   - **Eşitlik tablosu:** toplam hak ediş 286.580,52 → 286.580,52 · farkı olan temsilci **0** (27) · farkı olan kontrat × rol satırı **0** (1.474) · TABAN 342.00 ·
+>     TABAN-2 EŞİT · kesim raporu 286.580,53 (116 dönem · 604 satır · 1.972 dilim) · Commissions listesi (hak ediş · ödenen · ödenecek · borçlu · Due 18 / Settled 14 /
+>     Agent owes 15) · 47 ekstre · Ledger özeti · fuar marjı (10 fuar gerçek fonksiyon + 65 fuar) · göç mutabakatı TABAN satırı: hepsi EŞİT. Kontrat sayfası kutusu
+>     (72 kontrat, 68 rol-satırı): tutarlar EŞİT; değişen tek şey oranın KAYNAĞI — "varsayılandan" 55 → 0 · "kendi kaydından" 13 → 68 (beklenen).
+>   - **Test:** `test_aralik2_rates.js` 9 → **13** (C1–C4: dolan / dokunulmayan / boş kalan roller · önce = sonra hak ediş · ikinci koşu · runner koruması · ifade doğum
+>     kuralıyla aynı) — zincir 81 suite **1446 / 1446** (tam koşuda 1445 yeşil + aşağıdaki P8, beklentisi güncellendikten sonra kendi suite'i tek başına yeniden koşuldu: 26 / 26); `test_migrate` R76–R78 yeni dosyayı kendiliğinden kapsıyor (≥ 071 olan HER dosya).
+> - **SAPMA (hükümle değişen test beklentisi — satırında hüküm numarası yorumu):** `test_aralik1_settings` P8 — tarama artık bir migration'ın oran DEĞERİ (sabit sayı)
+>   yazmasını ve ekip kaydını adıyla hedeflemesini yasaklıyor; önce oran kolonlarının ADINI da yasaklıyordu (083 hükümle o kolonlara ayardaki değeri kopyalar).
+>   **Kendi hatam (araç):** eşitlik aracımın kontrat kutusu örneklemi "oranı boş" koşuluyla seçiliyordu → doldurmadan sonra örneklem küçüldü ve yanlış "fark" gösterdi;
+>   örneklem §0'daki 72 kontratın SABİT listesine çevrildi, ölçüm yinelendi (yukarıdaki sayılar o ölçümün).
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:** canlıda kaç satırın dolacağı ve canlıdaki önce / sonra toplamı (canlıya temas yok — S2; kesimde ölçülür) · doldurulan oranların
+>   kontratın kendi günündeki gerçek oranla ne kadar ayrıştığı (kaynak veri yok — kabul edilen bedel).
+> - **Bilinçle yapılmayanlar:** okuma kuralı hâlâ "kendi oranı, yoksa varsayılan" (P3'te kalkar) · ARALIK-1'in ara kodu yerinde (P3) · "SD oranı bekleyen" 806 kontrata
+>   dokunulmadı.
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
