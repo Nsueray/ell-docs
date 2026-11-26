@@ -13949,6 +13949,97 @@
 >   - Satışçının "unassigned" süzgecindeki 387 ms için dizin eklenmedi (hedefin altında; hız kuyruğuna yazıldı).
 >   - Kütük maddeleri (S4 göç kuralları · kanal listesi + eşleme · S5 PROFORMA · S6) ve ADR-023 kesim maddeleri: dilim kapanışında, öteki maddelerle birlikte.
 >
+> ## ✅ 2026-11-27 — DİLİM SATIŞ-1 P3: TEMPLATES — Sales grubu (Campaign e-mail · Reply) · Web form thank-you · Prospecting › Templates (aynı sayfa, yalnız Sales grubu) · unsubscribe bağı ve sayfası
+>
+> - **Kriter kaynağı:** [defter:2026-11-26 SENTEZ 26 Kas 16:30: "ARALIK-2 KABUL · HÜKÜMLER · DİLİM SATIŞ-1 KRİTERLERİ"] — C · P3 + Orchestrator U3 "P3 TEMPLATES". EK-1'in
+>   bu parçaya dokunan maddesi: DNC kaynak notu (unsubscribe işareti notunu taşır).
+> - **Sıra notu:** P3'ün sunucu kısmı EK-1 gelmeden yazılmıştı (commit'siz, depo dışında bekledi); EK-1 düzeltme turundan sonra geri alındı, migration numarası 092 → **093**
+>   oldu, ekran + test + kanıt bu turda tamamlandı.
+> - **OKUMA KARARLARI (Sentez kapanışta geri alabilir):**
+>   1. **"Satışçı" = iç kullanıcı + `sales.write`:** Sales grubunu OKUYAN oturum budur. Yalnız `sales.read` taşıyan rol (Project: satış verisini okur, satış ekibi değildir) içeri
+>      alınmaz — daha dar okuma. Sales grubuna YAZMA bugünkü izinle yapılamıyor (kayıt defterinde "Sales grubunu yaz" kodu yok) → Sentez'in dalı: **Owner yazar, Faz 4 notu**.
+>      Satışçı okur, önizler, kendine test gönderir.
+>   2. **"Diğer grupları GÖRMEZ" = uç döndürmez** (Orchestrator okuması): liste cevabında öteki gruplar yok; öteki grubun şablonu o oturum için 404; kayıt listesi reddedilir.
+>      Sayfa Owner'a da yalnız Sales grubunu gösterir (adres `?group=sales` ister) — "aynı sayfa, yalnız Sales grubu".
+>   3. **Campaign e-mail = pazarlama:** `{{unsubscribe_link}}` metnin GÖVDESİNDE yoksa kayıt DURUR (konu satırındaki sayılmaz). Yer tutucu "kesin"dir: bağı üretilemeyen e-posta
+>      gönderilmez. **Reply:** `{{unsubscribe_link}}` paletinde yok — adını anan metin kaydedilmez (bilinmeyen yer tutucu kuralı).
+>   4. **Palet (Sentez: "kişi · firma · fuar · gönderen"):** kişi adı · firma adı · ülke · fuar adı / tarihleri / şehri / mekânı · gönderenin adı / e-postası / ofisi. Tutar, sayfa
+>      bağı, banka bilgisi yok.
+>   5. **Web form thank-you paleti (Orchestrator okuması — GUV, aynen):** fuar · form türü · gönderen + kişi adı. Formu dolduranın yazdığı firma / mesaj e-postaya GİRMEZ; ad
+>      yalnız harf · boşluk · . - ' içeriyorsa ve ≤ 60 karakterse girer, değilse adsız selam. Pazarlama değildir (unsubscribe taşımaz). Metin: SAMPLE EN / FR / TR, türün
+>      varsayılanı (metinler raporda).
+>   6. **Önizleme = yerleşik SAMPLE kişi** ("Alex Sample · SAMPLE Trading Ltd"): kayıt seçilmez, kimse alıcı diye okunmaz; fuar = sayfanın varsayılan açacağı fuar; gönderen =
+>      oturumdaki kullanıcı. Önizleme ANAHTAR ÜRETMEZ. **"Send test to myself"** yalnız oturumdaki kullanıcının kendi adresine; kampanya metninin testi gerçek biçimli bir bağ
+>      taşır, anahtarı KİMSEYİ göstermez (test kimseyi çıkarmaz).
+>   7. **Metin motoru:** şablonun yazdığı ile DEĞERİN söylediği ayrı tutulur — değer kaçışlanır, başlık / madde / bağlantı olamaz; yalnız ŞABLONUN yazdığı adres bağlantı olur
+>      (+ unsubscribe bağı); değerdeki satır sonu konu satırına başlık ekleyemez.
+>   8. **UNSUBSCRIBE BAĞI (Orchestrator mekanizması, aynen):** e-posta başına tahmin edilemez anahtar (160 rastgele bit), giriş gerektirmez; veritabanında yalnız özeti durur.
+>      Bağı AÇMAK (GET) hiçbir şey değiştirmez — tek düğmeli onay sayfası; DÜĞME (POST) "do not contact · requested removal" yazar (işareti yazan TEK yer üzerinden; kaynak notu
+>      "Unsubscribe link"). Posta istemcisinin tek tık çıkışı aynı POST'tur (notu ayrı). Doğru · yanlış · kullanılmış anahtar AYNI cevabı alır; sayfa adres / ad / kurum göstermez.
+>      **Onay düğmesi Orchestrator'ın eklediği adımdır ((I): "tıklayan requested removal") → 🔶 listesi.**
+>   9. **Hız sınırı:** ağ adresi başına saatte 30 POST; aşan 429 alır, hiçbir şey değişmez. Adres = platformun gördüğü adres (zincirin sondan ikinci girdisi — staging'de ölçüldü:
+>      tek vekil sıçraması); istemcinin kendi yazdığı ilk girdiye İNANILMAZ. Sıçrama sayısı ortam değişkeniyle değişir; canlıdaki sayı kesimde ölçülür (ADR-023).
+>   10. **Anahtar adresin parçasıdır** (unsubscribe bağının başka yolu yok): yol istek günlükçüsünden ÖNCE ve `/api` dışında bağlanır — uygulama anahtarı kendi günlüğüne ve erişim
+>      kaydına yazmaz. Platformun kendi istek günlüğü yolu görür (sayfa bağlarıyla aynı bilinen sınır).
+>   11. **List-Unsubscribe başlıkları** e-postayı kuyruğa koyan yerde eklenir (P4 gönderim / P6 kampanya); bu parça o başlığın göstereceği POST ucunu verir.
+>   12. **Menü:** Sales › Prospecting › Templates — `sales.write`, yalnız iç kullanıcı.
+>   13. **Herkese açık sayfanın FR / TR metinleri taslaktır** (gözden geçirilmedi); yalnız kendi sözlük dosyalarında durur (Exhibitor Page kuralı).
+> - **Ne yapıldı:**
+>   - **Türler ve palet** (`utils/mailTemplates.js` — ARALIK-2 deseni, yeni depo YOK): `campaign_email` (grup Sales, pazarlama) · `reply` (grup Sales) · `webform_thanks` (grup
+>     System, yerleşik metinli). Şablon cevabı: `preview_with` (record | sample) · `marketing` · `required` (gövdede olması şart yer tutucular). Kayıt kuralı: 400
+>     `UNSUBSCRIBE_REQUIRED`.
+>   - **Migration `093_satis1_unsubscribe.sql`** (yalnız koşucu): `sales_unsub_keys` (anahtarın sha256'sı · kişi (boş = test) · dil · kaynak test | campaign | mail · kullanım
+>     zamanı ve yolu) + her kiracıya "Web form thank-you" varsayılan şablonu (EN / FR / TR — yerleşik dosyalardan bayt bayt üretildi). Kişi işaretlenmez, e-posta kuyruğa girmez.
+>   - **Uçlar** (`routes/mailTemplates.js`): iki katlı kapı — `templates.write` → her şey (bugünkü gibi) · değilse iç oturum + `sales.write` → YALNIZ Sales grubu, salt okuma
+>     (+ önizleme + kendine test) · değilse 409. `GET /?group=` · satış türlerinde önizleme / test SAMPLE kişiyle. Yeni: `utils/salesTexts.js` (metin motoru · SAMPLE kişi ·
+>     form adının süzgeci) · `utils/salesUnsub.js` (anahtar: üret · kullan) · `utils/clientIp.js` (güvenilir ağ adresi) · `routes/salesPublic.js` → **`/u/<anahtar>`** (GET sayfa ·
+>     POST düğme / tek tık; no-store · noindex · no-referrer · çerçevelenemez · dış kaynak yok; EN / FR / TR `sales-public/`).
+>   - **Ekran:** Templates sayfasının betiği TEK dosyaya alındı (`public/ui2/templates-ui.js`); iki adres onu çağırır — Admin › Templates (bütün gruplar) ve **Sales ›
+>     Prospecting › Templates** (`sales-templates.html`, yalnız Sales grubu). Yazamayan oturumda: "New template" yok, metin salt okunur, Save / Make default / Archive / Copy /
+>     Revert çizilmez, "Owner yazar" notu; Preview + "Send test to myself" var. Satış türlerinde kayıt seçici yok ("SAMPLE person"). Pazarlama türü "Marketing" etiketi taşır.
+>   - **EK-1 bağı:** unsubscribe'ın koyduğu işaret kaynak notu taşır ("Unsubscribe link" · "Unsubscribe link (mail client)").
+> - **Commit:** LEENA `eliza-next` `6ba4647`.
+> - **Ölçülenler:**
+>   - **Testler:** yeni suite `test_satis1_p3.js` **21 / 21** (T4 türler + palet · A3 kim neyi görür · R3 metin motoru · U7 unsubscribe · G3 duvarlar + sayfalar · B1 TABAN).
+>     **Hükümle değişen beklentiler (SAPMA — test satırında yorum):** `test_aralik2_templates` S1 · S8 · S9 · R1 · R2 (yeni türler ve System grubunun 13. varsayılanı) · P2 (sayfa
+>     betiği ortak dosyada) · `test_ui2_ledger_pages` U3 (Sales menüsü 10 → 11 bağlantı) · `test_ui2_ui0` K6 (ortak betiği çağıran sayfa o betikle birlikte okunur). Zincir:
+>     **90 suite, 1671 / 1671** (önceki 89 suite 1650 → +1 suite, +21).
+>   - **Staging:** migration 093 — dry-run → apply (722 ms) → ikinci apply "Nothing to apply" (kayıt defteri 95; kiracı 2 → 2 "Web form thank-you" varsayılanı, 6 metin).
+>     Sıra bu kez KOD önce, migration sonra (eski kod yeni türü tanımaz; yeni kod tablo yokken ilgili uçta 503 verir).
+>     **Kanıt — yalnız uygulama uçlarıyla, SAMPLE kayıtlarla:** Owner grupları görür: Chain 8 · Reminders 5 · System 2 (yeni: Web form thank-you — EN / FR / TR, pazarlama
+>     değil) · Sales 0 → Owner iki SAMPLE şablon yazdı: "SAMPLE Campaign — first contact" (EN + FR, varsayılan) ve "SAMPLE Reply — thank you" (varsayılan). Bağsız kampanya
+>     metni → 400 `UNSUBSCRIBE_REQUIRED`; Reply'da unsubscribe → 400 `PLACEHOLDER`. **Satışçı:** cevapta yalnız `sales` grubu (`can.write: false`) · Chain grubunu istemek 409 ·
+>     Chain şablonu 404 · Web form şablonu 404 · kaydetmek ve yeni şablon 409 `PERMISSION_REQUIRED` · önizleme: "SAMPLE person — Alex Sample · SAMPLE Trading Ltd" + bağ
+>     yerinde "[unsubscribe link — added when the e-mail is sent]" (anahtar sayısı değişmedi) · kendine test: yalnız kendi adresine, kuyrukta `echo`, e-postada 32 karakterlik
+>     anahtarlı bağ; anahtar satırı kişi BOŞ · kaynak test · yalnız 64 karakterlik özet saklı. Project 409 · Sales erişimi olmayan 409 · dış kullanıcı 409 · tokensiz 401.
+>     **Sayfa `/u/<anahtar>`:** GET doğru · yanlış · bozuk anahtar → 200, AYNI sayfa, tek düğme, adres yok, dış kaynak yok, anahtar kullanılmadı · başlıklar `no-store` ·
+>     `noindex, nofollow` · `no-referrer` · `X-Frame-Options: DENY` · CSP `default-src 'none'; … frame-ancestors 'none'` · POST yanlış · doğru · yeniden → 200, AYNI cevap
+>     ("Done"); test anahtarı kullanıldı (`page`), işaretli kişi sayısı 1 → 1 (test kimseyi çıkarmadı) · FR / TR sayfaları kendi dilinde · uygulamanın erişim kaydında `/u`
+>     satırı 0. Telefon (390 px) ve masaüstü (1280 px): taşma 0, düğme 44 px, tek kaynak (kendi stil dosyası), konsol hatası 0.
+>     **Tarayıcı turu:** satışçı 6 sayfa + Owner 4 sayfa × 1440 / 1280 × A / B2 = 40 yükleme, bulgu 0 (konsol 0 · taşma 0 · 36 px altı düğme 0).
+>     **Staging'de BIRAKILANLAR (SAMPLE):** şablon 30 "SAMPLE Campaign — first contact" · 31 "SAMPLE Reply — thank you" · bir test anahtarı (kullanılmış) · bir `echo` kuyruk
+>     satırı ([TEST]). Önizlemede görünen fuar adı staging'in gerçek kaydıdır (yalnız okundu).
+>   - **U4 — eşitlik + süre:** **eşitlik** (staging, EK-1 turu sonu ↔ şimdi): toplam hak ediş 286.580,52 = 286.580,52 EUR · farklı acente 0 / 27 · farklı kontrat × rol 0 / 1.475 · TABAN 342.00 ·
+>     TABAN-2 EŞİT; fark YALNIZ migration satırı (94 → 95). **Süre** (staging, sunucu süresi ortancası, ms; EK-1 sonu → şimdi): Commissions 417 → 381 · follow-ups 5 → 6 · Mail
+>     (sent) 37 → 21 · Data listesi 10 → 11 · Data araması 11 → 15 (en düşük 10) · yeni: şablon listesi 7 · yalnız Sales grubu 5 · tek şablon 5. İki katına çıkan uç YOK.
+>   - **Yolda yakalananlar:** (1) satış türlerinin önizlemesi ve testi 500 veriyordu — uç dosyasında bir modül adı fonksiyon içinde gölgelenmişti (yeni suite yakaladı; bekleyen
+>     kodun eski suite'i bu yolu koşmuyordu); (2) şablon uçları ilk halde Sales grubunu `sales.read` taşıyana açıyordu (Project okuyabiliyordu) → `sales.write`; (3) unsubscribe
+>     POST'u veritabanı hatasında da "Done" diyordu → 503 "nothing was changed"; (4) anahtar tablosunun kiracı / kullanıcı bağları silmeyi engelleyecekti (EK-1 turunun dersi) →
+>     `ON DELETE CASCADE` / `SET NULL`, itmeden önce.
+>   - Güvenlik bulgusu **5 adet** (değişmedi) — ayrıntı raporda.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:**
+>   - **Gerçek kişinin unsubscribe'ı staging'de:** kişiye anahtar üreten gönderim yolu henüz yok (P4 / P6) — staging'de yalnız TEST anahtarı ve yanlış anahtar denendi; kişinin
+>     işaretlenmesi test suite'inde ölçüldü. Staging kanıtı P6'da.
+>   - **List-Unsubscribe başlıklarının posta istemcisindeki davranışı:** gerçek e-posta yok (echo).
+>   - **Canlıdaki vekil sıçrama sayısı** (hız sınırının güvendiği adres) — canlıya temas yok; ADR-023.
+>   - Sales grubuna satışçının yazması (izin kodu yok — Faz 4).
+> - **Bilinçle yapılmayanlar:**
+>   - Kampanya gönderimi, kişiye anahtar üretimi, List-Unsubscribe başlıkları: P4 / P6.
+>   - Web formunun kendisi ve teşekkür e-postasının gönderimi: P5 (bu parça türü, paleti, metni ve ad süzgecini verir).
+>   - Açılma (open) izleme: yok (Sentez'de yok; UX dosyasında oranlar var → rapor "MOCKUP ↔ SENTEZ").
+>   - Eski yardımcıların (erişim kaydı · Exhibitor Page hız sınırı) okuduğu istemci adresi DEĞİŞTİRİLMEDİ (klasik davranış; bulgu raporda duruyor).
+>   - Sales grubu için yeni izin kodu açılmadı.
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
