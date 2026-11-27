@@ -14246,6 +14246,113 @@
 >   - Freelancer veri giriş formu (EK-1: sonraki dilimler) · formda dosya yükleme · captcha (belirteç + tuzak + hız sınırı var).
 >   - Home'daki "Web requests (SLA rengi)" kutusu: P7.
 >
+> ## ✅ 2026-11-27 — DİLİM SATIŞ-1 P6: KAMPANYA + GÜNLÜK HAK — satışçının bir fuar için e-posta dizisi (segment gönderimde donar · en çok 4 adım, kişinin kendi ilk e-postasından sayılır) · "Review and send" (5 denetim + ilk e-posta) · Pause / Resume / Stop · dışarıda bırakma her e-postada ve iki adım arasında · kullanıcı başına günlük hak AYARDA (ofisin yerel günü · hafta sonu · sıra · çift gönderim yok) · tek zamanlayıcı fonksiyonu
+>
+> - **Kriter kaynağı:** [defter:2026-11-26 SENTEZ 26 Kas 16:30: "ARALIK-2 KABUL · HÜKÜMLER · DİLİM SATIŞ-1 KRİTERLERİ"] — C · P6 + Orchestrator U3 "P6 KAMPANYA + GÜNLÜK HAK" +
+>   [defter:2026-11-26 SENTEZ 26 Kas 23:55: "SATIŞ-1 EK-1 …"] E3 (P6 payı: hacimde hedef dondurma + dışarıda bırakma sayımı).
+> - **OKUMA KARARLARI (koddan ÖNCE yazıldı, 27 Kas 2026 ~04:10 — Sentez kapanışta geri alabilir):**
+>   1. **Kampanya KİŞİSELDİR ve BİR fuar içindir:** sahibi başlatan satışçıdır; hedefi satışçının KENDİ kişileridir (başkasının kişisine yazılmaz — Mail kuralı); fuar zorunlu
+>      (aşama ve "not interested" kişi × fuar başınadır). Ad çakışmasın diye uçlar `/api/sales-campaigns` (klasik `/api/campaigns` ziyaretçi kampanyalarıdır — dokunulmaz).
+>   2. **Hedef = kayıtlı segment** (ya da P7'nin Audience taslağı — aynı süzgeç biçimi): kampanya, segmentin süzgecini TASLAKTA taşır; **alıcı listesi GÖNDERİMDE (Start) dondurulur** —
+>      o andaki eşleşen ve dışarıda bırakılmayan kişiler satır olur; sonradan segmente giren kişi kampanyaya girmez.
+>   3. **Dışarıda bırakma — her adımda YENİDEN, gönderim anında, satırı sahiplenmeyle aynı işlemde:** e-postasız kayıt · pasif · do not contact (requested removal ve repeated
+>      hard bounce dahil) · klasik çıkış listesindeki adres (yalnız OKUNUR) · o fuar için cevap vermiş (Replied ve ötesi) · o fuar için "not interested" · sahibi artık bu
+>      satışçı değil · bizim bir iletimiz kalıcı geri dönmüş (tek geri dönüş de takibi durdurur; "do not contact" eşiği ayrı — P4). Dışarıda kalan kişinin takibi durur.
+>   4. **Adımlar:** en çok 4; varsayılan gün 0 / 4 / 10; her adım bir Campaign e-mail şablonu. **Adım günleri KİŞİNİN kendi ilk gönderiminden sayılır** (Orchestrator okuması):
+>      hak yüzünden geciken kişi kaymış takvimle yürür. Kişinin dili: şablonun o dildeki metni, yoksa şablonun KENDİ İngilizcesi.
+>   5. **Pause / Resume:** duraklatılan süre kadar takvim kayar (her kişinin çapası ileri alınır). **Stop:** geri alınmaz; o andan sonra bu kampanyadan hiçbir e-posta çıkmaz
+>      (denetim gönderim anında) — kuyruğa girmiş ama henüz işlenmemiş satır da iptal edilir (staging'de `echo` satırlar zaten gönderilmez).
+>   6. **GÜNLÜK HAK:** kullanıcı başına AYAR (boşsa kiracının varsayılanı — o da ayar; başlangıç 500). Yalnız KAMPANYA e-postaları sayılır (tek kişiye Compose / Reply, web form
+>      teşekkürü, test, taslak saymaz). Gün = kullanıcının OFİSİNİN yerel takvim günü; yerel gece yarısında sıfırlanır. Ofisin saat dilimi ofis kaydında AYAR; boşsa ofisin
+>      ülkesinin saat dilimi (bugünkü ülke → saat dilimi eşlemesi) — gerçek değer SUER'DEN. Ofissiz kullanıcı: UTC.
+>   7. **Hafta sonu:** varsayılan Cumartesi + Pazar (ofis kaydında AYAR — Cuma–Cumartesi çalışmayan ofis olabilir; 🔶 / SUER'DEN); o günlerde kampanyadan e-posta çıkmaz,
+>      vadesi gelen adım ilk iş gününe kalır. Kampanyada "Send on weekends too" işaretliyse o kampanya hafta sonu da gönderir.
+>   8. **Hak dolunca SIRA:** takip adımları (2+ — vadesi en eski olan önce) → önceki günlerden kalan ilk e-postalar → bugün başlatılan kampanyaların ilk e-postaları. Sığmayan
+>      gönderim ATLANMAZ, ertesi iş gününe kalır.
+>   9. **Sağlayıcı sınırı:** §0.2'de günlük sınır YOK (aylık 3.000.000) → ayarı kısıtlayan bir tavan yok; ayarın kendi aralığı 1–5.000 (okuma kararı).
+>   10. **ÇİFT GÖNDERİM YOK:** (kampanya · adım · kişi) veritabanında TEKİL; alıcı satırı atomik sahiplenilir (iki tik aynı satırı alamaz); hak sayımı aynı işlemde, kullanıcı
+>      başına kilit altında (iki paralel tik hakkı aşamaz).
+>   11. **TEK YOL:** kampanya e-postası yalnız kuyruk + işçi yolundan çıkar; yeni kodda sağlayıcıya doğrudan çağrı yok. Kampanya iletisi Mail'in yazışmasına da düşer (izleyici
+>      anahtarı — cevap doğru kişiye bağlansın); her e-posta kendi unsubscribe anahtarını ve List-Unsubscribe / List-Unsubscribe-Post başlıklarını taşır.
+>   12. **Zamanlayıcı TEK fonksiyon, iki çağıran:** staging'de süreç içi tik (yalnız echo düzeninde), canlıda e-posta işçisi; işçinin bugünkü işleri değişmez.
+>   13. **Review and send — beş denetim:** hedef sayısı · dışarıda bırakılanlar (sebep sebep) · şablon dili (kaç kişi kendi dilinde, kaç kişi İngilizceye düşüyor) · gönderen
+>      (hangi adres, cevap nereye) · hak (bugün kalan; bu kampanyanın ilk adımı kaç iş gününe yayılır) + ilk alıcı için ilk e-postanın görünüşü. Denetimlerden biri "gönderilemez"
+>      diyorsa (hedef 0 · şablon metni yok) Start reddedilir.
+>   14. **Açılma (open) ölçümü YOK** ((I)'de yok; UX dosyasındaki oranlar yapılmadı — 🔶 / "MOCKUP ↔ SENTEZ").
+>   15. **Menü:** Sales › Prospecting › Campaigns (`sales.write`, yalnız iç kullanıcı).
+>   16. **Arada duran kişi HEMEN durur** (iş sırasında eklendi, 27 Kas ~05:00 — yamasıyla aynı adımda yazıldı): iki adım ARASINDA cevap veren / çıkan / geri dönen / el
+>      değiştiren kişi, takip gününü beklemeden, zamanlayıcının bir sonraki adımında "stopped + sebep" olur (aynı TEK dışarıda bırakma kuralı; ilk e-postasını bekleyen kişi
+>      gönderim anında denetlenir). Gerekçe: kampanyanın "Replied" ve "waiting" sayıları aynı saat içinde doğru olsun; duraklatılmış kampanyada da işler (gönderim yok).
+> - **Ne yapıldı:**
+>   - **Migration `096_satis1_campaigns.sql`** (yalnız koşucu; satır yazmaz): `sales_campaigns` (sahip · fuar · ad · segment + süzgecin kopyası · durum draft / running / paused /
+>     stopped / finished · "hafta sonu da gönder") · `sales_campaign_steps` (1–4; gün · şablon) · `sales_campaign_recipients` (gönderimde donan liste; durum · durma sebebi · son adım ·
+>     kişinin ilk gönderim anı · yazışması) · `sales_campaign_sends` (**(kampanya · adım · kişi) TEKİL** — hak sayımı da buradan: kullanıcı × yerel gün) · `users.daily_send_limit`
+>     (boş = varsayılan) · `org_settings.sales_daily_limit` (500) · `offices.timezone` / `offices.weekend_days` (boş = ülkenin saat dilimi · Cumartesi + Pazar).
+>   - **`utils/salesCampaigns.js` — TEK yer:** yerel gün / hak (`clockOf` · `allowance`) · dışarıda bırakma kuralı (`exclusionSql` — kişi modülünün kuralları + sahip değil · klasik çıkış
+>     listesi (yalnız okunur) · o fuar için cevap vermiş · not interested · kalıcı geri dönüş) · `review` (beş denetim + ilk e-posta; hiçbir şey yazmaz) · `start` (dondurma) · `pause` ·
+>     `resume` (çapalar kayar) · `stop` · **`runTick`** (zamanlayıcı adımı: kullanıcı başına kilit → arada duranları süpür → vadesi gelenleri hükmün sırasıyla, atomik sahiplenerek,
+>     her birini O ANDA kurala sorarak, tek teslim fonksiyonundan kuyruğa). Çağıranlar: canlıda e-posta işçisi (`email_worker.js` — bugünkü işleri aynen), staging'de süreç içi tik
+>     (öbür süreç içi tiklerle aynı koşul). Teslim: `utils/mailbox.deliver` (Mail'in Compose / Reply yolu ile AYNI fonksiyon — kampanya iletisi de bir yazışmadır; cevap anahtarı,
+>     kişi × fuar "Contacted").
+>   - **`/api/sales-campaigns`** (`routes/salesCampaigns.js`; okuma `sales.read`, yazma `sales.write`, yalnız iç kullanıcı; kampanya SAHİBİNİNDİR — başka satışçı, yönetici ve Owner için
+>     404): liste · seçenekler · hak · taslak (oluştur / değiştir) · tek kampanya (adım başına gönderilen / bekleyen · durum ve sebebe göre kişi sayıları) · review · start / pause /
+>     resume / stop (denetim izinde). **Ayarlar** (`reference.write` = Owner): varsayılan hak (1–5.000) · kullanıcı hakkı (0–5.000; 0 = o kullanıcıdan kampanya çıkmaz; boş = varsayılan) · ofisin saat dilimi ve hafta
+>     sonu günleri — her değişiklik denetim izinde.
+>   - **Hedef:** kayıtlı segment (Data'nın KENDİ süzgeç fonksiyonu — `audienceSql`; liste ile aynı duvarlar); hedef kitlede yalnız satışçının KENDİ kişileri.
+>   - **Ekran:** Sales › Prospecting › **Campaigns** (`sales-campaigns.html`: liste + hak satırı · taslak satır satır (baş · adım başına bir satır · hafta sonu + düğme) · "Review and
+>     send" · çalışan kampanyada adımlar, kişiler, Pause / Resume / Stop) · Admin › Sales settings'e "Daily allowance" (varsayılan · kullanıcı başına) ve "Office day" (saat dilimi ·
+>     hafta sonu TEK seçim). Menü: `sales-campaigns` (`sales.write`, yalnız iç kullanıcı).
+> - **Commit:** LEENA `eliza-next` `f8b2b85` (P6) · `29907cf` (taslak formu satır satır + hak satırı) · `d404edf` (ayar sayfası satırları).
+> - **Ölçülenler:**
+>   - **Testler:** yeni suite `test_satis1_p6.js` **14 / 14** — saat teste DIŞARIDAN verilir: A1–A2 taslak + review · S1–S4 başlat / dizi / dışarıda bırakma / arada hemen durma ·
+>     P1 pause–resume–stop · L1–L3 hak (5 · 5 · 2 günlere yayılma · tek kişiye Mail saymaz · sıra: takipler → kalan ilk e-postalar → bugün başlayan · Cumartesi / Pazar boş · ofisin gece
+>     yarısından bir dakika önce / sonra · yaz saati geçişinde yerel gün · "hafta sonu da gönder" · AYNI ANDA üç zamanlayıcı adımı = tam hak kadar, çift gönderim 0) · E1 ayarlar ·
+>     G1 duvarlar (sağlayıcıya çağrı yok · tek fonksiyon iki çağıran · açılma izi yok · yapay zeka yok · "lead" adlı tablo yok) · G2 ekranlar · B1 TABAN. **Hükümle değişen beklenti:**
+>     `test_ui2_ledger_pages` U3 (Sales menüsü 12 bağlantı). Zincir: **93 suite · 1723 / 1723** (PG 14, taze kurulum; süpürme öncesi ilk koşu 1722 / 1722).
+>   - **Hacim (EK-1 E3 — yerel, yapay 634.020 kişi; en çok kişisi olan satışçı = 21.677):**
+>
+>     | Hedef | Kitle | Alacak | Dışarıda | Review (ortanca) | Başlat (dondurma) |
+>     |---|---|---|---|---|---|
+>     | bütün kişilerim | 21.677 | 20.192 | do not contact 1.480 · cevap vermiş 5 | 94 ms | 448 ms |
+>     | süzgeçli segment (katman + ülke) | 2.916 | 2.722 | do not contact 194 | 54 ms | 108 ms |
+>     | bir fuar · aşama Lead | 68 | 64 | do not contact 4 | 19 ms | 37 ms |
+>
+>     Zamanlayıcının bir adımı: günün hakkı 500 e-posta **~0,8–1,5 sn** (kuyruğa; e-posta başına ~2 ms) · aynı gün ikinci adım (gönderecek şey yok; iki adım arasındaki 500–1.500 kişi
+>     kurala yeniden sorulur) **4–7 ms**.
+>   - **Staging (SAMPLE; yalnız uygulama uçları; gerçek e-posta 0 — kampanyanın bütün kuyruk satırları `echo`):** migration 096 dry-run → apply → ikinci apply "nothing" (kayıt 98).
+>     SAMPLE satışçının hakkı 3 / gün (Owner, ayardan; varsayılan 500 kaldı). Kampanya "SAMPLE Campaign — 3 steps" (fuar 15 · gün 0 / 4 / 10): review 7 hedef · dil FR 1 kendi metni + 6
+>     İngilizce · gönderen satırı 3 · "ilk adım 3 iş günü"; başka satışçı / yönetici / Owner **404**; Start → 7 kişi dondu; başladıktan sonra değişiklik 409. İlk zamanlayıcı adımı:
+>     **3 e-posta** (hak doldu), 4 kişi bekliyor; her satırda kişiye özel çıkış bağlantısı + List-Unsubscribe çifti; Mail'de 3 yazışma. **Sıra:** hak 4 → 6 → 9 yapıldı (aynı gün):
+>     önce ilk kampanyanın bekleyen ilk e-postaları (dört kişi), ANCAK ondan sonra ikinci kampanyanın iki kişisi; hak yine 3'e alındı. **Çıkış:** bir SAMPLE kişi kendi e-postasındaki
+>     bağlantıyı (posta istemcisinin tek tık isteğiyle) kullandı → kişi "do not contact · requested removal", kampanyada "stopped · do not contact", adım 2 bekleyen 7 → 6. **Cevap:** bir
+>     SAMPLE kişi aynı fuarın web formundan yazdı → aşama Replied, kampanyada "stopped · replied", "Replied 1", adım 2 bekleyen 6 → 5 (zamanlayıcının bir sonraki adımında, takip
+>     gününü beklemeden). Aynı kitleyle yeni taslağın review'ı: 5 hedef · dışarıda "do not contact 1 · cevap vermiş 1". **Stop:** kişileri öbür kampanyayla çakışan bir kampanya
+>     gönderimden önce durduruldu (2 kişi "campaign stopped"; resume 409). Ayar ucu: satışçı ve Project 409.
+>   - **U4 — eşitlik + süre:** **eşitlik** (staging, P5 sonu ↔ şimdi): toplam hak ediş 286.580,52 = 286.580,52 EUR · farklı acente 0 / 27 · farklı kontrat × rol 0 / 1.475 · TABAN 342.00 ·
+>     TABAN-2 EŞİT; fark YALNIZ migration satırı (97 → 98). **Süre** (staging, sunucu süresi ortancası, ms; P5 sonu → şimdi): Commissions 457 → 375 · follow-ups 6 → 4 · Mail (sent)
+>     21 → 16 · Data listesi 10 → 11 · posta durumu 7 → 6 · yönlendirme tablosu 7 → 13 (5–16 arası oynuyor; uca dokunulmadı) · yeni: kampanya listesi 5 · seçenekler 17 · tek
+>     kampanya 14 · review 191 (7 kişilik kitle; on küçük sorgu — kotalı süreçte) · hak 10 · ayarlar 4. İki katına çıkan uç YOK.
+>   - **Staging turu:** SAMPLE satışçı 6 ekran + Owner 2 ekran × 1440 / 1280 × A / B2 = 32 yükleme: konsol hatası 0 · taşma 0 · 36 px altı düğme 0.
+>   - **Yolda yakalananlar:** (1) zamanlayıcının üç ifadesinde tipi belirsiz parametre (yeni suite — her gönderim hata veriyordu); (2) "do not contact" işaretli kişi kitleden
+>     baştan düşüyordu → review'da sebep görünmüyordu (kitle herkesi alır, kural sebebiyle çıkarır); (3) ayar uçları `/:id` kalıbının arkasında kalıyordu; (4) 1280'de taslak formu
+>     bir adımın gününü ve şablonunu iki satıra bölüyordu, ayar sayfasında yedi gün kutusu alt alta diziliyordu (staging ekran görüntüsü) → satır düzeni; (5) hak satırı tarihi ham
+>     yazıyordu → ekranların tek biçimleyicisi.
+>   - Güvenlik bulgusu **5 adet** (değişmedi) — ayrıntı raporda.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:**
+>   - **Takip adımının GÖNDERİLDİĞİ ve "takipler önce" sırası staging'de gözlenemedi:** staging saati gerçek saattir, en erken takip 1 gün sonradır, SAMPLE verisi yalnız uygulama
+>     uçlarından yazılır (takvim elle geri alınmadı). İkisi de testte, dışarıdan verilen saatle ölçüldü (S2 · S3 · L2). Staging'de görülen: takibi bekleyen kişi sayısının cevapta ve
+>     çıkışta düşmesi; ilk e-postaların kampanya sırası.
+>   - **Gelen e-postayla cevap** staging'de yok (gelen uç kapalı — P4 kaydı); staging'deki "cevap" web formundan geldi. Gelen e-postanın "Replied" yapması P4 suite'inde.
+>   - Gerçek gönderim, sağlayıcının hız davranışı, kalıcı geri dönüş olayı (echo) · canlı işçinin tiki (canlıya temas yok).
+>   - SAMPLE hesaplar dilim sonunda pasif bırakılınca zamanlayıcı o kullanıcı için göndermez (pasif kullanıcının kampanyası durur — test edilmedi, kod okuması); hesap yeniden
+>     açılırsa vadesi gelmiş takipler hükmün sırasıyla çıkar.
+> - **Bilinçle yapılmayanlar:**
+>   - **Açılma / tıklama ölçümü** — (I)'de yok; UX dosyasındaki "Opened / Clicked" oranları yapılmadı (rapor: MOCKUP ↔ SENTEZ, 🔶).
+>   - Kampanyayı yöneticinin / Owner'ın görmesi (kampanya kişiseldir; toplam sayılar P7 Stats'ta) · bir kişinin aynı anda iki kampanyada olmasını engelleme (hüküm yok; staging'de
+>     iki SAMPLE kişi iki kampanyanın listesine girdi — biri durduruldu).
+>   - Ofislerin gerçek saat dilimi / hafta sonu değerleri (alan açıldı; değer SUER'DEN) · canlının günlük hakkı (ADR-023).
+>   - Home'daki hak göstergesi ve kampanya durumu, Stats: P7.
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
