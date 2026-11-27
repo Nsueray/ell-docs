@@ -14353,6 +14353,129 @@
 >   - Ofislerin gerçek saat dilimi / hafta sonu değerleri (alan açıldı; değer SUER'DEN) · canlının günlük hakkı (ADR-023).
 >   - Home'daki hak göstergesi ve kampanya durumu, Stats: P7.
 >
+> ## ✅ 2026-11-27 — DİLİM SATIŞ-1 P7: HOME + STATS — "My work" büyüdü (satışa açık fuar seçicisi · Replies waiting · Web requests + SLA rengi · günlük hak · kampanya durumu) · Sales › Prospecting › Stats (Campaigns · Templates · Audience · Funnel · Web forms & channels) · bütün sayılar sunucuda, satışçı kendi sayısı / yönetici hepsi · oran 20 gönderimden itibaren
+>
+> - **Kriter kaynağı:** [defter:2026-11-26 SENTEZ 26 Kas 16:30: "ARALIK-2 KABUL · HÜKÜMLER · DİLİM SATIŞ-1 KRİTERLERİ"] — C · P7 + Orchestrator U3 "P7 HOME + STATS" + ORTAK notu ("aşama, hak ve
+>   dışarıda bırakma TEK YERDE") + [defter:2026-11-26 SENTEZ 26 Kas 23:55: "SATIŞ-1 EK-1 …"] E3 (P7 payı: hacimde Home ve Stats toplamları) · madde 6 ("Stats KANALI okur").
+> - **OKUMA KARARLARI (koddan ÖNCE yazıldı, 27 Kas 2026 ~04:30 — Sentez kapanışta geri alabilir):**
+>   1. **Home'un fuar seçicisi** sayfa başlığındadır (UI-18'in TEK bileşeni), listesinde YALNIZ "open for sale" (bugünkü işaret: fuarın satışa açık işareti) ve bitmemiş fuarlar
+>      vardır; varsayılan = kullanıcının Home'da son seçtiği (sunucuda, kullanıcı kaydında AYRI bir hafıza — Operations başlık seçimiyle ve liste süzgeciyle karışmaz), yoksa en
+>      yakın (süren → sıradaki). Bu seçim klasik ekranların okuduğu fuarı YAZMAZ (S2 sürüyor). Satışa açık fuar yoksa seçici çizilmez, Home fuarsız çalışır.
+>   2. **Seçilen fuar hiçbir işi GİZLEMEZ:** iş kuyrukları (Follow-ups · Replies waiting · Web requests · Quotes to chase · Signed — contract pending) ve kampanya durumu
+>      satışçının BÜTÜN işini gösterir; her satır fuarını yazar, yeni sayaçlar "bu fuar için N" der, seçili fuarın satırları öne gelir (dar, geri alınabilir okuma: bir fuar
+>      seçildi diye başka fuarın bekleyen cevabı / talebi / kampanyası görünmez olmaz). Seçimin etkisi: "bu fuar" payları · "My funnel for <fuar>" şeridi (kişilerim o fuarda hangi
+>      aşamada — aşamanın TEK ifadesiyle) · "New campaign" o fuarla açılır.
+>   3. **Home'un sayıları TEK uçtan** (`GET /api/sales-home`), sunucuda toplanır; hep çağıranın KENDİ işidir (yönetici de Home'da kendi işini görür; yöneticiye ek olarak yalnız
+>      "Unassigned" web talebi sayısı — P5 kuyruğu). Takipler · teklifler · imzalı kuyruk bugünkü uçlarından AYNEN (kendi izinleriyle); yeni kutular: Replies waiting · Web requests ·
+>      günlük hak göstergesi · kampanya durumu.
+>   4. **Replies waiting** = Mail'in "awaiting" görünümü (son ileti gelen, cevaplanmamış / ele alınmamış) — AYNI ifade (tek yerde); **Web requests** = web formundan açılan
+>      yazışmalardan cevap bekleyenler; **SLA rengi:** 7 takvim gününü geçen kırmızı · 5. günden itibaren sarı · öncesi nötr (7 gün P4 / P5'in sabiti; sarı eşik okuma kararı).
+>   5. **Günlük hak göstergesi** = kampanya zamanlayıcısının KENDİ hak fonksiyonu (kullanılan / hak · kalan · hafta sonu notu). **Kampanya durumu** = taslak · çalışan · duraklatılmış
+>      kampanyalarımın hepsi (seçili fuarınkiler önce): kişi · dizide · gönderilen · cevap.
+>   6. **Stats** = Sales › Prospecting › **Stats** (`sales.read`, yalnız iç kullanıcı): beş bölüm — Campaigns · Templates · Audience · Funnel · Web forms & channels. Üstte Expo
+>      ("All expos" | bir fuar) · (yönetici karşılığında) Salesperson ("All salespeople" | bir kişi) · dönem (Last 30 days · Last 90 days · Last 12 months · All time). **Dönem**
+>      Campaigns · Templates · web form raporuna uygulanır; Audience · Funnel · kanal dağılımı BUGÜNKÜ durumdur (UX dosyasıyla aynı).
+>   7. **Kimin sayısı:** satışçı YALNIZ kendi sayılarını alır — `user` parametresiyle başkasını isteyen satışçı reddedilir (409; sessizce kendi sayısına düşürülmez); yönetici
+>      karşılığı (Owner ya da satış yazma kapsamı "all") herkesi ya da seçtiği bir kişiyi alır. Denetim UÇTA.
+>   8. **Oran eşiği 20:** bir oran, paydası 20'den küçükse gösterilmez ("—" + "too few sends to judge"); pay her zaman sayı olarak yazılır. Eşik kodda TEK sabittir (YON-22
+>      açısından "ayar değil" — rapora yazılır; 7 günlük SLA ile birlikte).
+>   9. **Kampanyada "cevap"** = alıcının o fuar için İLK cevabı, kampanyanın o kişiye ilk e-postasından SONRA gelmişse (durma sebebine bağlı DEĞİL — bütün adımları almış kişi
+>      sonradan cevap verirse de sayılır); hangi adımdan sonra geldiği = cevaptan önce o kişiye gönderilen adım sayısı. Kampanya listesi de aynı ifadeyi okur (P6'daki sayaç buna
+>      çevrilir). **Unsubscribed** = o kampanyanın e-postasındaki çıkış bağlantısını kullananlar. **Opened / Clicked: YOK** (açılma ölçümü yapılmadı) — sütun işaretli çizilir.
+>   10. **Templates:** kampanya şablonu başına — kullanan kampanya sayısı · e-posta · cevap (o adımdan sonra gelen) · oran · sözcük sayısı ve "bağlantı var mı" (İngilizce metinden;
+>      çıkış bağlantısı sayılmaz) · diller. "What the counts say": sabit kurallı üç cümle (bağlantılı / bağlantısız · kısa / uzun · en yüksek / en düşük cevap oranı) — yalnız her iki
+>      yanda 20+ gönderim varsa; neden söylemez, sayım söyler. Cümleleri SUNUCU yazar.
+>   11. **Audience:** etkin kişiler (kapsam: ben / seçilen kişi / herkes; fuar seçiliyse o fuarın hunisindeki kişiler). UX dosyasındaki "loyal openers / never opened" grupları
+>      açılma ölçümüne dayanır → YAPILMADI; yerine kayıtlı veriden iki grup: **"Not mailed yet"** (aşama Lead) · **"Mailed, no reply"** (aşama Contacted) — her biri "Save as
+>      segment" (Data'nın KENDİ segment ucu ve süzgeç biçimi) ve "Draft campaign" (segment + fuar seçili yeni taslak; yalnız KENDİ kişilerim için — kampanya kişiseldir).
+>      "Where they are": ülkeye / sektöre göre kişi · e-posta atılan · cevap veren (oran 20'den itibaren); satır Data'yı o süzgeçle açar.
+>   12. **Funnel — iki bant** (hüküm aynen): kişiler Lead → Contacted → Replied → Qualified (her çubuk "o aşamaya ya da ötesine ulaşan"); firmalar Quote sent → Signed (firma =
+>      kişinin firma kartı; kartı yoksa yazılı firma adı; o da yoksa kişinin kendisi). Bir fuar seçiliyken kişi × fuar çifti sayılır; **"All expos" kişiyi EN İLERİ aşamasında BİR
+>      kez sayar** (hiçbir fuara bağlı olmayan kişi Lead'dir). Aşama = kişi modülünün TEK ifadesi (liste · kampanya · Home ile aynı). Tablo: fuara göre ("No expo yet" satırıyla);
+>      yöneticide ayrıca satışçıya göre ("Unassigned" satırıyla).
+>   13. **Web forms:** Requests (dönemde gelen) · Answered in time (ilk cevap ≤ 7 takvim günü) · Late (7 günden sonra cevaplanan + 7 günü geçmiş bekleyen) · Open (7 gün içinde,
+>      bekliyor) · Average first answer. **İlk cevap** = talepten sonra o yazışmada bizden giden ilk ileti ya da "Mark as handled" (hangisi önceyse); otomatik teşekkür e-postası
+>      cevap SAYILMAZ. Sahipsiz (Unassigned) talepler yalnız yöneticinin "herkes" görünümünde sayılır. Tablo: fuara · form türüne · (yöneticide) satışçıya göre.
+>   14. **Kanal = kişinin İLK kaynağı** (kişi kaydındaki kanal — EK-1'in en çok 7 değeri; sonradan değişmez); sonradan web formundan da gelen kişi "also via a web form" sayısına
+>      girer. Kişiler kişi olarak, Quote sent / Signed FİRMA olarak sayılır. **"N of M signed contracts came through a web form":** M = kanalı bilinen imzalı (firma) sayısı.
+>      Bir tekliften doğmamış / kişisi yazılmamış kontratlar **"Unknown channel"** satırında sayılır, kanal UYDURULMAZ (yalnız "herkes" görünümünde — o kontratların satışçı
+>      kullanıcısı da bilinmez).
+>   15. **Bütün oranlar, yüzdeler, süre metinleri ve cümleler sunucuda üretilir**; sayfa hesap yapmaz (çubuk boyu için yüzdeyi de sunucu verir).
+>   16. **UX dosyasından YAPILMAYANLAR** (rapor: MOCKUP ↔ SENTEZ): Home'daki "Not mailed N+ days" ve "Suggestions" kartları, "Today · Opened so far", Stats'taki Opened / Clicked
+>      oranları ve "loyal openers" — hepsi açılma ölçümüne ya da (I)'de olmayan önerilere dayanıyor.
+> - **Ne yapıldı:**
+>   - **Migration `097_satis1_home.sql`** (yalnız koşucu; satır yazmaz): `users.ui_sales_expo_id` (Home'da son seçilen fuar — Operations seçimlerinden AYRI hafıza) + Stats toplamları için üç
+>     indeks (bir kampanyanın kişi başına gönderimleri · dönemin web talepleri · KULLANILMIŞ çıkış bağlantıları).
+>   - **`utils/salesStats.js` — Home'un ve Stats'ın BÜTÜN sayıları, oranları, süre metinleri ve cümleleri burada üretilir** (sayfa hesap yapmaz). Hiçbir şey saklanmaz / izlenmez; modül
+>     önceki parçaların TEK tanımlarını OKUR: aşama (`pairsCte` · `rankCte` · `rankSql`) · hak (`allowance`) · Mail görünümleri + SLA (`utils/mailbox` `VIEW` — Mail'in kendi rotası da artık
+>     buradan okur) · bir kampanyaya cevap (`salesCampaigns.repliedSql` / `NUMBERS` — kampanya listesi de buna çevrildi) · hedef kitle (`audienceSql`, yalnız Audience bölümünde).
+>     Oran eşiği TEK sabit (`RATE_MIN` = 20).
+>   - **`GET /api/sales-home`** (`routes/salesHome.js`; `sales.read`, yalnız iç kullanıcı; kullanıcı parametresi YOK — hep çağıranın kendi işi): satışa açık ve bitmemiş fuarlar + gösterilen
+>     fuar · Replies waiting · Web requests (gün sayısı + renk) · günlük hak (çubuk yüzdesi sunucudan) · kampanyalarım · seçili fuarda hunim; yöneticiye ek: sahipsiz web talebi sayısı.
+>     **`PUT /api/sales-home/expo`** seçimi hatırlar (yalnız listedeki fuar; 400 `UNKNOWN_EXPO`).
+>   - **`/api/sales-stats`** (`routes/salesStats.js`; `sales.read`, yalnız iç kullanıcı, salt okuma): `/options` · `/campaigns` · `/templates` · `/audience` · `/funnel` · `/web`. Ortak süzgeç: `expo` (all ·
+>     live · bir fuar — listelerdeki fuar süzgecinin aynısı) · `user` (yalnız yönetici: all · bir kişi) · `period` (30 · 90 · 365 · all). **Kimin sayısı UÇTA:** satışçı başkasını / herkesi isterse
+>     409 `OTHER_USER`.
+>   - **Ekranlar:** `sales-home.html` büyüdü (başlıkta fuar seçici — UI-18 bileşeni, klasik ekranların fuar anahtarını YAZMAZ · altı kutu · Replies waiting · Web requests · Campaigns + "My
+>     funnel for <fuar>"; işaretli "Incoming replies" kutusu gerçek kutuya dönüştü) · yeni **Sales › Prospecting › Stats** (`sales-stats.html`: üst satır Expo · Salesperson (yönetici) · Period;
+>     beş sekme; Audience'ta "Save as segment" / "Draft campaign" / "See them in Data"). Campaigns sayfası `?new=1&segment=&expo=` ile ön seçimli açılır. Menü: `sales-stats`.
+>   - **`PR.pairsCte({ expos })`** — aşamanın TEK ifadesi artık bir fuar kümesiyle TABAN TABLODA sınırlanabilir (aşağıda hacim ölçümü).
+> - **Commit:** LEENA `eliza-next` `c31cdc0` (P7) · `6b8d094` (süre düzeltmesi).
+> - **Ölçülenler:**
+>   - **Testler:** yeni suite `test_satis1_p7.js` **15 / 15** — sabit SAMPLE sayılarla: F1 tek fuar hunisi (kişi 11 · 6 · 4 · 3 → firma 3 · 2 · 1; aşama payları) · F2 "All expos" kişiyi EN İLERİ
+>     aşamada BİR kez sayar (12 · 7 · 5 · 3; iki fuarın hunisindeki kişi iki satırda, ekran söylüyor; "No expo yet" satırı; "Upcoming + ongoing" aynı kural) · O1 kimin sayısı (satışçı başkasını
+>     isteyince beş bölümün beşinde 409 · yönetici herkes / bir kişi · satış okuması olmayan rol ve klasik token 409) · C1 kanal = ilk kaynak ("also via a web form"; imzalı = firma; "Unknown
+>     channel" yalnız yöneticinin herkes görünümünde) · W1 web formu (zamanında 2 · geç 2 · açık 1 · ortalama ilk cevap 4 gün; teşekkür cevap sayılmaz; "Mark as handled" cevaptır) · K1–K3
+>     kampanya ve şablon (oran 20 gönderimden: 25 kişilik kampanya %24, 3 kişilik "—"; cevap kampanyanın ilk e-postasından SONRA ise sayılır; adıma göre cevap; "What the counts say" yalnız
+>     iki yanda 20+ varken) · A1–A2 Audience (grubun sayısı = Data'nın o süzgeçle listelediği = kaydedilen segment = taslak kampanyanın alıcıları) · H1–H2 Home (seçici yalnız satışa açık ve
+>     bitmemiş fuarlar; hatırlama kişiye özel; SLA renkleri; hak; kampanyalar; huni = Stats ile aynı sayı) · G1 duvarlar (yalnız okur — satır yazılmıyor; sağlayıcı / yapay zeka çağrısı yok;
+>     sayfalarda hesap yok) · G2 ekranlar · B1 TABAN. **Hükümle değişen beklentiler:** `test_ui2_ledger_pages` U3 (Sales menüsü 13 bağlantı) · `test_ui_tam_sales` U1 ("Incoming replies" →
+>     "Replies waiting") · `test_satis1_p6` S4 fikstürü (cevap test takvimiyle tarihlendi). Zincir: **94 suite · 1738 / 1738**.
+>   - **Hacim (EK-1 E3 — yerel, yapay: 634.020 kişi · 206.858 kişi × fuar · 136.865 kampanya gönderimi · 106.642 alıcı · 938 web talebi), 24 durum (satıcı kendi / yönetici herkes × bölüm ×
+>     bütün fuarlar / tek fuar), 3 koşu ortancası:**
+>
+>     | | İlk sürüm | Son |
+>     |---|---|---|
+>     | 1 sn üstü durum | **3 / 24** (en kötü 7.797 ms) | **0 / 24** (en kötü 868 ms) |
+>     | Huni · satıcı · tek fuar | 7.797 ms | 159 ms |
+>     | Huni · yönetici · bütün fuarlar | 5.796 ms | 796 ms |
+>     | Huni · yönetici · satışçıya göre | 5.913 ms | 818 ms |
+>     | Home (satıcı / yönetici) | 175 / 125 ms | 192 / 161 ms |
+>     | Campaigns · Templates | 20–40 ms | 20–41 ms |
+>     | Audience (satıcı / yönetici herkes) | 184 / 815 ms | 188 / 868 ms |
+>     | Web forms & channels (satıcı / yönetici herkes) | 159 / 878 ms | 127 / 552 ms |
+>
+>     Sebep ve çare: süzülmüş hazır tablo taramasının satır tahmini küçük çıkıyor, birleştirme iç içe döngüye düşüyordu → fuar kısıtı aşama ifadesinin İÇİNE (taban tabloya) alındı; huni ve
+>     kanal dağılımı kişileri doğrudan okur (satıcının kendi kişileri · yöneticide herkes), firma anahtarı yalnız gereken satırda kurulur, hiçbir fuara bağlı olmayan kişi çıkarmayla sayılır.
+>   - **Staging (SAMPLE; yalnız uygulama uçları):** migration 097 dry-run → apply → ikinci apply "nothing" (kayıt 99). **Home** (SAMPLE satışçı): satışa açık fuar 2 (ikisi de test fuarı);
+>     seçim hatırlandı, öbür satışçı kendi seçimini korudu, listede olmayan fuar 400; Replies waiting 0 · Web requests 2 (bugün gelen, nötr) · hak 3'te 9 kullanılmış, kalan 0 · kampanyalar 2
+>     çalışan + 1 taslak · "My funnel" 189 · 14 · 5 · 3. **Stats huni** (SAMPLE satışçı, fuar 15): Lead 189 · Contacted 14 · Replied 5 · Qualified 3 → firma 2 · 0 · 0; bütün fuarlar 190 · 14 · 5 ·
+>     3 ("No expo yet" 1); yönetici, fuar 15, satışçıya göre: SAMPLE satışçı bir 189 · iki 7 · sahipsiz 6. **Kimin sayısı:** satışçı başka satışçıyı beş bölümde 409, herkesi 409; satış okuması
+>     olmayan hesap 409. **Campaigns:** 2 kampanya · 9 kişi · 9 e-posta · cevap 1 · çıkış 1 — oran yok ("too few sends to judge"). **Audience:** 187 etkin kişi; "Mailed, no reply" 8 = Data
+>     listesi 8 = kaydedilen SAMPLE segment 8. **Web forms:** 2 talep açık; yöneticide satışçıya göre döküm. **Kanal:** Web form 1 · Web search 3 · Ad agency 2 · Referral 9 (1'i "also via a
+>     web form") · kanalsız 175 (EK-1'den önce içe alınan SAMPLE kişiler).
+>   - **U4 — eşitlik + süre:** **eşitlik** (staging, P6 sonu ↔ şimdi): toplam hak ediş 286.580,52 = 286.580,52 EUR · farklı acente 0 / 27 · farklı kontrat × rol 0 / 1.475 · TABAN 342.00 ·
+>     TABAN-2 EŞİT; fark YALNIZ migration satırı (98 → 99). **Süre** (staging, sunucu süresi ortancası, ms; P6 sonu → şimdi): Commissions 375 → 513 (385–710 arası oynuyor; uca dokunulmadı) ·
+>     follow-ups 4 → 7–11 · Mail (sent) 16 → 32 · Data listesi 11 → 18–38 · posta durumu 6 → 7 · kampanya listesi 5 → 5–7 (cevap sayacı türetilen ifadeye geçti) · yeni: Home **12** · huni 84–91 ·
+>     Audience 15–22 · Campaigns 16–19 · Templates 19 · web (satışçı) 41 · web (Owner, herkes) **195**. İki katına çıkan uç YOK. **O parçada düzeltilen:** ilk ölçümde web (Owner) **842 ms**
+>     ve Home **90 ms** çıktı — iki sorgu tek sütun okumak için bütün satırı JSON'a çeviriyordu (bilinen tuzak) → düz sütun; Home yalnız satışa açık fuarları yükler (`6b8d094`).
+>   - **Staging turu:** SAMPLE satışçı 8 ekran + SAMPLE yönetici 5 ekran × 1440 / 1280 × A / B2 = 52 yükleme: konsol hatası 0 · taşma 0 · 36 px altı düğme 0.
+>   - **Yolda yakalananlar:** (1) hacimde üç huni durumu 5,8–7,8 sn (yukarıda); (2) staging'de iki "satırı JSON'a çevir" sorgusu (yukarıda); (3) web formu döküm satırları eşit sayıda
+>     kararsız sıralanıyordu → ada göre ikinci anahtar; (4) testin "satış okuması olmayan rol" fikstürü yanlıştı (Project satışı okur; Finance okumaz).
+>   - Güvenlik bulgusu **5 adet** (değişmedi) — ayrıntı raporda.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:**
+>   - Staging'de oranın GÖRÜNDÜĞÜ bir kampanya yok (SAMPLE kampanyalar 20 gönderimin altında — "—" görüldü); oran testte ölçüldü. İmzalı kontratın kanalı staging'de yok (SAMPLE
+>     satışçının imzalı teklifi yok) — testte.
+>   - "Geç" (7 günü geçmiş) web talebi staging'de yok (talepler bugün geldi; saat ileri alınamaz) — kırmızı durum testte.
+>   - Hacim ölçümü YEREL ve yapaydır (kampanya / talep dağılımı uydurma); canlı hacimde ölçülmedi (canlıya temas yok).
+>   - Gelen e-postayla oluşan "Replies waiting" satırı staging'de yok (gelen uç kapalı) — testte.
+> - **Bilinçle yapılmayanlar:**
+>   - **Opened / Clicked oranları, "loyal openers / never opened" grupları, Home'daki "Not mailed N+ days" ve "Suggestions" kartları** — açılma ölçümü yok / (I)'de yok (rapor: MOCKUP ↔
+>     SENTEZ). Stats'ta "Opened · Clicked" kutusu işaretli çizildi.
+>   - Oran eşiği (20) ve SLA (7 gün) kodda sabit — ayar ekranı açılmadı (YON-22 açısından rapora yazıldı).
+>   - Satışçıya başka satışçının sayısını açmak / rol ayrımı (Faz 4) · Stats dışa aktarımı · dönemin serbest tarih aralığı.
+>   - Home'da takip / teklif / imzalı kuyruklarının fuara göre "bu fuar" payı (bugünkü uçlar değiştirilmedi).
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
