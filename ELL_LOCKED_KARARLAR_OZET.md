@@ -129,6 +129,10 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
   kaydının oranı (var) + üyelerin payı (agent kaydında) + sürüm geçmişi; ileriye dönük (YON-22)." Uygulama: yalnız eklenen sürüm tablosu (084); geçerlilik başlangıcı bugün
   ve sonrası (geçmişe dönük sürüm reddedilir — Orchestrator okuması); toplam > 100 KAYDEDİLMEZ (Sentez hükmü yok — 🔶 rapor); pay DEĞERİ kişiye özeldir (GUV-08): deftere,
   commit mesajına, rapora ve test fikstürüne ad + değer yazılmaz; payları Owner girer, CC girmez. [defter:2026-11-26 SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ"]
+  - **MOT-07 eki — S1 (Sentez 26 Kas 16:30 karar S1, AYNEN)** — "S1 Pay toplamı > 100 → a: ret kalır (409). Hiçbir günde 100 aşılmaz; altı "Unallocated"." · P1 (d),
+  AYNEN: "(d) New agent formunda Type "Team" seçilemez (tek ekip kaydı; havuz tekil varsayımı); mevcut ekip kaydı durur. (e) S3 Archive. (f) §0.7 GOC-ALICI." Uygulama:
+  ikinci ekip kaydı açılamaz (düğme çizilmez VE uç reddeder); mevcut ekip kaydı düzenlenince türü durur. Havuz payları staging'e girilmez — kesimden sonra canlıda
+  (ADR-023). [defter:2026-11-26 SENTEZ 26 Kas 16:30: "ARALIK-2 KABUL · HÜKÜMLER · DİLİM SATIŞ-1 KRİTERLERİ"]
 - **MOT-08** (Sentez 26 Kas — DİLİM ARALIK-2 H4, AYNEN) — HAVUZ DAĞITIMI TEK MOTORDA, "pool" DİLİMİ: "Havuz dağıtımı okumada türetilir, TEK motorda (MOT-01; yeni dilim türü
   "pool"): ekip kaydının hak ediş dilimi (ödeme × kontrat) → ödeme tarihinde geçerli pay sürümü → üyeye pay satırı. Üyenin agent sayfasında "Pool share" bölümü (dönem · ekip
   hak edişi · pay % · tutar); üyenin bakiyesi = kendi hak edişi + havuz payı − payout. Ekip kaydına payout YAZILMAZ (bakiyesi "distributed to members"); varsa eski payout
@@ -192,6 +196,10 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 - **SEM-04** (G, Sentez 13 Eyl) — `users.password_hash` **nullable**; NULL = "henüz şifre yok". Hash kolonuna hash-OLMAYAN (sentinel) değer yazmak YASAK (veride yalan). İlk Owner NULL + `password_must_change = true`. [defter:2026-09-13 FAZ 4 DİLİM 1 CANLIDA]
 - **SEM-05** (H, Sentez 13 Eyl — dilim 2 öncesi BAĞLAYICI) — HEDEF: `organizers` saf kiracı, giriş `users`'a **TAŞINIR** (e-posta/şifre kopyalanmaz, tek-kaynak). YOL: JWT geçişte ikisini taşır (`organizer_id`, `users.organizer_id`'den türetilir); **exp=30d → eski yol dilim 2'den en erken 30 gün sonra emekli (takvim)**. Dilim 2 kapsamı: JWT `user_id`+`name` + **ŞİFRE BELİRLEME AKIŞI** (Owner NULL bootstrap açığı; 401 guard giriş yolu DEĞİL); `ui2CurrentUser()` SENKRON KALIR. [defter:2026-09-13 FAZ 4 DİLİM 1 CANLIDA] · **Not (Sentez 6 Kas, karar 3 = a):** klasik (organizer token'lı) giriş kullanıcıları KESİMDE ui2 girişine (`users`) geçer; kesim tasarımına madde "klasik token'lı kullanıcı listesi + geçiş günü" (ADR-023). [defter:2026-11-06 SENTEZ: PROMPT 2 KABUL + 8 KARAR + PROMPT 3 DİREKTİFİ]
 - **SEM-06** (B3, Sentez — RTM nihai, 8 Eki) — `Transferred` TEK statüdür (yalnız devreden kaynak taşır; elle geçiş kapalı, yalnız Transfer aksiyonu yazar). Yön ayrı statüyle değil `transferred_from_contract_id` ile tutulur (devam = yeni `Active` satır; "transferred to" ters join'le türetilir, saklanmaz). [defter:2026-10-08 KENYA ÖLÇÜM PAKETİ + ui2 LİSTE KAPANIŞI]
+  - **SEM-06 eki — TRANSFER İZİ (Suer kararı 26 Kas — Sentez 26 Kas 16:30 B, AYNEN)** — "Zoho'da bugün: eski kontrat "Transferred Out" + yeni kontrat "Transferred In"
+  (Zoho mecbur bıraktığı için). ELIZA: tek Transfer eylemi (SEM-06) yeterli; ŞART: iki kontratta da iz — "X fuarından transfer edildi" / "Y fuarına transfer edildi",
+  kaynak fuar ve kontrat numarası tıklanır. Göç: Zoho'daki Out↔In çiftleri kesimde eşlenip bağlanır; 41 çıkış / 18 giriş farkı provada ölçülür → ADR-023 kesim maddesi. Bu
+  dilimde kod yok; kayıt." [defter:2026-11-26 SENTEZ 26 Kas 16:30: "ARALIK-2 KABUL · HÜKÜMLER · DİLİM SATIŞ-1 KRİTERLERİ"]
 - **SEM-07** (Faz B b2, Sentez 23 Eki) — Abonelikten çıkış imzası JWT'den BAĞIMSIZ sırla atılır (LIFFY `UNSUBSCRIBE_SECRET`); JWT rotasyonu gönderilmiş e-postalardaki çıkış linklerini bozamaz. Uygulama (liffyv1 `532d173`): imza JWT'ye de sabit değere de düşmez; sır yoksa süreç açılmaz (`FATAL: UNSUBSCRIBE_SECRET missing`). [defter:2026-10-23 FAZ B (b2)] · **Kesime kadar (ADR-023, 5 Kas):** köprü/sınır hükmü birleşme kesimine kadar geçerli; kesimde sökülür. [defter:2026-11-05 MİMARİ KARAR: BİRLEŞME]
 
 ### LED — ledger (hesaplar · transfer · gider · gelir · bütçe)
@@ -299,6 +307,10 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 - **YON-23** (Sentez 26 Kas karar S2, AYNEN; ID'yi CC tahsis etti) — CANLIDAN OKUMA YALNIZ AÇIK HÜKÜMLE: "canlıdan okuma YALNIZ Sentez bloğu açıkça "canlıda ölç" diyorsa; sorgu
   metni ve sayısı raporda; her canlı temas (okuma dahil) SAPMA listesine MUTLAKA yazılır (TUR-1b raporunda yazılmamıştı — bu da kuraldır)." Uygulama: CC, hüküm yokken canlının
   salt okuma bağlantısını da kullanmaz; ölçüm staging'de yapılır, canlı için "ÖLÇÜLMEDİ" yazılır. [defter:2026-11-26 SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ"]
+- **YON-24** (Sentez 26 Kas 16:30 — "YENİ KURAL — SÜRE", AYNEN; ID'yi CC tahsis etti) — SÜRE KABUL ÖLÇÜSÜDÜR: "YENİ KURAL — SÜRE: her parçanın kabul ölçümüne süre girer
+  (3 koşu ortancası, sunucu süresi). Bir ucun sunucu süresi önceki parçaya göre 2 katına çıkarsa o parçada düzeltilir, sonraya bırakılmaz. Hız kuyruğu: Expo Finance · War
+  Room · ekip kaydı sayfası — SATIŞ-1 kapanışında yeniden ölçülür; dilim konusu değil." [defter:2026-11-26 SENTEZ 26 Kas 16:30: "ARALIK-2 KABUL · HÜKÜMLER · DİLİM SATIŞ-1
+  KRİTERLERİ"]
 
 ### AD — adlandırma / marka
 
@@ -318,6 +330,70 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 - **SAT-02** (teknoloji turu, 21 Eki) — Kazanım boru hattı SABİT (istek → şablon → bekleme masası → içeri al), bulucu DEĞİŞTİRİLEBİLİR; ELL içinde bulucu yazılmaz; dış araçla sistem entegrasyonu şart değil; mevcut robota geliştirme yok, verimi/servisi/maliyeti ölçülür (açık). [defter:2026-10-21 TEKNOLOJİ GÜNCELLEME TURU]
 - **SAT-03** (teknoloji turu, 21 Eki) — Sahiplik ve havuz TABLODAN: ayrılan → havuz; N gün iletişimsiz → uyarı → havuz → yeniden dağıtım; info@/web form → ülke→ofis tablosu; Owner değiştirir, kod değişmez; önkoşul olay kaydı; N ve tablolar dilim gelince Suer'den. [defter:2026-10-21 TEKNOLOJİ GÜNCELLEME TURU]
 - **SAT-04** (teknoloji turu, 21 Eki) — Bölge yasağı TABLODAN (ofis/kullanıcı → satabileceği ülkeler); atama kuralı + yetki girdisi (Faz 4); Owner kararı, değişken. [defter:2026-10-21 TEKNOLOJİ GÜNCELLEME TURU]
+- **SAT-05** (Sentez 26 Kas — DİLİM SATIŞ-1 C · P2, AYNEN; ID'leri SAT-05 … SAT-10 CC tahsis etti) — DATA: TEK KAYIT DEFTERİ: "Yer: Sales › Prospecting › Data = Sales ›
+  Companies + kişiler + lead'ler; aynı kayıtlar, ikinci defter yok. - Lead = e-postası olan, firması bilinmeyen kişi (Company "—"). E-postasız bulgu lead DEĞİL (SAT-01;
+  ikincil kayıt, kampanyaya girmez). - Aşama (kişi × fuar): Lead → Contacted (ilk e-posta gidince, otomatik) → Replied (herhangi cevap, otomatik; web lead Replied doğar)
+  → Qualified (tek tık, firma şart; teklif açılınca otomatik) → Quote sent → Signed (teklif ve kontrattan türetilir, elle yazılmaz). - Sahiplik: satışçı kendi kişileri;
+  Sales Manager hepsi. Başkasının kişisi: uyarı + "Request transfer" → Sales Manager onaylar; geçmiş kalır; sessiz devralma yok. Faz 4 açılmaz: bugünkü rol şablonları. -
+  Satır işlemleri: Edit… · Do not contact… (sebep zorunlu: not an expo audience · wrong region · requested removal · suspected bot · repeated hard bounce; Reactivate geri
+  alır) · Mark as handled · Mark as qualified. Silme yok. Pazarlama e-postasından çıkış → requested removal, otomatik. - Import: CSV/XLSX (PDF'ten yalnız e-posta +
+  yanındaki sözcükler) → kontrol masası (Ready · Need fixing · Duplicates · Skipped · No e-mail) → tek tık. Kopya = e-posta; "zaten senin" / "başkasının" ayrı sayılır,
+  içeri alınmaz. - Kişide Language alanı (ülkeden önerilir; ülke → dil tablosu ayar). - Segment = kaydedilmiş süzgeç; kampanya hedefi olur. - Fuar ↔ sektör: Expo settings
+  › Identity › Sectors (çoklu; liste = firma sektör listesi). - Liste kalıbı UI-15; "More filters" bu listede uygulanır (1280'de tek satır)." Uygulama: kişi tablosu tek
+  defter (lead = firmasız kişi; ayrı "lead" tablosu yok — sözcük klasik tarafta dolu); kişi × fuar ilişkisi; aşama TEK ifadeden türetilir (liste · kampanya · Home · Stats
+  aynı ifadeyi okur); sahiplik ve transfer isteği bugünkü rol şablonlarıyla (yönetici karşılığı = Owner ya da satış yazma kapsamı "all"); içe alma kontrol masası; segment
+  = kaydedilmiş süzgeç. [defter:2026-11-26 SENTEZ 26 Kas 16:30: "ARALIK-2 KABUL · HÜKÜMLER · DİLİM SATIŞ-1 KRİTERLERİ"]
+- **SAT-06** (Sentez 26 Kas 23:55 — EK-1 madde 1 · 5, AYNEN) — İKİ KATMAN + HIZLI GİRİŞ: "- İki katman: LEAD (doğrulanmamış; firma adı + e-posta + ülke + sektörden
+  ibaret olabilir, Zoho'da böyle) ve CONTACT (doğrulanmış: cevap verdi · elle doğrulandı · firma kartına bağlandı). Lead cevap verince Replied = doğrulanmış. "Mark as
+  qualified" firma şart. (24 Kas hükümleriyle aynı; göç sınıflandırması için açık yazıldı.) - E-postasız kayıt → ikincil kayıt (SAT-01): lead değil, kampanyaya girmez." ·
+  "5. LEAD HIZLI GİRİŞ (P2 eki): tek satır (firma · e-posta · ülke · sektör) + dosyadan içe alma; 44 alanlı form yok. Ekip bugün dakikada bir kayıt giriyor." Uygulama:
+  katman TÜRETİLİR (doğrulama: cevap · elle · firma kartı), ayrı tablo yok; e-postasız kayıt ikincil katmandır (hunide ve kampanyada yok); hızlı giriş tek satır (firma ·
+  e-posta · ülke · sektör). [defter:2026-11-26 SENTEZ 26 Kas 23:55: "SATIŞ-1 EK-1: Zoho Keşif turu 2 bulguları + Suer kararları S4–S6"]
+- **SAT-07** (Sentez 26 Kas 23:55 — EK-1 madde 1 "Lead Source" + (II-EK) madde 6, AYNEN) — KANAL (EN ÇOK 7) VE KAYNAK AYRINTISI: "- Lead Source 25 değer (14'ü hiç
+  kullanılmamış) → ELIZA kanal listesi en çok 7: Web form (tür ayrımıyla) · Web search / mined · Ad agency records · Social media · Newsletter / PSR download · E-mail
+  campaign · Referral / other. Eşleme tablosu CC yazar, kütüğe girer." Uygulama: kanal listesi AYARDIR (7 satır; ad ve etkinlik Admin › Reference data); kanal = kişinin
+  İLK kaynağı, sonradan değişmez (sonraki kaynak "also via …"); kaynak ayrıntısı serbest addır. **ELIZA kaynağı → kanal:** web formu → Web form · hızlı giriş ve dosyadan
+  içe alma → Web search / mined (içe almada seçilebilir) · elle ekleme ve "From a mail" → Referral / other · göç → Zoho Lead Source eşlemesi (boş kaynak = kanal boş).
+  **Zoho Lead Source → kanal eşleme tablosu (Keşif 26 Kas 22:30 sayılarıyla; kesim provasında Suer onaylar):** Web Search (355 509) → Web search / mined · boş (233 810) →
+  kanal BOŞ kalır (provada Suer: boş mu, "Web search / mined" mi) · Ad Agency Records (11 801) → Ad agency records · Social Media Ads (3 452) ve Social Media Platforms
+  (234) → Social media · Online Stand Request (2 492) → Web form (tür: Book a stand) · Contact Form / Exhibition Website (191) → Web form (tür: Contact) · Contact Form /
+  ElanExpo Website (77) → Web form (kurumsal site, fuarsız) · Post Show Report Downloaders (847) ve Newsletter Subscription / Exhibition Website (142) → Newsletter / PSR
+  download · Email Marketing Campaign (34) → E-mail campaign · Exhibition Visit International (3) ve hiç kullanılmamış 14 değer → Referral / other · Zoho "Data" modülü
+  kayıtları (S6) → kanal boş, kaynak ayrıntısı "Data entry (remote)". 8. kanal açılmaz. [defter:2026-11-26 SENTEZ 26 Kas 23:55: "SATIŞ-1 EK-1: Zoho Keşif turu 2 bulguları
+  + Suer kararları S4–S6"]
+- **SAT-08** (Sentez 26 Kas — DİLİM SATIŞ-1 C · P5 + EK-1 madde 3 · 4, AYNEN) — WEB FORM KANALI: "- Her fuar için 3 tür (Contact us · Book a stand · Get more info) ×
+  fuarın dilleri kendiliğinden; yaklaşan/süren fuarda açık, fuar bitince kapanır; Owner türü kapatabilir. Alanlar: ad · firma · e-posta · telefon · ülke · mesaj · gizli
+  fuar. Embed code (Expo settings'ten kopyalanır). - Güvenlik (GUV): hız sınırı · bot tuzağı · köken listesi (fuar siteleri) · kişisel veri gövdede · anahtar günlükte
+  yok. - Talep → lead (kaynak "Web form · fuar · tür", Replied) → sahibi ülke → ofis → ofisin varsayılan kişisi (SAT-03 ayar tablosu; Owner düzenler); yoksa Unassigned
+  kuyruğu (Sales Manager). SLA 7 takvim günü; Home'da kırmızı. - Teşekkür e-postası Templates'ten (System › Web form thank-you). - Kesim maddesi: sitelerdeki Zoho
+  embed'leri ELIZA formuna çevrilir (Suer / web ajansı) → ADR-023." · EK-1: "3. WEB FORMLARI — Keşif ölçümü (P5'e girdi): bugün Leads modülüne düşüyor; Zoho'nun kendi
+  formu değil, CRM dışından bir araç yazıyor (araç henüz bilinmiyor — Keşif Zoho Forms'a bakacak; kesimde site formlarını değiştirmek için gerekir). Alanlar: ad · firma ·
+  e-posta · ülke · sektör (15/15 dolu) · telefon · mesaj + Lead Source ("Online Stand Request" = Book a stand · "Contact Form / Exhibition Website" · "Contact Form /
+  ElanExpo Website"; "Get more info" ayrı kaynak değil) + Interested Exhibitions. CRM'de otomatik cevap YOK; ülke → ofis atama + "Contact New Lead" görevi; sonrası boş
+  (15/15 durum girilmemiş, görev açık). P5 ekleri: Sector alanı formda isteğe bağlı kalır · üç tür ELIZA'da ayrı kalır · teşekkür e-postası ELIZA'dan gider · hacim
+  ölçüsü: ~15 talep / 9 gün (Kasım)." · "4. ÜLKE → OFİS TABLOSU (SAT-03): Zoho kuralındaki sıra hatası (China satırı "diğer ülkeler" satırının arkasında, muhtemelen hiç
+  çalışmıyor) taşınmaz. Tablo açık satır: Nigeria → Nigeria · Kenya → Kenya · Morocco → Morocco · China → China · diğer → Merkez (International). Türkiye satırını ve
+  kişileri Suer ilk dolumda verir." Uygulama: form ELIZA'nın kendi sayfasıdır, site iframe ile gömer (köken listesi = o sayfanın çerçevelenebildiği siteler); süreli
+  imzalı belirteç + bot tuzağı + hız sınırı (AYAR); talep → kişi (aynı adres = aynı kişi; do-not-contact işareti kalkmaz) → sahip (ülkenin kendi satırı önce, "diğer" son;
+  varsayılan kişi yoksa Unassigned) → yazışma + 7 takvim günü SLA; teşekkür e-postası tek şablon deposundan. Tablo beş satırla tohumlandı, kişiler ve Türkiye satırı boş.
+  [defter:2026-11-26 SENTEZ 26 Kas 16:30: "ARALIK-2 KABUL · HÜKÜMLER · DİLİM SATIŞ-1 KRİTERLERİ"]
+- **SAT-09** (Sentez 26 Kas — DİLİM SATIŞ-1 C · P6, AYNEN) — KAMPANYA + GÜNLÜK HAK: "- Hedef: kayıtlı segment ya da Home taslağı. Alıcı listesi GÖNDERİMDE sabitlenir;
+  her adımda dışarıda bırakma yeniden kontrol (do not contact · replied · unsubscribed · hard bounce). - Adımlar gün 0 / 4 / 10 (en çok 4); cevap gelince o kişinin takibi
+  durur. Pause/Resume (günler kayar) · Stop (yoldaki takipler dahil hiçbir e-posta çıkmaz, geri alınmaz). - Review and send: 5 kontrol (hedef sayısı · dışarıda
+  bırakılanlar · şablon dili · gönderici · hak) + ilk e-postanın görünüşü. - Pazarlama e-postası = unsubscribe zorunlu; tıklayan requested removal. - GÜNLÜK HAK:
+  kullanıcı başına AYAR (YON-22), varsayılan 500; ofisin yerel gece yarısında sıfırlanır; taslak yemez; tek kişiye Compose yemez; hafta sonu varsayılan atlanır ("Send on
+  weekends too"); hak dolunca sıra: takip adımları → planlı ilk e-postalar → yeni; takılan adım ertesi güne kayar, atlanmaz. Sağlayıcı sınırı düşükse (§0.2) ayar onu
+  aşamaz. - Gönderim yalnız kuyruk + worker yolundan (ILT-05; staging echo; gerçek e-posta YOK)." Uygulama: kampanya kişiseldir ve bir fuar içindir; (kampanya · adım ·
+  kişi) veritabanında tekil; zamanlayıcı TEK fonksiyon, iki çağıran (canlıda e-posta işçisi · staging'de süreç içi tik); hak kullanıcı başına ayar, gün ofisin yerel günü
+  (saat dilimi ve hafta sonu ofis kaydında ayar); açılma ölçümü YOK. [defter:2026-11-26 SENTEZ 26 Kas 16:30: "ARALIK-2 KABUL · HÜKÜMLER · DİLİM SATIŞ-1 KRİTERLERİ"]
+- **SAT-10** (Sentez 26 Kas — DİLİM SATIŞ-1 C · P7, AYNEN) — HOME + STATS: "- Home ("My work" büyür): fuar seçici yalnız "open for sale" fuarlar (varsayılan son
+  seçilen, yoksa en yakın) · Follow-ups · Replies waiting · Web requests (SLA rengi) · Quotes to chase · Signed — contract pending · günlük hak göstergesi · kampanya
+  durumu. - Stats: Campaigns · Templates · Audience · Funnel · Web forms & channels. Üstte Expo · (Sales Manager'da) Salesperson · dönem. Oranlar 20 gönderimden itibaren,
+  altında "—". Funnel iki bant: kişiler (Lead → Contacted → Replied → Qualified) · firmalar (Quote sent → Signed); kişi fuar başına sayılır; "All expos" kişiyi en ileri
+  aşamasında bir kez sayar. Kanal = ilk kaynak ("also via …"). Audience → Save as segment / Draft campaign. Web forms: Requests · Answered in time · Late · Open · Average
+  first answer · "N of M signed contracts came through a web form"." Uygulama: bütün sayılar, oranlar ve cümleler sunucuda üretilir; satışçı kendi sayısını alır,
+  başkasınınkini isteyen reddedilir; yönetici karşılığı hepsini / bir kişiyi; aşama · hak · dışarıda bırakma · posta görünümleri TEK tanımdan okunur. [defter:2026-11-26
+  SENTEZ 26 Kas 16:30: "ARALIK-2 KABUL · HÜKÜMLER · DİLİM SATIŞ-1 KRİTERLERİ"]
 
 ### YET — yetki, kullanıcı yönetimi, denetim (yeni grup, 2026-10-22, Paket 2)
 
@@ -380,6 +456,11 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
 - **ILT-04** (Sentez B3.4) — Takip `follow_ups`: hedef · sahip · vade · not · open | done (done TERMİNAL, silinmez). Send'de önerilen vade +7 gün (değiştirilebilir / boşaltılabilir). Sales sekmesinin girişi "My follow-ups" (Takiplerim; vadesi geçen sunucuda işaretli). Kapsam own / team (sahip). [defter:2026-11-05 SENTEZ: PROMPT 1b KABUL + 7 KARAR + PROMPT 2 DİREKTİFİ] · [defter:2026-11-05 PROMPT 2: B2 + REF + B3]
 - **ILT-05** (Sentez B3.5) — `EMAIL_ECHO=1` YALNIZ staging env'i (INVITE_ECHO emsali): kuyruk satırı status 'echo' ile yazılır, işlenmiş içerik saklanır, GÖNDERİLMEZ (worker yalnız 'pending' okur); ekranda "echo" rozeti. Canlıda bayrak YOK — leena-email-worker satırdaki reply_to + eki kullanır (NULL'da eski davranış). [defter:2026-11-05 SENTEZ: PROMPT 1b KABUL + 7 KARAR + PROMPT 2 DİREKTİFİ] · [defter:2026-11-05 PROMPT 2: B2 + REF + B3]
 - **ILT-06** (Sentez 6 Kas TÜZEL KİŞİLİK — belge tüzel kişisi) — Teklif PDF'inin SATICI bloğu = teklifin tüzel kişisi (ad · adres · ülke · vergi no · e-posta / telefon · web) + "Contact: satışçı"; banka bloğu = o tüzel kişinin "belgede göster" hesabı (teklif para birimine uyan, yoksa ilk aktif — id sırası). Tüzel kişisiz teklif eski düzen (ofis + satışçı, banka yok). Gönderen GÖRÜNEN ADI = tüzel kişinin ADI (`email_queue.from_name`; adres worker'ın sistem adresi kalır) · reply-to satışçı (ILT-01). Sentez metni "tüzel kişinin e-postası görünen ad" — AD kullanıldı (ön-onaylı SAPMA, 🔶: görünen ad yerine e-posta dizesi = sahtecilik kalıbı, teslim edilebilirlik riski). İleride fatura / application form AYNI alanı okur. [defter:2026-11-06 SENTEZ: PROMPT 2 KABUL + 8 KARAR + PROMPT 3 DİREKTİFİ] · [defter:2026-11-06 PROMPT 3 (1)+(2): YET-KAPSAM-2 + TÜZEL KİŞİLİK]
+  - **ILT-06 eki — S5 (Suer kararı, Sentez 26 Kas 23:55 EK-1 madde 2, AYNEN): PROFORMA** — "2. SUER KARARI S5 — PROFORMA: quote'tan TEK TUŞLA "Proforma Invoice" PDF +
+  e-posta (resmi fatura DEĞİL; satışçılar bugün Zoho Inventory şablonlarından sürekli gönderiyor). KATALOG+QUOTE diliminin 1. maddesi; SATIŞ-1 kapsamı dışı; kütüğe karar
+  olarak şimdi girer (ILT-06 "aynı alanı okur" satırına bağlanır)." Bu dilimde KOD YOK (KATALOG+QUOTE diliminin 1. maddesi). Aynı ek: "6. "QUOTE SIGNED" İÇ BİLDİRİMİ:
+  Zoho'da imzada 4 iç alıcıya e-posta gidiyor; ELIZA'da yok (11 Kas eksik 2.7-16). KATALOG+QUOTE dilimine (Owner + Project + Finance); SATIŞ-1 dışı." [defter:2026-11-26
+  SENTEZ 26 Kas 23:55: "SATIŞ-1 EK-1: Zoho Keşif turu 2 bulguları + Suer kararları S4–S6"]
 - **ILT-07** (Sentez 11 Kas PAKET UI-TAM-2 D — gönderen kimlikleri) — Exhibitor e-postalarının gönderen kutusu İKİ: **Project kutusu** (zincir + hatırlatma +
   sistem e-postaları) · **Finance kutusu** (Payment Reminder); görünen ad tüzel kişi AYNEN (ILT-06). Cevap adresi gönderen kutu (UX 3. tur C6). Adresler
   referans veride (sır değil); canlıda gönderen doğrulaması + worker = ADR-023 kesim maddesi. [defter:2026-11-11 SENTEZ 11 Kas: PAKET UI-TAM-2]
@@ -396,9 +477,35 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
   satırlar taşındı; kural (bilinmeyen / tek süslü) GÖNDERİM anında da geçerli; gönderim kaydı şablon sürümünü taşır; yetki bugünkü `templates.write` (Owner) + Faz 4 notu;
   hatırlatma tek e-postadır — dört tür aynı metinle başlar, e-posta düğmesinin açtığı bölümün türünü alır; şablon SİLME yok. ILT-02 (tek `quote_email` düzenleyicisi) ve
   EXH-16'nın "metin dosyada / organizatör satırı" kısmı bu depoyla DEĞİŞTİ; EXH-17 (zamanlama / tetik) aynen. [defter:2026-11-26 SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ"]
+  - **ILT-08 eki — S3 (Sentez 26 Kas 16:30 karar S3, AYNEN): ŞABLON ARŞİVİ** — "S3 Şablon → b: "Archive". Silme yok; arşivlenen seçicilerden kalkar, geçmişi ve
+  sürümleri durur, geri alınabilir; tür varsayılanı arşivlenemez (önce başka varsayılan). Staging'deki 2 SAMPLE şablon arşiv gelince arşivlenir. SATIŞ-1 P1." Uygulama:
+  arşiv = şablon kaydında tarih; arşivlenen şablon seçicilerde ve gönderimde yok, sayfada "Archived" altında durur, geri alınır. [defter:2026-11-26 SENTEZ 26 Kas 16:30:
+  "ARALIK-2 KABUL · HÜKÜMLER · DİLİM SATIŞ-1 KRİTERLERİ"]
 - **ILT-09** (Suer kararı 26 Kas — Sentez 26 Kas karar S1, AYNEN) — MAIL'DE KİM NEYİ GÖRÜR: "Owner "herkesin gönderdikleri" görünümünü görür (salt okuma, şema yok); başka role
   açma Faz 4. Gelen kutusu SATIŞ-1'in konusu (U3b tasarımı), bu dilimde yok. SAMPLE e-postalar böylece Suer'in sayfasında görünür." Uygulama: Sales › Mail "All sent" —
   yalnız Owner oturumunda vardır (başkası isterse 409); Owner olmayan hesabın görünümü ve yanıtı DEĞİŞMEDİ; yeni izin / şema yok. [defter:2026-11-26 SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ"]
+- **ILT-10** (Sentez 26 Kas — DİLİM SATIŞ-1 C · P3, AYNEN; ID'leri ILT-10 · ILT-11 CC tahsis etti) — SALES ŞABLONLARI + ÇIKIŞ BAĞLANTISI: "Admin › Templates büyür
+  (ILT-08; yeni depo yok): "Sales templates" grubu — Campaign e-mail (pazarlama, unsubscribe zorunlu) · Reply (işlem, unsubscribe yok); "System e-mails" grubuna Web form
+  thank-you (dil başına; yoksa EN). Prospecting › Templates = aynı sayfa, yalnız Sales grubu; satışçı diğer grupları GÖRMEZ. Yetki: Owner hepsi; satışçıya Sales grubu
+  yazma bugünkü izinle yapılamıyorsa Owner yazar, Faz 4 notu (ARALIK-2 P7 ile aynı). Palet: kişi · firma · fuar · gönderen alanları + {{unsubscribe_link}} (yalnız
+  Campaign). Önizleme SAMPLE kişiyle; test gönder (echo)." Uygulama: türler Campaign e-mail · Reply · Web form thank-you tek şablon deposunda (ILT-08); pazarlama türünün
+  gövdesi çıkış bağlantısını TAŞIMAK ZORUNDA (kayıtta durur); çıkış sayfası herkese açık ve anahtarlı (anahtarın yalnız özeti saklanır); kullanılan bağlantı → "do not
+  contact · requested removal". Yazma yetkisi bugünkü `templates.write` (Owner) — Sales grubunu satışçıya açmak Faz 4. [defter:2026-11-26 SENTEZ 26 Kas 16:30: "ARALIK-2
+  KABUL · HÜKÜMLER · DİLİM SATIŞ-1 KRİTERLERİ"]
+- **ILT-11** (Sentez 26 Kas — DİLİM SATIŞ-1 C · P4, AYNEN) — MAIL: ELIZA'NIN KENDİ POSTASI + İLETİŞİM GÜNLÜĞÜNDE KİŞİ HEDEFİ: "- Posta kutusu bağlanmaz (Gmail/IMAP
+  yok). Gönderim satışçının KENDİ adresinden (doğrulanmış gönderici) sağlayıcı üzerinden; cevap ELIZA'ya döner ve doğru kişiye · yazışmaya · satışçıya bağlanır (konuyla
+  değil, izleyici anahtarıyla). Mekanizma Orchestrator'ın; gereksinim bu. DAL: §0.2 "gelen yol bu planda yok" derse → gelen kısım "bağlı değil" kalır, giden + görünümler
+  yapılır, raporda açık madde; plan/satın alma Suer'in. DAL: domain doğrulaması yoksa → sistem adresinden gönder, reply-to satışçı (ILT-01 deseni); Suer'e "DNS kaydı"
+  maddesi raporda. - Görünümler: Inbox (cevaplar + web talepleri, en yeni üstte) · Awaiting reply (benden cevap bekleyen; web talebi 7. günde kırmızı) · Waiting for their
+  reply (ben yazdım, cevap yok: Write again · Stop following) · Starred · Sent (yalnız ELIZA'dan; Owner "All sent") · Drafts · Compose. "My follow-ups" bugünkü anlamıyla
+  Sales home'a link. - Tek tık: Mark as handled · Not interested (fuara özel; "+ hiçbir fuar" = do not contact · not an expo audience; Undo) · Add as lead (kaynak "From a
+  mail", Replied, sahibi cevaplayan) · Mark as qualified. - Reply: Reply türü şablondan başlayabilir; web talebine cevap SLA'yı kapatır. - Compose: "Do not contact"
+  kişiye yalnız kendi mesajına cevap olarak; başkasının kişisine yazılmaz (Request transfer). - Sağ panel "From our records" (veri-only): bu kişi/firmayla geçmiş
+  teklifler · kontratlar · gönderilen e-postalar · fuar katılımları; "Reference suggestions" = aynı sektör + ülkeden KATALOGDA YAYINLANMIŞ firmalar. Yapay zeka cümlesi ve
+  "önerilen metin" yok." Uygulama: yazışma + ileti tabloları; giden her ileti TEK teslim fonksiyonundan kuyruğa (Compose · Reply · kampanya); gönderen dört satırlı tablo
+  ortam ayarından (doğrulanmış domain · gelen alan adı); gelen uç sağlayıcının imzasıyla doğrulanır, anahtar tanımlı değilse kapalıdır; görünümler türetilir (Inbox ·
+  Awaiting reply · Waiting · Starred · Sent); iletişim günlüğü (ILT-03) firma kartı olmayan KİŞİYİ de hedef alır; ekler saklanmaz (ad + boyut). [defter:2026-11-26 SENTEZ
+  26 Kas 16:30: "ARALIK-2 KABUL · HÜKÜMLER · DİLİM SATIŞ-1 KRİTERLERİ"]
 - **ILT — KAPSAM DIŞI (sonraki paketler):** gelen e-postaların sisteme düşmesi ("B4 inbound") · 8 e-postalık operasyonel zincir (REQ §2.7, Paket 5 sonrası ayrı paket) · WhatsApp · pazarlama kampanyası. [defter:2026-11-05 SENTEZ: PROMPT 1b KABUL + 7 KARAR + PROMPT 2 DİREKTİFİ]
 
 ### UI — arayüz (yeni grup, 2026-10-22, Sentez — UI-0)
@@ -467,6 +574,12 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
   Finance düz seçim kutusu) → a: başlık seçicisi, ARALIK-2 D-4'te." Uygulama: tam etiket tek fonksiyondan (ad · tek tarih aralığı · yer · durum · gün sayısı); başlık
   seçicisinin düğmesi fuarın ADINI gösterir, gerisi yanında; KISA etiket de tarih aralığına geçti ("Ad · 2–4 Dec 2026" — Orchestrator okuması); Expo Finance ve Expo budget
   fuarı sayfa başlığında seçer (UI-18 kuralı — adres fuarı taşır · seçim yokken en yakın fuar · ortak anahtarı yalnız başlık seçimi yazar). [defter:2026-11-26 SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ"]
+- **UI-21** (Sentez 26 Kas — DİLİM SATIŞ-1 C · P1 (a) · (b) · (c), AYNEN; ID'yi CC tahsis etti) — SAMPLE FUAR İŞARETİ · KAYNAK ETİKETLERİ: "(a) Commissions "Add agent
+  CLASSIC" → yerli New agent paneli. (b) Visitors home Source süzgeci/sütunu ham kod ("exhibitor_page" · "manual") → UI-16 etiket ("Exhibitor Page" · "Manual"). (c)
+  SAMPLE/test fuarlar "en yakın fuar" varsayılanını kazanıyor → fuar kaydında "sample" işareti; işaretli fuar varsayılan seçimde ve "Upcoming + ongoing" süzgecinde
+  atlanır, "All expos"ta görünür; staging'de "test" ve "[TEST] Reactivation Smoke" işaretlenir." Uygulama: işaret YALNIZ iki yeri etkiler (varsayılan fuar seçimi ·
+  "Upcoming + ongoing" süzgeci); işaretli fuar elle seçilebilir kalır; bütün yaklaşan fuarlar işaretliyse yedek kural işaretsizler arasında işler. [defter:2026-11-26
+  SENTEZ 26 Kas 16:30: "ARALIK-2 KABUL · HÜKÜMLER · DİLİM SATIŞ-1 KRİTERLERİ"]
 
 ### KAT — katalog / quote → kontrat köprüsü (yeni grup, 2026-10-24, Paket 3)
 
@@ -546,6 +659,22 @@ görür. `reports_to` hiyerarşisiyle. (Requirements 2.2 + 2.8, Bölüm 2 B33 il
   Değer YALNIZ LEENA PRIVATE `CLAUDE.md`'ye yazılır (342.00'ın yanına: "TABAN-2: kontrat <id> SR earned = <tutar>"). ell-docs'a yalnız "<id>, ölçüldü, değer LEENA CLAUDE.md" yazılır. Kontrat 4 = 342.00 temizlik dilimine kadar İKİLİ çapadır; temizlikte kontrat 4 silinir, TABAN-2 tek kalır. [defter:2026-11-05 SENTEZ: PAKET 4 KAPANIŞ HÜKÜMLERİ] · **Ölçüldü (5 Kas):** TABAN-2 = **AF489555**, ölçüldü (canlı + staging aynı, SLICE_CTES), değer LEENA `CLAUDE.md`. Çapa AF numarasıyladır (LEENA id canlıda ve staging'de FARKLI). Ölçüt uygulaması defterde. [defter:2026-11-05 P4-KAPANIŞ] · **Yorum satırı (Sentez 5 Kas, karar 7 = a — B1-a SAPMA 8 teyit):** "L4 farkı 0" = tam eşitlik · "SD boş" = SD kişisi + `sd_pct` + `sd_pct_pending` boş · "ödemesi tam" = Σ ödeme (kontrat para birimi) = revenue ve sentetik yok · "tek internal SR" = SR internal + agent yok · oran = COALESCE(`sr_pct`, varsayılan) > 0. [defter:2026-11-05 SENTEZ: PROMPT 1 KABUL + 8 KARAR + 1b DİREKTİFİ]
 
 - **GOC-08** (Sentez S1 = a, Suer TEYİT 9 Kas) — "2019 öncesi ödemesiz kontrat 'legacy, takip dışı' bayrağı; bakiye saklanır, tahsilat ekranlarında ayrı kova, dışa aktarımda görünür. Kesim göçü kuralı." Kural: `contract_date < 2019-01-01` VE ödemesi yok → `contracts.legacy = true` (migration + göç betiği). [defter:2026-11-09 SENTEZ: 5a/5b KABUL + S1–S8 + YON-20 + KESİM PROVASI DİREKTİFİ + EK]
+- **GOC-09** (Sentez 26 Kas 16:30 — §0.7 hükmü, AYNEN; ID'leri GOC-09 · GOC-10 CC tahsis etti) — GOC-ALICI: KONTRAT AKTARIMI ALICIYI TAŞIR: "0.7 GOC-ALICI: Zoho'dan
+  yeni kontratlar ELIZA'ya bugün nasıl geliyor (sıklık, alanlar) · dışa aktarımda Contact Name ve kişinin e-postası var mı. Bulgu (Sentez 26 Kas, staging + Zoho'da
+  doğrulandı): yaklaşan 5 fuarın 32 aktif kontratının 32'sinde ELIZA alıcısı boş; Zoho'da aynı kontratların Contact Name'i ve e-postası dolu. HÜKÜM: kontrat aktarım yolu
+  kontak adı + e-postasını taşır ve kontratın alıcı listesine (to) yazar; firma bağı yoksa bile alıcı dolar. Şimdi elle doldurma YOK. Uygulama P1; dışa aktarımda alan
+  yoksa kesim listesine yazılır, Sentez'e dönülür." Durum: bugünkü aktarım yolunda kişi alanı ÖLÇÜLDÜ, uygulama kesim maddesidir (ADR-023 — dışa aktarımdaki alan adları
+  provada). [defter:2026-11-26 SENTEZ 26 Kas 16:30: "ARALIK-2 KABUL · HÜKÜMLER · DİLİM SATIŞ-1 KRİTERLERİ"]
+- **GOC-10** (Suer kararları S4 · S6 — Sentez 26 Kas 23:55 EK-1 madde 1, AYNEN) — ZOHO LEAD'LERİ: HEPSİ TAŞINIR; GÖÇ KURALLARI: "1. SUER KARARI S4 — ZOHO LEAD'LERİ:
+  HEPSİ TAŞINIR (göç kapsamı; kesimde, SATIŞ-1'de değil). SATIŞ-1'in payı: veri modeli şunları karşılar ve §0.1'e hacim ölçümü girer (608 592 lead + 18 044 kişi + 7 384
+  Data kaydıyla liste · arama · segment süresi)." · "- "Email Opt Out" işaretli 40 120 → "Do not contact · requested removal", kaynak notu "Zoho opt-out". Bu liste
+  kesimde İLK taşınan şeydir (yeniden yazma riski). - Zoho Lead Status elle ve bayat → taşınmaz; aşama ELIZA'da olaydan türer. Göç başlangıcı: Zoho "Contacted" →
+  Contacted (tarih = Zoho son değişiklik) · boş / "Not Contacted" / "Connection Attempted" / "Contact in Future" → Lead · "Not Qualified" → Do not contact · not an expo
+  audience · "Junk Data" → Do not contact · suspected bot · "Pre-Qualified" → Contacted. Suer kesim provasında onaylar." · "- "Interested Exhibitions" (çok seçmeli; yıllı
+  / yılsız karışık) → kişi × fuar ilişkisi; yılsız değer fuar ailesinin en yakın gelecek edisyonuna. - SUER KARARI S6 — "Data" modülü (7 384 kayıt; uzak ofis / freelancer
+  veri girişi için kurulmuştu): kayıtları LEAD katmanına, kaynak "Data entry (remote)", girişi yapan ve "Call Result / Next Follow-up" notu iletişim günlüğüne
+  (ILT-03/04). Modül kopyalanmaz. Freelancer veri giriş formu ayrı madde, sonraki dilimlerde." Göçün KENDİSİ kesimdedir; SATIŞ-1 modeli karşılar (hacim ölçümü 634.020
+  kişiyle yapıldı). Sahip atama kuralı HÜKÜMSÜZ (ADR-023). [defter:2026-11-26 SENTEZ 26 Kas 23:55: "SATIŞ-1 EK-1: Zoho Keşif turu 2 bulguları + Suer kararları S4–S6"]
 
 ### EMS — EMS kapıları: istemciden gelen kimliğe sahiplik (yeni grup, 2026-11-09, ara dilim)
 
@@ -797,6 +926,8 @@ Kesim provası direktifi (KES-01..05) aynen; GUV-04 dilimi provadan önce. Hotfi
     en çok bir bildirime bağlanır. Listede tutarı ve tarihi uyan ödeme önce." Uygulama: kolon + tekil kısıt (087); durumun TEK tanımı (eşleşmiş ve ödemesi duran → confirmed ·
     ret olayı → rejected · gerisi → received; bildirim received iken AÇIK); eşleştirme ödeme YAZMAZ, mevcut ödemeyi DEĞİŞTİRMEZ; geri alma (unmatch) YOK (hüküm yok); eşleşen
     ödeme sonradan ters çevrilirse bildirim yeniden received + açık (CC okuması — rapor); "Matched (bağ) açık karar" satırı bununla KAPANDI. [defter:2026-11-26 SENTEZ 26 Kas: "TUR-1b KABUL · S1–S3 + CC Q1–Q3 KARARLARI · TUR BULGULARI · DİLİM ARALIK-2 KRİTERLERİ"]
+  - **EXH-21 eki — S2 (Sentez 26 Kas 16:30 karar S2, AYNEN)** — "S2 Eski "bakılmış" bildirimler → a: açık kalır, otomatik kapanmaz. Kesim provasında sayı ölçülür ve
+  ADR-023'e yazılır; 50'yi geçerse Sentez'e dönülür." [defter:2026-11-26 SENTEZ 26 Kas 16:30: "ARALIK-2 KABUL · HÜKÜMLER · DİLİM SATIŞ-1 KRİTERLERİ"]
 - **EXH-22** (Sentez 24 Kas 21:40 C-2 — Metin 14 okuma kuralı, AYNEN; ID'leri EXH-22 · EXH-23 CC tahsis etti) — ÖN DOLUM CÜMLESİ: "ön dolu alan ≤ 3 ise ADIYLA yazılır ("We pre-filled
   your company name and country; please complete the rest."); daha çoksa "We pre-filled N of 22 fields from our records; please check and complete the rest."" Uygulama: sunucu ön
   dolu alanların ADLARINI ve formun alan sayısını verir; sayfa yalnız yazar (EN / FR / TR). SAPMA: form 23 alanlı (firma adı dahil) → cümle "N of 23" yazar — "22" Sentez'in

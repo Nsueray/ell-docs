@@ -227,3 +227,48 @@ Faz A restore + rollback.js. Prova ≥ 2 kez, canlının taze kopyasında.
 > - **Mail "All sent" (Owner) · Expo Finance / Expo budget başlık seçicisi · fuar etiketi:** şema / veri yok; kesimde ek adım yok.
 > - **Dağıtım → migration arası:** 083–087'nin her biri için kod eski şemayla çalışır (oran: eski satırlar "rate missing" görünür — 083 hemen koşulur · havuz: paysız motor ·
 >   şablon: eski yerlerden okur · bildirim: eski kural). Sıra yine: dağıt → migrate (dry-run → apply → "nothing").
+>
+> **DİLİM SATIŞ-1 (26–27 Kas; Sentez 26 Kas 16:30 "… DİLİM SATIŞ-1 KRİTERLERİ" + EK-1 23:55) — kesim maddeleri (canlıda ÖLÇÜLMEDİ — YON-23: canlıya temas yok, okuma dahil):**
+> - **Migration 088–097 (yalnız koşucu; staging'de uygulandı, canlıda YOK):** 088 şablon arşivi · 089 fuarda "sample" işareti · 090 kişi defteri (kişi firmasız olabilir · sahip ·
+>   do-not-contact · kişi × fuar · olaylar · transfer istekleri · segment · içe alma masası) · 091 saklı sıralama / arama anahtarları · 092 iki katman · sektör · kanal (kiracı başına 7
+>   satır tohumlanır) · 093 çıkış anahtarları + "Web form thank-you" varsayılan şablonu · 094 yazışma / ileti tabloları, iletişim günlüğünde kişi hedefi, kuyrukta gönderen + başlık
+>   alanları · 095 web formları + ülke → ofis tablosu (beş satır tohumlanır; kişiler boş) · 096 kampanya tabloları, kullanıcı hakkı, ofis saat dilimi / hafta sonu · 097 Home fuar
+>   seçimi + üç indeks. Sıra: dağıt → migrate (dry-run → apply → "nothing"); her biri için kod eski şemayla çalışır (uçlar "not migrated" der). 091 ve 092 kişi tablosunun
+>   BÜTÜNÜNDE anahtar / indeks kurar — göçten SONRA koşulursa süre hacimle büyür (yerel 634.020 kişide ölçüm: rapor).
+> - **DNS + sağlayıcı (GİDEN):** satışçının KENDİ adresinden gönderim için satışçı adreslerinin domaini sağlayıcı hesabında doğrulanmalı (bugün: doğrulanmış DEĞİL; domainin
+>   herkese açık politikası "reject · sıkı hizalama" → doğrulanmadan o domainden çıkan e-posta alıcıda reddedilir). Gereken kayıtlar: sağlayıcının domain doğrulamasında VERECEĞİ
+>   üç CNAME (iki DKIM seçicisi + dönüş yolu alt alanı). O güne kadar uygulama sistem adresinden gönderir, cevap adresi satışçıdır (gönderen tablosunun 3. satırı). Ortam ayarı:
+>   `SALES_VERIFIED_DOMAINS`.
+> - **DNS + sağlayıcı (GELEN — cevabın ELIZA'ya dönmesi):** bir cevap alt alanı için MX kaydı (sağlayıcının gelen sunucusuna) · sağlayıcıda o alt alan için Inbound Parse kaydı →
+>   `/hooks/mailbox/inbound` · gelen uç için İMZA politikası (açık anahtar `SALES_INBOUND_PUBLIC_KEY`) · olay bildirimi (kalıcı geri dönüş) → `/hooks/mailbox/events`, imzalı
+>   (`SALES_EVENTS_PUBLIC_KEY`) · ortam ayarı `SALES_INBOUND_DOMAIN`. Bugünkü tek Inbound Parse kaydı klasik EMS ucuna gider — DOKUNULMAZ; yeni kayıt AYRI alt alanda. Anahtar
+>   tanımlı değilken iki uç KAPALIDIR (503). Sağlayıcı belgelerinde yazmayanlar (imza eğrisi · zaman toleransı · 4xx'te yeniden deneme · Message-ID'nin korunması) provada ölçülür.
+>   "Domain YOK · gelen VAR" durumunda cevabın nereye döneceği Sentez kararı (rapor 🔶).
+> - **STAGING'de gelen ucun açılması:** bu dilimde YAPILAMADI (staging servisine ortam ayarı yazma izni verilmedi) → staging'de "cevap doğru kişiye bağlandı" kanıtı yok;
+>   testte ölçüldü. Prova öncesi staging servisine dört ayar (SAMPLE değerlerle) yazılır ve sahte gelen ile yinelenir.
+> - **Zoho embed → ELIZA formu:** kesimde her fuar sitesindeki form gömme kodu ELIZA'nın form sayfasıyla değişir (Suer / web ajansı); fuar başına site adresleri (köken listesi)
+>   Expo settings › Web forms'a yazılır. Sitelerdeki formları bugün Zoho'ya yazan araç BİLİNMİYOR (Keşif) — bulunmadan kesilmez. Kurumsal (fuarsız) form ELIZA'da YOK.
+> - **Ülke → ofis tablosu:** beş satır tohumlu, KİŞİLER BOŞ, Türkiye satırı yok ("diğer" satırı ofissiz — "Merkez (International)" ofis kaydının karşılığı belirsiz). Kesimden
+>   ÖNCE Suer doldurur; dolana kadar her web talebi yöneticinin Unassigned kuyruğuna düşer.
+> - **GOC-ALICI (GOC-09):** aktarım yolunda kontak ADI var, E-POSTASI yok (ölçüm §0.7) → dışa aktarıma alan eklenmeden hüküm uygulanamaz; yaklaşan 5 fuarın 32 aktif kontratının
+>   32'sinde alıcı boş (staging). Provada: dışa aktarımın alan listesi + alıcısı dolan kontrat sayısı.
+> - **Transfer çiftleri (SEM-06 eki):** Zoho'daki "Transferred Out" ↔ "Transferred In" kontratları kesimde eşlenip bağlanır; 41 çıkış / 18 giriş farkı provada ölçülür. Bu dilimde kod yok.
+> - **"Bakılmış" bildirim sayısı (EXH-21 eki — S2):** açık kalır, otomatik kapanmaz; provada sayılır, 50'yi geçerse Sentez'e dönülür (staging: 1).
+> - **Havuz payları (MOT-07 eki):** staging'e GİRİLMEZ; kesimden SONRA canlıda Owner girer.
+> - **E-posta kopyaları:** kişi = e-posta (tekil). Göçte aynı adresi taşıyan kayıtlar BİRLEŞTİRİLİR (kural: kesim tasarımında). Staging §0 ölçümü: kişi 8 (hepsi SAMPLE), kopya 0 — gerçeği
+>   göstermez; Zoho / canlıdaki kopya sayısı provada ölçülür.
+> - **Zoho lead'leri (GOC-10):** hepsi taşınır. Sıra: (1) opt-out listesi İLK ("Do not contact · requested removal", kaynak notu "Zoho opt-out") · (2) Lead Status eşlemesi (göç
+>   başlangıcı — Suer provada onaylar) · (3) Lead Source → kanal tablosu (SAT-07; boş kaynak kararı Suer'de) · (4) "Interested Exhibitions" → kişi × fuar (yılsız değer fuar
+>   ailesinin en yakın gelecek edisyonuna) · (5) "Data" modülü → lead katmanı, kaynak "Data entry (remote)", notlar iletişim günlüğüne. **Sahip atama kuralı HÜKÜMSÜZ** (Zoho
+>   sahibi ELIZA kullanıcısına nasıl eşlenir; eşlenmeyen kayıt sahipsiz mi) — provadan önce Sentez.
+> - **EK-1 madde 7 (Keşif'in açık maddeleri):** kontrattaki "Comission Paid" tutarları ↔ Expenses komisyon giderleri çift kayıt mı (ölçüm) · göçmüş extra equipment kontratlarının
+>   ana kontrat bağı · tipi boş / "Unknown" 3 200 firmanın bağlı kontrat / quote sayımı · Transferred Out / In çiftleri · Companies'in tipe göre dağıtımı.
+> - **Günlük hak:** varsayılan 500 / kullanıcı / gün (ayar). Canlıda son 30 günün kullanıcı başına en yüksek günlük gönderimi ÖLÇÜLMEDİ (staging §0.6: 16 — SAMPLE tohumlama, gerçek
+>   kullanımı göstermez); provada ölçülür, varsayılan ona göre teyit edilir. Sağlayıcıda günlük tavan yok (aylık plan). Ofislerin saat dilimi ve hafta sonu günleri Suer'den (boşsa ülkenin saat dilimi · Cmt + Paz).
+> - **Zamanlayıcı:** kampanya tiki canlıda e-posta işçisinde koşar (`email_worker.js` — aynı dağıtımla güncellenir; bugünkü işleri değişmedi); staging'de süreç içi tik.
+> - **Vekil zinciri:** hız sınırlarının güvendiği istemci adresi "bizim bir vekil atlamamız var" varsayımıyla okunur (staging'de ölçüldü). Canlı platformun atlama sayısı provada
+>   ölçülür; farklıysa `TRUSTED_PROXY_HOPS` ile ayarlanır (kod değişmez).
+> - **Web form imza anahtarı:** `WEBFORM_SECRET` yoksa anahtarlı sayfaların sırrından türetilir; canlıda ayrı değişken verilmesi önerilir (Sentez kararı — rapor).
+> - **Canlı Node sürümü:** yeni kod yerelde Node 20'de sınandı; canlı servisin sürümü ÖLÇÜLMEDİ (provada).
+> - **Sabit bırakılan iki parametre (YON-22 notu):** oran eşiği 20 gönderim · web talebi SLA'sı 7 takvim günü — hükmün sayıları, kodda tek sabit; ayar ekranı açılmadı.
+> - **Kapatılmamış güvenlik bulgusu: 5 adet — ayrıntı raporda.**

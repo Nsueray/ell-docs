@@ -14476,6 +14476,57 @@
 >   - Satışçıya başka satışçının sayısını açmak / rol ayrımı (Faz 4) · Stats dışa aktarımı · dönemin serbest tarih aralığı.
 >   - Home'da takip / teklif / imzalı kuyruklarının fuara göre "bu fuar" payı (bugünkü uçlar değiştirilmedi).
 >
+> ## ✅ 2026-11-27 — DİLİM SATIŞ-1 KAPANIŞ: zincirler PG 14 ×2 + PG 17 (94 suite · 1738) · hız kuyruğu yeniden ölçüldü · kapanışta bir süre düzeltmesi (fuar listesi) · kütük SAT-05…10 · ILT-10 · ILT-11 · GOC-09 · GOC-10 · YON-24 · UI-21 + ekler · ADR-023 kesim bloğu · (I) B TRANSFER kaydı · CLAUDE.md · SAMPLE hesaplar pasif
+>
+> - **Kriter kaynağı:** [defter:2026-11-26 SENTEZ 26 Kas 16:30: "ARALIK-2 KABUL · HÜKÜMLER · DİLİM SATIŞ-1 KRİTERLERİ"] — A (SÜRE kuralı · hız kuyruğu) · B (TRANSFER) · KABUL ÖLÇÜTLERİ +
+>   Orchestrator U4 / U5 + [defter:2026-11-26 SENTEZ 26 Kas 23:55: "SATIŞ-1 EK-1 …"] (kütük ve ADR maddeleri).
+> - **Ne yapıldı:**
+>   - **(I) B — TRANSFER (kod YOK; kayıt):** Suer kararı kütüğe SEM-06 eki olarak AYNEN girdi (tek Transfer eylemi yeterli; ŞART iki kontratta da iz — kaynak fuar ve kontrat numarası
+>     tıklanır; Zoho'daki Out ↔ In çiftleri kesimde eşlenip bağlanır). Kesim maddesi ADR-023'te (41 çıkış / 18 giriş farkı provada ölçülür). Bugünkü kontrat sayfasında bu izin (iki yönlü,
+>     tıklanır bağ) ne kadarının var olduğu bu dilimde ÖLÇÜLMEDİ; uygulama ayrı dilim.
+>   - **Kapanışta süre düzeltmesi (`cf2f5d7`):** satış uçları, yalnız bitmemiş fuarlara / tek fuara / hiçbirine ihtiyaç duyan istekte kiracının BÜTÜN fuarlarını yükleyip tarihliyordu
+>     (staging'de 213 fuar). `utils/expoTime.js`'e iki okuyucu: bitmemiş fuarlar · tek fuar. Kullananlar: Data seçenekleri ve "Upcoming + ongoing" süzgeci · kampanya seçenekleri · Mail'de
+>     cevap önizlemesi · Stats'ın seçim adımı · Stats satır adları (düz ad okuması).
+>   - **Kütük (17 kayıt; hükümler dosyadan AYNEN, satır kırılımları katlanarak; var olan hiçbir satır değişmedi):** SAT-05 Data — tek kayıt defteri · SAT-06 iki katman + hızlı giriş ·
+>     SAT-07 kanal (en çok 7) + iki eşleme tablosu (ELIZA kaynağı → kanal · Zoho Lead Source → kanal) · SAT-08 web form kanalı + ülke → ofis tablosu · SAT-09 kampanya + günlük hak ·
+>     SAT-10 Home + Stats · ILT-10 Sales şablonları + çıkış bağlantısı · ILT-11 Mail + iletişim günlüğünde kişi hedefi · GOC-09 GOC-ALICI hükmü · GOC-10 Zoho lead'leri: hepsi taşınır +
+>     göç kuralları (S4 · S6) · YON-24 SÜRE kabul ölçüsüdür · UI-21 sample fuar işareti + kaynak etiketleri · ekler: MOT-07 (S1 + tek ekip kaydı) · EXH-21 (S2) · ILT-08 (S3 arşiv) ·
+>     ILT-06 (S5 proforma + "quote signed" iç bildirimi — KATALOG+QUOTE) · SEM-06 (transfer izi). Parçaların "okuma kararı" maddeleri kütüğe HÜKÜM diye GİRMEDİ (defterde duruyor).
+>   - **ADR-023:** "DİLİM SATIŞ-1 — kesim maddeleri" bloğu (migration 088–097 · DNS + sağlayıcı (giden / gelen) · staging'de gelen ucun açılması · Zoho embed · ülke → ofis tablosu ·
+>     GOC-ALICI · transfer çiftleri · "bakılmış" bildirim sayısı · havuz payları · e-posta kopyaları · Zoho lead göçünün sırası (opt-out İLK) ve hükümsüz sahip atama kuralı · EK-1 madde
+>     7'nin beşi · günlük hak · zamanlayıcı · vekil zinciri · form imza anahtarı · canlı Node sürümü · sabit kalan iki parametre).
+>   - **LEENA `CLAUDE.md`:** "DİLİM SATIŞ-1" bölümü (sonraki oturumun bozmaması gerekenler) + test sayısı 1738 / 1738 · 94 suite; ARALIK-2'nin sayı cümlesi arşive AYNEN taşındı.
+>     147.643 bayt (sınır 150.000).
+>   - **SAMPLE araç hesapları** (iki satışçı · yönetici karşılığı · yetkisiz) uygulamanın kendi ucuyla PASİF bırakıldı (gerekçeli; giriş 401). Kanıt kayıtları DURUYOR.
+> - **Commit:** LEENA `eliza-next` `cf2f5d7` (süre düzeltmesi) · `31759df` (CLAUDE.md — yalnız belge). ell-docs: bu commit (kütük + ADR-023 + bu kayıt).
+> - **Ölçülenler:**
+>   - **Kapanış zincirleri (son kod `cf2f5d7`, taze kurulum, tek tek):** PostgreSQL 14 — **94 suite · 1738 / 1738** · ikinci koşu **94 · 1738 / 1738** · PostgreSQL 17.10 —
+>     **94 · 1738 / 1738**. Dilim başı 85 suite · 1539; zincir hiçbir parçada 1539'un altına düşmedi (86 → 88 → 89 → 90 → 91 → 92 → 93 → 94 suite).
+>   - **Eşitlik (staging, dilim sonu):** toplam hak ediş 286.580,52 = 286.580,52 EUR · farklı acente 0 / 27 · farklı kontrat × rol 0 / 1.475 · TABAN 342.00 · TABAN-2 EŞİT — her parçadan
+>     sonra ve kapanışta aynı. Hak ediş dilim başı = dilim sonu.
+>   - **Kapanışta düzeltilen süre (staging, sunucu süresi ortancası):** Data seçenekleri 15–17 (EK-1 sonu) → **304** (80–375; kapanış turunda yakalandı) → **10** · kampanya seçenekleri
+>     57 → 7 · Stats huni 84 → 7 · Home 12. Bu uç her parçada ölçülen sabit kümede DEĞİLDİ (CC hatası — raporda).
+>   - **Hız kuyruğu (dilim konusu değil; staging · Owner araç hesabı · 1440 · sayfa verisinin tamamlanması, 3 koşu ortancası, ms; ARALIK-2 sonu → şimdi):** Expo Finance 2.143 → **1.937**
+>     (sunucuda en yavaş istek 572) · War Room 2.088 → **2.298** (1.301) · ekip kaydının sayfası 2.080 → **2.377** (Contracts sold 1.595 · havuz 1.512 · ekstre 1.268) · Commissions
+>     1.438 → 1.218. Yeni Sales sayfaları: Home 994 · Stats 681 · Mail 893 · Data 1.075 · Campaigns 898. Üçü de 2 sn çevresinde duruyor; bu dilimde dokunulmadı.
+>   - **Kanıt listesi (8 madde; staging · SAMPLE):** içe alma masası ✔ · web form → lead + sahip + SLA ✔ · 3 adımlı kampanya, cevapta duran takip ✔ (takibin GÖNDERİLDİĞİ gün testte) ·
+>     hak dolunca kuyruk sırası ✔ (ilk e-postaların kampanya sırası; "takipler önce" testte) · **gelen cevabın doğru kişiye bağlanması ✘ — staging'de ÜRETİLEMEDİ** (gelen uç kapalı;
+>     staging servisine ortam ayarı yazma izni verilmedi; testte ölçüldü) · unsubscribe → requested removal ✔ · "From our records" yalnız kayıtlı veri ✔ · Stats funnel SAMPLE
+>     sayılarıyla ✔. Tam URL ve adımlar raporda.
+>   - **Staging:** kayıt defteri 89 → 99 (088–097; her biri dry-run → apply → ikinci apply "nothing"). Bu dilimin bütün kuyruk satırları `echo` (gerçek e-posta 0).
+>   - Güvenlik bulgusu **5 adet** (hiçbiri bu dilimde kapatılmadı) — ayrıntı raporda.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:**
+>   - Canlıda hiçbir şey (YON-23) — migration süreleri, günlük gönderim, kopya e-posta, vekil zinciri, Node sürümü.
+>   - Staging'de gelen e-posta yolu (kapalı) ve zaman isteyen davranışlar (takip günü · SLA'nın kırmızısı · hakkın gece yarısı sıfırlanması) — testte, dışarıdan verilen saatle.
+>   - Hacim ölçümleri yerel ve yapay (634.020 kişi); staging / canlı planında ölçülmedi.
+>   - Hız kuyruğundaki üç sayfanın NEDEN yavaş olduğu bu dilimde incelenmedi (yalnız sayı).
+>   - SAMPLE hesap pasifken kampanyanın o kullanıcı için durması (kod okuması; test edilmedi).
+> - **Bilinçle yapılmayanlar:**
+>   - KATALOG+QUOTE (proforma · "quote signed" iç bildirimi) — başlanmadı.
+>   - Göçün kendisi (hiçbir Zoho kaydı içeri alınmadı) · DNS / sağlayıcı ayarı · canlı.
+>   - Kapatılmamış güvenlik bulgularının düzeltilmesi (klasik uçlar — kapsam dışı; rapor).
+>   - Açılma ölçümü · kurumsal (fuarsız) form · Sales Manager şablonu / Sales grubuna satışçı yazımı (Faz 4) · oran eşiği ve SLA için ayar ekranı.
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
