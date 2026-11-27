@@ -14143,6 +14143,109 @@
 >   - Geri dönüş eşiğini düzenleyen ekran: P6'daki satış ayarlarıyla birlikte (bugün varsayılan 2).
 >   - Klasik gelen uç (`/api/email/inbound`) DEĞİŞTİRİLMEDİ (bulgu raporda duruyor).
 >
+> ## ✅ 2026-11-27 — DİLİM SATIŞ-1 P5: WEB FORM KANALI — fuar başına üç form (iframe) · süreli imzalı belirteç · bot tuzağı · hız sınırı ayarda · talep → kişi → sahip (ülke → ofis) → yazışma + 7 gün SLA · teşekkür e-postası · "Sales settings"
+>
+> - **Kriter kaynağı:** [defter:2026-11-26 SENTEZ 26 Kas 16:30: "ARALIK-2 KABUL · HÜKÜMLER · DİLİM SATIŞ-1 KRİTERLERİ"] — C · P5 + [defter:2026-11-26 SENTEZ 26 Kas 23:55: "SATIŞ-1 EK-1 …"]
+>   madde 3 · 4 + Orchestrator U3 "P5 WEB FORM" · EK-1 E5.
+> - **OKUMA KARARLARI (koddan ÖNCE yazıldı, 27 Kas 2026 ~03:20 — Sentez kapanışta geri alabilir):**
+>   1. **Embed = iframe** (Orchestrator, aynen): ELIZA'nın barındırdığı form sayfası `/f/<form kimliği>/<tür>` çerçevelenir; gönderim sayfanın KENDİ kökeninden yapılır — genel CORS
+>      listesi değişmez, başka kökene açık API doğmaz. Form kimliği fuar başına rastgele ve herkese açık bir tanıtıcıdır (sır değil); fuarın form bloğu ilk açıldığında üretilir.
+>   2. **Diller:** sayfa `?l=` ile EN / FR / TR konuşur (FR / TR taslak — yalnız kendi sözlük dosyalarında); verilmezse fuarın varsayılan dili, o da yoksa EN. Üç tür (Contact us ·
+>      Book a stand · Get more info) AYRI kalır.
+>   3. **Açık / kapalı:** fuar yaklaşan ya da süren iken açık (fuarın KENDİ takvim gününe göre), bittiği günün ertesinde kapanır; türü Owner (`reference.write`) kapatabilir. Kapalı
+>      form: nötr "closed" sayfası; gönderim ucu reddeder.
+>   4. **Köken listesi = o form sayfasının `frame-ancestors` değeri** (fuar ayarı; yalnız `https://` kökenleri). Liste boşsa sayfa hiçbir sitede çerçevelenemez (doğrudan açılır).
+>      Uygulamanın öbür sayfaları çerçevelenebilir hale GELMEZ. Köken listesi tarayıcıyı durdurur, botu durdurmaz — botu belirteç + hız sınırı + tuzak durdurur.
+>   5. **Süreli imzalı belirteç:** form sayfası sunucunun imzaladığı belirteci taşır (form · tür · üretim anı · tek kullanımlık sayı). 3 saniyeden HIZLI gönderim (insan hızının altı),
+>      2 saatten ESKİ belirteç, belirteçsiz / bozuk belirteç reddedilir. Aynı belirteçle ikinci gönderim TEK kayıt. İmza anahtarı: `WEBFORM_SECRET` ortam değişkeni; yoksa anahtarlı
+>      sayfaların mevcut sırrından SABİT bir etiketle türetilir (ayrı bağlam — aynı anahtar başka amaçla kullanılmaz); ikisi de yoksa formlar KAPALI (503).
+>   6. **Bot tuzağı:** görünmeyen bir alan; doluysa gönderene olağan "teşekkür" sayfası gösterilir, HİÇBİR ŞEY saklanmaz ve e-posta gitmez.
+>   7. **Alan sınırları:** ad 120 · firma 160 · e-posta 200 · telefon 40 · mesaj 2.000 karakter · ülke ve sektör listeden (sektör isteğe bağlı — EK-1) · gövde en çok 20 KB.
+>      Zorunlu: ad · e-posta · ülke (atama ülkeye göre). Form uçları oturum çerezi / token OKUMAZ; kişisel veri yalnız POST gövdesinde.
+>   8. **Hız sınırı AYARDA (varsayılanlar DAR — ölçülen hacim ~15 talep / 9 gün):** ağ adresi başına saatte **5** gönderim · aynı adrese aynı form için **24 saatte bir** teşekkür
+>      (pencere içindeki ikinci talep KAYDEDİLİR, ikinci teşekkür gitmez). Ağ adresi = platformun gördüğü adres (P3'ün yardımcı fonksiyonu).
+>   9. **Talep → kişi:** e-posta zaten kayıtlıysa YENİ KİŞİ AÇILMAZ — talep o kişiye bağlanır, sahibi DEĞİŞMEZ, ilk kaynağı değişmez (web form "also via" olur); do-not-contact
+>      işareti KALKMAZ. Kayıtlı değilse lead doğar: yazılan ad · firma adı (düz metin) · ülke · sektör · telefon; kaynak ayrıntısı "Web form · fuar · tür", kanal "Web form". Her iki
+>      durumda o fuar için aşama Replied (kişi bize yazdı) — tek yoldan.
+>   10. **Sahip:** kişinin sahibi varsa o. Yoksa ülke → ofis → ofisin varsayılan kişisi (ülkenin KENDİ satırı önce, "diğer" EN SON — Zoho'daki sıra hatası taşınmaz). Varsayılan
+>      kişi yok / pasifse talep **Unassigned kuyruğunda** bekler (yönetici): yazışma açılmaz; yönetici kişiyi atadığında talebin yazışması yeni sahibin Inbox'ında açılır.
+>   11. **Yazışma:** tür "web request"; talebin kendisi yazışmanın ilk GELEN iletisidir (alanlardan kurulan düz metin). **SLA 7 takvim günü** talepten sayılır ve TÜRETİLİR
+>      (cevap bekliyor + 7 gün → kırmızı); ilk cevap SLA'yı kapatır.
+>   12. **Teşekkür e-postası:** "Web form thank-you" türünün varsayılan şablonu, formun dilinde (yoksa EN); ad yalnız ad-süzgecinden geçerse girer (P3); gönderen alanları = talebin
+>      sahibi (sahipsizse boş); kuyruk + işçi (staging: echo). Kişi do-not-contact olsa da gider (kendi iletisine cevap).
+>   13. **Ülke → ofis tablosu (SAT-03; EK-1 E5):** kiracı başına BEŞ satır tohumlanır — Nigeria · Kenya · Morocco · China → o ülkenin TEK etkin ofis kaydı (ÖLÇÜLDÜ: dört ofis
+>      kaydı da var ve tek) · "diğer" → ofis BOŞ ("Merkez (International)" hangi kayıt? belirsiz — yeni ofis açılmadı; 🔶). Varsayılan KİŞİLER boş. Türkiye satırı eklenmedi. Tabloyu
+>      `reference.write` taşıyan (bugün Owner) düzenler: Admin › Organization › "Sales settings".
+>   14. **Kurumsal (fuarsız) form** ("Contact Form / ElanExpo Website"): YAPILMADI ((I) formları fuar başına tanımlıyor) — 🔶.
+>   15. **Form kimliği adresin parçasıdır:** yol istek günlükçüsünden ÖNCE ve `/api` dışında bağlanır (uygulamanın günlüğüne ve erişim kaydına düşmez).
+> - **Ne yapıldı:**
+>   - **Migration `095_satis1_webforms.sql`** (yalnız koşucu): `expo_web_forms` (form kimliği · formu çerçeveleyebilecek siteler · kapatılan türler) · `web_form_requests` (talep —
+>     kişisel veri yalnız veritabanında; bağlandığı kişi · açtığı yazışma (boş = Unassigned kuyruğunda) · teşekkür kuyruk satırı) · `web_form_routes` (ülke → ofis → varsayılan
+>     kişi; beş tohum satırı) · `org_settings` iki sınır (5 / saat · 24 saat). Form kimliği üretilmez, kişi / e-posta yazılmaz.
+>   - **Herkese açık sayfa** `/f/<form kimliği>/<tür>` (`routes/webFormsPublic.js` · `web-forms/` — stil + EN / FR / TR sözlükleri): site bu sayfayı iframe ile gömer; gönderim
+>     sayfanın kendi kökeninden. Başlıklar: `frame-ancestors` = fuarın site listesi (boş → hiçbir yerde) · no-store · noindex · no-referrer · dış kaynak yok. Oturum okunmaz.
+>   - **`utils/webForms.js`:** belirteç (üret / doğrula) · açık / kapalı durumu · ülke → ofis → kişi eşlemesi · gönderim (kişi · sahip · yazışma · Replied · teşekkür) · bekleyen
+>     taleplerin yazışmalarını açma. Kişinin telefonu yalnız kişi tablosunun kabul ettiği biçimde saklanır (yazılan hali talepte durur).
+>   - **`/api/web-forms`** (`routes/webForms.js`): fuarın form bloğu (tür başına durum + her dilde gömme kodu; okuma `operations.read`, değiştirme `reference.write`) · yönlendirme
+>     tablosu ve sınırlar (`reference.write`; her değişiklik denetim izinde) · Unassigned kuyruğu (yönetici). Bekleyen talep, yönetici kişiyi ATADIĞINDA (Data'nın kendi "Assign…"
+>     yolu) yeni sahibin Inbox'ında açılır.
+>   - **Ekran:** Expo settings'e "9 · Web forms" bloğu (durum · gömme kodları · site listesi · tür kapatma) · **Admin › Organization › Sales settings** (yeni sayfa: yönlendirme
+>     tablosu + sınırlar — web form hız sınırları ve P4'ün kalıcı geri dönüş eşiği) · Mail'de yöneticiye "Web requests · unassigned" kuyruğu.
+>   - **EK-1 E5:** forma Sector alanı (isteğe bağlı, sektör listesinden) · üç tür ayrı · teşekkür ELIZA'dan (sektör e-postaya girmez) · beş satır KALIR, kişiler boş · Türkiye
+>     satırı yok · ülkenin kendi satırı önce (test: China → China) · hız sınırı varsayılanları dar.
+> - **Commit:** LEENA `eliza-next` `96a73aa`.
+> - **Ölçülenler:**
+>   - **Ofis kayıtları ÖLÇÜLDÜ (yerel + staging aynı):** Turkey (TR) · Morocco (MA) · Nigeria (NG) · Kenya (KE) · China (CN) etkin; her ülkede TEK etkin ofis → dört satır ofisine bağlandı;
+>     "diğer → Merkez (International)" için karşılık BELİRSİZ (ofis listesinde o adla kayıt yok) → satır ofissiz bırakıldı, yeni ofis açılmadı (🔶).
+>   - **Testler:** yeni suite `test_satis1_p5.js` **16 / 16** (E1–E4 ayarlar + ekranlar · F1–F2 sayfa + "başka sayfa çerçevelenebilir olmadı" · S1–S2 güvenlik · R1–R5 talep → kişi /
+>     sahip / yazışma / teşekkür · T1 SLA · G1 duvarlar · B1 TABAN). **Hükümle değişen beklenti:** `test_ui2_p2_pages` S5 (Admin menüsüne Sales settings). Zincir: **92 suite, 1709 / 1709** (önceki 91 suite 1693 → +1 suite, +16).
+>   - **Güvenlik ölçümleri:**
+>
+>     | Ölçüm | Yerel test (suite) | Staging (gerçek sayfa) |
+>     |---|---|---|
+> | Hız sınırı kaçıncı istekte kesti | 6. (sınır 5 / saat / ağ adresi) → 429; başka adres etkilenmedi | 6. gönderim → 429 "Please try again later", kayıt 0 |
+>     | Bot tuzağı (görünmeyen alan dolu) | 200 teşekkür sayfası, kayıt 0, e-posta 0 | 200 "Thank you", kayıt 0 |
+>     | Belirteçsiz | 400 | 400 |
+>     | Sahte / başka türün belirteci | 400 | (testte) |
+>     | Çok hızlı (3 sn altı) | 400 "That was very quick…" | 400 aynı metin |
+>     | Eski belirteç (2 saat üstü) | 400 | staging'de denenemedi (sunucu imzalı) |
+>     | Aşırı büyük gövde (20 KB üstü) | 413 | 413 |
+>     | İzinli olmayan sitede çerçeveleme | `frame-ancestors` = fuarın listesi; listesiz fuar `'none'` | tarayıcı reddetti: "violates … frame-ancestors https://www.sample-expo.example" — çerçeve boş |
+>     | Zararlı metin (`<script>`, `<b>`) | yazışmada düz metin; yeniden çizimde kaçışlı; teşekkür e-postasına girmiyor | yazışmanın ilk iletisi düz metin; e-postada firma / mesaj YOK |
+>     | Aynı gönderim iki kez (tek belirteç) | tek kayıt | (testte) |
+>     | Başka sayfa çerçevelenebilir oldu mu | hayır (unsubscribe sayfası DENY; CORS listesi değişmedi) | — |
+>
+>   - **Staging:** migration 095 — dry-run → apply (724 ms) → ikinci apply "Nothing to apply" (kayıt defteri 97; yönlendirme satırı 10 = 2 kiracı × 5, 8'i ofisli, varsayılan kişi 0).
+>     Form imza anahtarı: staging'de ayrı değişken YOK → anahtarlı sayfaların mevcut sırrından etiketle türetildi (servis ayarına dokunulmadı) — formlar AÇIK.
+>     **Kanıt (SAMPLE fuar "test", SAMPLE kişiler; uygulama uçları + formun KENDİ sayfası):** Owner bloğu açtı → üç tür açık, EN / FR / TR gömme kodu, site listesi
+>     `https://www.sample-expo.example` · satışçı bloğu okuyamaz (409), Project değiştiremez (409) · yönlendirme tablosu tohumu: CN → China · KE → Kenya · MA → Morocco · NG →
+>     Nigeria · other → ofissiz, hepsi kişisiz · KANIT için NG satırına SAMPLE satışçı kondu. **Altı form gönderimi:** (1) belirteçsiz 400 · (2) çok hızlı 400 · (3) tuzak dolu →
+>     200 teşekkür, kayıt 0 · [20 KB üstü 413 — sınıra sayılmaz] · (4) Nigeria'dan talep → 200; kişi doğdu (kanal "Web form", ayrıntı "Web form · test · Book a stand", aşama
+>     Replied, sahibi SAMPLE Seller One), yazışma türü web request, "Awaiting reply", ilk ileti düz metin; teşekkür `echo`, adı taşıyor, firmayı / mesajı TAŞIMIYOR · (5) kişisi
+>     olmayan ülkeden talep → Unassigned kuyruğunda (satışçı kuyruğu göremez 409; yöneticinin sayacı 1) · (6) altıncı gönderim → 429, kayıt 0. Yönetici kişiyi atadı → talebin
+>     yazışması yeni sahibin Inbox'ında açıldı, kuyruk 0. **Kanıttan sonra NG satırındaki SAMPLE kişi BOŞALTILDI** — tablonun son hali tohumdaki gibi (beş satır, kişisiz).
+>     Tarayıcı: form sayfası 390 ve 1280 px × EN / FR / TR — taşma 0, 44 px altı denetim 0, tuzak ekran dışında, tek kaynak (kendi stil dosyası), konsol 0; listede olmayan
+>     kökenden çerçeveleme tarayıcıca reddedildi. Tur: Owner 4 sayfa + satışçı 3 sayfa × 1440 / 1280 × A / B2 = 28 yükleme, bulgu 0. Uygulamanın erişim kaydında `/f` satırı 0.
+>     **Staging'de BIRAKILANLAR (SAMPLE):** fuar 15'in form satırı (site listesi 1) · iki web talebi (`sample.web1` → Seller One'ın Inbox'ında; `sample.web2` → Seller Two'da) ·
+>     iki teşekkür `echo` satırı.
+>   - **U4 — eşitlik + süre:** **eşitlik** (staging, P4 sonu ↔ şimdi): toplam hak ediş 286.580,52 = 286.580,52 EUR · farklı acente 0 / 27 · farklı kontrat × rol 0 / 1.475 · TABAN 342.00 · TABAN-2
+>     EŞİT; fark YALNIZ migration satırı (96 → 97). **Süre** (staging, sunucu süresi ortancası, ms; P4 sonu → şimdi): Commissions 298 → 457 (en düşük 283; kotalı süreçte ölçümden
+>     ölçüme 298–457 — bu parça o uca dokunmadı) · follow-ups 5 → 6 · Mail (sent) 26 → 21 · Data listesi 36 → 10 · posta durumu 6 → 7 (sahipsiz talep sayacı eklendi) · expo settings
+>     88 → 90 · yeni: form bloğu 8 · yönlendirme tablosu 7 · Unassigned 5 · herkese açık form sayfası istemci gidiş-dönüşü 243 (erişim kaydı tutulmaz). İki katına çıkan uç YOK.
+>   - **Yolda yakalananlar:** (1) kişi tablosu telefonu yalnız uluslararası rakam biçiminde kabul ediyor — formdaki boşluklu telefon kaydı düşürüyordu (yeni suite; biçim
+>     uymazsa kişide boş, talepte yazıldığı gibi); (2) test adında rakam vardı → ad süzgeci doğru olarak adı e-postaya almadı (fikstür düzeltildi — süzgeç çalışıyor).
+>   - Güvenlik bulgusu **5 adet** (değişmedi) — ayrıntı raporda.
+> - **⚠️ ÖLÇÜLMEDİ / GÖZLENEMEDİ:**
+>   - İki saatten ESKİ belirteç staging'de denenemedi (belirteci sunucu imzalar; yaşlandırılamaz) — testte ölçüldü.
+>   - Gerçek bir sitenin formu gömmesi (staging'de SAMPLE köken yazıldı; tarayıcıda yalnız "listede olmayan köken çerçeveleyemiyor" ölçüldü).
+>   - Sitelerdeki Zoho formlarını bugün Zoho'ya yazan araç (Keşif'te bilinmiyor) → ADR-023 "Zoho embed" maddesine not.
+>   - Teşekkür e-postasının gerçek gönderimi (echo).
+> - **Bilinçle yapılmayanlar:**
+>   - **Kurumsal (fuarsız) form** — (I) formları fuar başına tanımlıyor (🔶).
+>   - Türkiye satırı ve varsayılan kişiler (Suer verir) · "Merkez (International)" ofisi.
+>   - Freelancer veri giriş formu (EK-1: sonraki dilimler) · formda dosya yükleme · captcha (belirteç + tuzak + hız sınırı var).
+>   - Home'daki "Web requests (SLA rengi)" kutusu: P7.
+>
 > ## ★ SIRADAKİ ADAYLAR (Faz 3b-3 sonrası — karar Suer'de, seçim yapılmadı)
 >
 > - **★ SIRADAKİ (2026-10-23 — bu kazanır; aşağıdakiler tarihsel):**
