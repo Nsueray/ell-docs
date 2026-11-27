@@ -14203,7 +14203,7 @@
 >
 >     | Ölçüm | Yerel test (suite) | Staging (gerçek sayfa) |
 >     |---|---|---|
-> | Hız sınırı kaçıncı istekte kesti | 6. (sınır 5 / saat / ağ adresi) → 429; başka adres etkilenmedi | 6. gönderim → 429 "Please try again later", kayıt 0 |
+>     | Hız sınırı kaçıncı istekte kesti | 6. (sınır 5 / saat / ağ adresi) → 429; başka adres etkilenmedi | 6. gönderim → 429 "Please try again later", kayıt 0 |
 >     | Bot tuzağı (görünmeyen alan dolu) | 200 teşekkür sayfası, kayıt 0, e-posta 0 | 200 "Thank you", kayıt 0 |
 >     | Belirteçsiz | 400 | 400 |
 >     | Sahte / başka türün belirteci | 400 | (testte) |
